@@ -18,53 +18,67 @@
 			$gpUserData['first_name'] = !empty($gpUserProfile['given_name'])?$gpUserProfile['given_name']:''; 
 			$gpUserData['last_name']  = !empty($gpUserProfile['family_name'])?$gpUserProfile['family_name']:''; 
 			$gpUserData['email']      = !empty($gpUserProfile['email'])?$gpUserProfile['email']:'';			
-			//Insert or update user data to the database 
-			// Storing user data in the session 
-            $_SESSION['correo'] = $gpUserData['email'];
-            $_SESSION['userData'] = $gpUserData;
-
-	
-            //Buscar mediante correo en el catalogo de docentes
-            require_once 'proyecto/theme/conexion/conexionSQL.php';
-			$connSQL = connSQL::singleton();
-            $query = "Select cat_Nombre, cat_ApePat, cat_ApeMat from docentes where cat_CorreoE='".$gpUserData['email']."'";
 			
+
+			//Verificar si el docente o usuario ya existe en la base de datos
+			//Buscar mediante correo en el catagolo de docentes
+			require_once 'proyecto/theme/conexion/conexionSQL.php';
+			$connSQL = connSQL::singleton();
+			$query = "Select cat_Nombre, cat_ApePat, cat_ApeMat from docentes where cat_CorreoE='".$gpUserData['email']."'";	
 			$docente = $connSQL->consulta($query);
 
-			$_SESSION["nombreCompleto"] = $docente[0][0]." ".$docente[0][1]." ".$docente[0][2];
+			if(count($docente) > 0 && !is_null($docente)) {
+				//Insert or update user data to the database 
+				// Storing user data in the session 
+				$_SESSION['correo'] = $gpUserData['email'];
+				$_SESSION['userData'] = $gpUserData;
+				
+				$_SESSION["nombreCompleto"] = $docente[0][0]." ".$docente[0][1]." ".$docente[0][2];
+			} 
 			header("Location:proyecto/theme/indexD.php");
 
-	}else{ 
+			
+            //Buscar mediante correo en el catalogo de docentes
+            //require_once 'proyecto/theme/conexion/conexionSQL.php';
+			//$connSQL = connSQL::singleton();
+            //$query = "Select cat_Nombre, cat_ApePat, cat_ApeMat from docentes where cat_CorreoE='".$gpUserData['email']."'";
+			
+			//$docente = $connSQL->consulta($query);
 
-		$authUrl = $gClient->createAuthUrl(); 
-		// Render google login button 
-        $output = 
-            '<div class="content">
-            <div class="container">
-                <div class="col-md-5" style="margin-top: -16px;">
-                    <center>
-                        <img  class="img-responsive" src="images/itesa.png">
-                    </center>
-                </div>
-    
-                <div class="col-md-5">
-                    <h2>Sistema de Instrumentaciones Didacticas</h2>
-                    <h2>Bienvenido (a)</h2>
-                    <h4>Esta es la primera fase en prueba del sistema de Instrumentaciones didacticas, favor de reportar cualquier anomalia al área de sistemas
-                    </h4>
-                    <hr>
-                    <p class="text-danger"> Para acelerar su acceso le recomendamos abrir su correo electrónico <b>institucional</b> en otra pestaña. </p>            
-                    
-                    <a 	class="btn btn-success btn-lg" 
-                        href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'" 
-                        style="float: right; margin-bottom: 20px;">
-                        Iniciar Sesión
-                    </a>
-                </div>		
-            </div>
-        </div>  '; 
-		echo $output;
-	} 
+			//$_SESSION["nombreCompleto"] = $docente[0][0]." ".$docente[0][1]." ".$docente[0][2];
+			//header("Location:proyecto/theme/indexD.php");
+
+		}else{ 
+
+			$authUrl = $gClient->createAuthUrl(); 
+			// Render google login button 
+			$output = 
+				'<div class="content">
+				<div class="container">
+					<div class="col-md-5" style="margin-top: -16px;">
+						<center>
+							<img  class="img-responsive" src="images/itesa.png">
+						</center>
+					</div>
+		
+					<div class="col-md-5">
+						<h2>Sistema de Instrumentaciones Didacticas</h2>
+						<h2>Bienvenido (a)</h2>
+						<h4>Esta es la primera fase en prueba del sistema de Instrumentaciones didacticas, favor de reportar cualquier anomalia al área de sistemas
+						</h4>
+						<hr>
+						<p class="text-danger"> Para acelerar su acceso le recomendamos abrir su correo electrónico <b>institucional</b> en otra pestaña. </p>            
+						
+						<a 	class="btn btn-success btn-lg" 
+							href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'" 
+							style="float: right; margin-bottom: 20px;">
+							Iniciar Sesión
+						</a>
+					</div>		
+				</div>
+			</div>  '; 
+			echo $output;
+		} 
 ?>
 
 
