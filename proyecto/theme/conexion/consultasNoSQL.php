@@ -29,7 +29,7 @@
                 $clausula = substr($encabezado, 7,29);
 
                 //Después del grupo. //Para guardar en docentes. //Carrera - Periodo - Clave de grupo - Materia.
-                //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
+                $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Carrera"=>$carrera]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Periodo"=>$periodo]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Grupo"=>$grupo]);
