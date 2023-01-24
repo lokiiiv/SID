@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		function clickk(){
+			var n=document.getElementById("nombre").value;
+			document.getElementById("label").innerHTML=n;
+
+		}
+		function clickk(cual){
+			var n=document.getElementById("nombre"+cual).value;
+			document.getElementById("label"+cual).innerHTML=n;			
+		}
+	</script>
+	
+	<script src="../../../ejemploswebclase/js/mio.js"></script>
+
+</head>
+<body>
+
+	<label for=""  id="label1"> </label>
+	Nombre <input type="text" id="nombre1">
+	<button id="a" onclick="clickk(1)">
+		crear
+	</button>
+
+	<label for=""  id="label2"> </label>
+	Nombre <input type="text" id="nombre2">
+	<button id="a" onclick="clickk(2)">
+		crear
+	</button>
+
+	<label for=""  id="label3"> </label>
+	Nombre <input type="text" id="nombre3">
+	<button id="a" onclick="clickk(3)">
+		crear
+	</button>
+
+
+	<table id="tabla">
+		<tr>
+			<td>
+				<input type="text">
+			</td>
+			<td>
+				<input type="text">
+			</td>
+			<td>
+				<input type="text">
+			</td>
+		</tr>
+
+	</table>
+	<button onclick="evento()"></button>
+
+</body>
+</html>

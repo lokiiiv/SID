@@ -1,0 +1,18 @@
+
+.mostrarContenido{
+    margin-top: 0%;
+    text-align: justify;	
+    white-space: pre-wrap;
+}
+
+.subTitulo{
+    font-size: 16px;
+}
+
+.dividerM{
+    margin-top:10px;
+    margin-bottom:5px;
+    height:5px;
+    width:100%;
+    border-top:1px solid rgb(224, 220, 220);
+}

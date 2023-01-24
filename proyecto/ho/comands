@@ -1,0 +1,97 @@
+   43  wget -qO - https://www.mongodb.org/static/pgp/server-4.0.asc | apt-key add -
+   46  echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/4.0 main" | tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+   47  apt-get update
+   48  apt-get install mongodb
+   49  systemctl start mongodb
+   50  systemctl status mongodb
+   51  systemctl enable mongodb
+   52  mongo
+   54  service mongod start
+   55  service mongod status
+   59  cat /var/log/mongodb/mongodb.log 
+   62  mongo
+   63  mongo --version
+  137  service httpd start
+  138  apt-get install php5-dev php5-common php5-xml libapache2-mod-php5 php5-cli
+ 391  apt-get install php-pear
+  393  pear
+  394  pecl
+  423  pecl install mongodb
+  424  php --ini
+  425  nano /etc/php5/cli/php.ini 
+  426  clear
+  427  echo "extension=mongodb.so" >> 'php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"'
+  428  nano /var/www/html/test.php 
+  429  /etc/init.d/apache2 restart
+  430  nano /etc/php5/apache2/php.ini 
+  431  nano /etc/php5/apache2/php.ini 
+  432  nano /etc/php5/apache2/php.ini 
+  433  nano /var/www/html/test.php 
+  434  clear
+  435  pecl
+  436  pecl list
+  437  pecl upgrade-all
+  438  pecl list
+  439  history
+  440  ls
+  441  ls -l
+  442  ls
+  443  VBoxLinuxAdditions.run
+  444  ./VBoxLinuxAdditions.run
+  445  su ./VBoxLinuxAdditions.run
+  446  sh VBoxLinuxAdditions.run
+  447  apt-get install kernel-headers-$(uname-r)
+  448  apt-get install kernel-headers-$(uname -r)
+  449  apt-get install kernel-headers
+  450  apt-get install kernel-headers-3.16
+  451  apt-get install kernel-headers-$(uname -r)
+  452  apt-get install kernel-headers-3.16.0-4-amd64
+  453  apt-update update
+  454  apt-get update
+  455  apt-get install kernel-headers-3.16.0-4-amd64
+  456  apt-get install kernel-headers-3.16.0-6-amd64
+  457  uname -r
+  458  apt search kernel-headers-3.16.0-4-amd64
+  459  apt search kernel-headers-$(uname -r)
+  460  nano /etc/apt/sources.list
+  461  apt-get install kernel-headers-3.16.0-4-amd64_3.16.56-1+deb8u1_amd64
+  462  apt-get install kernel-headers-3.16.0-4-amd64_3.16.56-1+deb8u1_amd64.deb
+  463  cd /
+  464  apt-get install kernel-headers-3.16.0-4-amd64_3.16.56-1+deb8u1_amd64.deb
+  465  apt-get install kernel-headers-3.16.0-4-amd64_3.16.56-1+deb8u1_amd64
+  466  apt-get install linux-headers-$(uname-r)
+  467  apt-get install linux-headers-$(uname -r)
+  468  cd media/
+  469  ls
+  470  cd cdrom0
+  471  ls
+  472  sh VBoxLinuxAdditions.run 
+  473  restart
+  474  m-a prepare
+  475  m -a prepare
+  476  sh /media/cdrom0/VBoxLinuxAdditions.run 
+  477  sh VBoxLinuxAdditions.run 
+  478  systemctl list
+  479  systemctl -help
+  480  systemctl all
+  481  systemctl -a
+  482  /etc/init.d/apache2 restart
+  483  php
+  484  php -h
+  485  service php-fpm restart
+  486  restart php-fpm
+  487  ce /var/www/html/
+  488  cd sid
+  489  ls
+  490  cd /var/www/html/
+  491  ls
+  492  cd sid/
+  493  cd v1.1/
+  494  ls
+  495  nano index3.php 
+  496  apt-get install php5-curl
+  497  nano /etc/php5/apache2/php.ini 
+  498  service apache2 reload
+  499  neofetch
+  500  screenfetch
+  501  history
