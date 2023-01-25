@@ -177,7 +177,7 @@ require_once("../../valida.php");
 
                     //Si dentro de las keys de los grupos ya se encuentra el grupo que se desea agregar, mostrar una advertencia
                     if(Object.keys(grupos).some(key => key === grupo.value)) {
-                        alertify.warning('Ya existe una documentación para el grupo ' + grupo.value + ' ingresado.');
+                        alertify.warning('Ya existe una instrumentación para el grupo ' + grupo.value + ' para el período ' + periodo + '. Intente nuevamente.');
                         //Limpiar los valores de los cuadros de texto
                         grupo.value = "";
                         grupo.focus();
