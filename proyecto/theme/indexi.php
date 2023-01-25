@@ -46,7 +46,7 @@ require_once("../../valida.php");
     <link href="css/custom.css" rel="stylesheet">
 	<!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
 	<link href="css/blue.css" rel="stylesheet"> 
-    <!-- Alerify JS -->
+    <!-- Alertify JS -->
     <link rel="stylesheet" href="alertify/css/alertify.min.css">
     <link rel="stylesheet" href="alertify/css/themes/bootstrap.min.css">
 
@@ -177,7 +177,7 @@ require_once("../../valida.php");
 
                     //Si dentro de las keys de los grupos ya se encuentra el grupo que se desea agregar, mostrar una advertencia
                     if(Object.keys(grupos).some(key => key === grupo.value)) {
-                        alertify.warning('Ya existe una documentación para el grupo: ' + grupo.value);
+                        alertify.warning('Ya existe una documentación para el grupo ' + grupo.value + ' ingresado.');
                         //Limpiar los valores de los cuadros de texto
                         grupo.value = "";
                         grupo.focus();
