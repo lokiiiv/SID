@@ -46,7 +46,10 @@ require_once("../../valida.php");
     <link href="css/custom.css" rel="stylesheet">
 	<!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
 	<link href="css/blue.css" rel="stylesheet"> 
-	
+    <!-- Alerify JS -->
+    <link rel="stylesheet" href="alertify/css/alertify.min.css">
+    <link rel="stylesheet" href="alertify/css/themes/bootstrap.min.css">
+
 <!-- Favicon -->
 	<link rel="shortcut icon" href="img/favicon/favicon.png">
 	<script type="text/javascript" src="js/accionesinstrumentacion.js"></script>
@@ -74,12 +77,14 @@ require_once("../../valida.php");
 	include("BarraMenu.php");
 ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="alertify/alertify.min.js"></script>
 
 <script type="text/javascript">
 
         window.onload = function(){
            
             ocultar_mostrar(0);
+            
             
         }
 
@@ -152,31 +157,75 @@ require_once("../../valida.php");
             var instrumentacion = [];
 
             if(materia.value!="" && grupo.value!="" && parseInt(temas.value)>=1){
+
                 var semestre = grupo.value;
                 letraSemestre(semestre.substring(0,1));
                 var select = document.getElementById("selectPeriodo");
                 var periodo = select.options[select.selectedIndex].value;
 
+                //Verificar que el grupo de la instrumentación no se repita o ya lo haya generado antes para el periodo seleccionado
                 var parametros = {
-                    "accion":"crearInstrumentacion",
-                    "grupo":grupo.value,
-                    "periodo":periodo,
-                    "temas":temas.value,
-                    "materia":materia.value,
-                    "carrera":carrera,
-                    "semestre":semestreletra,
-                    "clave":clavemate,
-                    "encabezado":datosencabezado,
-                    "grupos":obtenerGrupos()
+                    "accion":"obtenerGrupos",
+                    "periodo":periodo
                 };
                 $.ajax({
                 data: parametros,
                 url: 'conexion/consultasNoSQL.php',
                 type:'post',
                 success: function(resultado){
-                    grupo.readOnly = true;
-                    temas.readOnly = true;
-                    ins.cells[3].innerHTML = '<button onclick="editarInstrumentacion($(this).closest(\'tr\').index())" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14($(this).closest(\'tr\').index())" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button>';
+                    var grupos = JSON.parse(resultado);
+
+                    //Si dentro de las keys de los grupos ya se encuentra el grupo que se desea agregar, mostrar una advertencia
+                    if(Object.keys(grupos).some(key => key === grupo.value)) {
+                        alertify.warning('Ya existe una documentación para el grupo: ' + grupo.value);
+                        //Limpiar los valores de los cuadros de texto
+                        grupo.value = "";
+                        grupo.focus();
+                        materia.value = "";
+                        temas.value = "";
+                    } else {
+                        //En caso contrario, proceder a almacenar la nueva documentacion
+                        var parametros = {
+                            "accion":"crearInstrumentacion",
+                            "grupo":grupo.value,
+                            "periodo":periodo,
+                            "temas":temas.value,
+                            "materia":materia.value,
+                            "carrera":carrera,
+                            "semestre":semestreletra,
+                            "clave":clavemate,
+                            "encabezado":datosencabezado,
+                            "grupos":obtenerGrupos()
+                        };
+                        $.ajax({
+                            data: parametros,
+                            url: 'conexion/consultasNoSQL.php',
+                            type:'post',
+                            success: function(resultado){
+                                grupo.readOnly = true;
+                                temas.readOnly = true;
+                                ins.cells[3].innerHTML = '<button onclick="editarInstrumentacion($(this).closest(\'tr\').index())" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14($(this).closest(\'tr\').index())" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button>';
+                            }          
+                        }).fail(function(jqXHR, textStatus, errorThrown ) {
+                            $('#estatus'+campo).html("");
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                    }
+                    
                 }          
                 }).fail(function(jqXHR, textStatus, errorThrown ) {
                     $('#estatus'+campo).html("");
@@ -196,9 +245,9 @@ require_once("../../valida.php");
                         alert('Error: ' + jqXHR.responseText);
                     }
                 }); 
-                
+ 
             }else{
-                alert("Llene correctamente los campos");
+                alertify.error("Llene correctamente los campos");
             }
         }
 

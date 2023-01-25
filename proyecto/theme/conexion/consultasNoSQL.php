@@ -62,7 +62,7 @@
                 $campo = ["periodos_Inst.".$periodo.".".$grupo=>1];
                 $campoins = ["periodos_Inst.".$periodo.".".$grupoins=>1];
                 $connNoSQL->eliminarCampo("docentes",["correo"=>$correo],$campo);
-                $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],$campoins);
+                //$connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],$campoins);
                 
             break;
             case 'obtenerGrupos':
