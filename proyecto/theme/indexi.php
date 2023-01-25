@@ -104,10 +104,17 @@ require_once("../../valida.php");
                 type:'post',
                 success: function(resultado){
                     var grupos = JSON.parse(resultado);
-                    if(grupos.length!=0)
-                        grupos.forEach(grupo => {
-                            agregarInstrumentacion(grupo);
-                        }); 
+
+                    if(Object.keys(grupos).length != 0) {
+                        Object.keys(grupos).forEach((key, index) => {
+                            agregarInstrumentacion(grupos[key]);
+                        });
+                    }
+
+                    //if(grupos.length!=0)
+                      //  grupos.forEach(grupo => {
+                        //    agregarInstrumentacion(grupo);
+                        //}); 
                 }          
                 }).fail(function(jqXHR, textStatus, errorThrown ) {
                     $('#estatus'+campo).html("");
@@ -225,9 +232,13 @@ require_once("../../valida.php");
             var estatus = "";
             var boton = '<button onclick="crearInstrumentacion($(this).closest(\'tr\').index())" class="btn btn-info btn-sm" style="margin-left:10px">Crear</button> ';
             if(typeof instrumentacion != "undefined"){
-                grupo = instrumentacion[0];
-                mater = instrumentacion[1];
-                temas = parseInt(instrumentacion[2]);
+                //grupo = instrumentacion[0];
+                //mater = instrumentacion[1];
+                //temas = parseInt(instrumentacion[2]);
+
+                grupo = instrumentacion["Grupo"];
+                mater = instrumentacion["Materia"];
+                temas = parseInt(instrumentacion["totalTemas"]);
                 boton =  '<button onclick="editarInstrumentacion($(this).closest(\'tr\').index())" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14($(this).closest(\'tr\').index())" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button>';
                 estatus = "readonly";
             }

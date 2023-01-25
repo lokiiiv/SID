@@ -29,7 +29,7 @@
                 $clausula = substr($encabezado, 7,29);
 
                 //Después del grupo. //Para guardar en docentes. //Carrera - Periodo - Clave de grupo - Materia.
-                $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
+                //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Carrera"=>$carrera]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Periodo"=>$periodo]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Grupo"=>$grupo]);
@@ -58,23 +58,32 @@
                 $periodo = $_POST['periodo'];
                 $grupos = $_POST['grupos'];
                 $correo = $_SESSION['correo'];
-                $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
+                //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
                 $campo = ["periodos_Inst.".$periodo.".".$grupo=>1];
                 $campoins = ["periodos_Inst.".$periodo.".".$grupoins=>1];
-                $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],$campoins);
                 $connNoSQL->eliminarCampo("docentes",["correo"=>$correo],$campo);
+                $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],$campoins);
+                
             break;
             case 'obtenerGrupos':
                 $periodo = $_POST['periodo'];
                 $correo = $_SESSION['correo'];
-                $projeccion = ["projection" => ["periodos_Inst.".$periodo.".Grupos"=>1,"_id"=>0]];
+                //$projeccion = ["projection" => ["periodos_Inst.".$periodo.".Grupos"=>1,"_id"=>0]];
+                $projeccion = ["projection" => ["periodos_Inst." . $periodo => 1, "_id" => 0]];
                 $tema = $connNoSQL->consultaProjeccion("docentes",["correo"=>$correo],$projeccion);
-                if(isset($tema[0]->periodos_Inst->$periodo->Grupos)){
-                    $t = $tema[0]->periodos_Inst->$periodo->Grupos;
-                    echo json_encode($t);//$tema[0]->periodos_Inst->{'JULIO-DICIEMBRE 2018'}->{'1F11'}->Tema->$tema;
-                }else{
+                if(isset($tema[0]->periodos_Inst->$periodo)) {
+                    $t = $tema[0]->periodos_Inst->$periodo;
+                    echo json_encode($t);
+                } else {
                     echo json_encode("");
                 }
+                
+                //if(isset($tema[0]->periodos_Inst->$periodo->Grupos)){
+                  //  $t = $tema[0]->periodos_Inst->$periodo->Grupos;
+                    //echo json_encode($t);//$tema[0]->periodos_Inst->{'JULIO-DICIEMBRE 2018'}->{'1F11'}->Tema->$tema;
+                //}else{
+                  //  echo json_encode("");
+                //}
                 
 
             break;
