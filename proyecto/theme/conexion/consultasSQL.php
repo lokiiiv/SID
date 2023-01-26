@@ -57,13 +57,15 @@
             case 'buscarMateria':
                 $le = $_POST['letrae'];
                 $lex = substr($le, 0,3);
-                $query = "Select distinct ret_NomCompleto from cereticula where ret_Clave='".$lex."'";
+                $query = "Select distinct ret_NomCompleto, temas from cereticula where ret_Clave='".$lex."'";
                 $materia = $connSQL->consulta($query);
                 $selected = "";
                 foreach ($materia as $mat) {
                     if(isset($_POST['selected']))
                         if($_POST['selected']==$mat[0]) $selected="selected='selected'";
-                 echo $selected.$mat[0];
+                
+                //Incluir el nombre de materia y la cantidad de temas
+                 echo $selected.$mat[0] . '-' . $selected.$mat[1];
                 }
             break;
             case 'buscarClave':

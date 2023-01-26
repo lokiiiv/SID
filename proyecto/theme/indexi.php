@@ -268,8 +268,9 @@ require_once("../../valida.php");
             var grupo = ins.cells[0].getElementsByTagName("input")[0].value;
             var select = document.getElementById("selectPeriodo");
             var periodo = select.options[select.selectedIndex].value;
+            var cantTemas = ins.cells[2].getElementsByTagName("input")[0].value;
 
-            window.location = "contenido.php?grupo=" + encodeURIComponent(grupo) +"&p="+ encodeURIComponent(periodo);
+            window.location = "contenido.php?grupo=" + encodeURIComponent(grupo) +"&p="+ encodeURIComponent(periodo) + "&temas=" + encodeURIComponent(cantTemas);
             
         }
 
@@ -416,9 +417,16 @@ require_once("../../valida.php");
                 url: 'conexion/consultasSQL.php',
                 type:'post',
                 success: function(respuesta){
-                    mater = respuesta;
+                    mater =  respuesta.split("-")[0];
+
+                    //Obtener la cantidad de temas
+                    temas = respuesta.split("-")[1];
+
                     var ins = document.getElementById("tablaInstrumentaciones");
                     ins.rows[x].cells[1].getElementsByTagName("input")[0].value = mater;
+
+                    //Mostrar la cantidad de temas de la materia, si no hay mostrar el número 1 en el input
+                    ins.rows[x].cells[2].getElementsByTagName("input")[0].value = respuesta.split("-")[1] != "" && respuesta.split("-")[1] != null ? respuesta.split("-")[1] : 1;
                 }
             }).fail(function(jqXHR, textStatus, errorThrown ) {
                 $('#estatus'+campo).html("");
