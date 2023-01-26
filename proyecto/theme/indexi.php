@@ -425,8 +425,8 @@ require_once("../../valida.php");
                     var ins = document.getElementById("tablaInstrumentaciones");
                     ins.rows[x].cells[1].getElementsByTagName("input")[0].value = mater;
 
-                    //Mostrar la cantidad de temas de la materia, si no hay mostrar el número 1 en el input
-                    ins.rows[x].cells[2].getElementsByTagName("input")[0].value = respuesta.split("-")[1] != "" && respuesta.split("-")[1] != null ? respuesta.split("-")[1] : 1;
+                    //Mostrar la cantidad de temas de la materia, si no hay valor es nulo entonces mostrar el número 1 en el input
+                    ins.rows[x].cells[2].getElementsByTagName("input")[0].value = respuesta.split("-")[1] != "" && respuesta.split("-")[1] != null ? parseInt(respuesta.split("-")[1]) : 1;
                 }
             }).fail(function(jqXHR, textStatus, errorThrown ) {
                 $('#estatus'+campo).html("");
