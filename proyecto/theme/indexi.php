@@ -417,6 +417,8 @@ require_once("../../valida.php");
                 url: 'conexion/consultasSQL.php',
                 type:'post',
                 success: function(respuesta){
+
+                    //Obtener el nombre de la materia
                     mater =  respuesta.split("-")[0];
 
                     //Obtener la cantidad de temas
