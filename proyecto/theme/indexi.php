@@ -182,7 +182,7 @@ require_once("../../valida.php");
                         grupo.value = "";
                         grupo.focus();
                         materia.value = "";
-                        temas.value = "";
+                        temas.value = 1;
                     } else {
                         //En caso contrario, proceder a almacenar la nueva documentacion
                         var parametros = {
@@ -247,7 +247,7 @@ require_once("../../valida.php");
                 }); 
  
             }else{
-                alertify.error("Llene correctamente los campos");
+                alertify.error("Llene correctamente los campos.");
             }
         }
 
