@@ -297,7 +297,7 @@ require_once("../../valida.php");
             //Celdas y Renglones
             var row = tabla.insertRow(tabla.rows.length);
             var cell = row.insertCell(0);
-            cell.innerHTML = "<input "+estatus+" id=letracarrera Onchange = buscarMateria($(this).closest(\'tr\').index()); value='"+grupo+"'>";
+            cell.innerHTML = "<input "+estatus+" onkeyup='this.value = this.value.toUpperCase();' id=letracarrera Onchange = buscarMateria($(this).closest(\'tr\').index()); value='"+grupo+"'>";
             cell = row.insertCell(1);
             cell.innerHTML = "<input readOnly=true; "+estatus+" value='"+mater+"'>";
             cell = row.insertCell(2);

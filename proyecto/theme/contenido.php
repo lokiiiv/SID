@@ -521,14 +521,21 @@ require_once("../../valida.php");
                         <form action="miphp.php" method="POST">
                           <select class="form-control color" id="selectTema" name="nombreTema" Onchange="mostrarValor(this.options[this.selectedIndex].innerHTML);">
                             <option>&nbsp;</option>
-                            <option value='1'>1</option>
+                            <?php 
+                              //Mostrar la cantidad de temas conforme a lo obtenido al generar la instrumentacion anteriormente
+                              for ($i=1; $i <= intval($_GET['temas']); $i++) { 
+                                echo "<option value='" . $i . "'>" . $i . "</option>";
+                              }
+                            ?>
+                            <!--<option value='1'>1</option>
                             <option value='2'>2</option>
                             <option value='3'>3</option>
                             <option value='4'>4</option>
                             <option value='5'>5</option>
                             <option value='6'>6</option>
                             <option value='7'>7</option>
-                            <option value='8'>8</option>
+                            <option value='8'>8</option> 
+                            -->
                           </select>
                           <p id="prueba1"></p>
                         </form>
