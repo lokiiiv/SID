@@ -239,6 +239,7 @@ require_once("../../valida.php");
                             }
                         }
 
+                        //Si noy incovenientes, proceder a guardar la instrumentaciones
                         var parametros = {
                             "accion": "crearInstrumentacion",
                             "grupo": grupo.value,
