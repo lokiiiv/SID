@@ -347,21 +347,36 @@ require_once("../../valida.php");
 
             document.getElementById("TituloTema").value = (typeof x[tema]['TituloTema'] != "undefined") ? x[tema]['TituloTema'] : '';
 
-            if (typeof x[tema]['ValorIndicadores'] != "undefined") actualizarValorIndicadores(x[tema]['ValorIndicadores']);
-            else actualizarValorIndicadores([0, 0, 0, 0, 0, 0]);
-            if (typeof x[tema]['Practicas'] != "undefined") actualizarPracticas(x[tema]['Practicas']);
-            else actualizarPracticas();
-            if (typeof x[tema]['Actividades'] != "undefined") actualizarActividades(x[tema]['Actividades']);
-            else actualizarActividades();
 
-            if (typeof x[tema]['HTP'] != "undefined") actualizarHTP(x[tema]['HTP']);
-            else actualizarHTP();
+            if (typeof x[tema]['ValorIndicadores'] != "undefined") 
+              actualizarValorIndicadores(x[tema]['ValorIndicadores']);
+            else 
+              actualizarValorIndicadores([0, 0, 0, 0, 0, 0]);
+            
+            if (typeof x[tema]['Practicas'] != "undefined") 
+              actualizarPracticas(x[tema]['Practicas']);
+            else 
+              actualizarPracticas();
+            
+            if (typeof x[tema]['Actividades'] != "undefined") 
+              actualizarActividades(x[tema]['Actividades']);
+            else 
+              actualizarActividades();
 
-            if (typeof x[tema]['MatrizEvaluacion'] != "undefined") actualizarEvidencias(x[tema]['MatrizEvaluacion']);
-            else actualizarEvidencias();
+            if (typeof x[tema]['HTP'] != "undefined") 
+              actualizarHTP(x[tema]['HTP']);
+            else 
+              actualizarHTP();
 
-            if (typeof x[tema]['Fechas'] != "undefined") actualizaFechas(x[tema]['Fechas'], x[tema]['Semanas']);
-            else actualizaFechas();
+            if (typeof x[tema]['MatrizEvaluacion'] != "undefined") 
+              actualizarEvidencias(x[tema]['MatrizEvaluacion']);
+            else 
+              actualizarEvidencias();
+
+            if (typeof x[tema]['Fechas'] != "undefined") 
+              actualizaFechas(x[tema]['Fechas'], x[tema]['Semanas']);
+            else 
+              actualizaFechas();
 
 
             document.getElementById("campoFuentes").value = (typeof x[tema]['Fuentes'] != "undefined") ? x[tema]['Fuentes'] : '';
@@ -1971,6 +1986,7 @@ require_once("../../valida.php");
                             var tabla = document.getElementById("matrizEvaluacion");
 
                             var l = tabla.rows.length;
+                            console.log('Cantidad de filas: ' + l);
 
                             for (var i = 2; i < l - 1; i++) {
                               tabla.deleteRow(2);
@@ -1995,12 +2011,19 @@ require_once("../../valida.php");
 
                             sumar();
 
-                            if (matriz != null)
+                            if(matriz != null) {
                               continstru = 2;
-                            matriz.forEach(fila => {
+                              matriz.forEach(fila => {
+                                agregarEvidencia(fila);
+                              });
+                            }
+
+                            //if (matriz != null) 
+                              //continstru = 2;
+                            //matriz.forEach(fila => {
                               //ban=true;    
-                              agregarEvidencia(fila);
-                            });
+                              //agregarEvidencia(fila);
+                            //});
                             //ban=false;
 
                           }
