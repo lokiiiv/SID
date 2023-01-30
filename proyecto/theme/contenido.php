@@ -523,7 +523,7 @@ require_once("../../valida.php");
                             <option>&nbsp;</option>
                             <?php 
                               //Mostrar la cantidad de temas conforme a lo obtenido al generar la instrumentacion anteriormente
-                              for ($i=1; $i <= intval($_GET['temas']); $i++) { 
+                              for ($i = 1; $i <= intval($_GET['temas']); $i++) { 
                                 echo "<option value='" . $i . "'>" . $i . "</option>";
                               }
                             ?>
