@@ -364,44 +364,52 @@ require_once("../../valida.php");
         }
 
         function borrar(x) {
-            var tabla = document.getElementById("tablaInstrumentaciones");
-            var ins = tabla.rows[x];
-            var grupo = ins.cells[0].getElementsByTagName("input")[0];
-            var materia = ins.cells[1].getElementsByTagName("input")[0];
-            var select = document.getElementById("selectPeriodo");
-            var periodo = select.options[select.selectedIndex].value;
-            tabla.deleteRow(x);
-            var parametros = {
-                "accion": "borrarInstrumentacion",
-                "grupo": grupo.value,
-                "periodo": periodo,
-                "grupos": obtenerGrupos()
-            };
-            $.ajax({
-                data: parametros,
-                url: 'conexion/consultasNoSQL.php',
-                type: 'post',
-                success: function(resultado) {
 
-                }
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                $('#estatus' + campo).html("");
-                if (jqXHR.status === 0) {
-                    alert('No conectado, verifique su red.');
-                } else if (jqXHR.status == 404) {
-                    alert('Pagina no encontrada [404]');
-                } else if (jqXHR.status == 500) {
-                    alert('Internal Server Error [500].');
-                } else if (textStatus === 'parsererror') {
-                    alert('Falló la respuesta.');
-                } else if (textStatus === 'timeout') {
-                    alert('Se acabó el tiempo de espera.');
-                } else if (textStatus === 'abort') {
-                    alert('Conexión abortada.');
-                } else {
-                    alert('Error: ' + jqXHR.responseText);
-                }
-            });
+            alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la instrumentación del grupo(s) " + document.getElementById("tablaInstrumentaciones").rows[x].cells[0].getElementsByTagName("input")[0].value + " seleccionado?",
+                function(){
+                    var tabla = document.getElementById("tablaInstrumentaciones");
+                    var ins = tabla.rows[x];
+                    var grupo = ins.cells[0].getElementsByTagName("input")[0];
+                    var materia = ins.cells[1].getElementsByTagName("input")[0];
+                    var select = document.getElementById("selectPeriodo");
+                    var periodo = select.options[select.selectedIndex].value;
+                    tabla.deleteRow(x);
+                    var parametros = {
+                        "accion": "borrarInstrumentacion",
+                        "grupo": grupo.value,
+                        "periodo": periodo,
+                        "grupos": obtenerGrupos()
+                    };
+                    $.ajax({
+                        data: parametros,
+                        url: 'conexion/consultasNoSQL.php',
+                        type: 'post',
+                        success: function(resultado) {
+
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        $('#estatus' + campo).html("");
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    });
+                },
+                function(){
+
+                });
+
         }
 
         function obtenerGrupos() {
