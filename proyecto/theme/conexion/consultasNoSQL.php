@@ -63,6 +63,32 @@
                 $campoins = ["periodos_Inst.".$periodo.".".$grupoins=>1];
                 $connNoSQL->eliminarCampo("docentes",["correo"=>$correo],$campo);
                 //$connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],$campoins);
+
+                //Una vez que se borra la instrumentacion de la coleccion de docentes, es necesario eliminar
+                //alguna referencia de la misma en la colecciones de instrumentaciones, especificamente
+                //dentro del campo de Temas y asu ves dentro de los campos de Fechas y Semanas
+                $projeccion = ["projection" => ["periodos_Inst." . $periodo . "." . $grupoins . ".Temas" => 1, "_id" => 0]];
+                $temasInst = $connNoSQL->consultaProjeccion("instrumentaciones", ["Instrumentos" => "Carreras"], $projeccion);
+
+                //Si la consulta arroja datos, iterar los temas que tiene para eliminar los grupos que estan dentro del campo Fecha y Semanas
+                if(isset($temasInst[0]->periodos_Inst->$periodo->$grupoins->Temas)) {
+                    $t = $temasInst[0]->periodos_Inst->$periodo->$grupoins->Temas;
+                    //echo json_encode($t);
+                    foreach($t as $key => $value) {
+                        if(isset($value->Fechas->$grupo)) {
+                            //Si existe el campo del grupo a eliminar dentro de Fechas, actualizar y eliminarlo de la coleccion
+                            $campoins = ["periodos_Inst." . $periodo . "." . $grupoins . ".Temas." . $key . ".Fechas." . $grupo => 1];
+                            $connNoSQL->eliminarCampo("instrumentaciones", ["Instrumentos" => "Carreras"], $campoins);
+                        }
+                    }
+                    foreach($t as $key => $value) {
+                        if(isset($value->Semanas->$grupo)) {
+                            //Si existe el campor del grupo a eliminar dentro de Semanas, actualizar y eliminarlo de la collecion
+                            $campoins = ["periodos_Inst." . $periodo . "." . $grupoins . ".Temas." . $key . ".Semanas." . $grupo => 1];
+                            $connNoSQL->eliminarCampo("instrumentaciones", ["Instrumentos" => "Carreras"], $campoins);
+                        }
+                    }
+                } 
                 
             break;
             case 'obtenerGrupos':
