@@ -195,7 +195,7 @@ require_once("../../valida.php");
                                     if (aux[0].trim() === keys[0]) {
                                         ins.cells[1].getElementsByTagName("input")[0].value = "";
                                         ins.cells[2].getElementsByTagName("input")[0].value = 0;
-                                        alertify.warning('Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.');
+                                        alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                         return;
                                     }
                                 } else {
@@ -203,7 +203,7 @@ require_once("../../valida.php");
                                         if (aux[0].trim() === keys[i]) {
                                             ins.cells[1].getElementsByTagName("input")[0].value = "";
                                             ins.cells[2].getElementsByTagName("input")[0].value = 0;
-                                            alertify.warning('Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.');
+                                            alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                             return;
                                         }
                                     }
@@ -222,7 +222,7 @@ require_once("../../valida.php");
                                         if (aux[i].trim() === keys[0]) {
                                             ins.cells[1].getElementsByTagName("input")[0].value = "";
                                             ins.cells[2].getElementsByTagName("input")[0].value = 0;
-                                            alertify.warning('Ya existe una instrumentación para el grupo ' + aux[i] + ' para el período ' + periodo + '. Intente nuevamente.');
+                                            alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[i] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                             return;
                                         }
                                     } else {
@@ -230,7 +230,7 @@ require_once("../../valida.php");
                                             if (aux[i].trim() === keys[k]) {
                                                 ins.cells[1].getElementsByTagName("input")[0].value = "";
                                                 ins.cells[2].getElementsByTagName("input")[0].value = 0;
-                                                alertify.warning('Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.');
+                                                alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                                 return;
                                             }
                                         }
@@ -301,7 +301,7 @@ require_once("../../valida.php");
                 });
 
             } else {
-                alertify.error("Llene correctamente los campos.");
+                alertify.error("<h3>Llene correctamente los campos.</h3>");
             }
         }
 

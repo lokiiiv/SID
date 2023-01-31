@@ -309,6 +309,7 @@ require_once("../../valida.php");
     }
 
     function actualizaCamposTema(tema) {
+      
       var parametros = {
         "accion": "obtenerTemas",
         "tema": tema,
@@ -401,6 +402,7 @@ require_once("../../valida.php");
             actualizarPracticas();
             actualizarActividades();
             actualizarEvidencias();
+            actualizaFechas();
             agregarFuentes();
           }
 
@@ -1986,7 +1988,6 @@ require_once("../../valida.php");
                             var tabla = document.getElementById("matrizEvaluacion");
 
                             var l = tabla.rows.length;
-                            console.log('Cantidad de filas: ' + l);
 
                             for (var i = 2; i < l - 1; i++) {
                               tabla.deleteRow(2);
