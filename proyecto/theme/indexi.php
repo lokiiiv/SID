@@ -484,7 +484,7 @@ require_once("../../valida.php");
                     ins.cells[1].getElementsByTagName("input")[0].value = "";
                     ins.cells[2].getElementsByTagName("input")[0].value = 0;
 
-                    alertify.warning("Los grupos que ha ingresado son iguales, intente de nuevo.");
+                    alertify.warning("<h3>Los grupos que ha ingresado son iguales, intente de nuevo.</h3>");
                     return;
                 } else {
                     //Ahora, verificar que los grupos correspondan a la misma materia
@@ -495,7 +495,7 @@ require_once("../../valida.php");
                                 ins.cells[1].getElementsByTagName("input")[0].value = "";
                                 ins.cells[2].getElementsByTagName("input")[0].value = 0;
 
-                                alertify.warning("Solo se permite ingresar grupos que pertenezcan a la misma materia.");
+                                alertify.warning("<h3>Solo se permite ingresar grupos que pertenezcan a la misma materia.</h3>");
                                 return;
                             }
                         }
