@@ -410,7 +410,7 @@ require_once("../../valida.php");
                     function(){
 
                     }
-                );
+                ).set('labels', {ok: 'Aceptar', cancel: 'Cancelar'});
             } else {
                 //Si aún no esta creada la instrumentacion, proceder a eliminar la fila automaticamente
                 var tabla = document.getElementById("tablaInstrumentaciones");
