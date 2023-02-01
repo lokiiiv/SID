@@ -19,6 +19,13 @@ require_once("../../valida.php");
 				</li>
 
 				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Web master<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="usuarios.php">Administrar usuarios</a></li>
+					</ul>
+				</li>
+
+				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Docente<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="indexi.php">Instrumentaciones</a></li>
