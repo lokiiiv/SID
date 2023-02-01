@@ -33,6 +33,10 @@ class connSQL {
         }
         return self::$instancia;
 	}
+
+	public function getDB(){
+		return $this->dbh;
+	}
 	
 	public function consulta($consulta)
 	{
@@ -62,6 +66,16 @@ class connSQL {
 		}
 	}
 
-
+	public function preparedQuery($consulta, $params = null) {
+		try{
+			$query = $this->dbh->prepare($consulta);
+			$query->execute();
+			return $query->fetchAll(PDO::FETCH_ASSOC);
+			$this->dbh = null;
+		}catch(PDOException $e){
+			print "Error!: " . $e->getMessage();
+            die();
+		}
+	}
 }
 ?>

@@ -33,6 +33,11 @@ require_once '../../valida.php';
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="img/favicon/favicon.png">
+
+    <!-- Datatables -->
+    <link rel="stylesheet" href="datatables/datatables.min.css">
+    <link rel="stylesheet" href="datatables/DataTables-1.13.1/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="datatables/Responsive-2.4.0/css/responsive.bootstrap4.min.css">
 </head>
 
 <body>
@@ -61,15 +66,17 @@ require_once '../../valida.php';
             <h3>Usuarios registrados en el sistema</h3>
         </div>
         <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <table id="tablaUsuarios" class="table table-hover" style="margin-top: 30px;">
+            <div class="contenedor" style="max-width: 1200px; width: 100%; margin: 0 auto;">
+            <div class="col-md-12">
+                <table id="tablaUsuarios" class="table table-hover" style="margin-top: 30px; padding-left:15px; padding-right:15px">
                     <thead>
                         <tr>
+                            <th class="text-center">ID</th>
                             <th class="text-center">Clave</th>
                             <th class="text-center">Apellido paterno</th>
                             <th class="text-center">Apellido materno</th>
                             <th class="text-center">Nombre</th>
+                            <th class="text-center">Correo</th>
                             <th class="text-center">Roles</th>
                             <th class="text-center">Firma</th>
                             <th class="text-center">Acciones</th>
@@ -79,6 +86,8 @@ require_once '../../valida.php';
                     </tbody>
                 </table>
             </div>
+            </div>
+            
         </div>
     </div>
 
@@ -105,6 +114,97 @@ require_once '../../valida.php';
     <script src="js/custom.js"></script>
     <script src="alertify/alertify.min.js"></script>
 
+    <script src="datatables/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="datatables/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
+    <script src="datatables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+    <script src="datatables/Responsive-2.4.0/js/responsive.bootstrap4.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            var parametros = {
+                "accion": "listarUsuarios",
+            };
+            $("#tablaUsuarios").DataTable({
+                "autoWidth": false,
+                "responsive": true,
+                "ajax": {
+                    "data" : {
+                        "accion": "listarUsuarios"
+                    },
+                    "url": "conexion/consultasSQL.php",
+                    "type": "post",
+                    "dataSrc": "",
+                    "error": function(jqXHR, textStatus, errorThrown) {
+                        $('#estatus' + campo).html("");
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "cat_ID",
+                        "visible": false
+                    },
+                    {
+                        "data": "cat_Clave",
+                        "width": "30px"
+                    },
+                    {
+                        "data": "cat_ApePat",
+                        "width": "100px"
+                    },
+                    {
+                        "data": "cat_ApeMat",
+                        "width": "100px"
+                    },
+                    {
+                        "data": "cat_Nombre",
+                        "width": "150px"
+                    },
+                    {
+                        "data": "cat_CorreoE",
+                        "width": "100px"
+                    },
+                    {
+                        "data": "roles",
+                        "render": function(data, type, row, meta) {
+                            //Obtener el string del JSON que contiene los roles que tiene el usuario
+                            var roles = JSON.parse(data);
+                            var vista = '';
+                            //Si si tiene roles, entonces mostrarlos
+                            if(roles.length > 0) {
+                                roles.forEach(val => {
+                                    vista += '<div class="row" style="padding:1px;">' +
+                                                '<span class="badge badge-primary">' + val['descripcion'] + '</span>' +
+                                            '</div>';
+                                });
+                                return vista;
+                            } else {
+                                vista = '<h5>Aún no se asignan roles.</h5>'
+                                return vista;
+                            }
+                            
+                        }
+                    },
+                    {"data": "firma"},
+                    {"defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnEditar'>Editar</button><button class='btn btn-danger btn-sm btnBorrar'>Eliminar</button></div></div>"}
+                ]
+            });
+        });
+    </script>
 
 </body>
 

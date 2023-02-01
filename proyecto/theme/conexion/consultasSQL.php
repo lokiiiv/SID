@@ -107,6 +107,19 @@
                 }
                 echo json_encode($datos);
             break;
+
+            case 'listarUsuarios':
+                $sql = "SELECT d.*, IF(r.id_rol IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', r.id_rol, 'descripcion', r.descripcion_rol)), ']'), '[]') AS roles
+                        FROM docentes d
+                        LEFT JOIN docente_rol d_r on d.cat_ID = d_r.cat_ID
+                        LEFT JOIN rol r on r.id_rol = d_r.id_rol
+                        GROUP BY d.cat_ID
+                        ORDER BY d.cat_ID ASC";
+                $usuarios = $connSQL->preparedQuery($sql);
+                echo json_encode($usuarios);
+            break;
+
+
         }
     }
 ?>
