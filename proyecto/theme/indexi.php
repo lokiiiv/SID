@@ -35,17 +35,16 @@ require_once("../../valida.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Styles -->
-    <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+   <!-- Bootstrap CSS -->
+   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Flex Slider CSS -->
     <link href="css/flexslider.css" rel="stylesheet">
     <!-- Pretty Photo -->
     <link href="css/prettyPhoto.css" rel="stylesheet">
     <!-- Font awesome CSS -->
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
+    <!-- Estiles generales personalizados -->
+    <link rel="stylesheet" href="css/general_styles.css">
     <!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
     <link href="css/blue.css" rel="stylesheet">
     <!-- Alertify JS -->
@@ -712,9 +711,9 @@ require_once("../../valida.php");
 
     <!-- Javascript files -->
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/jquery.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Isotope, Pretty Photo JS -->
     <script src="js/jquery.isotope.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>

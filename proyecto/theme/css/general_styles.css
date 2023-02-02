@@ -114,3 +114,7 @@ header .list hr{
     background:#29a1c4 !important;
     transition:background 1s ease;
 }
+
+#contenedor-navbar .navbar-light .navbar-nav {
+    margin-left: 100px;
+}
