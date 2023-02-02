@@ -45,8 +45,6 @@ require_once("../../valida.php");
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <!-- Estiles generales personalizados -->
     <link rel="stylesheet" href="css/general_styles.css">
-    <!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
-    <link href="css/blue.css" rel="stylesheet">
     <!-- Alertify JS -->
     <link rel="stylesheet" href="alertify/css/alertify.min.css">
     <link rel="stylesheet" href="alertify/css/themes/bootstrap.min.css">
@@ -54,6 +52,11 @@ require_once("../../valida.php");
     <!-- Favicon -->
     <link rel="shortcut icon" href="img/favicon/favicon.png">
     <script type="text/javascript" src="js/accionesinstrumentacion.js"></script>
+
+     <!-- Datatables -->
+    <link rel="stylesheet" href="datatables/datatables.min.css">
+    <link rel="stylesheet" href="datatables/DataTables-1.13.1/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="datatables/Responsive-2.4.0/css/responsive.bootstrap4.min.css">
 
 </head>
 
@@ -78,14 +81,89 @@ require_once("../../valida.php");
     <?php
     include("BarraMenu.php");
     ?>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+    <div class="content">
+        <div class="container">
+            <div class="row" style="margin-top: 25px;">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3" for="select">
+                            <h4>Periodo</h4>
+                        </label>
+                        <div class="col-md-5">
+                            <form action="" method="POST">
+                                <select class="form-control" id="selectPeriodo" name="periodo" Onchange="mostrarIns(this.options[this.selectedIndex].innerHTML);">
+                                    <option>&nbsp;</option>
+                                    <?php
+                                    require_once 'conexion/conexionSQL.php';
+                                    $connSQL = connSQL::singleton();
+                                    $query = "Select periodo from periodos";
+                                    $periodos = $connSQL->consulta($query);
+
+                                    foreach ($periodos as $periodo) {
+                                        echo "<option>" . $periodo[0] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="tabla" style="margin-top: 25px;">
+                <div class="col-md-12">
+                    <table id="tablaInstrumentaciones" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Grupo</th>
+                                <th class="text-center">Materia</th>
+                                <th class="text-center">Temas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <button onclick="agregarInstrumentacion()" align="center" type="button" class="btn btn-success btn-sm" style="font-size: 12px">Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+    </div>
+
+    <!-- Javascript files -->
+    <!-- jQuery -->
+	<script src="bootstrap/js/jquery.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Isotope, Pretty Photo JS -->
+    <script src="js/jquery.isotope.js"></script>
+    <script src="js/jquery.prettyPhoto.js"></script>
+    <!-- Support Page Filter JS -->
+    <script src="js/filter.js"></script>
+    <!-- Flex slider JS -->
+    <script src="js/jquery.flexslider-min.js"></script>
+    <!-- Respond JS for IE8 -->
+    <script src="js/respond.min.js"></script>
+    <!-- HTML5 Support for IE -->
+    <script src="js/html5shiv.js"></script>
+    <!-- Custom JS -->
+    <script src="js/custom.js"></script>
+    
     <script src="alertify/alertify.min.js"></script>
 
-    <script type="text/javascript">
+    <script src="datatables/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="datatables/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
+    <script src="datatables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+    <script src="datatables/Responsive-2.4.0/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
         window.onload = function() {
 
             ocultar_mostrar(0);
-
 
         }
 
@@ -110,6 +188,7 @@ require_once("../../valida.php");
                     type: 'post',
                     success: function(resultado) {
                         var grupos = JSON.parse(resultado);
+                        console.log(grupos);
 
                         if (Object.keys(grupos).length != 0) {
                             Object.keys(grupos).forEach((key, index) => {
@@ -140,6 +219,7 @@ require_once("../../valida.php");
                         alert('Error: ' + jqXHR.responseText);
                     }
                 });
+                
             } else {
                 ocultar_mostrar(0);
             }
@@ -651,82 +731,6 @@ require_once("../../valida.php");
             }
         }
     </script>
-
-    <div class="content">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="control-label col-md-3" for="select">
-                        <h4>Periodo</h4>
-                    </label>
-                    <div class="col-md-5">
-                        <form action="" method="POST">
-                            <select class="form-control" id="selectPeriodo" name="periodo" Onchange="mostrarIns(this.options[this.selectedIndex].innerHTML);">
-                                <option>&nbsp;</option>
-                                <?php
-                                require_once 'conexion/conexionSQL.php';
-                                $connSQL = connSQL::singleton();
-                                $query = "Select periodo from periodos";
-                                $periodos = $connSQL->consulta($query);
-
-                                foreach ($periodos as $periodo) {
-                                    echo "<option>" . $periodo[0] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="row" id="tabla">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <table id="tablaInstrumentaciones" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Grupo</th>
-                            <th class="text-center">Materia</th>
-                            <th class="text-center">Temas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <button onclick="agregarInstrumentacion()" align="center" type="button" class="btn btn-success btn-sm" style="font-size: 12px">Agregar
-                </button>
-            </div>
-        </div>
-
-    </div>
-    <?php
-    //include("contenido.php");
-    //include("pie.php");
-    ?>
-    <!-- Scroll to top -->
-    <span class="totop"><a href="#"><i class="fa fa-angle-up"></i></a></span>
-
-    <!-- Javascript files -->
-    <!-- jQuery -->
-	<script src="bootstrap/js/jquery.js"></script>
-	<!-- Bootstrap JS -->
-	<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Isotope, Pretty Photo JS -->
-    <script src="js/jquery.isotope.js"></script>
-    <script src="js/jquery.prettyPhoto.js"></script>
-    <!-- Support Page Filter JS -->
-    <script src="js/filter.js"></script>
-    <!-- Flex slider JS -->
-    <script src="js/jquery.flexslider-min.js"></script>
-    <!-- Respond JS for IE8 -->
-    <script src="js/respond.min.js"></script>
-    <!-- HTML5 Support for IE -->
-    <script src="js/html5shiv.js"></script>
-    <!-- Custom JS -->
-    <script src="js/custom.js"></script>
 </body>
 
 </html>

@@ -19,6 +19,8 @@ require_once '../../valida.php';
     <!-- Alertify JS -->
     <link rel="stylesheet" href="alertify/css/alertify.min.css">
     <link rel="stylesheet" href="alertify/css/themes/bootstrap.min.css">
+    <!-- Font awesome CSS -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Estiles generales personalizados -->
     <link rel="stylesheet" href="css/general_styles.css">
@@ -55,7 +57,7 @@ require_once '../../valida.php';
     <div class="content">
         <div class="container">
             <div class="row" style="margin-top: 25px;">
-                <h3 style="padding-left:15px;">Usuarios registrados en el sistema</h3>
+                <h4 style="padding-left:15px;">Usuarios registrados en el sistema</h4>
             </div>
             <div class="row" style="margin-top: 25px;">
                 <div class="col-md-12">
@@ -180,13 +182,22 @@ require_once '../../valida.php';
                                 });
                                 return vista;
                             } else {
-                                vista = '<div class="row"><p style="margin: auto;">Aún no se asignan roles</p></div>'
+                                vista = '<div class="row"><p style="margin: auto;">Sin roles.</p></div>'
                                 return vista;
                             }
                             
                         }
                     },
-                    {"data": "firma"},
+                    {
+                        "data": "firma",
+                        "render": function(data, type, row, meta) {
+                            if(data.trim() === "") {
+                                return '<div class="row"><p style="margin: auto;">Sin firma.</p></div>';
+                            } else {
+                                return data;
+                            }
+                        }
+                    },
                     {"defaultContent": '<div class="btn-group">' + 
                                             '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
                                                 'Acciones'+
