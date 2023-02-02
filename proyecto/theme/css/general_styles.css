@@ -1,0 +1,116 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic);
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+body{
+	font-family: "PT Sans", Arial, Helvetica, sans-serif;
+	background:#fff url('../img/body-back.png') repeat;
+	font-size:13px;
+	line-height:25px;
+	text-shadow:none !important;
+	color:#444;
+	-webkit-font-smoothing: antialiased;
+    border-top:3px solid #30add1;
+}
+
+header h1,h2,h3,h4,h5,h6{
+    font-family: "Oswald", sans-serif;
+    font-weight:normal;
+    color:#666;
+    margin:3px 0px;
+    padding:3px 0px;
+    }
+
+header{
+    padding:25px 0px 0px 0px;
+    border-bottom:1px solid #ddd;
+    background:url('../img/header-back.png') repeat;
+}
+
+header h1 a, header h1 a:visited, header h1 a:hover{
+    color:#777;
+    text-decoration:none;
+    font-size:45px;
+    line-height:55px;
+}
+    
+header span{
+    font-family:Georgia, "Times New Roman", serif;
+}
+    
+header .list{
+    position:relative;
+    top:-25px;
+    width:230px;
+    background:#fff;
+    padding:7px 10px;
+    border:1px solid #ddd;
+    box-shadow:0px 1px 2px #ddd;
+    border-top:none;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    font-size:12px;
+    line-height:20px;
+    color:#777;
+}
+    
+header .list hr{
+    margin:2px 0px 6px 0px;
+}
+
+
+/* Navbar */
+#contenedor-navbar .navbar {
+    background: #30add1 !important;
+    border-top:1px solid #29a1c4 !important;
+    border-bottom:1px solid #29a1c4 !important; 
+}
+
+#contenedor-navbar .navbar> li>a:hover {
+    background:#29a1c4 !important;
+}
+
+#contenedor-navbar .navbar-light .navbar-nav .nav-link {
+    color: white;
+    margin-top: -8px;
+    padding-top: 16px;
+    margin-bottom: -8px;
+    padding-bottom: 16px;
+    border-left:1px solid #3ba4c2;
+    font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+#contenedor-navbar .navbar-light .navbar-nav:last-child .nav-link {
+    color: white;
+    margin-top: -8px;
+    padding-top: 16px;
+    margin-bottom: -8px;
+    padding-bottom: 16px;
+    border-right:1px solid #3ba4c2;
+    font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+#contenedor-navbar .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    background:#29a1c4 !important;
+    transition:background 1s ease;
+}
+
+#contenedor-navbar .navbar-light .navbar-nav .show  .dropdown-item {
+    background: #30add1 !important;
+    font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: white;
+    border-bottom:1px solid #29a1c4 !important; 
+}
+
+#contenedor-navbar .navbar-light .navbar-nav .show {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+#contenedor-navbar .navbar-light .navbar-nav .show  .dropdown-item:hover {
+    background:#29a1c4 !important;
+    transition:background 1s ease;
+}

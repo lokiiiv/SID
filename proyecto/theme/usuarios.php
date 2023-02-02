@@ -15,22 +15,13 @@ require_once '../../valida.php';
 
     <!-- Styles -->
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Flex Slider CSS -->
-    <link href="css/flexslider.css" rel="stylesheet">
-    <!-- Pretty Photo -->
-    <link href="css/prettyPhoto.css" rel="stylesheet">
-    <!-- Font awesome CSS -->
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
-    <!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
-    <link href="css/blue.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Alertify JS -->
     <link rel="stylesheet" href="alertify/css/alertify.min.css">
     <link rel="stylesheet" href="alertify/css/themes/bootstrap.min.css">
 
+    <!-- Estiles generales personalizados -->
+    <link rel="stylesheet" href="css/general_styles.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="img/favicon/favicon.png">
 
@@ -62,33 +53,36 @@ require_once '../../valida.php';
     ?>
 
     <div class="content">
-        <div class="row">
-            <h3>Usuarios registrados en el sistema</h3>
-        </div>
-        <div class="row">
-            <div class="contenedor" style="max-width: 1200px; width: 100%; margin: 0 auto;">
-            <div class="col-md-12">
-                <table id="tablaUsuarios" class="table table-hover" style="margin-top: 30px; padding-left:15px; padding-right:15px">
-                    <thead>
-                        <tr>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Clave</th>
-                            <th class="text-center">Apellido paterno</th>
-                            <th class="text-center">Apellido materno</th>
-                            <th class="text-center">Nombre</th>
-                            <th class="text-center">Correo</th>
-                            <th class="text-center">Roles</th>
-                            <th class="text-center">Firma</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        <div class="container-fluid">
+            <div class="row">
+                <h3>Usuarios registrados en el sistema</h3>
             </div>
+            <div class="row">
+                <div class="contenedor" style="max-width: 1200px; width: 100%; margin: 0 auto;">
+                <div class="col-md-12">
+                    <table id="tablaUsuarios" class="table table-hover" style="margin-top: 30px; padding-left:15px; padding-right:15px">
+                        <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Clave</th>
+                                <th class="text-center">Apellido paterno</th>
+                                <th class="text-center">Apellido materno</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Correo</th>
+                                <th class="text-center">Roles</th>
+                                <th class="text-center">Firma</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                
             </div>
-            
         </div>
+        
     </div>
 
     <!-- Scroll to top -->
@@ -96,16 +90,9 @@ require_once '../../valida.php';
 
     <!-- Javascript files -->
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script src="bootstrap/js/jquery.js"></script>
     <!-- Bootstrap JS -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Isotope, Pretty Photo JS -->
-    <script src="js/jquery.isotope.js"></script>
-    <script src="js/jquery.prettyPhoto.js"></script>
-    <!-- Support Page Filter JS -->
-    <script src="js/filter.js"></script>
-    <!-- Flex slider JS -->
-    <script src="js/jquery.flexslider-min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Respond JS for IE8 -->
     <script src="js/respond.min.js"></script>
     <!-- HTML5 Support for IE -->
@@ -121,10 +108,11 @@ require_once '../../valida.php';
     
     <script>
         $(document).ready(function(){
+            //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
             var parametros = {
                 "accion": "listarUsuarios",
             };
-            $("#tablaUsuarios").DataTable({
+            var tableUsuarios = $("#tablaUsuarios").DataTable({
                 "autoWidth": false,
                 "responsive": true,
                 "ajax": {
@@ -200,10 +188,25 @@ require_once '../../valida.php';
                         }
                     },
                     {"data": "firma"},
-                    {"defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btn-sm btnEditar'>Editar</button><button class='btn btn-danger btn-sm btnBorrar'>Eliminar</button></div></div>"}
+                    {"defaultContent": '<div class="btn-group">' + 
+                                            '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                                                'Action'+
+                                            '</button>' +
+                                            '<div class="dropdown-menu">' +
+                                                '<a class="dropdown-item" href="#">Action</a>' +
+                                                '<a class="dropdown-item" href="#">Another action</a>' +
+                                                '<a class="dropdown-item" href="#">Something else here</a>' +
+                                                '<div class="dropdown-divider"></div>' +
+                                                '<a class="dropdown-item" href="#">Separated link</a>' +
+                                            '</div>' +
+                                        '</div>'}
                 ]
             });
         });
+
+        function editarUsuario(x) {
+            console.log($(this).parents('tr'));
+        }
     </script>
 
 </body>

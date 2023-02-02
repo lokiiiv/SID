@@ -116,7 +116,7 @@
                         GROUP BY d.cat_ID
                         ORDER BY d.cat_ID ASC";
                 $usuarios = $connSQL->preparedQuery($sql);
-                echo json_encode($usuarios);
+                echo json_encode($usuarios, JSON_UNESCAPED_UNICODE);
             break;
 
 

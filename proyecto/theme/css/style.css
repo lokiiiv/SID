@@ -13,12 +13,12 @@ body{
 	-webkit-font-smoothing: antialiased;
 }
 
-h1,h2,h3,h4,h5,h6{
-font-family: "Oswald", sans-serif;
-font-weight:normal;
-color:#666;
-margin:3px 0px;
-padding:3px 0px;
+header h1,h2,h3,h4,h5,h6{
+	font-family: "Oswald", sans-serif;
+	font-weight:normal;
+	color:#666;
+	margin:3px 0px;
+	padding:3px 0px;
 }
 
 hr{

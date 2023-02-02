@@ -1,56 +1,45 @@
 <?php
 require_once("../../valida.php");
 ?>
-<!-- Navigation Starts -->
-	<div class="navbar bs-docs-nav" role="banner">
-		<div class="container">
-			<div class="navbar-header">
-				<button class="navbar-toggle" href="menu" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-			</div>
+<div id="contenedor-navbar">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#"></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-			<ul class="nav navbar-nav" id="#menu">
-				<li class="dropdown">
-					<a href="indexD.php" class="dropdown-toggle" >Inicio</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="indexD.php">Inicio <span class="sr-only">(current)</span></a>
 				</li>
-
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Web master<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="usuarios.php">Administrar usuarios</a></li>
-					</ul>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+						Web master
+					</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="usuarios.php">Administrar usuarios</a>
+						<a class="dropdown-item" href="#">Administrar roles</a>
+						<a class="dropdown-item" href="#">Administrar permisos</a>
+					</div>
 				</li>
-
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Docente<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="indexi.php">Instrumentaciones</a></li>
-						
-					</ul>
-				</li>   
-				<!--
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Presidente academia<b class="caret"></b></a>
-					
-				</li>  
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Coordinador <b class="caret"></b></a>
-					
-				</li> 
-				-->
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sesion <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-									
-						<li><a href="destruyesesion.php">Cerrar Sesion</a></li>
-					</ul>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+						Docente
+					</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="indexi.php">Administrar instrumentaciones</a>
+					</div>
 				</li>
-
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+						Cuenta
+					</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="destruyesesion.php">Cerrar sesion</a>
+					</div>
+				</li>
 			</ul>
 		</div>
-	</div>
-		<!--/ Navigation Ends -->   
+	</nav>
+</div>
