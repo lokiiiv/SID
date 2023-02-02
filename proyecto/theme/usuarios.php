@@ -19,8 +19,6 @@ require_once '../../valida.php';
     <!-- Alertify JS -->
     <link rel="stylesheet" href="alertify/css/alertify.min.css">
     <link rel="stylesheet" href="alertify/css/themes/bootstrap.min.css">
-    <!-- Font awesome CSS -->
-    <link href="css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Estiles generales personalizados -->
     <link rel="stylesheet" href="css/general_styles.css">

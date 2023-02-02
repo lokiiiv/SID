@@ -119,6 +119,8 @@ require_once("../../valida.php");
                                 <th class="text-center">Grupo</th>
                                 <th class="text-center">Materia</th>
                                 <th class="text-center">Temas</th>
+                                <th class=""></th>
+                                <th class=""></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -167,15 +169,21 @@ require_once("../../valida.php");
 
         }
 
+        var tablaInstrumentaciones;
         function mostrarIns(x) {
             if (x != "&nbsp;") {
                 ocultar_mostrar(1);
                 var tabla = document.getElementById("tablaInstrumentaciones");
 
-                var l = tabla.rows.length;
-                for (var i = 1; i < l; i++) {
-                    tabla.deleteRow(1);
-                }
+                tablaInstrumentaciones = $("#tablaInstrumentaciones").DataTable();
+
+                //var l = tabla.rows.length;
+                //for (var i = 1; i < l; i++) {
+                  //  tabla.deleteRow(1);
+                //}
+
+                tablaInstrumentaciones.clear().draw();
+
                 var select = document.getElementById("selectPeriodo");
                 var periodo = select.options[select.selectedIndex].value;
                 var parametros = {
@@ -188,7 +196,6 @@ require_once("../../valida.php");
                     type: 'post',
                     success: function(resultado) {
                         var grupos = JSON.parse(resultado);
-                        console.log(grupos);
 
                         if (Object.keys(grupos).length != 0) {
                             Object.keys(grupos).forEach((key, index) => {
@@ -427,75 +434,32 @@ require_once("../../valida.php");
                 estatus = "readonly";
             }
 
-            var tabla = document.getElementById("tablaInstrumentaciones");
+            //Agregar la nueva fila usando el plugin de Datatables
+            tablaInstrumentaciones.row.add([
+                "<input " + estatus + " onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria($(this).closest(\'tr\').index()); value='" + grupo + "'>",
+                "<input readOnly=true; " + estatus + " value='" + mater + "'>",
+                "<input " + estatus + "  class='form-control text-center' max=8 min=1 type='number' value=" + temas + ">",
+                boton,
+                '<button onclick="borrar($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px">Eliminar</button>'
+            ]).draw(false);
+
+            //var tabla = document.getElementById("tablaInstrumentaciones");
             //Celdas y Renglones
-            var row = tabla.insertRow(tabla.rows.length);
-            var cell = row.insertCell(0);
-            cell.innerHTML = "<input " + estatus + " onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria($(this).closest(\'tr\').index()); value='" + grupo + "'>";
-            cell = row.insertCell(1);
-            cell.innerHTML = "<input readOnly=true; " + estatus + " value='" + mater + "'>";
-            cell = row.insertCell(2);
-            cell.innerHTML = "<input " + estatus + "  class='form-control text-center' max=8 min=1 type='number' value=" + temas + ">";
-            cell = row.insertCell(3);
-            cell.innerHTML = boton;
-            cell = row.insertCell(4);
-            cell.innerHTML = '<button onclick="borrar($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px">Eliminar</button>';
+            //var row = tabla.insertRow(tabla.rows.length);
+            //var cell = row.insertCell(0);
+            //cell.innerHTML = "<input " + estatus + " onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria($(this).closest(\'tr\').index()); value='" + grupo + "'>";
+            //cell = row.insertCell(1);
+            //cell.innerHTML = "<input readOnly=true; " + estatus + " value='" + mater + "'>";
+            //cell = row.insertCell(2);
+            //cell.innerHTML = "<input " + estatus + "  class='form-control text-center' max=8 min=1 type='number' value=" + temas + ">";
+            //cell = row.insertCell(3);
+            //cell.innerHTML = boton;
+            //cell = row.insertCell(4);
+            //cell.innerHTML = '<button onclick="borrar($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px">Eliminar</button>';
         }
 
         function borrar(x) {
-            //Al borrar, mostrar el mensaje de alerta de eliminacion solamente cuando la instrumentacion ya esta creada
-            if(typeof(document.getElementById("tablaInstrumentaciones").rows[x].cells[3].getElementsByClassName("btn btn-info btn-sm")[0]) === "undefined") {
-                alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la instrumentación del grupo(s) " + document.getElementById("tablaInstrumentaciones").rows[x].cells[0].getElementsByTagName("input")[0].value + " seleccionado?",
-                    function(){
-                        var tabla = document.getElementById("tablaInstrumentaciones");
-                        var ins = tabla.rows[x];
-                        var grupo = ins.cells[0].getElementsByTagName("input")[0];
-                        var materia = ins.cells[1].getElementsByTagName("input")[0];
-                        var select = document.getElementById("selectPeriodo");
-                        var periodo = select.options[select.selectedIndex].value;
-                        
-                        var parametros = {
-                            "accion": "borrarInstrumentacion",
-                            "grupo": grupo.value,
-                            "periodo": periodo,
-                            "grupos": obtenerGrupos()
-                        };
-                        $.ajax({
-                            data: parametros,
-                            url: 'conexion/consultasNoSQL.php',
-                            type: 'post',
-                            success: function(resultado) {
-                                tabla.deleteRow(x);
-                            }
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                            $('#estatus' + campo).html("");
-                            if (jqXHR.status === 0) {
-                                alert('No conectado, verifique su red.');
-                            } else if (jqXHR.status == 404) {
-                                alert('Pagina no encontrada [404]');
-                            } else if (jqXHR.status == 500) {
-                                alert('Internal Server Error [500].');
-                            } else if (textStatus === 'parsererror') {
-                                alert('Falló la respuesta.');
-                            } else if (textStatus === 'timeout') {
-                                alert('Se acabó el tiempo de espera.');
-                            } else if (textStatus === 'abort') {
-                                alert('Conexión abortada.');
-                            } else {
-                                alert('Error: ' + jqXHR.responseText);
-                            }
-                        });
-                    },
-                    function(){
-
-                    }
-                ).set('labels', {ok: 'Aceptar', cancel: 'Cancelar'});
-            } else {
-                //Si aún no esta creada la instrumentacion, proceder a eliminar la fila automaticamente
-                var tabla = document.getElementById("tablaInstrumentaciones");
-                tabla.deleteRow(x);
-            }
-
+            
         }
 
         function obtenerGrupos() {
