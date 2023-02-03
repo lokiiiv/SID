@@ -62,13 +62,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>DATOS FALTANTES LISTA</title>
-	<link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../../../theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<div class="container">
+	<div class="container" style="width: 100%;">
  		<!–– primer encabezado ––>
  		<div class="row">
- 			<div class=" col-md-offset-2 col-md-8 col-xs-8 col-sm-8 col-lg-8">
+ 			<div class=" col-md-offset-2 col-md-12 col-xs-12 col-sm-12 col-lg-12">
  				<form style="color: black !important;">
  					<div style="text-align: left; ">
  						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" style="text-align: right;">
@@ -85,7 +85,7 @@
 					</div>
 				</form>
 			</div>	
-			<div class=" col-md-offset-2 col-md-8 col-xs-8 col-sm-8 col-lg-8" style="text-align: left; ">
+			<div class=" col-md-offset-2 col-md-12 col-xs-12 col-sm-12 col-lg-12" style="text-align: left; ">
 				<div style="background-color: #F1F7F7;">
 					<br>
 					<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
@@ -100,7 +100,7 @@
 					</div>
 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1">
 						<button class="btn btn-primary" id="agregarcateguia">
-							<span class="glyphicon glyphicon-plus"></span>
+							<i class="fa-solid fa-plus"></i>
 						</button>
 					</div>
 				</div>
@@ -118,7 +118,7 @@
 	<script>
 		$("#agregarcateguia").click(function() {
 			//alert("ok");
-			var ncate='<div class="categ row"><br><h4>Nueva categoría</h4><div class="col-md-10 col-xs-10 col-sm-10 col-lg-10"><input class="form-control" type="text" placeholder="Digite la categoría a observar"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><button class="btn btn-success" onclick="agregarindicador(this)"><span class="glyphicon glyphicon-plus"></span></button><button class="btn btn-danger" onclick="quitacategoria(this)"><span class="glyphicon glyphicon-remove"></span></button></div><div class="col-md-12 col-xs-12 col-sm-12 col-lg-12"> </div></div>';
+			var ncate='<div class="categ row"><br><h4>Nueva categoría</h4><div class="col-md-10 col-xs-10 col-sm-10 col-lg-10"><input class="form-control" type="text" placeholder="Digite la categoría a observar"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><button class="btn btn-success" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button><button class="btn btn-danger" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button></div><div class="col-md-12 col-xs-12 col-sm-12 col-lg-12"> </div></div>';
 			$("#contenedor").append(ncate);
 		});
 		function quitacategoria(tag){
@@ -128,7 +128,7 @@
 			tag.parentNode.parentNode.remove();	
 		}
 		function agregarindicador(tag){
-			var nindi='<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control" type="text" placeholder="Digite el indicador"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control" type="number" placeholder="Valor"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><?php echo $INDALC;?></div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger" onclick="quitaindicador(this)"><span class="glyphicon glyphicon-remove"></span></button></div></div>';
+			var nindi='<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control" type="text" placeholder="Digite el indicador"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control" type="number" placeholder="Valor"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><?php echo $INDALC;?></div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button></div></div>';
 			//alert(tag.parentNode.nextElementSibling.innerHTML);
 			var htmll = $.parseHTML(nindi);
 			//alert("ok");
@@ -285,9 +285,9 @@
 	      			var val=general2[j][1];
 	      			var indi=indicadoresselect(general2[j][2]);
 
-	      			nindi=nindi+'<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control" type="text" placeholder="Digite el indicador" value="'+tex+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control" type="number" placeholder="Valor" value="'+val+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2">'+indi+'</div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger" onclick="quitaindicador(this)"><span class="glyphicon glyphicon-remove"></span></button></div></div>';
+	      			nindi=nindi+'<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control" type="text" placeholder="Digite el indicador" value="'+tex+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control" type="number" placeholder="Valor" value="'+val+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2">'+indi+'</div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button></div></div>';
 	      		}
-	      		ncate=ncate+'<div class="categ row"><br><h4>Nueva categoría</h4><div class="col-md-10 col-xs-10 col-sm-10 col-lg-10"><input class="form-control" type="text" placeholder="Digite la categoría a observar" value="'+general+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><button class="btn btn-success" onclick="agregarindicador(this)"><span class="glyphicon glyphicon-plus"></span></button><button class="btn btn-danger" onclick="quitacategoria(this)"><span class="glyphicon glyphicon-remove"></span></button></div><div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">'+nindi+'</div></div>';				
+	      		ncate=ncate+'<div class="categ row"><br><h4>Nueva categoría</h4><div class="col-md-10 col-xs-10 col-sm-10 col-lg-10"><input class="form-control" type="text" placeholder="Digite la categoría a observar" value="'+general+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><button class="btn btn-success" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button><button class="btn btn-danger" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button></div><div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">'+nindi+'</div></div>';				
 	      	}
 	   		$("#contenedor").append(ncate);   	
 	      	//alert(general+" "+general2.length);
@@ -495,9 +495,9 @@
 	      			var val=general2[j][1];
 	      			var indi=indicadoresselect(general2[j][2]);
 
-	      			nindi=nindi+'<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control" type="text" placeholder="Digite el indicador" value="'+tex+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control" type="number" placeholder="Valor" value="'+val+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2">'+indi+'</div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger" onclick="quitaindicador(this)"><span class="glyphicon glyphicon-remove"></span></button></div></div>';
+	      			nindi=nindi+'<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control" type="text" placeholder="Digite el indicador" value="'+tex+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control" type="number" placeholder="Valor" value="'+val+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2">'+indi+'</div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button></div></div>';
 	      		}
-	      		ncate=ncate+'<div class="categ row"><br><h4>Nueva categoría</h4><div class="col-md-10 col-xs-10 col-sm-10 col-lg-10"><input class="form-control" type="text" placeholder="Digite la categoría a observar" value="'+general+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><button class="btn btn-success" onclick="agregarindicador(this)"><span class="glyphicon glyphicon-plus"></span></button><button class="btn btn-danger" onclick="quitacategoria(this)"><span class="glyphicon glyphicon-remove"></span></button></div><div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">'+nindi+'</div></div>';				
+	      		ncate=ncate+'<div class="categ row"><br><h4>Nueva categoría</h4><div class="col-md-10 col-xs-10 col-sm-10 col-lg-10"><input class="form-control" type="text" placeholder="Digite la categoría a observar" value="'+general+'"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><button class="btn btn-success" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button><button class="btn btn-danger" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button></div><div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">'+nindi+'</div></div>';				
 	      	}
 	   		$("#contenedor").append(ncate);   	
 	      	//alert(general+" "+general2.length);

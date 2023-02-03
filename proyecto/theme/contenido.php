@@ -533,7 +533,7 @@ require_once("../../valida.php");
                   <div class="col-md-6 azul" id="columna">
                     <div class="form-group">
 
-                      
+
                       <div class="col-md-7">
                         <label class="control-label col-md-3" for="select">
                           <h4>Tema</h4>
@@ -2044,7 +2044,7 @@ require_once("../../valida.php");
                               if (typeof filaEvidencia[8] != 'undefined') {
 
 
-                                instrumento.innerHTML = instrumento.innerHTML + '<button  type="button" class="ediInstruH btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="abreinstrumento(' + continstru + ');"><span class="glyphicon glyphicon-pencil"></span></button>' + botonborrarevi + '<input value="' + filaEvidencia[12] + '" style="display:none"/>';
+                                instrumento.innerHTML = instrumento.innerHTML + '<button  type="button" class="ediInstruH btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="abreinstrumento(' + continstru + ');"><i class="fa-solid fa-pen-to-square"></i></button>' + botonborrarevi + '<input value="' + filaEvidencia[12] + '" style="display:none"/>';
 
                                 //alert("kkkkk");
                               }
@@ -3115,19 +3115,26 @@ require_once("../../valida.php");
     </script>
 
 
+    
+
+    <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" style="width: 90%; height: auto;" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title" id="exampleModalLabel"></h3>
-
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div id="instrumentos" class="modal-body" style="height: auto;">
+          <div class="modal-body">
+            <div id="instrumentos" class="modal-body" style="height: auto;">
 
+            </div>
           </div>
           <div class="modal-footer">
-            <button id="ginstind" type="button" class="btn btn-success" style="margin:0 auto;">Guardar</button>
-            <button id="ver" type="button" class="btn btn-info" style="margin:0 auto;">Ver instrumento en PDF</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
