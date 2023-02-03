@@ -618,26 +618,26 @@ require_once("../../valida.php");
                         <!--row  -->
                         <div class="row">
                           <div class="col-md-3 azul" id="columna">
-                            <h4>Documento <span class="color" id="campoDocumento"></span></h4>
+                            <h5>Documento <span class="color" id="campoDocumento"></span></h5>
                           </div>
                           <div class="col-md-6 azul" id="columna">
-                            <h4>Cláusula ISO 9001 2008 <span class="color" id="campoClausula"></span></h4>
+                            <h5>Cláusula ISO 9001 2008 <span class="color" id="campoClausula"></span></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h4>Revisión <span class="color" id="campoRevision"></span></h4>
+                            <h5>Revisión <span class="color" id="campoRevision"></span></h5>
                           </div>
                         </div><!--Fin row -->
 
                         <!--row -->
                         <div class="row">
                           <div class="col-md-3 azul" id="columna">
-                            <h4>Responsable <span class="color" id="campoResponsable"></span></h4>
+                            <h5>Responsable <span class="color" id="campoResponsable"></span></h5>
                           </div>
                           <div class="col-md-6 azul" id="columna">
-                            <h4>Fecha de emisión <span class="color" id="campoFechaEmision"></span></h4>
+                            <h5>Fecha de emisión <span class="color" id="campoFechaEmision"></span></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h4>Código del documento <span class="color" id="campoCodigoDocumento"></span></h4>
+                            <h5>Código del documento <span class="color" id="campoCodigoDocumento"></span></h5>
                           </div>
                         </div><!--Fin row-->
 
@@ -649,9 +649,9 @@ require_once("../../valida.php");
                             <!-- Select box -->
                             <div class="form-group">
                               <label class="control-label col-md-3" for="select">
-                                <h4>Programa Educativo:</h4>
+                                <h5>Programa Educativo:</h5>
                               </label>
-                              <div class="col-md-9" id="PE">
+                              <div class="col-md-12" id="PE">
 
                               </div>
                             </div>
@@ -713,9 +713,9 @@ require_once("../../valida.php");
                             <!-- Select box -->
                             <div class="form-group">
                               <label class="control-label col-md-3" for="select">
-                                <h4>Plan de estudios:</h4>
+                                <h5>Plan de estudios:</h5>
                               </label>
-                              <div class="col-md-9">
+                              <div class="col-md-12">
                                 <select class="form-control color" id="campoPlanEstudios">
                                   <option>&nbsp;</option>
                                 </select>
@@ -727,29 +727,29 @@ require_once("../../valida.php");
                         <!--row -->
                         <div class="row">
                           <div class="col-md-3 azul" id="columna">
-                            <h4>Nombre de la asignatura: <span class="color" id="campoMateria"></span></h4>
+                            <h5>Nombre de la asignatura: <span class="color" id="campoMateria"></span></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h4>Clave de la asignatura: <span class="color" id="campoClaveAsignatura"></span></h4>
+                            <h5>Clave de la asignatura: <span class="color" id="campoClaveAsignatura"></span></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h4>Créditos: <input width="40px" class="color text-center" id="campoCreditos"></h4>
+                            <h5>Créditos: <input width="40px" class="color text-center" id="campoCreditos"></h5>
                           </div>
-                          <div class="col-md-2 azul" id="columna">
-                            <h4>Número de Tema: <span class="color" id="campoTemas">[Seleccione un tema]</span></h4>
+                          <div class="col-md-3 azul" id="columna">
+                            <h5>Número de Tema: <span class="color" id="campoTemas">[Seleccione un tema]</span></h5>
                           </div>
                         </div><!--Fin row -->
                         <!--row -->
                         <div class="row">
-                          <div class="col-md-3 azul" id="columna">
-                            <h4>Semestre: <span class="color" id="campoSemestre"></span></h4>
+                          <div class="col-md-4 azul" id="columna">
+                            <h5>Semestre: <span class="color" id="campoSemestre"></span></h5>
                           </div>
                           <div class="col-md-4 azul" id="columna">
-                            <h4>Clave de grupo: <span class="color" id="campoGrupo"><?php echo $_GET["grupo"] ?></span></h4>
+                            <h5>Clave de grupo: <span class="color" id="campoGrupo"><?php echo $_GET["grupo"] ?></span></h5>
                           </div>
-                          <div class="col-md-5 azul" id="columna">
+                          <div class="col-md-4 azul" id="columna">
                             <label class="control-label" for="select">
-                              <h4>Periodo: <span class="color" id="campoPeriodo"><?php echo $_GET["p"] ?></span></h4>
+                              <h5>Periodo: <span class="color" id="campoPeriodo"><?php echo $_GET["p"] ?></span></h5>
                             </label>
 
                           </div>
