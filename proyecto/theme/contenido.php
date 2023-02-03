@@ -368,7 +368,7 @@ require_once("../../valida.php");
             if (typeof x[tema]['HTP'] != "undefined")
               actualizarHTP(x[tema]['HTP']);
             else
-              actualizarHTP();
+              actualizarHTP("");
 
             if (typeof x[tema]['MatrizEvaluacion'] != "undefined")
               actualizarEvidencias(x[tema]['MatrizEvaluacion']);
@@ -401,6 +401,7 @@ require_once("../../valida.php");
             document.getElementById("TituloTema").value = ""
             actualizarValorIndicadores([0, 0, 0, 0, 0, 0]);
             actualizarPracticas();
+            actualizarHTP("");
             actualizarActividades();
             actualizarEvidencias();
             actualizaFechas();
@@ -532,10 +533,11 @@ require_once("../../valida.php");
                   <div class="col-md-6 azul" id="columna">
                     <div class="form-group">
 
-                      <label class="control-label col-md-3" for="select">
-                        <h4>Tema</h4>
-                      </label>
+                      
                       <div class="col-md-7">
+                        <label class="control-label col-md-3" for="select">
+                          <h4>Tema</h4>
+                        </label>
                         <form action="miphp.php" method="POST">
                           <select class="form-control color" id="selectTema" name="nombreTema" Onchange="mostrarValor(this.options[this.selectedIndex].innerHTML);">
                             <option>&nbsp;</option>
@@ -633,10 +635,10 @@ require_once("../../valida.php");
                           <div class="col-md-3 azul" id="columna">
                             <h5>Responsable <span class="color" id="campoResponsable"></span></h5>
                           </div>
-                          <div class="col-md-6 azul" id="columna">
+                          <div class="col-md-5 azul" id="columna">
                             <h5>Fecha de emisión <span class="color" id="campoFechaEmision"></span></h5>
                           </div>
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-4 azul" id="columna">
                             <h5>Código del documento <span class="color" id="campoCodigoDocumento"></span></h5>
                           </div>
                         </div><!--Fin row-->
