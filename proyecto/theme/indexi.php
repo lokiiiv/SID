@@ -333,7 +333,7 @@ require_once("../../valida.php");
                             success: function(resultado) {
                                 grupo.attr('readonly', true);
                                 temas.attr('readonly', true);
-                                tablaInstrumentaciones.cell(fila, 3).data('<button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button>').draw();
+                                tablaInstrumentaciones.cell(fila, 3).data('<div class="row"><div style="margin: 0 auto;"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button></div></div>').draw();
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
                             $('#estatus' + campo).html("");
@@ -418,7 +418,7 @@ require_once("../../valida.php");
             mater = "";
             var temas = 0;
             var estatus = "";
-            var boton = '<div class="row"><button onclick="crearInstrumentacion(this)" class="btn btn-info btn-sm" style="margin-right: 3px;">Crear</button></div>';
+            var boton = '<div class="row"><div style="margin: 0 auto;"><button onclick="crearInstrumentacion(this)" class="btn btn-info btn-sm" style="margin-right: 3px;">Crear</button></div></div>';
             if (typeof instrumentacion != "undefined") {
                 //grupo = instrumentacion[0];
                 //mater = instrumentacion[1];
@@ -427,7 +427,7 @@ require_once("../../valida.php");
                 grupo = instrumentacion["Grupo"];
                 mater = instrumentacion["Materia"];
                 temas = parseInt(instrumentacion["totalTemas"]);
-                boton = '<div class="row"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm">FAC-14</button></div>';
+                boton = '<div class="row"><div style="margin: 0 auto;"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm">FAC-14</button></div></div>';
                 estatus = "readonly";
             }
 
@@ -437,7 +437,7 @@ require_once("../../valida.php");
                 "<h6>" + mater + "</h6>",
                 "<input " + estatus + "  class='form-control text-center' max=8 min=1 type='number' value=" + temas + ">",
                 boton,
-                '<div class="row"><button onclick="borrar($(this).closest(\'tr\').index(), this)" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div>'
+                '<div class="row"><div style="margin: 0 auto;"><button onclick="borrar($(this).closest(\'tr\').index(), this)" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div></div>'
             ]).draw();
 
             //var tabla = document.getElementById("tablaInstrumentaciones");

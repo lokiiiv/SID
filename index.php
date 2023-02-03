@@ -105,7 +105,7 @@ www.amitjakhu.com
 	
 	<!-- Styles -->
 	<!-- Bootstrap CSS -->
-	<link href="proyecto/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="proyecto/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
 	<link rel="stylesheet" href="proyecto/theme/css/settings.css" media="screen" />
 	<!-- Pretty Photo -->

@@ -20,19 +20,20 @@ require_once("../../valida.php");
 
   <!-- Styles -->
   <!-- Bootstrap CSS -->
-
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <script src="js/html2pdf.bundle.min.js"></script>
-  <script src="alertify/alertify.js"></script>
 
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <!-- Alertify JS -->
+  <link rel="stylesheet" href="alertify/css/alertify.min.css">
+  <link rel="stylesheet" href="alertify/css/themes/bootstrap.min.css">
+
   <!-- Flex Slider CSS -->
   <link href="css/flexslider.css" rel="stylesheet">
   <!-- Pretty Photo -->
   <link href="css/prettyPhoto.css" rel="stylesheet">
   <!-- Font awesome CSS -->
-  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Custom CSS -->
   <link href="css/style_2.css" rel="stylesheet">
   <!-- Custom CSS -->
@@ -309,7 +310,7 @@ require_once("../../valida.php");
     }
 
     function actualizaCamposTema(tema) {
-      
+
       var parametros = {
         "accion": "obtenerTemas",
         "tema": tema,
@@ -349,34 +350,34 @@ require_once("../../valida.php");
             document.getElementById("TituloTema").value = (typeof x[tema]['TituloTema'] != "undefined") ? x[tema]['TituloTema'] : '';
 
 
-            if (typeof x[tema]['ValorIndicadores'] != "undefined") 
+            if (typeof x[tema]['ValorIndicadores'] != "undefined")
               actualizarValorIndicadores(x[tema]['ValorIndicadores']);
-            else 
+            else
               actualizarValorIndicadores([0, 0, 0, 0, 0, 0]);
-            
-            if (typeof x[tema]['Practicas'] != "undefined") 
+
+            if (typeof x[tema]['Practicas'] != "undefined")
               actualizarPracticas(x[tema]['Practicas']);
-            else 
+            else
               actualizarPracticas();
-            
-            if (typeof x[tema]['Actividades'] != "undefined") 
+
+            if (typeof x[tema]['Actividades'] != "undefined")
               actualizarActividades(x[tema]['Actividades']);
-            else 
+            else
               actualizarActividades();
 
-            if (typeof x[tema]['HTP'] != "undefined") 
+            if (typeof x[tema]['HTP'] != "undefined")
               actualizarHTP(x[tema]['HTP']);
-            else 
+            else
               actualizarHTP();
 
-            if (typeof x[tema]['MatrizEvaluacion'] != "undefined") 
+            if (typeof x[tema]['MatrizEvaluacion'] != "undefined")
               actualizarEvidencias(x[tema]['MatrizEvaluacion']);
-            else 
+            else
               actualizarEvidencias();
 
-            if (typeof x[tema]['Fechas'] != "undefined") 
+            if (typeof x[tema]['Fechas'] != "undefined")
               actualizaFechas(x[tema]['Fechas'], x[tema]['Semanas']);
-            else 
+            else
               actualizaFechas();
 
 
@@ -492,7 +493,7 @@ require_once("../../valida.php");
 
   <!-- Content strats -->
   <div class="content">
-    <div class="container">
+    <div class="container" style="margin-top: 30px;">
       <div class="row">
 
         <form action="indexi.php">
@@ -538,11 +539,11 @@ require_once("../../valida.php");
                         <form action="miphp.php" method="POST">
                           <select class="form-control color" id="selectTema" name="nombreTema" Onchange="mostrarValor(this.options[this.selectedIndex].innerHTML);">
                             <option>&nbsp;</option>
-                            <?php 
-                              //Mostrar la cantidad de temas conforme a lo obtenido al generar la instrumentacion anteriormente
-                              for ($i = 1; $i <= intval($_GET['temas']); $i++) { 
-                                echo "<option value='" . $i . "'>" . $i . "</option>";
-                              }
+                            <?php
+                            //Mostrar la cantidad de temas conforme a lo obtenido al generar la instrumentacion anteriormente
+                            for ($i = 1; $i <= intval($_GET['temas']); $i++) {
+                              echo "<option value='" . $i . "'>" . $i . "</option>";
+                            }
                             ?>
                             <!--<option value='1'>1</option>
                             <option value='2'>2</option>
@@ -567,21 +568,19 @@ require_once("../../valida.php");
                   </div>
                 </div><!--Fin row -->
 
-                <!-- Events Accordion Panel -->
-                <div class="panel-group" id="accordion">
-                  <!-- Each item should be enclosed inside the class "accordion-group". 
-                      Note down the below markup. -->
+
+
+
+
+                <div id="accordion">
 
                   <!-- First Accordion [Detalles generales]-->
                   <div class="panel">
-
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        <!-- Title. -->
+                    <div class="panel-heading" id="headingOne">
+                      <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         <h5 class="panel-title">Formato</h5>
                       </a>
                     </div>
-
                     <script type="text/javascript">
                       function guardarDatosGenerales() {
 
@@ -612,8 +611,7 @@ require_once("../../valida.php");
                         guardarCampoValor("Clausula", undefined, "DetallesGenerales");
                       }
                     </script>
-
-                    <div id="collapseOne" class="panel-collapse collapse in">
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                       <div class="panel-body">
 
                         <!-- Contenido                  -->
@@ -761,24 +759,23 @@ require_once("../../valida.php");
 
                         <div align="center" id="guardarDetallesGenerales" style="margin-bottom: 10px; margin-top: 5px">
                           <h4 id="estatusDetallesGenerales"></h4>
-                          <button type="button" class="btn btn-default" onclick="guardarDatosGenerales()">Guardar</button>
+                          <button type="button" class="btn btn-secondary" onclick="guardarDatosGenerales()">Guardar</button>
                         </div>
                         <!-- Fin Contenido                  -->
 
                       </div>
                     </div>
-
                   </div>
                   <!-- Fin Accordion -->
 
-                  <!-- Second Accordion [Caracterizacion de la asignatura]-->
+
                   <div class="panel">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    <div class="panel-heading" id="headingTwo">
+                      <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         <h5 class="panel-title">Caracterización de la asignatura</h5>
                       </a>
                     </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                       <div class="panel-body">
                         <div class="mostrarContenido">
                           <p id="Caracterizacion"></p>
@@ -789,15 +786,13 @@ require_once("../../valida.php");
                         <div class="button" data-toggle="modal" data-target="#myModal1"><a href="#">Editar</a> </div>
 
                         <!-- Modal -->
-                        <div id="myModal1" class="modal fade" role="dialog">
-                          <div class="modal-dialog">
-
+                        <div id="myModal1" class="modal fade">
+                          <div class="modal-dialog" role="document">
                             <!-- Modal content-->
                             <div class="modal-content">
-
                               <div class="modal-header">
+                                <h5 class="modal-title">Caracterización de la asignatura</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Caracterización de la asignatura</h4>
                               </div>
 
                               <div class="modal-body">
@@ -808,14 +803,13 @@ require_once("../../valida.php");
 
                               <div class="modal-footer">
                                 <h4 id="estatusCaracterizacion"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampo('Caracterizacion')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampo('Caracterizacion')">Guardar</button>
                               </div>
 
                             </div>
                           </div>
                         </div>
                         <!-- Fin modal -->
-
                       </div>
                     </div>
                   </div>
@@ -823,12 +817,12 @@ require_once("../../valida.php");
 
                   <!-- Three accordion [Intencion Didactica]-->
                   <div class="panel">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                    <div class="panel-heading" id="headingThree">
+                      <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         <h5 class="panel-title">Intención didáctica</h5>
                       </a>
                     </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                       <div class="panel-body">
                         <div class="mostrarContenido">
                           <p id="IntencionDidactica"></p>
@@ -836,29 +830,25 @@ require_once("../../valida.php");
 
                         <!-- Modal -->
                         <!-- Trigger the modal with a button -->
-
                         <div class="button" data-toggle="modal" data-target="#myModal2"><a href="#">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal2" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Intención didáctica</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Intención didáctica</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:30em" id="campoIntencionDidactica"></textarea></p>
                               </div>
-
                               <div class="modal-footer">
                                 <h4 id="estatusIntencionDidactica"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampo('IntencionDidactica')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampo('IntencionDidactica')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
@@ -869,12 +859,12 @@ require_once("../../valida.php");
 
                   <!-- Fourth accordion [Competencias previas]-->
                   <div class="panel">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                    <div class="panel-heading" id="headingFour">
+                      <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                         <h5 class="panel-title">Competencias previas</h5>
                       </a>
                     </div>
-                    <div id="collapseFour" class="panel-collapse collapse">
+                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                       <div class="panel-body">
                         <div class="mostrarContenido">
                           <p id="CompetenciasPrevias"></p>
@@ -886,22 +876,20 @@ require_once("../../valida.php");
                         <!-- Modal -->
                         <div id="myModal3" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Competencias previas</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Competencias previas</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:30em" id="campoCompetenciasPrevias"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusCompetenciasPrevias"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampo('CompetenciasPrevias')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampo('CompetenciasPrevias')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
@@ -910,15 +898,14 @@ require_once("../../valida.php");
                   </div>
                   <!-- fin acoordeon -->
 
-
                   <!-- Fifth accordion [CompetenciaEA]-->
                   <div class="panel">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                    <div class="panel-heading" id="headingFive">
+                      <a data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                         <h5 class="panel-title">Competencia específica de la asignatura</h5>
                       </a>
                     </div>
-                    <div id="collapseFive" class="panel-collapse collapse">
+                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                       <div class="panel-body">
                         <div class="mostrarContenido">
                           <p id="CompetenciaEA"></p>
@@ -926,36 +913,32 @@ require_once("../../valida.php");
                         <!-- Modal -->
 
                         <!-- Trigger the modal with a button -->
-
                         <div class="button" data-toggle="modal" data-target="#myModal4"><a href="#">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal4" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Competencia específica de la asignatura</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Competencia específica de la asignatura</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:30em" id="campoCompetenciaEA"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusCompetenciaEA"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampo('CompetenciaEA')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampo('CompetenciaEA')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
                       </div>
                     </div>
                   </div>
-                  <!-- fin acoordeon -->
-
+                  <!-- fin acordeon -->
 
                   <script type="text/javascript">
                     function guardarCampoTema(campo) {
@@ -1026,23 +1009,17 @@ require_once("../../valida.php");
 
                   <!-- Six accordion [CompetenciaET]-->
                   <div class="panel" id="panelCompetenciaET">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                    <div class="panel-heading" id="headingSix">
+                      <a data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                         <h5 class="panel-title " id="miColor1">Tema</h5>
                       </a>
                     </div>
-                    <div id="collapseSix" class="panel-collapse collapse">
+                    <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                       <div class="panel-body">
 
-
-                        <div class="row">
-                          <p>
-                          <h4>Tema: <input id="TituloTema"></h4>
-                          <h4 id="estatusTituloTema"></h4>
-                          <button type="button" class="btn btn-default" onclick="guardarCampoTemaValor('TituloTema',document.getElementById('TituloTema').value)">Guardar</button></p>
-                        </div>
-
-
+                        <h4>Tema: <input id="TituloTema"></h4>
+                        <h4 id="estatusTituloTema"></h4>
+                        <button type="button" class="btn btn-secondary" onclick="guardarCampoTemaValor('TituloTema',document.getElementById('TituloTema').value)">Guardar</button></p>
 
                         <div class="dividerM"></div>
 
@@ -1053,28 +1030,25 @@ require_once("../../valida.php");
                         <!-- Modal -->
 
                         <!-- Trigger the modal with a button -->
-
                         <div class="button" data-toggle="modal" data-target="#myModal5"><a href="#">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal5" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Competencia específica del tema</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Competencia específica del tema</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:30em" id="campoCompetenciaET"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusCompetenciaET"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampoTema('CompetenciaET')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampoTema('CompetenciaET')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
@@ -1095,39 +1069,37 @@ require_once("../../valida.php");
                         <!-- Modal -->
                         <div id="myModal51" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Competencias genéricas a desarrollar</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Competencias genéricas a desarrollar</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:30em" id="campoCompetenciasGen"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusCompetenciasGen"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampoTema('CompetenciasGen')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampoTema('CompetenciasGen')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
                       </div>
                     </div>
-                  </div><!-- fin acoordeon -->
+                  </div>
+                  <!-- end accordion -->
 
                   <!-- Seven accordion [ProcesoEA]-->
                   <div class="panel" id="panelProcesoEA">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
+                    <div class="panel-heading" id="headingSeven">
+                      <a data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                         <h5 class="panel-title " id="miColor2">Proceso enseñanza aprendizaje</h5>
                       </a>
                     </div>
-                    <div id="collapseSeven" class="panel-collapse collapse">
+                    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
                       <div class="panel-body">
-
 
                         <h3>Temas y subtemas</h3><br>
                         <div class="mostrarContenido">
@@ -1143,15 +1115,15 @@ require_once("../../valida.php");
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Temas y subtemas</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Temas y subtemas</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:20em" id="campoTemasSubtemas"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusTemasSubtemas"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampoTema('TemasSubtemas')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampoTema('TemasSubtemas')">Guardar</button>
                               </div>
                             </div>
                           </div>
@@ -1170,7 +1142,7 @@ require_once("../../valida.php");
 
                             docente.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%; height: 12em"></textarea>';
                             estudiante.innerHTML = '<textarea class="mostrarContenido" align="center" style="width: 100%; height: 12em"></textarea>';
-                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><span class="glyphicon glyphicon-remove"></span></button>';
+                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                           }
 
                           function agregarActividad2(aa, bb) {
@@ -1182,7 +1154,7 @@ require_once("../../valida.php");
 
                             docente.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%; height: 12em">' + aa + '</textarea>';
                             estudiante.innerHTML = '<textarea class="mostrarContenido" align="center" style="width: 100%; height: 12em">' + bb + '</textarea>';
-                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><span class="glyphicon glyphicon-remove"></span></button>';
+                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                           }
 
                           function borrarActividad(x) {
@@ -1282,7 +1254,7 @@ require_once("../../valida.php");
 
                                 docente.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%; height: 12em">' + actividad[0] + '</textarea>';
                                 estudiante.innerHTML = '<textarea class="mostrarContenido" align="center" style="width: 100%; height: 12em">' + actividad[1] + '</textarea>';
-                                borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><span class="glyphicon glyphicon-remove"></span></button>';
+                                borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                               });
                             }
                           }
@@ -1313,7 +1285,7 @@ require_once("../../valida.php");
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusActividades"></h4>
-                            <button type="button" class="btn btn-default" onclick="guardarActividades()">Guardar</button>
+                            <button type="button" class="btn btn-secondary" onclick="guardarActividades()">Guardar</button>
                           </div>
                         </div>
 
@@ -1334,31 +1306,26 @@ require_once("../../valida.php");
                         <!-- Modal -->
                         <div id="myModalHTP" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Horas teórico-prácticas</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Horas teórico-prácticas</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:20em" id="campoHTP"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusHTP"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampoTema('HTP')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampoTema('HTP')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
 
 
                         <!-- Termina Héctor -->
-
-
-
                         <div class="dividerM" style="margin-bottom: 5px"></div>
 
                         <h3> Recursos y apoyos didácticos</h3><br>
@@ -1372,38 +1339,35 @@ require_once("../../valida.php");
                         <!-- Modal -->
                         <div id="myModalRecursos" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Recursos y apoyos didácticos</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Recursos y apoyos didácticos</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:20em" id="campoRecursos"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusRecursos"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampoTema('Recursos')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampoTema('Recursos')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
                       </div>
                     </div>
-                  </div><!-- fin acoordeon -->
-
+                  </div>
+                  <!-- end acordion -->
 
                   <!-- Eight accordion [Practicas]-->
                   <div class="panel" id="panelPracticas">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
+                    <div class="panel-heading" id="headingEight">
+                      <a data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
                         <h5 class="panel-title" id="miColor3">Prácticas en laboratorios o talleres</h5>
                       </a>
                     </div>
-
                     <script type="text/javascript">
                       function agregarPractica() {
                         var tablaPracticas = document.getElementById("tablaPracticas");
@@ -1463,7 +1427,7 @@ require_once("../../valida.php");
 
 
                         titulo.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '"></textarea>';
-                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><span class="glyphicon glyphicon-remove"></span></button>';
+                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                         celdaNo.innerHTML = tablaPracticas.rows.length - 2;
 
                       }
@@ -1531,7 +1495,7 @@ require_once("../../valida.php");
 
 
                         titulo.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '">' + ti + '</textarea>';
-                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><span class="glyphicon glyphicon-remove"></span></button>';
+                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                         celdaNo.innerHTML = tablaPracticas.rows.length - 2;
 
                       }
@@ -1601,7 +1565,7 @@ require_once("../../valida.php");
                             });
 
                             titulo.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '">' + practica[0] + '</textarea>';
-                            borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><span class="glyphicon glyphicon-remove"></span></button>';
+                            borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                             celdaNo.innerHTML = tablaPracticas.rows.length - 2;
                           });
                         }
@@ -1696,8 +1660,7 @@ require_once("../../valida.php");
 
                       }
                     </script>
-
-                    <div id="collapseEight" class="panel-collapse collapse">
+                    <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
                       <div class="panel-body">
                         <table id="tablaPracticas" class="table table-hover">
                           <thead>
@@ -1723,22 +1686,23 @@ require_once("../../valida.php");
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusPracticas"></h4>
-                            <button type="button" class="btn btn-default" onclick="guardarPracticas()">Guardar</button>
+                            <button type="button" class="btn btn-secondary" onclick="guardarPracticas()">Guardar</button>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div><!-- fin acoordeon -->
+                  </div>
 
+                  <!-- fin acordeon -->
 
                   <!-- Nine accordion [Indicadores]-->
                   <div class="panel" id="panelIndicadores">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTen">
+                    <div class="panel-heading" id="headingTen">
+                      <a data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
                         <h5 class="panel-title" id="miColor5">Indicadores de alcance</h5>
                       </a>
                     </div>
-                    <div id="collapseTen" class="panel-collapse collapse">
+                    <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
                       <div class="panel-body">
                         <h3>Competencia alcanzada</h3>
                         <div class="mostrarContenido">
@@ -1753,37 +1717,36 @@ require_once("../../valida.php");
                         <!-- Modal -->
                         <div id="myModal10" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
+                                <h5 class="modal-title">Competencia alcanzada</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Competencia alcanzada</h4>
                               </div>
                               <div class="modal-body">
                                 <p><textarea style="width:100%; height:30em" id="campoIndicadores"></textarea></p>
                               </div>
                               <div class="modal-footer">
                                 <h4 id="estatusIndicadores"></h4>
-                                <button type="button" class="btn btn-default" onclick="guardarCampoTema('Indicadores')">Guardar</button>
+                                <button type="button" class="btn btn-secondary" onclick="guardarCampoTema('Indicadores')">Guardar</button>
                               </div>
                             </div>
-
                           </div>
                         </div>
                         <!-- Fin modal -->
                       </div>
                     </div>
-                  </div><!-- fin acoordeon -->
+                  </div>
+                  <!-- fin acordeon -->
 
                   <!-- Ten accordion [EstrategiaEvaluacion-->
                   <div class="panel" id="panelEstrategiaEvaluacion">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseNine">
+                    <div class="panel-heading" id="headingNine">
+                      <a data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
                         <h5 class="panel-title" id="miColor4">Estrategia de evaluación</h5>
                       </a>
                     </div>
-                    <div id="collapseNine" class="panel-collapse collapse">
+                    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
                       <div class="panel-body">
 
                         <h3>Criterios de evaluación</h3>
@@ -1951,27 +1914,25 @@ require_once("../../valida.php");
                             </tr>
                           </tbody>
                         </table>
-
                       </div>
                     </div>
-                  </div><!-- fin acoordeon -->
-
+                  </div>
+                  <!-- fin acordeon -->
 
                   <!-- Eleven accordion [Matriz]-->
                   <div class="panel" id="panelMatriz">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseEleven">
+                    <div class="panel-heading" id="headingEleven">
+                      <a data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
                         <h5 class="panel-title" id="miColor6">Matríz de evaluación</h5>
                       </a>
                     </div>
-                    <div id="collapseEleven" class="panel-collapse collapse">
+                    <div id="collapseEleven" class="collapse" aria-labelledby="headingEleven" data-parent="#accordion">
                       <div class="panel-body">
 
                         <!-- Contenido                  -->
 
                         <!--row -->
                         <div class="row">
-
 
                         </div><!--Fin row -->
                         <!--row -->
@@ -2012,7 +1973,7 @@ require_once("../../valida.php");
 
                             sumar();
 
-                            if(matriz != null) {
+                            if (matriz != null) {
                               continstru = 2;
                               matriz.forEach(fila => {
                                 agregarEvidencia(fila);
@@ -2020,10 +1981,10 @@ require_once("../../valida.php");
                             }
 
                             //if (matriz != null) 
-                              //continstru = 2;
+                            //continstru = 2;
                             //matriz.forEach(fila => {
-                              //ban=true;    
-                              //agregarEvidencia(fila);
+                            //ban=true;    
+                            //agregarEvidencia(fila);
                             //});
                             //ban=false;
 
@@ -2056,7 +2017,7 @@ require_once("../../valida.php");
                             if (typeof filaEvidencia != 'undefined') {
                               if (buscarEvidenciaExiste(filaEvidencia[12])) {
                                 cadeextra = "disabled";
-                                botonborrarevi = '<button type="button" class="btn btn-danger btn-sm"  onclick="borrainstrumentoevi(\'' + filaEvidencia[12] + '\');"><span class="glyphicon glyphicon-remove"></span></button>';
+                                botonborrarevi = '<button type="button" class="btn btn-danger btn-sm"  onclick="borrainstrumentoevi(\'' + filaEvidencia[12] + '\');"><i class="fa-solid fa-trash"></i></button>';
                               }
                             }
 
@@ -2099,10 +2060,10 @@ require_once("../../valida.php");
                             d.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[5] : "") + '></strong>';
                             e.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[6] : "") + '></strong>';
                             f.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[7] : "") + '></strong>';
-                            mp.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[9] == "1") ? "checked" : "") : "") + ' type="checkbox" class="custom-control-input" id="defaultUnchecked"></div>';
-                            mc.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[10] == "1") ? "checked" : "") : "") + ' type="checkbox" class="custom-control-input" id="defaultUnchecked"></div>';
-                            ma.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[11] == "1") ? "checked" : "") : "") + ' type="checkbox" class="custom-control-input" id="defaultUnchecked"></div>';
-                            borrar.innerHTML = '<button ' + cadeextra + ' onclick="borrarEvidencia($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><span class="glyphicon glyphicon-remove"></span></button>';
+                            mp.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[9] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input" id="defaultUnchecked"></div>';
+                            mc.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[10] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input" id="defaultUnchecked"></div>';
+                            ma.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[11] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input" id="defaultUnchecked"></div>';
+                            borrar.innerHTML = '<button ' + cadeextra + ' onclick="borrarEvidencia($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></i></button>';
                             sumarPerc();
 
                             //alert("ok");
@@ -2408,64 +2369,62 @@ require_once("../../valida.php");
                             </tbody>
                           </table>
                         </div>
-                        <h5>Si el porcentaje de cada evidencia aparece en rojo la suma de los indicadores no es igual al 30% del porcentaje de esa evidencia</h5>
-                        <h5>La suma total de porcentaje debe ser igual a 100, mientras no se cumpla el número se marcará en rojo</h5>
+                        <h6>Si el porcentaje de cada evidencia aparece en rojo la suma de los indicadores no es igual al 30% del porcentaje de esa evidencia</h6>
+                        <h6>La suma total de porcentaje debe ser igual a 100, mientras no se cumpla el número se marcará en rojo</h6>
                         <div class="dividerM" style="margin-bottom: 5px"></div>
 
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusMatrizEvaluacion"></h4>
-                            <button type="button" class="btn btn-default" onclick="guardarEvidencia()">Guardar</button>
+                            <button type="button" class="btn btn-secondary" onclick="guardarEvidencia()">Guardar</button>
                           </div>
                         </div>
-
-
                         <!--Fin contenido -->
                       </div>
                     </div>
-                  </div><!-- fin acoordeon -->
-
+                  </div>
+                  <!-- fin acordeon -->
 
                   <!-- Twelve accordion [Calendarización]-->
                   <div class="panel" id="panelCalendarizacion">
-                    <div class="panel-heading">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwelve">
+                    <div class="panel-heading" id="headingTwelve">
+                      <a data-toggle="collapse" data-target="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
                         <h5 class="panel-title" id="miColor7">Calendarización de evaluación en semanas</h5>
                       </a>
                     </div>
-                    <div id="collapseTwelve" class="panel-collapse collapse">
+                    <div id="collapseTwelve" class="collapse" aria-labelledby="headingTwelve" data-parent="#accordion">
                       <div class="panel-body">
 
                         <script type="text/javascript">
                           /*function guardarCalendarizacion(){
-                                  var tabla = document.getElementById("tablaFechas");
-                                  var fechas = [];
-                                  for (let i = 1; i < tabla.rows.length; i++) {
-                                    const row = tabla.rows[i];
-                                    var grupo = row.cells[0].getElementsByTagName("h4")[0].innerHTML;
-                                    fechas.push(grupo);
+                            var tabla = document.getElementById("tablaFechas");
+                            var fechas = [];
+                            for (let i = 1; i < tabla.rows.length; i++) {
+                              const row = tabla.rows[i];
+                              var grupo = row.cells[0].getElementsByTagName("h4")[0].innerHTML;
+                              fechas.push(grupo);
 
-                                    var inicio = row.cells[1].getElementsByTagName("input")[0].value;
-                                    inicio = (inicio!="") ? convertirFecha("/",inicio):"";
-                                    fechas.push(inicio);
+                              var inicio = row.cells[1].getElementsByTagName("input")[0].value;
+                              inicio = (inicio!="") ? convertirFecha("/",inicio):"";
+                              fechas.push(inicio);
 
-                                    var fin = row.cells[2].getElementsByTagName("input")[0].value;
-                                    fin = (fin!="") ? convertirFecha("/",fin):"";
-                                    fechas.push(fin);
-                                    //row.cells[1].getElementsByTagName("input")[0].value = "2020-11-02";
-                                  }
+                              var fin = row.cells[2].getElementsByTagName("input")[0].value;
+                              fin = (fin!="") ? convertirFecha("/",fin):"";
+                              fechas.push(fin);
+                              //row.cells[1].getElementsByTagName("input")[0].value = "2020-11-02";
+                            }
 
-                                 
-                                  var semanas = [];
-                                  for (let i = 1; i < 19; i++) {
-                                    semanas.push(document.getElementById("sem"+i).value);
-                                  }
+                          
+                            var semanas = [];
+                            for (let i = 1; i < 19; i++) {
+                              semanas.push(document.getElementById("sem"+i).value);
+                            }
 
-                                  guardarCampoTemaValor("Fechas",fechas);
-                                  guardarCampoTemaValor("Semanas",semanas);
+                            guardarCampoTemaValor("Fechas",fechas);
+                            guardarCampoTemaValor("Semanas",semanas);
 
-                                }
-                                */
+                          }
+                          */
                           function guardarCalendarizacion() {
                             var tabla = document.getElementById("tablaFechas");
                             var fechas = [];
@@ -2658,7 +2617,7 @@ require_once("../../valida.php");
                                 for (let jj = 0; jj < semanas.length; jj++) {
                                   //alert(semanas[jj][0]);
                                   if (semanas[jj][0] != gruph) {
-                                    temsem = '<tr><td><button onclick="copiarsemanas(this)" type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-arrow-up"></span></button>' + semanas[jj][0] + '</td><td>Tiempo planeado</td>';
+                                    temsem = '<tr><td><button onclick="copiarsemanas(this)" type="button" class="btn btn-default btn-xs"><i class="fa-solid fa-arrow-up"></i></button>' + semanas[jj][0] + '</td><td>Tiempo planeado</td>';
                                   }
                                   for (let jjj = 1; jjj < 19; jjj++) {
                                     if (semanas[jj][0] == gruph) { //mis grupos
@@ -2858,12 +2817,11 @@ require_once("../../valida.php");
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusSemanas"></h4>
-                            <button type="button" class="btn btn-default" onclick="guardarCalendarizacion()">Guardar</button>
+                            <button type="button" class="btn btn-secondary" onclick="guardarCalendarizacion()">Guardar</button>
                           </div>
                         </div>
 
                       </div>
-
 
                       <br>
                       <div id="otrosdatos">
@@ -2901,9 +2859,7 @@ require_once("../../valida.php");
 
 
                       </div>
-
-                    </div><!-- fin acoordeon -->
-
+                    </div> <!-- fin acoordeon -->
 
                     <script type="text/javascript">
                       function agregarFuentes() {
@@ -2933,12 +2889,12 @@ require_once("../../valida.php");
 
                     <!-- Thirteen accordion [Fuentes de informacion]-->
                     <div class="panel" id="panelFuentes">
-                      <div class="panel-heading">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen">
+                      <div class="panel-heading" id="headingThirteen">
+                        <a data-toggle="collapse" data-target="#collapseThirteen" aria-expanded="false" aria-controls="collapseThirteen">
                           <h5 class="panel-title" id="miColor8">Fuentes de Información</h5>
                         </a>
                       </div>
-                      <div id="collapseThirteen" class="panel-collapse collapse">
+                      <div id="collapseThirteen" class="collapse" aria-labelledby="headingThirteen" data-parent="#accordion">
                         <div class="panel-body">
                           <table class="table table-hover" id="tablaFuentes">
                             <thead>
@@ -2963,15 +2919,15 @@ require_once("../../valida.php");
                               <!-- Modal content-->
                               <div class="modal-content">
                                 <div class="modal-header">
+                                  <h5 class="modal-title">Fuentes de información</h5>
                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                  <h4 class="modal-title">Fuentes de información</h4>
                                 </div>
                                 <div class="modal-body">
                                   <p><textarea style="width:100%; height:30em; font-size: 11px" id="campoFuentes"></textarea></p>
                                 </div>
                                 <div class="modal-footer">
                                   <h4 id="estatusFuentes"></h4>
-                                  <button type="button" class="btn btn-default" onclick="guardarCampoTema('Fuentes'); agregarFuentes()">Guardar</button>
+                                  <button type="button" class="btn btn-secondary" onclick="guardarCampoTema('Fuentes'); agregarFuentes()">Guardar</button>
                                 </div>
                               </div>
 
@@ -2983,32 +2939,27 @@ require_once("../../valida.php");
                     </div><!-- fin acoordeon -->
 
                     <div class="panel" id="panelGen">
-                      <div class="panel-heading">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseGen">
+                      <div class="panel-heading" id="headingGen">
+                        <a data-toggle="collapse" data-target="#collapseGen" aria-expanded="false" aria-controls="collapseGen">
                           <h5 class="panel-title" id="miColor8">Generar Instrumentacion del Tema</h5>
                         </a>
                       </div>
-                      <div id="collapseGen" class="panel-collapse collapse">
+                      <div id="collapseGen" class="collapse" aria-labelledby="headingGen" data-parent="#accordion">
                         <div class="panel-body">
                           <form target="_blank" action="generarInstrumentacion.php" method="get">
                             <input type="hidden" id="enviarGrupo" name="grupo" />
                             <input type="hidden" id="enviarPeriodo" name="periodo" />
                             <input type="hidden" id="enviarTema" name="tema" />
-                            <p><input type="submit" value="Generar" /></p>
+                            <p><input type="submit" class="btn btn-secondary" value="Generar" /></p>
                           </form>
                         </div>
                       </div>
                     </div>
-
                   </div>
-
                 </div>
               </div>
             </div>
-
-
             <!-- Events ends -->
-
           </div>
         </div>
       </div>
@@ -3323,12 +3274,13 @@ require_once("../../valida.php");
 
     <!-- Javascript files -->
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script src="bootstrap/js/jquery.js"></script>
     <!-- Bootstrap JS -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Isotope, Pretty Photo JS -->
     <script src="js/jquery.isotope.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
+    <script src="alertify/alertify.min.js"></script>
     <!-- Support Page Filter JS -->
     <script src="js/filter.js"></script>
     <!-- Flex slider JS -->
