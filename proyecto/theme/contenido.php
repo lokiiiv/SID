@@ -3115,7 +3115,7 @@ require_once("../../valida.php");
     </script>
 
 
-    
+
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -3133,8 +3133,8 @@ require_once("../../valida.php");
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="ginstind" type="button" class="btn btn-success">Guardar</button>
+            <button id="ver" type="button" class="btn btn-info">Ver instrumento en PDF</button>
           </div>
         </div>
       </div>
