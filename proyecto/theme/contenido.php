@@ -1019,13 +1019,13 @@ require_once("../../valida.php");
                     <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                       <div class="panel-body">
 
-                        <h4>Tema: <input id="TituloTema"></h4>
+                        <h5>Tema: <input id="TituloTema"></h5>
                         <h4 id="estatusTituloTema"></h4>
                         <button type="button" class="btn btn-secondary" onclick="guardarCampoTemaValor('TituloTema',document.getElementById('TituloTema').value)">Guardar</button></p>
 
                         <div class="dividerM"></div>
 
-                        <h4 class="subTitulo"> Competencia específica del tema</h4><br>
+                        <h5 class="subTitulo"> Competencia específica del tema</h5><br>
                         <div class="mostrarContenido">
                           <p id="CompetenciaET"></p>
                         </div>
@@ -1058,7 +1058,7 @@ require_once("../../valida.php");
 
                         <!-- Competencias genericas -->
                         <div class="dividerM"></div>
-                        <h4 class="subTitulo"> Competencias genéricas a desarrollar </h4><br>
+                        <h5 class="subTitulo"> Competencias genéricas a desarrollar </h5><br>
                         <div class="mostrarContenido">
                           <p id="CompetenciasGen"></p>
                         </div>
@@ -1103,7 +1103,7 @@ require_once("../../valida.php");
                     <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
                       <div class="panel-body">
 
-                        <h3>Temas y subtemas</h3><br>
+                        <h5>Temas y subtemas</h5><br>
                         <div class="mostrarContenido">
                           <p id="TemasSubtemas"></p>
                         </div>
@@ -1266,10 +1266,10 @@ require_once("../../valida.php");
                           <thead>
                             <tr>
                               <th>
-                                <h4> Actividades de enseñanza (Docente) </h4>
+                                <h5> Actividades de enseñanza (Docente) </h5>
                               </th>
                               <th>
-                                <h4> Actividades de aprendizaje (Estudiante) </h4>
+                                <h5> Actividades de aprendizaje (Estudiante) </h5>
                               </th>
                             </tr>
                           </thead>
@@ -1297,7 +1297,7 @@ require_once("../../valida.php");
 
                         <div class="dividerM" style="margin-bottom: 5px"></div>
 
-                        <h3> Horas teórico-prácticas</h3><br>
+                        <h5> Horas teórico-prácticas</h5><br>
                         <div class="mostrarContenido">
                           <p id="HTP"></p>
                         </div>
@@ -1330,7 +1330,7 @@ require_once("../../valida.php");
                         <!-- Termina Héctor -->
                         <div class="dividerM" style="margin-bottom: 5px"></div>
 
-                        <h3> Recursos y apoyos didácticos</h3><br>
+                        <h5> Recursos y apoyos didácticos</h5><br>
                         <div class="mostrarContenido">
                           <p id="Recursos"></p>
                         </div>
@@ -1667,9 +1667,9 @@ require_once("../../valida.php");
                         <table id="tablaPracticas" class="table table-hover">
                           <thead>
                             <tr>
-                              <th class="text-center">No.</th>
-                              <th class="text-center">Título de la práctica</th>
-                              <th class="text-center">Laboratorio</th>
+                              <th class="text-center"><h6>No.</h6></th>
+                              <th class="text-center"><h6>Título de la práctica</h6></th>
+                              <th class="text-center"><h6>Laboratorio</h6></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1706,7 +1706,7 @@ require_once("../../valida.php");
                     </div>
                     <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
                       <div class="panel-body">
-                        <h3>Competencia alcanzada</h3>
+                        <h5>Competencia alcanzada</h5>
                         <div class="mostrarContenido">
                           <p id="Indicadores"></p>
                         </div>
@@ -1751,7 +1751,7 @@ require_once("../../valida.php");
                     <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
                       <div class="panel-body">
 
-                        <h3>Criterios de evaluación</h3>
+                        <h5>Criterios de evaluación</h5>
 
                         <script type="text/javascript">
                           function actualizarValorIndicadores(x) {
@@ -1859,9 +1859,9 @@ require_once("../../valida.php");
                         <table class="table table-hover text-justify">
                           <thead>
                             <tr>
-                              <th class="text-center">Indicador</th>
-                              <th class="text-center">Descripción del indicador</th>
-                              <th class="text-center">Valor del indicador</th>
+                              <th class="text-center"><h6>Indicador</h6></th>
+                              <th class="text-center"><h6>Descripción del indicador</h6></th>
+                              <th class="text-center"><h6>Valor del indicador</h6></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -2325,10 +2325,10 @@ require_once("../../valida.php");
                                 <td colspan="2" class="text-center">
                                 </td>
                                 <td colspan="6" class="text-center">
-                                  <strong>Indicador de alcance </strong>
+                                  <strong><h6>Indicador de alcance</h6> </strong>
                                 </td>
                                 <td colspan="4" class="text-center">
-                                  <strong> Método de evaluación </strong>
+                                  <strong> <h6>Método de evaluación</h6> </strong>
                                 </td>
                               </tr>
                               <tr>
@@ -2715,9 +2715,9 @@ require_once("../../valida.php");
                           <table id="tablaFechas" class="table table-hover">
                             <thead>
                               <tr>
-                                <th class="text-center">Grupo</th>
-                                <th class="text-center">Fecha de inicio programado</th>
-                                <th class="text-center">Fecha de Término</th>
+                                <th class="text-center"><h6>Grupo</h6></th>
+                                <th class="text-center"><h6>Fecha de inicio programado</h6></th>
+                                <th class="text-center"><h6>Fecha de Término</h6></th>
                               </tr>
                             </thead>
                             <tbody id="cuerpoTablafechas">
@@ -2831,9 +2831,9 @@ require_once("../../valida.php");
                         <table id="tablaFechasNM" class="table table-hover">
                           <thead>
                             <tr>
-                              <th class="text-center">Grupo</th>
-                              <th class="text-center">Fecha de inicio programado</th>
-                              <th class="text-center">Fecha de Término</th>
+                              <th class="text-center"><h6>Grupo</h6></th>
+                              <th class="text-center"><h6>Fecha de inicio programado</h6></th>
+                              <th class="text-center"><h6>Fecha de Término</h6></th>
                               <th></th>
                             </tr>
                           </thead>
@@ -2902,10 +2902,10 @@ require_once("../../valida.php");
                             <thead>
                               <tr>
                                 <th>
-                                  <h3> No.</h3>
+                                  <h5> No.</h5>
                                 </th>
                                 <th class="text-center">
-                                  <h3> Fuente de Información</h3>
+                                  <h5> Fuente de Información</h5>
                                 </th>
                                 <td>
                                   <button align="center" type="button" class="btn btn-success btn-sm" style="font-size: 14px" data-toggle="modal" data-target="#myModalFuentes">Editar

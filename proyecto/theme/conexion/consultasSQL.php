@@ -119,7 +119,16 @@
                 echo json_encode($usuarios, JSON_UNESCAPED_UNICODE);
             break;
 
-
+            case 'listarRoles':
+                $sql = "SELECT r.*, IF(p.id_permiso IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', p.id_permiso, 'descripcion', p.descripcion_permiso)), ']'), '[]') AS permisos
+                        FROM rol r
+                        LEFT JOIN rol_permisos rp ON r.id_rol = rp.id_rol
+                        LEFT JOIN permisos p ON p.id_permiso = rp.id_permiso
+                        GROUP BY r.id_rol
+                        ORDER BY r.id_rol ASC";
+                $roles = $connSQL->preparedQuery($sql);
+                echo json_encode($roles, JSON_UNESCAPED_UNICODE);
+            break;
         }
     }
 ?>

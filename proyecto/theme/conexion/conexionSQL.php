@@ -66,15 +66,28 @@ class connSQL {
 		}
 	}
 
-	public function preparedQuery($consulta, $params = null) {
-		try{
-			$query = $this->dbh->prepare($consulta);
+	public function preparedQuery($sql, $params = [], $types = false){
+		try {
+			$query = $this->dbh->prepare($sql);
+			foreach($params as $key => $value) {
+				if($types) {
+					$query->bindValue(":$key", $value, $types[$key]);
+				} else {
+					if(is_int($value))        { $param = PDO::PARAM_INT; }
+                	elseif(is_bool($value))   { $param = PDO::PARAM_BOOL; }
+					elseif(is_null($value))   { $param = PDO::PARAM_NULL; }
+					elseif(is_string($value)) { $param = PDO::PARAM_STR; }
+					else { $param = FALSE;}
+
+					if($param) $query->bindValue(":$key",$value,$param);
+				}
+			}
 			$query->execute();
-			return $query->fetchAll(PDO::FETCH_ASSOC);
-			$this->dbh = null;
-		}catch(PDOException $e){
+        	return $query->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch(PDOException $e) {
 			print "Error!: " . $e->getMessage();
-            die();
+			die();
 		}
 	}
 }

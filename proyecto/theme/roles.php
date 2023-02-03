@@ -55,7 +55,7 @@ require_once '../../valida.php';
     <div class="content">
         <div class="container">
             <div class="row" style="margin-top: 25px;">
-                <h4 style="padding-left:15px;">Usuarios registrados en el sistema</h4>
+                <h4 style="padding-left:15px;">Roles registrados en el sistema</h4>
             </div>
             <div class="row" style="margin-top: 25px;">
                 <div class="col-md-12">
@@ -63,13 +63,9 @@ require_once '../../valida.php';
                         <thead>
                             <tr>
                                 <th class="text-center">ID</th>
-                                <th class="text-center">Clave</th>
-                                <th class="text-center">Apellido paterno</th>
-                                <th class="text-center">Apellido materno</th>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Correo</th>
-                                <th class="text-center">Roles</th>
-                                <th class="text-center">Firma</th>
+                                <th class="text-center">Nombre en el sistema</th>
+                                <th class="text-center">Descripción</th>
+                                <th class="text-center">Permisos</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -108,14 +104,14 @@ require_once '../../valida.php';
         $(document).ready(function(){
             //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
             var parametros = {
-                "accion": "listarUsuarios",
+                "accion": "listarRoles",
             };
             var tableUsuarios = $("#tablaUsuarios").DataTable({
                 "autoWidth": false,
                 "responsive": true,
                 "ajax": {
                     "data" : {
-                        "accion": "listarUsuarios"
+                        "accion": "listarRoles"
                     },
                     "url": "conexion/consultasSQL.php",
                     "type": "post",
@@ -140,32 +136,11 @@ require_once '../../valida.php';
                     }
                 },
                 "columns": [
+                    {"data": "id_rol", "width": "50px"},
+                    {"data": "nombre_rol", "width": "90px"},
+                    {"data": "descripcion_rol", "width": "100px"},
                     {
-                        "data": "cat_ID",
-                        "visible": false
-                    },
-                    {
-                        "data": "cat_Clave",
-                        "width": "50px"
-                    },
-                    {
-                        "data": "cat_ApePat",
-                        "width": "100px"
-                    },
-                    {
-                        "data": "cat_ApeMat",
-                        "width": "100px"
-                    },
-                    {
-                        "data": "cat_Nombre",
-                        "width": "150px"
-                    },
-                    {
-                        "data": "cat_CorreoE",
-                        "width": "100px"
-                    },
-                    {
-                        "data": "roles",
+                        "data": "permisos",
                         "render": function(data, type, row, meta) {
                             //Obtener el string del JSON que contiene los roles que tiene el usuario
                             var roles = JSON.parse(data);
@@ -179,19 +154,8 @@ require_once '../../valida.php';
                                 });
                                 return vista;
                             } else {
-                                vista = '<div class="row"><p style="margin: auto;">Sin roles.</p></div>'
+                                vista = '<div class="row"><p style="margin: auto;">Sin permisos.</p></div>'
                                 return vista;
-                            }
-                            
-                        }
-                    },
-                    {
-                        "data": "firma",
-                        "render": function(data, type, row, meta) {
-                            if(data.trim() === "") {
-                                return '<div class="row"><p style="margin: auto;">Sin firma.</p></div>';
-                            } else {
-                                return data;
                             }
                         }
                     },
@@ -203,7 +167,9 @@ require_once '../../valida.php';
                                                 '<a class="dropdown-item" href="">Editar</a>' +
                                                 '<a class="dropdown-item" href="">Eliminar</a>' +
                                             '</div>' +
-                                        '</div></div>'}
+                                        '</div></div>',
+                        "width": "200px"
+                    }
                 ]
             });
         });
