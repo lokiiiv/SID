@@ -77,11 +77,9 @@ require_once '../../valida.php';
                         </tbody>
                     </table>
                 </div>
-                </div>
-                
             </div>
+                
         </div>
-        
     </div>
 
     <!-- Scroll to top -->
