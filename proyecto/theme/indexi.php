@@ -140,10 +140,6 @@ require_once("../../valida.php");
     <script>
         var tablaInstrumentaciones = null;
         $(document).ready(function() {
-            $("#tablaInstrumentaciones").DataTable({
-                "responsive": true
-            });
-
             ocultar_mostrar(0);
         });
 
@@ -156,6 +152,13 @@ require_once("../../valida.php");
                     "autoWidth": false,
                     "bDestroy": true,
                     "responsive": true,
+                    "columns": [
+                        {"width": "80px"},
+                        {"width": "300px"},
+                        {"width": "50px"},
+                        {"width": "80px"},
+                        {"width": "50px"}
+                    ]
                 });
 
                 //var l = tabla.rows.length;
@@ -218,15 +221,21 @@ require_once("../../valida.php");
         var clavemate = "";
         var datosencabezado = "";
 
-        function crearInstrumentacion(x) {
-            var grupo = tablaInstrumentaciones.cell(x, 0).node().getElementsByTagName("input")[0];
-            var materia = tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0];
-            var temas = tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0];
+        function crearInstrumentacion(boton) {
+
+            var fila = $(boton).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+
+            var grupo = fila.find('td:eq(0) input');
+            var materia = fila.find('td:eq(1) h6');
+            var temas = fila.find('td:eq(2) input');
             var instrumentacion = [];
 
-            if (materia.value != "" && grupo.value != "" && parseInt(temas.value) >= 1) {
+            if (materia.text() != "" && grupo.val() != "" && parseInt(temas.val()) >= 1) {
 
-                var semestre = grupo.value;
+                var semestre = grupo.val();
                 letraSemestre(semestre.substring(0, 1));
                 var select = document.getElementById("selectPeriodo");
                 var periodo = select.options[select.selectedIndex].value;
@@ -244,7 +253,7 @@ require_once("../../valida.php");
                         var grupos = JSON.parse(resultado);
 
                         //Dividir la cadena ingresada del grupo desde el cuadro de texto separados por comas
-                        var aux = grupo.value.split(',');
+                        var aux = grupo.val().split(',');
                         //Generar un array con los valores claves de los grupos que ya estan creados en base de datos
                         var gruposKeys = Object.keys(grupos);
 
@@ -259,16 +268,16 @@ require_once("../../valida.php");
                                 if (keys.length === 1) {
                                     //Si el grupo que se intenta ingresar es igual al que esta en la base de datos, terminar
                                     if (aux[0].trim() === keys[0]) {
-                                        tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value = "";
-                                        tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value = 0;
+                                        fila.find('td:eq(1) h6').text("");
+                                        fila.find('td:eq(2) input').val(0);
                                         alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                         return;
                                     }
                                 } else {
                                     for (let i = 0; i < keys.length; i++) {
                                         if (aux[0].trim() === keys[i]) {
-                                            tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value = "";
-                                            tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value = 0;
+                                            fila.find('td:eq(1) h6').text("");
+                                            fila.find('td:eq(2) input').val(0);
                                             alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                             return;
                                         }
@@ -286,16 +295,16 @@ require_once("../../valida.php");
                                     if (keys.length === 1) {
                                         //Si el grupo que se intenta ingresar es igual al que esta en la base de datos, terminar
                                         if (aux[i].trim() === keys[0]) {
-                                            tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value = "";
-                                            tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value = 0;
+                                            fila.find('td:eq(1) h6').text("");
+                                            fila.find('td:eq(2) input').val(0);
                                             alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[i] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                             return;
                                         }
                                     } else {
                                         for (let k = 0; k < keys.length; k++) {
                                             if (aux[i].trim() === keys[k]) {
-                                                tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value = "";
-                                                tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value = 0;
+                                                fila.find('td:eq(1) h6').text("");
+                                                fila.find('td:eq(2) input').val(0);
                                                 alertify.warning('<h3>Ya existe una instrumentación para el grupo ' + aux[0] + ' para el período ' + periodo + '. Intente nuevamente.</h3>');
                                                 return;
                                             }
@@ -308,24 +317,23 @@ require_once("../../valida.php");
                         //Si noy incovenientes, proceder a guardar la instrumentaciones
                         var parametros = {
                             "accion": "crearInstrumentacion",
-                            "grupo": grupo.value,
+                            "grupo": grupo.val(),
                             "periodo": periodo,
-                            "temas": temas.value,
-                            "materia": materia.value,
+                            "temas": temas.val(),
+                            "materia": materia.text(),
                             "carrera": carrera,
                             "semestre": semestreletra,
                             "clave": clavemate,
-                            "encabezado": datosencabezado,
-                            "grupos": obtenerGrupos()
+                            "encabezado": datosencabezado
                         };
                         $.ajax({
                             data: parametros,
                             url: 'conexion/consultasNoSQL.php',
                             type: 'post',
                             success: function(resultado) {
-                                grupo.readOnly = true;
-                                temas.readOnly = true;
-                                tablaInstrumentaciones.cell(x, 3).data('<button onclick="editarInstrumentacion($(this).closest(\'tr\').index())" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14($(this).closest(\'tr\').index())" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button>').draw();
+                                grupo.attr('readonly', true);
+                                temas.attr('readonly', true);
+                                tablaInstrumentaciones.cell(fila, 3).data('<button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button>').draw();
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
                             $('#estatus' + campo).html("");
@@ -372,22 +380,32 @@ require_once("../../valida.php");
         }
 
 
-        function abrirFAC14(x) {
+        function abrirFAC14(boton) {
 
-            var grupo = tablaInstrumentaciones.cell(x, 0).node().getElementsByTagName("input")[0].value;
-            var asign = tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value;
+            var fila = $(boton).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+
+            var grupo = fila.find('td:eq(0) input').val();
+            var asign = fila.find('td:eq(1) h6').text();
             var select = document.getElementById("selectPeriodo");
             var periodo = select.options[select.selectedIndex].value;
             window.location = "contenidofac14.php?grupo=" + encodeURIComponent(grupo) + "&p=" + encodeURIComponent(periodo) + "&as=" + encodeURIComponent(asign);
         }
 
-        function editarInstrumentacion(x) {
-            var ins = document.getElementById("tablaInstrumentaciones").rows[x];
+        function editarInstrumentacion(boton) {
 
-            var grupo = tablaInstrumentaciones.cell(x, 0).node().getElementsByTagName("input")[0].value;
+            var fila = $(boton).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+
+            var grupo = fila.find('td:eq(0) input').val();
+            var cantTemas = fila.find('td:eq(2) input').val();
             var select = document.getElementById("selectPeriodo");
             var periodo = select.options[select.selectedIndex].value;
-            var cantTemas = tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value;
+            
 
             window.location = "contenido.php?grupo=" + encodeURIComponent(grupo) + "&p=" + encodeURIComponent(periodo) + "&temas=" + encodeURIComponent(cantTemas);
 
@@ -400,7 +418,7 @@ require_once("../../valida.php");
             mater = "";
             var temas = 0;
             var estatus = "";
-            var boton = '<div class="row"><button onclick="crearInstrumentacion($(this).closest(\'tr\').index())" class="btn btn-info btn-sm" style="margin-right: 3px;">Crear</button></div>';
+            var boton = '<div class="row"><button onclick="crearInstrumentacion(this)" class="btn btn-info btn-sm" style="margin-right: 3px;">Crear</button></div>';
             if (typeof instrumentacion != "undefined") {
                 //grupo = instrumentacion[0];
                 //mater = instrumentacion[1];
@@ -409,17 +427,17 @@ require_once("../../valida.php");
                 grupo = instrumentacion["Grupo"];
                 mater = instrumentacion["Materia"];
                 temas = parseInt(instrumentacion["totalTemas"]);
-                boton = '<div class="row"><button onclick="editarInstrumentacion($(this).closest(\'tr\').index())" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14($(this).closest(\'tr\').index())" class="btn btn-primary btn-sm">FAC-14</button></div>';
+                boton = '<div class="row"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm">FAC-14</button></div>';
                 estatus = "readonly";
             }
 
             //Agregar la nueva fila usando el plugin de Datatables
             tablaInstrumentaciones.row.add([
-                "<input " + estatus + " onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria($(this).closest(\'tr\').index()); value='" + grupo + "'>",
-                "<input readOnly=true; " + estatus + " value='" + mater + "'>",
+                "<input " + estatus + " onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria(this); value='" + grupo + "'>",
+                "<h6>" + mater + "</h6>",
                 "<input " + estatus + "  class='form-control text-center' max=8 min=1 type='number' value=" + temas + ">",
                 boton,
-                '<div class="row"><button onclick="borrar($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div>'
+                '<div class="row"><button onclick="borrar($(this).closest(\'tr\').index(), this)" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div>'
             ]).draw();
 
             //var tabla = document.getElementById("tablaInstrumentaciones");
@@ -437,28 +455,33 @@ require_once("../../valida.php");
             //cell.innerHTML = '<button onclick="borrar($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px">Eliminar</button>';
         }
 
-        function borrar(x) {
+        function borrar(x, boton) {
+            //Si el boton de eliminar al buscar el tr padre tiene como clase 'child' es por que se aplico el responsive en datatable
+            var fila = $(boton).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+
             //Al borrar, mostrar el mensaje de alerta de eliminacion solamente cuando la instrumentacion ya esta creada
-            if(typeof(tablaInstrumentaciones.cell(x, 3).node().getElementsByClassName("btn btn-info btn-sm")[0]) === "undefined") {
-                alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la instrumentación del grupo(s) " + tablaInstrumentaciones.cell(x, 0).node().getElementsByTagName("input")[0].value + " seleccionado?",
+            if(typeof(fila.find('td:eq(3) .btn-info')[0]) === "undefined") {
+                alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la instrumentación del grupo(s) " + fila.find('td:eq(0) input').val() + " seleccionado?",
                     function(){
-                        var grupo = tablaInstrumentaciones.cell(x, 0).node().getElementsByTagName("input")[0].value;
-                        var materia = tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value;
+                        var grupo = fila.find('td:eq(0) input').val();
+                        var materia = fila.find('td:eq(1) h6').text();
                         var select = document.getElementById("selectPeriodo");
                         var periodo = select.options[select.selectedIndex].value;
                         
                         var parametros = {
                             "accion": "borrarInstrumentacion",
                             "grupo": grupo,
-                            "periodo": periodo,
-                            "grupos": obtenerGrupos()
+                            "periodo": periodo
                         };
                         $.ajax({
                             data: parametros,
                             url: 'conexion/consultasNoSQL.php',
                             type: 'post',
                             success: function(resultado) {
-                                tablaInstrumentaciones.row(x).remove().draw();
+                                tablaInstrumentaciones.row(fila).remove().draw();
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
                             $('#estatus' + campo).html("");
@@ -485,7 +508,7 @@ require_once("../../valida.php");
                 ).set('labels', {ok: 'Aceptar', cancel: 'Cancelar'});
             } else {
                 //Si aún no esta creada la instrumentacion, proceder a eliminar la fila automaticamente
-                tablaInstrumentaciones.row(x).remove().draw();
+                tablaInstrumentaciones.row(fila).remove().draw();
             }
         }
 
@@ -541,8 +564,14 @@ require_once("../../valida.php");
             });
         }
 
-        function buscarMateria(x) {
-            var busMate = tablaInstrumentaciones.cell(x, 0).node().getElementsByTagName("input")[0].value;
+        function buscarMateria(input) {
+
+            var fila = $(input).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+
+            var busMate = fila.find('td:eq(0) input').val();
 
             //En caso de buscar la materia cuando se ingresan dos o más grupos separados por comas,
             //se debe verificar que ambos grupos pertenezcan a la misma materia
@@ -557,8 +586,8 @@ require_once("../../valida.php");
                 //y verificar al igual que los grupos tengan las tres primeras letras iguales
                 if (aux.every(v => v.trim() === aux[0].trim())) {
                     //Si se detecta que los grupos son iguales, variar los cuadros de texto
-                    tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value = "";
-                    tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value = 0;
+                    fila.find('td:eq(1) h6').text("");
+                    fila.find('td:eq(2) input').val(0);
 
                     alertify.warning("<h3>Los grupos que ha ingresado son iguales, intente de nuevo.</h3>");
                     return;
@@ -568,8 +597,8 @@ require_once("../../valida.php");
                         if ((i + 1) < aux.length) {
                             //Si el siguiente grupo del array es diferentes al actual, notificar
                             if (aux[i].trim().substring(0, 3) != aux[i + 1].trim().substring(0, 3)) {
-                                tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value = "";
-                                tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value = 0;
+                                fila.find('td:eq(1) h6').text("");
+                                fila.find('td:eq(2) input').val(0);
 
                                 alertify.warning("<h3>Solo se permite ingresar grupos que pertenezcan a la misma materia.</h3>");
                                 return;
@@ -599,10 +628,11 @@ require_once("../../valida.php");
                     //Obtener la cantidad de temas
                     temas = respuesta.split("-")[1];
 
-                    tablaInstrumentaciones.cell(x, 1).node().getElementsByTagName("input")[0].value = mater;
 
                     //Mostrar la cantidad de temas de la materia, si no hay valor es nulo entonces mostrar el número 1 en el input de cantidad de temas
-                    tablaInstrumentaciones.cell(x, 2).node().getElementsByTagName("input")[0].value = respuesta.split("-")[1] != "" && respuesta.split("-")[1] != null ? parseInt(respuesta.split("-")[1]) : 0;
+                    var cantTemas = respuesta.split("-")[1] != "" && respuesta.split("-")[1] != null ? parseInt(respuesta.split("-")[1]) : 0;
+                    tablaInstrumentaciones.cell(fila, 1).data("<h6>" + mater + "</h6>").draw();
+                    tablaInstrumentaciones.cell(fila, 2).data("<input class='form-control text-center' max=8 min=1 type='number' value=" + cantTemas + ">").draw();
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 $('#estatus' + campo).html("");

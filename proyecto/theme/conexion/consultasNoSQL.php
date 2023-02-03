@@ -15,7 +15,6 @@
                 $periodo = $_POST['periodo'];
                 $materia = $_POST['materia'];
                 $temas =$_POST['temas'];
-                $grupos = $_POST['grupos'];
                 $carrera = $_POST['carrera'];
                 $clave = $_POST["clave"];
                 $correo = $_SESSION['correo'];
@@ -56,7 +55,6 @@
                 $grupo = $_POST['grupo'];
                 $grupoins = substr($grupo, 0,3);
                 $periodo = $_POST['periodo'];
-                $grupos = $_POST['grupos'];
                 $correo = $_SESSION['correo'];
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
                 $campo = ["periodos_Inst.".$periodo.".".$grupo=>1];
