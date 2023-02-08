@@ -110,31 +110,35 @@ require_once '../../valida.php';
                                     <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="inputClave">Clave</label>
-                                            <input type="text" class="form-control" id="inputClave" placeholder="Ingrese la clave">
+                                            <input type="text" class="form-control" id="inputClave" name="inputClave" placeholder="Ingrese la clave">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <label for="inputAp">Apellido paterno</label>
-                                        <input type="text" class="form-control" id="inputAp" placeholder="Ingrese el apellido paterno">
+                                        <div class="form-group">
+                                            <label for="inputAp">Apellido paterno</label>
+                                            <input type="text" class="form-control" id="inputAp" name="inputAp" placeholder="Ingrese el apellido paterno">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
                                             <label for="inputAm">Apellido materno</label>
-                                            <input type="text" class="form-control" id="inputAm" placeholder="Ingrese el apellido materno">
+                                            <input type="text" class="form-control" id="inputAm" name="inputAm" placeholder="Ingrese el apellido materno">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <label for="inputNombre">Nombre</label>
-                                        <input type="text" class="form-control" id="inputNombre" placeholder="Ingrese el nombre">
+                                        <div class="form-group">
+                                            <label for="inputNombre">Nombre</label>
+                                            <input type="text" class="form-control" id="inputNombre" name="inputNombre" placeholder="Ingrese el nombre">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="inputCorreo">Correo institucional</label>
-                                            <input type="email" class="form-control" id="inputCorreo" placeholder="Ingrese el correo institucional correctamente">
+                                            <input type="email" class="form-control" id="inputCorreo" name="inputCorreo" placeholder="Ingrese el correo institucional correctamente">
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +162,7 @@ require_once '../../valida.php';
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <h6>Asignación de roles</h6>
-                                                    <small id="rolHelp" class="form-text text-muted">¿No ve el rol que necesita? <a href="roles.php">Click aqui para administrar roles</a></small>
+                                                    <small id="rolHelp" class="form-text text-muted" style="font-size: 13px;">¿No ve el rol que necesita? <a href="roles.php">Click aqui para administrar roles</a></small>
                                                 </div>
                                             </div>
                                         </div>
@@ -204,6 +208,8 @@ require_once '../../valida.php';
     <!-- Custom JS -->
     <script src="js/custom.js"></script>
     <script src="alertify/alertify.min.js"></script>
+
+    <script src="js/jquery.validate.min.js"></script>
 
     <script src="datatables/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="datatables/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
@@ -288,6 +294,7 @@ require_once '../../valida.php';
             $("#botonCrear").click(function() {
                 $("#modalAddEdit #formAddEdit")[0].reset();
                 $("#modalAddEdit .modal-title").text('Crear usuario');
+                //Se asigna el valor de "Crear" dentro de un input type hiden
                 $("#action").val("Crear");
                 $("#operacion").val("Crear");
                 $("#imagen_subida").html("");
@@ -334,6 +341,77 @@ require_once '../../valida.php';
                     }
                 });
             });
+
+            //Validaciones del formulario de agregar/editar usando JQuery Validate
+            var validate = $("#formAddEdit").validate({
+                rules: {
+                    inputClave: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputAp: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputAm: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputNombre: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputCorreo: {
+                        required: true,
+                        email: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    }
+                },
+                messages: {
+                    inputClave: {
+                        required: "Se requiere la clave."
+                    },
+                    inputAp: {
+                        required: "Se requiere el apellido paterno."
+                    },
+                    inputAm: {
+                        required: "Se requiere el apellido materno."
+                    },
+                    inputNombre: {
+                        required: "Se requiere el nombre."
+                    },
+                    inputCorreo: {
+                        required: "Se requiere el correo.",
+                        email: "El valor debe ser un email."
+                    }
+                },
+                errorElement: "h4",
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form, event) {
+                    event.preventDefault();
+                }
+            });
+
+
 
             //Funcionalidad para eliminar un usuario
             $(document).on('click', '.eliminar', function(e) {

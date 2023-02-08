@@ -114,3 +114,7 @@ header .list hr{
     background:#29a1c4 !important;
     transition:background 1s ease;
 }
+
+#formAddEdit .error {
+    font-size: 14px;
+}
