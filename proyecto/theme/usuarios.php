@@ -146,14 +146,13 @@ require_once '../../valida.php';
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="inputFirma">Firma</label>
-                                            <input type="file" class="form-control-file" id="inputFirma">
+                                            <input type="file" class="form-control-file" id="inputFirma" name="inputFirma">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="row">
                                             <span id="imagen_subida" style="margin: auto"></span>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="row">
@@ -218,6 +217,131 @@ require_once '../../valida.php';
 
     <script>
         $(document).ready(function() {
+
+            //Validaciones del formulario de agregar/editar usando JQuery Validate
+            //Metodo que valida si el archivo a subir tiene formatos correspondientes a imagenes
+            $.validator.addMethod("validateFile", function(value, element) {
+                if (value != "") {
+                    return $.inArray(value.split('.').pop().toLowerCase(), ['gif', 'png', 'jpg', 'jpeg']) != -1
+                } else {
+                    return true;
+                }
+            });
+            var validate = $("#formAddEdit").validate({
+                rules: {
+                    inputClave: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputAp: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputAm: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputNombre: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputCorreo: {
+                        required: true,
+                        email: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        }
+                    },
+                    inputFirma: {
+                        validateFile: true
+                    }
+                },
+                messages: {
+                    inputClave: {
+                        required: "Se requiere la clave."
+                    },
+                    inputAp: {
+                        required: "Se requiere el apellido paterno."
+                    },
+                    inputAm: {
+                        required: "Se requiere el apellido materno."
+                    },
+                    inputNombre: {
+                        required: "Se requiere el nombre."
+                    },
+                    inputCorreo: {
+                        required: "Se requiere el correo.",
+                        email: "El email que ingresó no es valido."
+                    },
+                    inputFirma: {
+                        validateFile: "Solo se permiten archivos de imágenes."
+                    }
+                },
+                errorElement: "span",
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form, event) {
+                    event.preventDefault();
+                    //Crear el form data con todos los datos del formulario
+                    var formData = new FormData(form);
+                    //añadirle un nuevo elemento indicando la accion a realizar en el servidor
+                    formData.append('accion', 'crearActualizarUsuario');
+
+                    //Obtener que una lista de los roles que se le van a asignar al usuario
+                    var selectedRoles = [];
+                    $("#contenedor-roles input:checked").each(function(){
+                        selectedRoles.push($(this).data('id'));
+                    });
+                    formData.append('idRoles', selectedRoles);
+
+                    //Realizar la peticion al servidor
+                    $.ajax({
+                        data: formData,
+                        url: "conexion/consultasSQL.php",
+                        type: "post",
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            
+                            console.log(response);
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        $('#estatus' + campo).html("");
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    });
+                }
+            });
+
             //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
             var parametros = {
                 "accion": "listarUsuarios",
@@ -292,7 +416,11 @@ require_once '../../valida.php';
 
             //Al presionar el boton de crear, se debe limpiar el formulario y sus campos, dejarlos en blanco
             $("#botonCrear").click(function() {
-                $("#modalAddEdit #formAddEdit")[0].reset();
+                //Resetar la validacion del formulario y limpiar errores por si es necesario
+                validate.resetForm(); //Resetar el validador de campos
+                $("#formAddEdit").find('.is-invalid').removeClass('is-invalid'); //Remover las clases is-invalid para que no se evan los campos en rojo
+
+                $("#modalAddEdit #formAddEdit").trigger('reset')
                 $("#modalAddEdit .modal-title").text('Crear usuario');
                 //Se asigna el valor de "Crear" dentro de un input type hiden
                 $("#action").val("Crear");
@@ -305,20 +433,20 @@ require_once '../../valida.php';
                     data: {
                         "accion": "listarRolesGeneral"
                     },
-                    "url": "conexion/consultasSQL.php",
-                    "type": "post",
+                    url: "conexion/consultasSQL.php",
+                    type: "post",
                     success: function(response) {
                         //Obtener los roles que existen en el sistema y mostrarlos en forma de Checkbox
                         var roles = JSON.parse(response);
                         var checkRoles = '';
                         roles.forEach(rol => {
                             checkRoles += '<div class="form-check">' +
-                                                '<input class="form-check-input" type="checkbox" value="" id="rol_' + rol['id_rol'] + '">' +
-                                                    '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' +
-                                                        rol['descripcion_rol'] +
-                                                    '</label>' +
-                                                '</div>' +
-                                            '</div>';
+                                '<input class="form-check-input" type="checkbox" value="" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '">' +
+                                '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' +
+                                rol['descripcion_rol'] +
+                                '</label>' +
+                                '</div>' +
+                                '</div>';
                         });
                         $("#modalAddEdit #contenedor-roles").html(checkRoles);
                     }
@@ -342,76 +470,6 @@ require_once '../../valida.php';
                 });
             });
 
-            //Validaciones del formulario de agregar/editar usando JQuery Validate
-            var validate = $("#formAddEdit").validate({
-                rules: {
-                    inputClave: {
-                        required: true,
-                        normalizer: function(value) {
-                            return $.trim(value);
-                        }
-                    },
-                    inputAp: {
-                        required: true,
-                        normalizer: function(value) {
-                            return $.trim(value);
-                        }
-                    },
-                    inputAm: {
-                        required: true,
-                        normalizer: function(value) {
-                            return $.trim(value);
-                        }
-                    },
-                    inputNombre: {
-                        required: true,
-                        normalizer: function(value) {
-                            return $.trim(value);
-                        }
-                    },
-                    inputCorreo: {
-                        required: true,
-                        email: true,
-                        normalizer: function(value) {
-                            return $.trim(value);
-                        }
-                    }
-                },
-                messages: {
-                    inputClave: {
-                        required: "Se requiere la clave."
-                    },
-                    inputAp: {
-                        required: "Se requiere el apellido paterno."
-                    },
-                    inputAm: {
-                        required: "Se requiere el apellido materno."
-                    },
-                    inputNombre: {
-                        required: "Se requiere el nombre."
-                    },
-                    inputCorreo: {
-                        required: "Se requiere el correo.",
-                        email: "El valor debe ser un email."
-                    }
-                },
-                errorElement: "h4",
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                submitHandler: function(form, event) {
-                    event.preventDefault();
-                }
-            });
-
-
 
             //Funcionalidad para eliminar un usuario
             $(document).on('click', '.eliminar', function(e) {
@@ -422,8 +480,8 @@ require_once '../../valida.php';
                     fila = fila.prev();
                 }
 
-                //Obtener el id del usuario a eliminar, el cual esta incrustado en la propiedad ID de los botones desplegables
-                var idUser = $(this).closest('.btn-group').attr('id');
+                //Obtener el id del usuario a eliminar, el cual esta incrustado en la propiedad data-id del enlace
+                var idUser = $(this).data('id');
 
                 var correoUser = fila.find('td:eq(4)').text();
                 var usuarioActual = "<?php echo $_SESSION['correo'] ?>";
@@ -443,17 +501,14 @@ require_once '../../valida.php';
                         cancel: 'Cancelar'
                     });
                 }
-
-
-
             });
 
             //Funcionalidad para editar un usuario
             $(document).on('click', '.editar', function(e) {
                 e.preventDefault();
 
-                //Obtener el id del usuario el cual esta incrustado en la propiedad ID del grupo de botones desplegables
-                var idUser = $(this).closest('.btn-group').attr('id');
+                //Obtener el id del usuario el cual esta incrustado en la propiedad data-id del enlace o boton
+                var idUser = $(this).data('id');
 
                 //Ejecutar una petición al servidor para obtener al usuario
                 $.ajax({
@@ -461,10 +516,19 @@ require_once '../../valida.php';
                         "accion": "listarUsuarioById",
                         "idUser": idUser
                     },
-                    "url": "conexion/consultasSQL.php",
-                    "type": "post",
+                    url: "conexion/consultasSQL.php",
+                    type: "post",
                     success: function(respuesta) {
                         var resp = JSON.parse(respuesta);
+
+                        //Resetar la validacion del formulario y limpiar errores por si es necesario
+                        validate.resetForm(); //Resetar el validador de campos
+                        $("#formAddEdit").find('.is-invalid').removeClass('is-invalid'); //Remover las clases is-invalid para que no se evan los campos en rojo
+
+                        //Definir el el submit del formulario con un valor de actualizar
+                        $("#action").val("Actualizar");
+                        $("#operacion").val("Actualizar");
+
                         //Abrir el modal y mostrar los valores del usuario en los inputs correspondientes
                         $("#modalAddEdit").modal('show');
                         $("#modalAddEdit .modal-title").text("Editar usuario");
@@ -473,6 +537,7 @@ require_once '../../valida.php';
                         $("#modalAddEdit #inputAm").val(resp['am']);
                         $("#modalAddEdit #inputNombre").val(resp['nombre']);
                         $("#modalAddEdit #inputCorreo").val(resp['correo']);
+                        $("#modalAddEdit #imagen_subida").html(resp['firma']);
 
                         $("#modalAddEdit #contenedor-roles").html("");
                         //Obtener una lista de los roles disponibles para mostrarlos en el modal
@@ -488,7 +553,7 @@ require_once '../../valida.php';
                                 var checkRoles = '';
                                 roles.forEach(rol => {
                                     checkRoles += '<div class="form-check">' +
-                                        '<input class="form-check-input" type="checkbox" value="" id="rol_' + rol['id_rol'] + '">' +
+                                        '<input class="form-check-input" type="checkbox" value="" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '">' +
                                         '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' +
                                         rol['descripcion_rol'] +
                                         '</label>' +
@@ -500,7 +565,8 @@ require_once '../../valida.php';
                                 //Una vez que se muestran, poner como seleccionados aquellos roles que el usuario ya tiene asignados
                                 var roles = JSON.parse(resp['roles']);
                                 roles.forEach(rol => {
-                                    $("#modalAddEdit #contenedor-roles #rol_" + rol['id']).prop('checked', true);
+                                    //Ir seleccionando los check de los roles conforme al data-id
+                                    $("#contenedor-roles .form-check-input[data-id=" + rol['id'] + "]").prop('checked', true);
                                 });
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {

@@ -115,5 +115,33 @@ class connSQL {
 			die();
 		}
 	}
+
+	public function preparedInsert($sql, $params = []){
+		try{
+			$query = $this->dbh->prepare($sql);
+			foreach($params as $key => $value) {
+				if(is_int($value)) { 		$param = PDO::PARAM_INT; }
+				elseif(is_bool($value)) { 	$param = PDO::PARAM_BOOL; }
+				elseif(is_null($value)) {	$param = PDO::PARAM_NULL; }
+				elseif(is_string($value)) {	$param = PDO::PARAM_STR; }
+				else { $param = FALSE; }
+
+				if($param) $query->bindValue(":$key", $value, $param);
+			}
+			return $query->execute();
+		} catch(PDOException $e) {
+			print "Error!: " . $e->getMessage();
+			die();
+		}
+	}
+
+
+	public function addUsuarioRoles($sql1, $params1, $sql2, $params2, $idRoles) {
+		try{
+
+		} catch(PDOException $e) {
+
+		}
+	}
 }
 ?>
