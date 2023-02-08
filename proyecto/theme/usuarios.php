@@ -218,6 +218,78 @@ require_once '../../valida.php';
     <script>
         $(document).ready(function() {
 
+            //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
+            var parametros = {
+                "accion": "listarUsuarios",
+            };
+            //La carga de los datos de esta tabla se realiza de manera ServerSide, es decir
+            //cada accion en la tabla como busquedas, ordenamiento, etc, se realizan desde el servidor y no desde el cliente
+            var tableUsuarios = $("#tablaUsuarios").DataTable({
+                "processing": true,
+                "serverSide": true,
+                "autoWidth": false,
+                "order": [],
+                "responsive": true,
+                "ajax": {
+                    "data": {
+                        "accion": "listarUsuarios"
+                    },
+                    "url": "conexion/consultasSQL.php",
+                    "type": "post",
+                    "error": function(jqXHR, textStatus, errorThrown) {
+                        $('#estatus' + campo).html("");
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    }
+                },
+                "columns": [{
+                        "data": "clave",
+                        "width": "50px"
+                    },
+                    {
+                        "data": "ap",
+                        "width": "100px"
+                    },
+                    {
+                        "data": "am",
+                        "width": "100px"
+                    },
+                    {
+                        "data": "nombre",
+                        "width": "150px"
+                    },
+                    {
+                        "data": "correo",
+                        "width": "100px"
+                    },
+                    {
+                        "data": "firma",
+                        "orderable": false
+                    },
+                    {
+                        "data": "roles",
+                        "orderable": false
+                    },
+                    {
+                        "data": "acciones",
+                        "orderable": false
+                    }
+                ]
+            });
+
             //Validaciones del formulario de agregar/editar usando JQuery Validate
             //Metodo que valida si el archivo a subir tiene formatos correspondientes a imagenes
             $.validator.addMethod("validateFile", function(value, element) {
@@ -308,7 +380,7 @@ require_once '../../valida.php';
                     $("#contenedor-roles input:checked").each(function(){
                         selectedRoles.push($(this).data('id'));
                     });
-                    formData.append('idRoles', selectedRoles);
+                    formData.append('idRoles', JSON.stringify(selectedRoles));
 
                     //Realizar la peticion al servidor
                     $.ajax({
@@ -318,8 +390,10 @@ require_once '../../valida.php';
                         contentType: false,
                         processData: false,
                         success: function(response) {
-                            
-                            console.log(response);
+                            alertify.message('<h3>' + response + '</h3>');
+                            $("#formAddEdit").trigger('reset');
+                            $("#modalAddEdit").modal('hide');
+                            tableUsuarios.ajax.reload();
                         }
                     }).fail(function(jqXHR, textStatus, errorThrown) {
                         $('#estatus' + campo).html("");
@@ -342,77 +416,6 @@ require_once '../../valida.php';
                 }
             });
 
-            //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
-            var parametros = {
-                "accion": "listarUsuarios",
-            };
-            //La carga de los datos de esta tabla se realiza de manera ServerSide, es decir
-            //cada accion en la tabla como busquedas, ordenamiento, etc, se realizan desde el servidor y no desde el cliente
-            var tableUsuarios = $("#tablaUsuarios").DataTable({
-                "processing": true,
-                "serverSide": true,
-                "autoWidth": false,
-                "order": [],
-                "responsive": true,
-                "ajax": {
-                    "data": {
-                        "accion": "listarUsuarios"
-                    },
-                    "url": "conexion/consultasSQL.php",
-                    "type": "post",
-                    "error": function(jqXHR, textStatus, errorThrown) {
-                        $('#estatus' + campo).html("");
-                        if (jqXHR.status === 0) {
-                            alert('No conectado, verifique su red.');
-                        } else if (jqXHR.status == 404) {
-                            alert('Pagina no encontrada [404]');
-                        } else if (jqXHR.status == 500) {
-                            alert('Internal Server Error [500].');
-                        } else if (textStatus === 'parsererror') {
-                            alert('Falló la respuesta.');
-                        } else if (textStatus === 'timeout') {
-                            alert('Se acabó el tiempo de espera.');
-                        } else if (textStatus === 'abort') {
-                            alert('Conexión abortada.');
-                        } else {
-                            alert('Error: ' + jqXHR.responseText);
-                        }
-                    }
-                },
-                "columns": [{
-                        "data": "clave",
-                        "width": "50px"
-                    },
-                    {
-                        "data": "ap",
-                        "width": "100px"
-                    },
-                    {
-                        "data": "am",
-                        "width": "100px"
-                    },
-                    {
-                        "data": "nombre",
-                        "width": "150px"
-                    },
-                    {
-                        "data": "correo",
-                        "width": "100px"
-                    },
-                    {
-                        "data": "firma",
-                        "orderable": false
-                    },
-                    {
-                        "data": "roles",
-                        "orderable": false
-                    },
-                    {
-                        "data": "acciones",
-                        "orderable": false
-                    }
-                ]
-            });
 
             //Al presionar el boton de crear, se debe limpiar el formulario y sus campos, dejarlos en blanco
             $("#botonCrear").click(function() {

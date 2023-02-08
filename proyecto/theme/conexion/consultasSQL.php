@@ -291,20 +291,23 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 }
 
                 //Una vez guardada la imagen, almacenar el nuevo usuario y el nombre de la imagen en la base de datos
+                //Tambien almacenar y gurdar los roles que se hayan elegido
                 $sql = "INSERT INTO docentes (cat_Clave, cat_ApePat, cat_ApeMat, cat_Nombre, cat_CorreoE, firma)
                             VALUES (:clave, :ap, :am, :nombre, :correo, :firma)";
                 $params = [
-                    'clave' => $_POST['inputClave'],
-                    'ap' => $_POST['inputAp'],
-                    'am' => $_POST['inputAm'],
-                    'nombre' => $_POST['inputNombre'],
-                    'correo' => $_POST['inputCorreo'],
-                    'firma' => $imagen
+                    ':clave' => $_POST['inputClave'],
+                    ':ap' => $_POST['inputAp'],
+                    ':am' => $_POST['inputAm'],
+                    ':nombre' => $_POST['inputNombre'],
+                    ':correo' => $_POST['inputCorreo'],
+                    ':firma' => $imagen
                 ];
-                echo $connSQL->preparedInsert($sql, $params);
-                
+                $connSQL->addUsuarioRoles($sql, $params, json_decode($_POST['idRoles']));
+                echo 'Usuario registrado correctamente.';
             } else if ($_POST["operacion"] === "Actualizar") {
+
             }
+
             break;
     }
 }

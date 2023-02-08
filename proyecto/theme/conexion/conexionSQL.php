@@ -136,11 +136,41 @@ class connSQL {
 	}
 
 
-	public function addUsuarioRoles($sql1, $params1, $sql2, $params2, $idRoles) {
+	//Metodo para insertar un nuevo usuario y sus roles si es que así se requiere
+	public function addUsuarioRoles($sqlUsuario, $paramsUsuario, $idRoles) {
 		try{
+			$this->dbh->beginTransaction();
+
+			//Preparar la sentencia para agregar un nuevo registro de usuario
+			$query = $this->dbh->prepare($sqlUsuario);
+			$query->execute($paramsUsuario);
+
+			//Una vez generado, obtener cual fue el ultimo ID de usuario generado
+			$insertId = $this->dbh->lastInsertId();
+
+			//Ahora, agregar la cantidad de roles que el usuario haya elegido
+			$paramRoles = [];
+			if(count($idRoles) > 0) {
+				//Generar los parametros para la segunda inserción preparada
+				foreach($idRoles as $value) {
+					$paramRoles[] = [
+						':cat_id' => $insertId,
+						':id_rol' => $value
+					];
+				}
+
+				$query2 = $this->dbh->prepare("INSERT INTO docente_rol (cat_ID, id_rol) VALUES (:cat_id, :id_rol)");
+				foreach($paramRoles as $row) {
+					$query2->execute($row);
+				}
+			}
+
+			$this->dbh->commit();
 
 		} catch(PDOException $e) {
-
+			$this->dbh->rollBack();
+			print "Error!: " . $e->getMessage();
+			die();
 		}
 	}
 }
