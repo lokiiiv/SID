@@ -218,8 +218,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             //Mostrar la respuesta conforme a los requerimientos de Datatables
             $salida = [
                 "draw" => intval($_POST["draw"]),
-                "recordsTotal" => intval(count($usuarios)),
-                "recordsFiltered" => intval($total[0]['cant']),
+                "recordsTotal" => intval($total[0]['cant']),
+                "recordsFiltered" => intval(count($usuarios)),
                 "data" => $final_data
             ];
             echo json_encode($salida);
@@ -268,12 +268,14 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             echo json_encode($roles, JSON_UNESCAPED_UNICODE);
             break;
 
+
             //Listar los roles de manera general
         case 'listarRolesGeneral':
             $sql = "SELECT * FROM rol";
             $roles = $connSQL->preparedQuery($sql);
             echo json_encode($roles);
             break;
+
 
         case 'crearActualizarUsuario':
             //Verificar que operacion es, si crear o actualizar
@@ -304,8 +306,36 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 ];
                 $connSQL->addUsuarioRoles($sql, $params, json_decode($_POST['idRoles']));
                 echo 'Usuario registrado correctamente.';
-            } else if ($_POST["operacion"] === "Actualizar") {
 
+            } else if ($_POST["operacion"] === "Actualizar") {
+                //Verificar si el usuario ha elegido subir una nueva firma para actualizar sus datos
+                $imagen = "";
+                if($_FILES["inputFirma"]["name"] != "") {
+                    //Si decide subir una imagen, subirla y guardar su nombre en la base de datos
+                    //Si el usuario ya tiene imagen de firma, solo actualizar el archivo eliminando el anterior
+
+                    //Generar un nuevo nombre de la imagen y almacenar la misma en el servidor
+                    if (isset($_FILES["inputFirma"])) {
+                        $extension = explode('.', $_FILES["inputFirma"]["name"]);
+                        $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . $extension[1];
+                        $ubicacion = "./../img/firmas/" . $imagen;
+
+                        //si el usuario ya tiene la imagen de su firma
+                        if(isset($_POST["imagen_firma_oculta"])){
+                            if($_POST["imagen_firma_oculta"] != "") {
+                                unlink("./../img/firmas/" . $_POST["imagen_firma_oculta"]);
+                                move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
+                            } else {
+                                move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
+                            }
+                        }
+                    }
+                } else {
+                    //si no se elgie actualiza o subir una nueva firma, dejar el valor con el valor que tenia siempre
+                    $imagen = $_POST["imagen_firma_oculta"];
+                }
+
+                //Actualizar los datos del usuario
             }
 
             break;

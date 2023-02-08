@@ -393,6 +393,7 @@ require_once '../../valida.php';
                             alertify.message('<h3>' + response + '</h3>');
                             $("#formAddEdit").trigger('reset');
                             $("#modalAddEdit").modal('hide');
+                            //Recargar la tabla nuevamente
                             tableUsuarios.ajax.reload();
                         }
                     }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -542,8 +543,8 @@ require_once '../../valida.php';
                         $("#modalAddEdit #inputCorreo").val(resp['correo']);
                         $("#modalAddEdit #imagen_subida").html(resp['firma']);
 
-                        $("#modalAddEdit #contenedor-roles").html("");
                         //Obtener una lista de los roles disponibles para mostrarlos en el modal
+                        $("#modalAddEdit #contenedor-roles").html("");
                         $.ajax({
                             data: {
                                 "accion": "listarRolesGeneral"
