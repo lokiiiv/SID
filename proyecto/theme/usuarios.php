@@ -443,6 +443,11 @@ require_once '../../valida.php';
                 $("#operacion").val("Crear");
                 $("#imagen_subida").html("");
 
+                //Eliminar las propiedades de onclick de los checkbox, debido a que solo se usan cuando se quiere actualizar
+                $("#contenedor-roles input[type='checkbox']").each(function() {
+                    $(this).removeAttr("onclick");
+                });
+
                 $("#modalAddEdit #contenedor-roles").html("");
                 //Obtener una lista de los roles disponibles para mostrarlos en el modal
                 $.ajax({
