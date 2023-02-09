@@ -216,15 +216,18 @@ require_once '../../valida.php';
     <script src="datatables/Responsive-2.4.0/js/responsive.bootstrap4.min.js"></script>
 
     <script>
+        var tableUsuarios;
+
         $(document).ready(function() {
 
+            var idUser;
             //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
             var parametros = {
                 "accion": "listarUsuarios",
             };
             //La carga de los datos de esta tabla se realiza de manera ServerSide, es decir
             //cada accion en la tabla como busquedas, ordenamiento, etc, se realizan desde el servidor y no desde el cliente
-            var tableUsuarios = $("#tablaUsuarios").DataTable({
+            tableUsuarios = $("#tablaUsuarios").DataTable({
                 "processing": true,
                 "serverSide": true,
                 "autoWidth": false,
@@ -377,10 +380,13 @@ require_once '../../valida.php';
 
                     //Obtener que una lista de los roles que se le van a asignar al usuario
                     var selectedRoles = [];
-                    $("#contenedor-roles input:checked").each(function(){
+                    $("#contenedor-roles input:checked").each(function() {
                         selectedRoles.push($(this).data('id'));
                     });
                     formData.append('idRoles', JSON.stringify(selectedRoles));
+
+                    //Adjuntar a los datos el id del usuario para usarlo en caso de actualizacion
+                    formData.append('idUser', idUser);
 
                     //Realizar la peticion al servidor
                     $.ajax({
@@ -390,11 +396,17 @@ require_once '../../valida.php';
                         contentType: false,
                         processData: false,
                         success: function(response) {
-                            alertify.message('<h3>' + response + '</h3>');
-                            $("#formAddEdit").trigger('reset');
-                            $("#modalAddEdit").modal('hide');
-                            //Recargar la tabla nuevamente
-                            tableUsuarios.ajax.reload();
+                            var res = JSON.parse(response);
+                            if (res['success']) {
+                                alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                $("#formAddEdit").trigger('reset');
+                                $("#modalAddEdit").modal('hide');
+                                //Recargar la tabla nuevamente
+                                tableUsuarios.ajax.reload();
+                            } else {
+                                alertify.warning('<h3>' + res['mensaje'] + '</h3>');
+                            }
+
                         }
                     }).fail(function(jqXHR, textStatus, errorThrown) {
                         $('#estatus' + campo).html("");
@@ -445,7 +457,7 @@ require_once '../../valida.php';
                         var checkRoles = '';
                         roles.forEach(rol => {
                             checkRoles += '<div class="form-check">' +
-                                '<input class="form-check-input" type="checkbox" value="" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '">' +
+                                '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '">' +
                                 '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' +
                                 rol['descripcion_rol'] +
                                 '</label>' +
@@ -512,8 +524,7 @@ require_once '../../valida.php';
                 e.preventDefault();
 
                 //Obtener el id del usuario el cual esta incrustado en la propiedad data-id del enlace o boton
-                var idUser = $(this).data('id');
-
+                idUser = $(this).data('id');
                 //Ejecutar una petición al servidor para obtener al usuario
                 $.ajax({
                     data: {
@@ -557,7 +568,7 @@ require_once '../../valida.php';
                                 var checkRoles = '';
                                 roles.forEach(rol => {
                                     checkRoles += '<div class="form-check">' +
-                                        '<input class="form-check-input" type="checkbox" value="" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '">' +
+                                        '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '">' +
                                         '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' +
                                         rol['descripcion_rol'] +
                                         '</label>' +
@@ -566,12 +577,21 @@ require_once '../../valida.php';
                                 });
                                 $("#modalAddEdit #contenedor-roles").html(checkRoles);
 
+
+
                                 //Una vez que se muestran, poner como seleccionados aquellos roles que el usuario ya tiene asignados
                                 var roles = JSON.parse(resp['roles']);
                                 roles.forEach(rol => {
                                     //Ir seleccionando los check de los roles conforme al data-id
                                     $("#contenedor-roles .form-check-input[data-id=" + rol['id'] + "]").prop('checked', true);
                                 });
+
+                                //Cuando se va a editar, añadir a los checkbox de roles la propiedad para onchange
+                                //de este modo se puede elegir eliminar o agregar los roles de ese usuario seleccionado
+                                $("#contenedor-roles input[type='checkbox']").each(function() {
+                                    $(this).attr("onclick", "agregarEliminarRol(event, " + idUser + ")");
+                                });
+
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
                             $('#estatus' + campo).html("");
@@ -612,7 +632,122 @@ require_once '../../valida.php';
                     }
                 });
             });
+
+
         });
+
+        function agregarEliminarRol(event, id_user) {
+            //Prevenir el comportamiento por defecto del check, evitando que se marque o desmarque automaticamente
+            event.preventDefault();
+            var checkbox = event.target;
+            var valueCheck = $(checkbox).val();
+            //Verificar si el check esta seleccionado o no
+            if ($(event.target).is(":checked")) {
+                alertify.confirm("¿Estpa seguro de agregar el rol " + valueCheck + "?",
+                    function() {
+                        //Obtener el id del rol del checkbox incrustado en la propiedad data del checkbox
+                        var rolSeleccionado = $(checkbox).data('id');
+                        $.ajax({
+                            data: {
+                                "accion": "agregarRolDeUsuario",
+                                "idUser": id_user,
+                                'idRol': rolSeleccionado
+                            },
+                            url: "conexion/consultasSQL.php",
+                            type: "post",
+                            success: function(respuesta) {
+                                var res = JSON.parse(respuesta);
+                                if (res['success']) {
+                                    alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                    //Poner el checkbox como seleccionado
+                                    $(checkbox).prop('checked', true);
+                                    $("#modalAddEdit").modal('hide');
+                                    tableUsuarios.ajax.reload();
+                                } else {
+                                    alertify.warning('<h4>' + res['mensaje'] + '</h3>')
+                                }
+
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            $('#estatus' + campo).html("");
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                    },
+                    function() {
+
+                    }
+                ).set('labels', {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                });
+            } else {
+                alertify.confirm("¿Está seguro de eliminar el rol " + valueCheck + "?",
+                    function() {
+                        //Obtener el id del rol del checkbox incrustado en la propiedad data del checkbox
+                        var rolSeleccionado = $(checkbox).data('id');
+                        $.ajax({
+                            data: {
+                                "accion": "eliminarRolDeUsuario",
+                                "idUser": id_user,
+                                'idRol': rolSeleccionado
+                            },
+                            url: "conexion/consultasSQL.php",
+                            type: "post",
+                            success: function(respuesta) {
+                                var res = JSON.parse(respuesta);
+                                if (res['success']) {
+                                    alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                    //Poner el checkbox como no seleccionado
+                                    $(checkbox).prop('checked', false);
+                                    $("#modalAddEdit").modal('hide');
+                                    tableUsuarios.ajax.reload();
+                                } else {
+                                    alertify.warning('<h4>' + res['mensaje'] + '</h3>')
+                                }
+
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            $('#estatus' + campo).html("");
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                    },
+                    function() {
+
+                    }
+                ).set('labels', {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                });
+            }
+        }
     </script>
 
 </body>

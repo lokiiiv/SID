@@ -135,6 +135,45 @@ class connSQL {
 		}
 	}
 
+	public function preparedUpdate($sql, $params = []) {
+		try{
+			$query = $this->dbh->prepare($sql);
+			foreach($params as $key => $value) {
+				if(is_int($value)) { 		$param = PDO::PARAM_INT; }
+				elseif(is_bool($value)) { 	$param = PDO::PARAM_BOOL; }
+				elseif(is_null($value)) {	$param = PDO::PARAM_NULL; }
+				elseif(is_string($value)) {	$param = PDO::PARAM_STR; }
+				else { $param = FALSE; }
+
+				if($param) $query->bindValue(":$key", $value, $param);
+			}
+			return $query->execute();
+			//return $query->rowCount();
+		} catch(PDOException $e) {
+			print "Error!: " . $e->getMessage();
+			die();
+		}
+	}
+
+	public function preparedDelete($sql, $params = []) {
+		try {
+			$query = $this->dbh->prepare($sql);
+			foreach ($params as $key => $value) {
+				if(is_int($value)) { 		$param = PDO::PARAM_INT; }
+				elseif(is_bool($value)) { 	$param = PDO::PARAM_BOOL; }
+				elseif(is_null($value)) {	$param = PDO::PARAM_NULL; }
+				elseif(is_string($value)) {	$param = PDO::PARAM_STR; }
+				else { $param = FALSE; }
+
+				if($param) $query->bindValue(":$key", $value, $param);
+			}
+			return $query->execute();
+			//return $query->rowCount();
+		} catch(PDOException $e) {
+			print "Error!: " . $e->getMessage();
+			die();
+		}
+	}
 
 	//Metodo para insertar un nuevo usuario y sus roles si es que así se requiere
 	public function addUsuarioRoles($sqlUsuario, $paramsUsuario, $idRoles) {
@@ -167,6 +206,39 @@ class connSQL {
 
 			$this->dbh->commit();
 
+		} catch(PDOException $e) {
+			$this->dbh->rollBack();
+			print "Error!: " . $e->getMessage();
+			die();
+		}
+	}
+
+	public function updateUsuarioRoles($sqlUsuario, $paramsUsuario, $sqlRoles, $paramsRoles, $idRoles) {
+		try {
+			$this->dbh->beginTransaction();
+
+			//Preparar la sentencia para actualizar un usuario existente
+			//$query = $this->dbh->prepare($sqlUsuario);
+			//$query->execute($paramsUsuario);
+
+			//Una vez actualizado, proceder a actualizar sus roles si es necesario
+			//Obtener cuales son los roles del usuario que se quiere actualizar
+			$query2 = $this->dbh->prepare($sqlRoles);
+			$query2->execute($paramsRoles);
+			$roles = $query2->fetchAll(PDO::FETCH_COLUMN, 0);
+			//Si exiten roles asociados al usuario, verificar que roles hay que agregar o quitar conforme a los que el usuario seleccione
+			
+			if(count($idRoles) > 0) {
+				foreach($idRoles as $rolElegido) {
+					if(in_array($rolElegido, $roles)) { 
+						echo 'Rol: ' . $rolElegido . ' se encuentro dentro de la lista de roles del usuario.'; 
+					} else {
+						echo 'Rol: ' . $rolElegido . ' no se encuentro dentro de la lista de roles del usuario.'; 
+					}
+				}
+			}
+
+			$this->dbh->commit();
 		} catch(PDOException $e) {
 			$this->dbh->rollBack();
 			print "Error!: " . $e->getMessage();

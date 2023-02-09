@@ -279,65 +279,174 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
         case 'crearActualizarUsuario':
             //Verificar que operacion es, si crear o actualizar
-            if ($_POST["operacion"] === "Crear") {
-                //Verificar si al crear usuario se ha elegido subir el archivo de la firma
-                $imagen = "";
-                if ($_FILES["inputFirma"]["name"] != "") {
-                    //Generar un nuevo nombre de la imagen y almacenar la misma en el servidor
-                    if (isset($_FILES["inputFirma"])) {
-                        $extension = explode('.', $_FILES["inputFirma"]["name"]);
-                        $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . $extension[1];
-                        $ubicacion = "./../img/firmas/" . $imagen;
-                        move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
-                    }
-                }
+            if (isset($_POST['operacion']) && isset($_POST['inputClave']) && isset($_POST['inputAp']) && isset($_POST['inputAm']) && isset($_POST['inputNombre']) && isset($_POST['inputCorreo'])) {
 
-                //Una vez guardada la imagen, almacenar el nuevo usuario y el nombre de la imagen en la base de datos
-                //Tambien almacenar y gurdar los roles que se hayan elegido
-                $sql = "INSERT INTO docentes (cat_Clave, cat_ApePat, cat_ApeMat, cat_Nombre, cat_CorreoE, firma)
-                            VALUES (:clave, :ap, :am, :nombre, :correo, :firma)";
-                $params = [
-                    ':clave' => $_POST['inputClave'],
-                    ':ap' => $_POST['inputAp'],
-                    ':am' => $_POST['inputAm'],
-                    ':nombre' => $_POST['inputNombre'],
-                    ':correo' => $_POST['inputCorreo'],
-                    ':firma' => $imagen
-                ];
-                $connSQL->addUsuarioRoles($sql, $params, json_decode($_POST['idRoles']));
-                echo 'Usuario registrado correctamente.';
+                if ($_POST["operacion"] === "Crear") {
 
-            } else if ($_POST["operacion"] === "Actualizar") {
-                //Verificar si el usuario ha elegido subir una nueva firma para actualizar sus datos
-                $imagen = "";
-                if($_FILES["inputFirma"]["name"] != "") {
-                    //Si decide subir una imagen, subirla y guardar su nombre en la base de datos
-                    //Si el usuario ya tiene imagen de firma, solo actualizar el archivo eliminando el anterior
-
-                    //Generar un nuevo nombre de la imagen y almacenar la misma en el servidor
-                    if (isset($_FILES["inputFirma"])) {
-                        $extension = explode('.', $_FILES["inputFirma"]["name"]);
-                        $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . $extension[1];
-                        $ubicacion = "./../img/firmas/" . $imagen;
-
-                        //si el usuario ya tiene la imagen de su firma
-                        if(isset($_POST["imagen_firma_oculta"])){
-                            if($_POST["imagen_firma_oculta"] != "") {
-                                unlink("./../img/firmas/" . $_POST["imagen_firma_oculta"]);
-                                move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
-                            } else {
+                    //Primero verificar que no exista un usuario con un correo ya existente al que se desea ingresar
+                    $sql = "SELECT cat_CorreoE FROM docentes WHERE cat_CorreoE = :correo";
+                    $correo = $connSQL->singlePreparedQuery($sql, ['correo' => $_POST['inputCorreo']]);
+                    if ($correo) {
+                        echo json_encode(['success' => false, 'mensaje' => 'Ya existe un usuario con el correo indicado']);
+                        //echo "Ya existe un usuario con el correo indicado.";
+                        die();
+                    } else {
+                        //Verificar si al crear usuario se ha elegido subir el archivo de la firma
+                        $imagen = "";
+                        if (isset($_FILES["inputFirma"])) {
+                            //Generar un nuevo nombre de la imagen y almacenar la misma en el servidor
+                            if ($_FILES["inputFirma"]["name"] != "") {
+                                $extension = explode('.', $_FILES["inputFirma"]["name"]);
+                                $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . $extension[1];
+                                $ubicacion = "./../img/firmas/" . $imagen;
                                 move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
                             }
                         }
-                    }
-                } else {
-                    //si no se elgie actualiza o subir una nueva firma, dejar el valor con el valor que tenia siempre
-                    $imagen = $_POST["imagen_firma_oculta"];
-                }
 
-                //Actualizar los datos del usuario
+                        //Una vez guardada la imagen, almacenar el nuevo usuario y el nombre de la imagen en la base de datos
+                        //Tambien almacenar y gurdar los roles que se hayan elegido
+                        $sql = "INSERT INTO docentes (cat_Clave, cat_ApePat, cat_ApeMat, cat_Nombre, cat_CorreoE, firma)
+                                VALUES (:clave, :ap, :am, :nombre, :correo, :firma)";
+                        $params = [
+                            ':clave' => $_POST['inputClave'],
+                            ':ap' => $_POST['inputAp'],
+                            ':am' => $_POST['inputAm'],
+                            ':nombre' => $_POST['inputNombre'],
+                            ':correo' => $_POST['inputCorreo'],
+                            ':firma' => $imagen
+                        ];
+                        $connSQL->addUsuarioRoles($sql, $params, json_decode($_POST['idRoles']));
+                        echo json_encode(['success' => true, 'mensaje' => 'Ya existe un usuario con el correo indicado']);
+                        //echo 'Usuario registrado correctamente.';
+                    }
+                } else if ($_POST["operacion"] === "Actualizar") {
+
+                    //Primero, obtener la informacion del usuario a actualizar
+                    $sql = "SELECT * FROM docentes WHERE cat_ID = :idUser";
+                    $usuario = $connSQL->singlePreparedQuery($sql, ['idUser' => $_POST['idUser']]);
+                    if ($usuario) {
+                        $correo = "";
+                        $imagen = "";
+                        //Verificar si el correo del usuario a actualizar coincide con el que se quiere actualizar
+                        if ($usuario['cat_CorreoE'] == $_POST['inputCorreo']) {
+                            //Si este es el caso, entonces el usuario no ha elegido modificar su correo
+                            $correo = $usuario['cat_CorreoE'];
+                        } else {
+                            //Es probable que el usuario eliga actualizar el correo de alguien
+                            //Por lo tanto verificar que el nuevo correo no existan en la base de datos, es decir, no haya un usuario con el correo existente
+                            $sql = "SELECT cat_CorreoE FROM docentes WHERE cat_CorreoE = :correo";
+                            $correo = $connSQL->singlePreparedQuery($sql, ['correo' => $_POST['inputCorreo']]);
+                            if ($correo) {
+                                echo json_encode(['success' => false, 'mensaje' => 'Ya existe un usuario con el correo que está intentando actualizar.']);
+                                //echo "Ya existe un usuario con el correo que está intentado actualizar.";
+                                die();
+                            } else {
+                                //En caso contrario, proceder a registrar el correo que quiere actualizar del usuario
+                                $correo = $_POST['inputCorreo'];
+                            }
+                        }
+
+                        //Verificar si el usuario ha elegido subir una nueva firma para actualizar sus datos
+                        if (isset($_FILES["inputFirma"])) {
+                            //Si decide subir una imagen, subirla y guardar su nombre en la base de datos
+                            //Si el usuario ya tiene imagen de firma, solo actualizar el archivo eliminando el anterior
+
+                            //Generar un nuevo nombre de la imagen y almacenar la misma en el servidor
+                            if ($_FILES["inputFirma"]["name"] != "") {
+                                $extension = explode('.', $_FILES["inputFirma"]["name"]);
+                                $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . $extension[1];
+                                $ubicacion = "./../img/firmas/" . $imagen;
+
+                                //si el usuario ya tiene la imagen de su firma
+                                if (isset($_POST["imagen_firma_oculta"])) {
+                                    if ($_POST["imagen_firma_oculta"] != "") {
+                                        unlink("./../img/firmas/" . $_POST["imagen_firma_oculta"]);
+                                        move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
+                                    } else {
+                                        move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
+                                    }
+                                }
+                            } else {
+                                //si no se elige actualiza o subir una nueva firma, dejar el valor con el valor que tenia siempre
+                                $imagen = $_POST["imagen_firma_oculta"];
+                            }
+                        } 
+                        
+                        //Si todas las comprobaciones estan bien, proceder a actualizar los datos del usuario y en su caso sus roles si es necesario
+                        $sql = "UPDATE docentes 
+                                SET cat_Clave = :clave, cat_ApePat = :ap, cat_ApeMat = :am, cat_Nombre = :nombre, cat_CorreoE = :correo, firma = :firma
+                                WHERE cat_ID = :idUser";
+                        $params = [
+                            'clave' => $_POST['inputClave'],
+                            'ap' => $_POST['inputAp'],
+                            'am' => $_POST['inputAm'],
+                            'nombre' => $_POST['inputNombre'],
+                            'correo' => $_POST['inputCorreo'],
+                            'firma' => $imagen,
+                            'idUser' => $_POST['idUser']
+                        ];
+
+                        $res = $connSQL->preparedUpdate($sql, $params);
+                        if($res) {
+                            echo json_encode(['success' => true, 'mensaje' => 'Usuario actualizado correctamente.']);
+                            //echo 'Usuario actualizado correctamente.';
+                        } else {
+                            echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar el usuario.']);
+                            //echo 'Error al actualizar al usuario';
+                        }
+                        
+                        //Consulta y parametros para obtener los roles actuales del usuario
+                        //$sql2 = "SELECT id_rol FROM docente_rol WHERE cat_ID = :idUser";
+                        //$params2 = [':idUser' => $_POST['idUser']];
+
+                        //$connSQL->updateUsuarioRoles($sql, $params, $sql2, $params2, json_decode($_POST['idRoles']));
+                        //echo 'Usuario registrado correctamente.';
+
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
+                        //echo "Usuario no encontrado.";
+                        die();
+                    }
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+                //echo 'Ingrese todos los datos requeridos';
+            }
+        break;
+
+        case 'eliminarRolDeUsuario': 
+            if(isset($_POST['idUser']) && isset($_POST['idRol'])) {
+                $sql = "DELETE FROM docente_rol WHERE cat_ID = :idUser AND id_rol = :idRol";
+                $params = ['idUser' => $_POST['idUser'], 'idRol' => $_POST['idRol']];
+
+                $res = $connSQL->preparedDelete($sql, $params);
+                if($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Rol eliminado correctamente.']);
+                    //echo 'Rol eliminado correctamente.';
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el rol.']);
+                    //echo 'Error al eliminar el rol.';
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
 
-            break;
+        break;
+
+        case 'agregarRolDeUsuario' :
+            if(isset($_POST['idUser']) && isset($_POST['idRol'])) {
+                $sql = "INSERT INTO docente_rol (cat_ID, id_rol) VALUES (:idUser, :idRol)";
+                $params = ['idUser' => $_POST['idUser'], 'idRol' => $_POST['idRol']];
+
+                $res = $connSQL->preparedInsert($sql, $params);
+                if($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Rol agregado correctamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al agregar el rol.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
+        break;
     }
 }
