@@ -62,7 +62,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>DATOS FALTANTES LISTA</title>
-	<link href="../../../theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container" style="width: 100%;">
