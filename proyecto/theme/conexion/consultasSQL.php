@@ -370,8 +370,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                                 //si no se elige actualiza o subir una nueva firma, dejar el valor con el valor que tenia siempre
                                 $imagen = $_POST["imagen_firma_oculta"];
                             }
-                        } 
-                        
+                        }
+
                         //Si todas las comprobaciones estan bien, proceder a actualizar los datos del usuario y en su caso sus roles si es necesario
                         $sql = "UPDATE docentes 
                                 SET cat_Clave = :clave, cat_ApePat = :ap, cat_ApeMat = :am, cat_Nombre = :nombre, cat_CorreoE = :correo, firma = :firma
@@ -387,14 +387,14 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                         ];
 
                         $res = $connSQL->preparedUpdate($sql, $params);
-                        if($res) {
+                        if ($res) {
                             echo json_encode(['success' => true, 'mensaje' => 'Usuario actualizado correctamente.']);
                             //echo 'Usuario actualizado correctamente.';
                         } else {
                             echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar el usuario.']);
                             //echo 'Error al actualizar al usuario';
                         }
-                        
+
                         //Consulta y parametros para obtener los roles actuales del usuario
                         //$sql2 = "SELECT id_rol FROM docente_rol WHERE cat_ID = :idUser";
                         //$params2 = [':idUser' => $_POST['idUser']];
@@ -412,15 +412,15 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
                 //echo 'Ingrese todos los datos requeridos';
             }
-        break;
+            break;
 
-        case 'eliminarRolDeUsuario': 
-            if(isset($_POST['idUser']) && isset($_POST['idRol'])) {
+        case 'eliminarRolDeUsuario':
+            if (isset($_POST['idUser']) && isset($_POST['idRol'])) {
                 $sql = "DELETE FROM docente_rol WHERE cat_ID = :idUser AND id_rol = :idRol";
                 $params = ['idUser' => $_POST['idUser'], 'idRol' => $_POST['idRol']];
 
                 $res = $connSQL->preparedDelete($sql, $params);
-                if($res) {
+                if ($res) {
                     echo json_encode(['success' => true, 'mensaje' => 'Rol eliminado correctamente.']);
                     //echo 'Rol eliminado correctamente.';
                 } else {
@@ -431,15 +431,15 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
 
-        break;
+            break;
 
-        case 'agregarRolDeUsuario' :
-            if(isset($_POST['idUser']) && isset($_POST['idRol'])) {
+        case 'agregarRolDeUsuario':
+            if (isset($_POST['idUser']) && isset($_POST['idRol'])) {
                 $sql = "INSERT INTO docente_rol (cat_ID, id_rol) VALUES (:idUser, :idRol)";
                 $params = ['idUser' => $_POST['idUser'], 'idRol' => $_POST['idRol']];
 
                 $res = $connSQL->preparedInsert($sql, $params);
-                if($res) {
+                if ($res) {
                     echo json_encode(['success' => true, 'mensaje' => 'Rol agregado correctamente.']);
                 } else {
                     echo json_encode(['success' => false, 'mensaje' => 'Error al agregar el rol.']);
@@ -447,6 +447,35 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
-        break;
+            break;
+
+        case 'eliminarUsuario':
+            if (isset($_POST['idUser'])) {
+
+                //Primero hay que obtener el nombre de la imagen que guarda su firma para poder eliminarlo posteriormente
+                $sql = "SELECT firma FROM docentes WHERE cat_ID = :idUser";
+                $correo = $connSQL->singlePreparedQuery($sql, ['idUser' => $_POST['idUser']]);
+                $firma = "";
+                if ($correo) {
+                    $firma = $correo['firma'];
+                } 
+
+                //Eliminar la imagen de su firma si es que existe
+                if($firma != "") {
+                    unlink("./../img/firmas/" . $firma);
+                }
+
+                $sql = "DELETE FROM docentes WHERE cat_ID = :idUser";
+                $params = ['idUser' => $_POST['idUser']];
+                $res = $connSQL->preparedDelete($sql, $params);
+                if ($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Usuario eliminado existosamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar al usuario']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+            }
+            break;
     }
 }

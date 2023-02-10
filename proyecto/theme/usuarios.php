@@ -510,9 +510,44 @@ require_once '../../valida.php';
                     alertify.error("<h3>No puedes eliminarte en este momento, tienes la sesión activa.</h3>");
                 } else {
                     var nombreCompleto = fila.find('td:eq(1)').text() + " " + fila.find('td:eq(2)').text() + " " + fila.find('td:eq(3)').text();
-                    alertify.confirm("Aviso", "¿Esta seguro(a) de eliminar al usuario " + nombreCompleto + "?",
+                    alertify.confirm("Aviso", "¿Esta seguro(a) de eliminar al usuario " + nombreCompleto + "? Está acción no es reversible.",
                         function() {
+                            $.ajax({
+                                data: {
+                                    accion: 'eliminarUsuario',
+                                    idUser: idUser
+                                },
+                                url: 'conexion/consultasSQL.php',
+                                type: "post",
+                                success: function(response) {
+                                    //Obtener los roles que existen en el sistema y mostrarlos en forma de Checkbox
+                                    var res = JSON.parse(response);
+                                    if (res['success']) {
+                                        alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                        tableUsuarios.ajax.reload();
+                                    } else {
+                                        alertify.warning('<h3>' + res['mensaje'] + '</h3>')
+                                    }
 
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                $('#estatus' + campo).html("");
+                                if (jqXHR.status === 0) {
+                                    alert('No conectado, verifique su red.');
+                                } else if (jqXHR.status == 404) {
+                                    alert('Pagina no encontrada [404]');
+                                } else if (jqXHR.status == 500) {
+                                    alert('Internal Server Error [500].');
+                                } else if (textStatus === 'parsererror') {
+                                    alert('Falló la respuesta.');
+                                } else if (textStatus === 'timeout') {
+                                    alert('Se acabó el tiempo de espera.');
+                                } else if (textStatus === 'abort') {
+                                    alert('Conexión abortada.');
+                                } else {
+                                    alert('Error: ' + jqXHR.responseText);
+                                }
+                            });
                         },
                         function() {
 
@@ -669,7 +704,7 @@ require_once '../../valida.php';
                                     $("#modalAddEdit").modal('hide');
                                     tableUsuarios.ajax.reload();
                                 } else {
-                                    alertify.warning('<h4>' + res['mensaje'] + '</h3>')
+                                    alertify.warning('<h3>' + res['mensaje'] + '</h3>')
                                 }
 
                             }
