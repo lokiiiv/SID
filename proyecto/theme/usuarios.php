@@ -683,7 +683,7 @@ require_once '../../valida.php';
             var valueCheck = $(checkbox).val();
             //Verificar si el check esta seleccionado o no
             if ($(event.target).is(":checked")) {
-                alertify.confirm("¿Estpa seguro de agregar el rol " + valueCheck + "?",
+                alertify.confirm("Aviso", "¿Estpa seguro de agregar el rol " + valueCheck + "?",
                     function() {
                         //Obtener el id del rol del checkbox incrustado en la propiedad data del checkbox
                         var rolSeleccionado = $(checkbox).data('id');
@@ -735,7 +735,7 @@ require_once '../../valida.php';
                     cancel: 'Cancelar'
                 });
             } else {
-                alertify.confirm("¿Está seguro de eliminar el rol " + valueCheck + "?",
+                alertify.confirm("Aviso", "¿Está seguro de eliminar el rol " + valueCheck + "?",
                     function() {
                         //Obtener el id del rol del checkbox incrustado en la propiedad data del checkbox
                         var rolSeleccionado = $(checkbox).data('id');

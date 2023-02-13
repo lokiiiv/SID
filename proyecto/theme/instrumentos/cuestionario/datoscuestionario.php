@@ -105,12 +105,12 @@ $num = $num - 2;
 					<div class="row mt-4" style="text-align: left;">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="row">
-								<div class="col-md-10 col-xs-10 col-sm-12 col-lg-10">
+								<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
 									<div class="form-group">
 										<h3>Preguntas de relacionar</h3>
 									</div>
 								</div>
-								<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2  d-flex justify-content-center align-items-center">
+								<div class="col-md-1 col-xs-1 col-sm-11 col-lg-1  d-flex justify-content-center align-items-center">
 									<div class="form-group">
 										<button id="agregar" type="button" class="btn btn-primary">
 											<i class="fa-solid fa-plus"></i>
@@ -120,7 +120,7 @@ $num = $num - 2;
 							</div>
 						</div>
 					</div>
-					<div class="row" id="minimos">
+					<div class="row mb-3" id="minimos">
 
 					</div>
 
@@ -135,7 +135,7 @@ $num = $num - 2;
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-10 col-xs-10 col-sm-12 col-lg-10">
+								<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
 									<form class="form-inline">
 										<div class="form-group mb-2">
 											<label for="mps" class="mr-3">Ingrese el número máximo de respuestas: </label>
@@ -143,7 +143,7 @@ $num = $num - 2;
 										</div>
 									</form>
 								</div>
-								<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-center align-items-center">
+								<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 d-flex justify-content-center align-items-center">
 									<div class="form-group">
 										<button id="agregar2" type="button" class="btn btn-primary">
 											<i class="fa-solid fa-plus"></i>
@@ -160,12 +160,12 @@ $num = $num - 2;
 					<div class="row mt-4" style="text-align: left;">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="row">
-								<div class="col-md-10 col-xs-10 col-sm-12 col-lg-10">
+								<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
 									<div class="form-group">
 										<h3>Preguntas de verdadero-falso</h3>
 									</div>
 								</div>
-								<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2  d-flex justify-content-center align-items-center">
+								<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 d-flex justify-content-center align-items-center">
 									<div class="form-group">
 										<button id="agregar3" type="button" class="btn btn-primary">
 											<i class="fa-solid fa-plus"></i>
@@ -208,27 +208,27 @@ $num = $num - 2;
 				$("#agregar").click(function() {
 					var botoncerrar = '<button type="button" class="btn btn-danger float-right" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
 					var texto2 = '<?php echo $INDALC; ?>';
-					var texto = '<div class="col-lg-4 col-sm-4 col-md-4 mb-4">' +
-						'<div class="form-group" style="text-align: start;"> ' +
-						'<label>Pregunta:</label>' +
-						'<input class="form-control" type="text"> ' +
-						'</div>' +
-						'<div class="form-group" style="text-align: start;">' +
-						'<label>Respuesta:</label>' +
-						'<input  onkeyup="funckp(event,this)" class="form-control">' +
-						'</div>' +
-						'<div class="form-group" style="text-align: start;">' +
-						'<label>Puntaje:</label>' +
-						'<input  type="number"  class="form-control">' +
-						'</div>' +
-						'<div class="form-group" style="text-align: start;">' +
-						'<label>Indicador:</label>' +
-						texto2 +
-						'</div>' +
-						'<div class="form-group">' +
-						botoncerrar +
-						'</div>' +
-						'</div>';
+					var texto = '<div class="col-lg-4 col-sm-12 col-md-6">' +
+									'<div class="form-group" style="text-align: start;"> ' +
+										'<label>Pregunta:</label>' +
+										'<input class="form-control" type="text"> ' +
+									'</div>' +
+									'<div class="form-group" style="text-align: start;">' +
+										'<label>Respuesta:</label>' +
+										'<input  onkeyup="funckp(event,this)" class="form-control">' +
+									'</div>' +
+									'<div class="form-group" style="text-align: start;">' +
+										'<label>Puntaje:</label>' +
+										'<input  type="number"  class="form-control">' +
+									'</div>' +
+									'<div class="form-group" style="text-align: start;">' +
+										'<label>Indicador:</label>' +
+										texto2 +
+									'</div>' +
+									'<div class="form-group">' +
+										botoncerrar +
+									'</div>' +
+								'</div>';
 					$("#minimos").append(texto);
 
 
@@ -268,7 +268,7 @@ $num = $num - 2;
 							'</div>' +
 							'</div>' +
 							'<div class="row">' +
-							'<div class="col-lg-10 col-sm-10 col-md-12">' +
+							'<div class="col-lg-11 col-sm-11 col-md-12">' +
 							'<div class="form-group">' +
 							'<input placeholder="Ingrese la pregunta" class="form-control">' +
 							'</div>' +
@@ -280,7 +280,7 @@ $num = $num - 2;
 							'</div>' +
 							texto3 +
 							'</div>' +
-							'<div class="col-lg-2 col-sm-2 col-md-12 d-flex justify-content-center align-items-center">' +
+							'<div class="col-lg-1 col-sm-1 col-md-12 d-flex justify-content-center align-items-center">' +
 							botoncerrar +
 							'</div>' +
 							'</div>' +
@@ -295,7 +295,7 @@ $num = $num - 2;
 					var botoncerrar = '<button type="button" class="btn btn-danger float-right" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
 					var fv = '<select class="form-control"><option selected>V</option><option>F</option></select>';
 					var texto2 = '<?php echo $INDALC; ?>';
-					var texto = '<div class="col-lg-4 col-sm-4 col-md-4 mb-4">' +
+					var texto = '<div class="col-lg-4 col-sm-4 col-md-6 mb-4">' +
 						'<div class="form-group" style="text-align: start;">' +
 						'<label>Pregunta</label>' +
 						'<input class="form-control" type="text">' +
@@ -385,7 +385,6 @@ $num = $num - 2;
 				$.post("conexion/consultasNoSQL.php", parametros, function(x) {
 					if (x != "") {
 						v = JSON.parse(x);
-						console.log(v);
 
 						//alert(instrumento+(cual-2));
 						var cadA = "";
@@ -413,7 +412,7 @@ $num = $num - 2;
 							var textoind = indicadoresselect(i);
 							var texto2 = textoind;
 							//var texto = '<div class="form-group"><div class="col-lg-4 col-sm-4 col-md-4"><input title="' + p + '" class="form-control" value="' + p + '"></div><div class="col-lg-3 col-sm-3 col-md-3"><input  onkeyup="funckp(event,this)" class="form-control"  value="' + r + '"></div><div class="col-lg-2 col-sm-2 col-md-2"><input  class="form-control" type="number" value="' + v2 + '"></div><div class="col-lg-2 col-sm-2 col-md-2">' + texto2 + '</div>' + botoncerrar + '</div>';
-							var texto = '<div class="col-lg-4 col-sm-4 col-md-4 mb-4">' +
+							var texto = '<div class="col-lg-4 col-sm-12 col-md-6">' +
 								'<div class="form-group" style="text-align: start;"> ' +
 								'<label>Pregunta:</label>' +
 								'<input class="form-control" type="text" title="' + p + '" value="' + p + '"> ' +
@@ -477,13 +476,13 @@ $num = $num - 2;
 								var h1 = pregs[j + 1];
 								var h11 = "";
 								//alert(h1);
-								if (h1 == "true") {
+								if (r1 == "true") {
 									h11 = "checked";
 								}
 
 								//texto3 = texto3 + '<div class="col-lg-' + cal + ' col-sm-' + cal + ' col-md-' + cal + '"><input placeholder="Respuesta ' + (i + 1) + '" value="' + r1 + '" class="form-control"><input type="checkbox" ' + h11 + '></div>';
 
-								texto3 = texto3 + '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" ' + h11 + '></div></div><input placeholder="Respuesta ' + (i + 1) + '" value="' + r1 + '" class="form-control" type="text"></div>';
+								texto3 = texto3 + '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" ' + h11 + '></div></div><input placeholder="Respuesta ' + (i + 1) + '" value="' + h1 + '" class="form-control" type="text"></div>';
 
 
 							}
@@ -506,7 +505,7 @@ $num = $num - 2;
 											'</div>' +
 										'</div>' +
 										'<div class="row">' +
-											'<div class="col-lg-10 col-sm-10 col-md-12">' +
+											'<div class="col-lg-11 col-sm-11 col-md-12">' +
 												'<div class="form-group">' + 
 												 	'<input title="' + pr + '" placeholder="Ingrese la pregunta" class="form-control" value="' + pr + '">' +
 												'</div>' +
@@ -518,7 +517,7 @@ $num = $num - 2;
 												'</div>' +
 												texto3 +
 											'</div>' +
-											'<div class="col-lg-2 col-sm-2 col-md-12 d-flex justify-content-center align-items-center">' +
+											'<div class="col-lg-1 col-sm-1 col-md-12 d-flex justify-content-center align-items-center">' +
 												botoncerrar +
 											'</div>' +
 										'</div>' +
@@ -547,7 +546,7 @@ $num = $num - 2;
 							var texto2 = textoind;
 							//var texto = '<div class="form-group"><div class="col-lg-4 col-sm-4 col-md-4"><input class="form-control"  title="' + p + '" value="' + p + '"></div><div class="col-lg-3 col-sm-3 col-md-3">' + fv + '</div><div class="col-lg-2 col-sm-2 col-md-2"><input  type="number"  class="form-control"  value="' + pfv + '"></div><div class="col-lg-2 col-sm-2 col-md-2">' + texto2 + '</div>' + botoncerrar + '</div>';
 
-							var texto = '<div class="col-lg-4 col-sm-4 col-md-4 mb-4">' + 
+							var texto = '<div class="col-lg-4 col-sm-4 col-md-6 mb-4">' + 
 									'<div class="form-group" style="text-align: start;">' +
 										'<label>Pregunta</label>' +
 										'<input class="form-control" type="text" title="' + p + '" value="' + p + '">' +
@@ -780,6 +779,7 @@ $num = $num - 2;
 							//alert(x);
 							var textoeh = "";
 							var xx = JSON.parse(x);
+							
 							//var xxx=Object.keys(xx);
 							$("#eliginstru").empty();
 							for (key in xx) {
