@@ -1856,7 +1856,7 @@ require_once("../../valida.php");
                           }
                         </script>
 
-                        <table class="table table-hover text-justify">
+                        <table class="table table-hover text-justify" style="width: 100%;">
                           <thead>
                             <tr>
                               <th class="text-center"><h6>Indicador</h6></th>
@@ -2319,7 +2319,7 @@ require_once("../../valida.php");
                         </script>
 
                         <div style="overflow-x:auto;">
-                          <table id="matrizEvaluacion" class="table table-hover text-justify">
+                          <table id="matrizEvaluacion" class="table table-hover text-justify" style="width: 100%;">
                             <thead>
                               <tr>
                                 <td colspan="2" class="text-center">
@@ -2712,7 +2712,7 @@ require_once("../../valida.php");
 
 
                         <div style="overflow-x:auto;">
-                          <table id="tablaFechas" class="table table-hover">
+                          <table id="tablaFechas" class="table table-hover" style="width: 100%">
                             <thead>
                               <tr>
                                 <th class="text-center"><h6>Grupo</h6></th>
@@ -2749,7 +2749,7 @@ require_once("../../valida.php");
                         <div class="dividerM" style="margin-bottom: 15px"></div>
 
                         <div style="overflow-x:auto;">
-                          <table class="table table-hover">
+                          <table class="table table-hover" style="width: 100%;">
                             <thead>
                               <tr>
                                 <th>Semana</th>
@@ -2828,7 +2828,7 @@ require_once("../../valida.php");
                       <br>
                       <div id="otrosdatos">
                         <h2>Otros grupos</h2>
-                        <table id="tablaFechasNM" class="table table-hover">
+                        <table id="tablaFechasNM" class="table table-hover" style="width: 100%;">
                           <thead>
                             <tr>
                               <th class="text-center"><h6>Grupo</h6></th>
@@ -2898,7 +2898,7 @@ require_once("../../valida.php");
                       </div>
                       <div id="collapseThirteen" class="collapse" aria-labelledby="headingThirteen" data-parent="#accordion">
                         <div class="panel-body">
-                          <table class="table table-hover" id="tablaFuentes">
+                          <table class="table table-hover" id="tablaFuentes" style="width: 100%;">
                             <thead>
                               <tr>
                                 <th>
