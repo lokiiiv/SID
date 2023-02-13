@@ -251,7 +251,9 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 } else {
                     $usuario['firma'] = '<input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">';
                 }
-                echo json_encode($usuario);
+                echo json_encode(['success' => true, 'data' => $usuario]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
             }
 
             break;
@@ -265,13 +267,63 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                         GROUP BY r.id_rol
                         ORDER BY r.id_rol ASC";
             $roles = $connSQL->preparedQuery($sql);
-            echo json_encode($roles, JSON_UNESCAPED_UNICODE);
+
+            $final_data = [];
+            foreach ($roles as $rol) {
+                $acciones = '<div class="row">' .
+                    '<div class="btn-group" style="margin: 0 auto;">' .
+                    '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+                    'Acciones' .
+                    '</button>' .
+                    '<div class="dropdown-menu">' .
+                    '<a class="dropdown-item editar" href="" data-id="' . $rol['id_rol'] . '">Editar</a>' .
+                    '<a class="dropdown-item eliminar" href="" data-id="' . $rol['id_rol'] . '">Eliminar</a>' .
+                    '</div>' .
+                    '</div>' .
+                    '</div>';
+
+                $final_data[] = [
+                    'id_rol' => $rol['id_rol'],
+                    'nombre_rol' => $rol['nombre_rol'],
+                    'descripcion_rol' => $rol['descripcion_rol'],
+                    'permisos' => $rol['permisos'],
+                    'acciones' => $acciones
+                ];
+            }
+
+            echo json_encode($final_data, JSON_UNESCAPED_UNICODE);
             break;
 
+            //Método para obtener un solo rol a través de su ID
+        case 'listarRolById':
+            $idRol = $_POST['idRol'];
+
+            $sql = "SELECT r.*, IF(p.id_permiso IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', p.id_permiso, 'descripcion', p.descripcion_permiso)), ']'), '[]') AS permisos
+                    FROM rol r
+                    LEFT JOIN rol_permisos rp ON r.id_rol = rp.id_rol
+                    LEFT JOIN permisos p ON p.id_permiso = rp.id_permiso
+                    WHERE r.id_rol = :idRol
+                    GROUP BY r.id_rol";
+
+            $rol = $connSQL->singlePreparedQuery($sql, ['idRol' => $idRol]);
+            if (!empty($rol)) {
+                echo json_encode(['success' => true, 'data' => $rol]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Rol no encontrado.']);
+            }
+
+            break;
 
             //Listar los roles de manera general
         case 'listarRolesGeneral':
             $sql = "SELECT * FROM rol";
+            $roles = $connSQL->preparedQuery($sql);
+            echo json_encode($roles);
+            break;
+
+                //Listar los permisos de manera general
+        case 'listarPermisosGeneral':
+            $sql = "SELECT * FROM permisos";
             $roles = $connSQL->preparedQuery($sql);
             echo json_encode($roles);
             break;
@@ -458,10 +510,10 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 $firma = "";
                 if ($correo) {
                     $firma = $correo['firma'];
-                } 
+                }
 
                 //Eliminar la imagen de su firma si es que existe
-                if($firma != "") {
+                if ($firma != "") {
                     unlink("./../img/firmas/" . $firma);
                 }
 
@@ -476,6 +528,24 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
             }
+            break;
+
+
+        case 'crearActualizarRol':
+
+            //Verificar que operacion es, si crear o actualizar
+            if (isset($_POST['operacion']) && isset($_POST['nombreRol'])) {
+
+                if ($_POST["operacion"] === "Crear") {
+
+                } else if ($_POST["operacion"] === "Actualizar") {
+
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+                //echo 'Ingrese todos los datos requeridos';
+            }
+
             break;
     }
 }

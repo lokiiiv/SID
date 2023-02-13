@@ -25,6 +25,9 @@ require_once '../../valida.php';
     <!-- Favicon -->
     <link rel="shortcut icon" href="img/favicon/favicon.png">
 
+    <!-- Font awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Datatables -->
     <link rel="stylesheet" href="datatables/datatables.min.css">
     <link rel="stylesheet" href="datatables/DataTables-1.13.1/css/dataTables.bootstrap4.min.css">
@@ -57,14 +60,18 @@ require_once '../../valida.php';
             <div class="row" style="margin-top: 25px;">
                 <h4 style="padding-left:15px;">Roles registrados en el sistema</h4>
             </div>
+            <div class="row">
+                <div class="col-md-12 mt-2">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit" id="botonCrear">Crear <i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
             <div class="row" style="margin-top: 25px;">
                 <div class="col-md-12">
-                    <table id="tablaUsuarios" class="table table-hover" style="margin-top: 30px;">
+                    <table id="tablaRoles" class="table table-hover" style="margin-top: 30px;">
                         <thead>
                             <tr>
                                 <th class="text-center">ID</th>
-                                <th class="text-center">Nombre en el sistema</th>
-                                <th class="text-center">Descripción</th>
+                                <th class="text-center">Nombre</th>
                                 <th class="text-center">Permisos</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
@@ -74,7 +81,69 @@ require_once '../../valida.php';
                     </table>
                 </div>
             </div>
-                
+
+            <!-- Modal para editar y registrar un nuevo rol -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="modalAddEdit">
+                <div class="modal-dialog" role="document">
+                    <form method="POST" id="formAddEdit">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h6>Información general</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="inputAp">Nombre del rol</label>
+                                            <input type="text" class="form-control" id="nombreRol" name="nombreRol" placeholder="Ingrese el nombre del rol">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <h6>Asignación de permisos</h6>
+                                                    <small id="rolHelp" class="form-text text-muted" style="font-size: 13px;">¿No ve el permiso que necesita? <a href="permisos.php">Click aqui para administrar permisos</a></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div id="contenedor-permisos">
+                                                        <!-- Aqui se llenaran los roles conforme a la base de datos !-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="id_usuario" id="id_usuario">
+                                <input type="hidden" name="operacion" id="operacion">
+                                <button type="submit" class="btn btn-success" name="action" id="action">Aceptar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <br>
@@ -95,22 +164,26 @@ require_once '../../valida.php';
     <script src="js/custom.js"></script>
     <script src="alertify/alertify.min.js"></script>
 
+    <script src="js/jquery.validate.min.js"></script>
+
     <script src="datatables/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="datatables/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
     <script src="datatables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
     <script src="datatables/Responsive-2.4.0/js/responsive.bootstrap4.min.js"></script>
-    
+
     <script>
-        $(document).ready(function(){
+        var tableRoles;
+
+        $(document).ready(function() {
             //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
             var parametros = {
                 "accion": "listarRoles",
             };
-            var tableUsuarios = $("#tablaUsuarios").DataTable({
+            tableRoles = $("#tablaRoles").DataTable({
                 "autoWidth": false,
                 "responsive": true,
                 "ajax": {
-                    "data" : {
+                    "data": {
                         "accion": "listarRoles"
                     },
                     "url": "conexion/consultasSQL.php",
@@ -135,10 +208,14 @@ require_once '../../valida.php';
                         }
                     }
                 },
-                "columns": [
-                    {"data": "id_rol", "width": "50px"},
-                    {"data": "nombre_rol", "width": "90px"},
-                    {"data": "descripcion_rol", "width": "100px"},
+                "columns": [{
+                        "data": "id_rol",
+                        "width": "50px"
+                    },
+                    {
+                        "data": "descripcion_rol",
+                        "width": "100px"
+                    },
                     {
                         "data": "permisos",
                         "render": function(data, type, row, meta) {
@@ -146,11 +223,11 @@ require_once '../../valida.php';
                             var roles = JSON.parse(data);
                             var vista = '';
                             //Si si tiene roles, entonces mostrarlos
-                            if(roles.length > 0) {
+                            if (roles.length > 0) {
                                 roles.forEach(val => {
                                     vista += '<div class="row" style="padding:1px;">' +
-                                                '<span class="badge badge-primary" style="font-size:11px;margin: auto;">' + val['descripcion'] + '</span>' +
-                                            '</div>';
+                                        '<span class="badge badge-primary" style="font-size:11px;margin: auto;">' + val['descripcion'] + '</span>' +
+                                        '</div>';
                                 });
                                 return vista;
                             } else {
@@ -159,20 +236,222 @@ require_once '../../valida.php';
                             }
                         }
                     },
-                    {"defaultContent": '<div class="row"><div class="btn-group" style="margin: 0 auto;">' + 
-                                            '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                                                'Acciones'+
-                                            '</button>' +
-                                            '<div class="dropdown-menu">' +
-                                                '<a class="dropdown-item" href="">Editar</a>' +
-                                                '<a class="dropdown-item" href="">Eliminar</a>' +
-                                            '</div>' +
-                                        '</div></div>',
+                    {
+                        "data": "acciones",
                         "width": "200px"
                     }
                 ]
             });
+
+            //Validación del formulario para agregar/editar roles
+            var validate = $("#formAddEdit").validate({
+                rules: {
+                    nombreRol: {
+                        required: true,
+                        normalizer: function(value) {
+                            return $.trim(value);
+                        },
+                        minlength: 4
+                    }
+                },
+                messages: {
+                    nombreRol: {
+                        required: "Se requiere el nombre del rol.",
+                        minlength: "Ingrese un nombre más largo."
+                    }
+                },
+                errorElement: "span",
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form, event) {
+                    event.preventDefault();
+                }
+            });
+
+            //Realizar las siguientes acciones al dar click en el boton de agregar nuevo rol
+            $("#botonCrear").click(function() {
+                //Resetar el formulario para el validador de JQuery
+                validate.resetForm();
+                $("#formAddEdit").find('.is-invalid').removeClass('is-invalid'); //Remover las clases is-invalid para que no se vean los campos en rojo
+
+                $("#modalAddEdit #formAddEdit").trigger('reset')
+                $("#modalAddEdit .modal-title").text('Crear rol');
+                //Se asigna el valor de "Crear" dentro de un input type hiden
+                $("#action").val("Crear");
+                $("#operacion").val("Crear");
+
+                //Eliminar las propiedades de onclick de los checkbox, debido a que solo se usan cuando se quiere actualizar
+                $("#contenedor-permisos input[type='checkbox']").each(function() {
+                    $(this).removeAttr("onclick");
+                });
+
+                $("#modalAddEdit #contenedor-permisos").html("");
+                //Obtener una lista de los permisos disponibles para mostrarlos en el modal
+                $.ajax({
+                    data: {
+                        "accion": "listarPermisosGeneral"
+                    },
+                    url: "conexion/consultasSQL.php",
+                    type: "post",
+                    success: function(response) {
+                        //Obtener los permisos que existen en el sistema y mostrarlos en forma de Checkbox
+                        var permisos = JSON.parse(response);
+                        var checkPermisos = '';
+                        permisos.forEach(permiso => {
+                            checkPermisos += '<div class="form-check">' +
+                                '<input class="form-check-input" type="checkbox" value="' + permiso['descripcion_permiso'] + '" id="permiso_' + permiso['id_permiso'] + '" data-id="' + permiso['id_permiso'] + '">' +
+                                '<label class="form-check-label" for="permiso_' + permiso['id_permiso'] + '">' +
+                                permiso['descripcion_permiso'] +
+                                '</label>' +
+                                '</div>' +
+                                '</div>';
+                        });
+                        $("#modalAddEdit #contenedor-permisos").html(checkPermisos);
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    $('#estatus' + campo).html("");
+                    if (jqXHR.status === 0) {
+                        alert('No conectado, verifique su red.');
+                    } else if (jqXHR.status == 404) {
+                        alert('Pagina no encontrada [404]');
+                    } else if (jqXHR.status == 500) {
+                        alert('Internal Server Error [500].');
+                    } else if (textStatus === 'parsererror') {
+                        alert('Falló la respuesta.');
+                    } else if (textStatus === 'timeout') {
+                        alert('Se acabó el tiempo de espera.');
+                    } else if (textStatus === 'abort') {
+                        alert('Conexión abortada.');
+                    } else {
+                        alert('Error: ' + jqXHR.responseText);
+                    }
+                });
+            });
+
+            //Acciones para modificar el rol
+            $(document).on('click', '.editar', function(e) {
+                e.preventDefault();
+
+                //Obtener la información del rol a eliminar a través del ID
+                var idRol = $(this).data('id');
+
+                $.ajax({
+                    data: {
+                        "accion": "listarRolById",
+                        "idRol": idRol
+                    },
+                    url: "conexion/consultasSQL.php",
+                    type: "post",
+                    success: function(respuesta) {
+                        var resp = JSON.parse(respuesta);
+                        if (resp['success']) {
+                            resp = resp['data'];
+
+                            //Resetar la validacion del formulario y limpiar errores por si es necesario
+                            validate.resetForm(); //Resetar el validador de campos
+                            $("#formAddEdit").find('.is-invalid').removeClass('is-invalid'); //Remover las clases is-invalid para que no se evan los campos en rojo
+
+                            //Definir el el submit del formulario con un valor de actualizar
+                            $("#action").val("Actualizar");
+                            $("#operacion").val("Actualizar");
+
+                            //Abrir el modal y mostrar los valores del rol en los inputs correspondientes
+                            $("#modalAddEdit").modal('show');
+                            $("#modalAddEdit .modal-title").text("Editar rol");
+                            $("#modalAddEdit #nombreRol").val(resp['descripcion_rol']);
+
+                            //Obtener una lista de los permisos disponibles para mostrarlos en el modal
+                            $("#modalAddEdit #contenedor-permisos").html("");
+                            $.ajax({
+                                data: {
+                                    "accion": "listarPermisosGeneral"
+                                },
+                                "url": "conexion/consultasSQL.php",
+                                "type": "post",
+                                success: function(response) {
+                                    //Obtener los roles que existen en el sistema y mostrarlos en forma de Checkbox
+                                    var permisos = JSON.parse(response);
+                                    var checkPermisos = '';
+                                    permisos.forEach(permiso => {
+                                        checkPermisos += '<div class="form-check">' +
+                                            '<input class="form-check-input" type="checkbox" value="' + permiso['descripcion_permiso'] + '" id="permiso_' + permiso['id_permiso'] + '" data-id="' + permiso['id_permiso'] + '">' +
+                                            '<label class="form-check-label" for="permiso_' + permiso['id_permiso'] + '">' +
+                                            permiso['descripcion_permiso'] +
+                                            '</label>' +
+                                            '</div>' +
+                                            '</div>';
+                                    });
+                                    $("#modalAddEdit #contenedor-permisos").html(checkPermisos);
+
+                                    //Una vez que se muestran, poner como seleccionados aquellos permisos que el usuario ya tiene asignados
+                                    var permisos = JSON.parse(resp['permisos']);
+                                    permisos.forEach(permiso => {
+                                        //Ir seleccionando los check de los permisos conforme al data-id
+                                        $("#contenedor-permisos .form-check-input[data-id=" + permiso['id'] + "]").prop('checked', true);
+                                    });
+
+                                    //Cuando se va a editar, añadir a los checkbox de permisos la propiedad para onchange
+                                    //de este modo se puede elegir eliminar o agregar los permisos de ese rol seleccionado
+                                    $("#contenedor-permisos input[type='checkbox']").each(function() {
+                                        $(this).attr("onclick", "agregarEliminarPermiso(event, " + idRol + ")");
+                                    });
+
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                $('#estatus' + campo).html("");
+                                if (jqXHR.status === 0) {
+                                    alert('No conectado, verifique su red.');
+                                } else if (jqXHR.status == 404) {
+                                    alert('Pagina no encontrada [404]');
+                                } else if (jqXHR.status == 500) {
+                                    alert('Internal Server Error [500].');
+                                } else if (textStatus === 'parsererror') {
+                                    alert('Falló la respuesta.');
+                                } else if (textStatus === 'timeout') {
+                                    alert('Se acabó el tiempo de espera.');
+                                } else if (textStatus === 'abort') {
+                                    alert('Conexión abortada.');
+                                } else {
+                                    alert('Error: ' + jqXHR.responseText);
+                                }
+                            });
+                        } else {
+                            alertify.warning(resp['mensaje']);
+                        }
+                    }
+
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    $('#estatus' + campo).html("");
+                    if (jqXHR.status === 0) {
+                        alert('No conectado, verifique su red.');
+                    } else if (jqXHR.status == 404) {
+                        alert('Pagina no encontrada [404]');
+                    } else if (jqXHR.status == 500) {
+                        alert('Internal Server Error [500].');
+                    } else if (textStatus === 'parsererror') {
+                        alert('Falló la respuesta.');
+                    } else if (textStatus === 'timeout') {
+                        alert('Se acabó el tiempo de espera.');
+                    } else if (textStatus === 'abort') {
+                        alert('Conexión abortada.');
+                    } else {
+                        alert('Error: ' + jqXHR.responseText);
+                    }
+                });
+            })
         });
+
+        function agregarEliminarPermiso(event, id_rol) {
+            
+        }
     </script>
 
 </body>
