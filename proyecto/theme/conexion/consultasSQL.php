@@ -543,7 +543,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     $connSQL->addRolesPermisos($sql, $params, json_decode($permisos));
                     echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
                 } else if ($_POST["operacion"] === "Actualizar") {
-                    
+
                     $nombre = mb_strtolower(preg_replace('/\s+/', '_', $_POST['inputRol']), 'UTF-8');
                     $descripcion = $_POST['inputRol'];
                     $idRol = $_POST['idRol'];
@@ -566,6 +566,41 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
 
+            break;
+
+        case 'eliminarPermisoDeRol':
+            if (isset($_POST['idRol']) && isset($_POST['idPermiso'])) {
+                $sql = "DELETE FROM rol_permisos WHERE id_rol = :idRol AND id_permiso = :idPermiso";
+                $params = ['idRol' => $_POST['idRol'], 'idPermiso' => $_POST['idPermiso']];
+
+                $res = $connSQL->preparedDelete($sql, $params);
+                if ($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Permiso eliminado correctamente.']);
+                    //echo 'Rol eliminado correctamente.';
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el permiso.']);
+                    //echo 'Error al eliminar el rol.';
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
+
+            break;
+
+        case 'agregarPermisoDeRol':
+            if (isset($_POST['idRol']) && isset($_POST['idPermiso'])) {
+                $sql = "INSERT INTO rol_permisos (id_rol, id_permiso) VALUES (:idRol, :idPermiso)";
+                $params = ['idRol' => $_POST['idRol'], 'idPermiso' => $_POST['idPermiso']];
+
+                $res = $connSQL->preparedInsert($sql, $params);
+                if ($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Permiso agregado correctamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al agregar el permiso.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
             break;
 
         case 'eliminarRol':

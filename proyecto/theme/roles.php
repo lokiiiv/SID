@@ -236,11 +236,11 @@ require_once '../../valida.php';
                             var vista = '';
                             //Si si tiene roles, entonces mostrarlos
                             if (roles.length > 0) {
+                                vista += '<div class="row" style="padding:1px;"><div style="margin: 0 auto;">';
                                 roles.forEach(val => {
-                                    vista += '<div class="row" style="padding:1px;">' +
-                                        '<span class="badge badge-primary" style="font-size:11px;margin: auto;">' + val['descripcion'] + '</span>' +
-                                        '</div>';
+                                    vista += '<span class="badge badge-primary" style="font-size:11px; margin: 2px;">' + val['descripcion'] + '</span>';        
                                 });
+                                vista += '</div></div>';
                                 return vista;
                             } else {
                                 vista = '<div class="row"><p style="margin: auto;">Sin permisos.</p></div>'
@@ -258,7 +258,7 @@ require_once '../../valida.php';
             //Validación del formulario para agregar/editar roles
             var validate = $("#formAddEdit").validate({
                 rules: {
-                    nombreRol: {
+                    inputRol: {
                         required: true,
                         normalizer: function(value) {
                             return $.trim(value);
@@ -267,7 +267,7 @@ require_once '../../valida.php';
                     }
                 },
                 messages: {
-                    nombreRol: {
+                    inputRol: {
                         required: "Se requiere el nombre del rol.",
                         minlength: "Ingrese un nombre más largo."
                     }
@@ -533,7 +533,7 @@ require_once '../../valida.php';
                             type: 'post',
                             success: function(response) {
                                 var res = JSON.parse(response);
-                                if(res['success']) {
+                                if (res['success']) {
                                     alertify.success('<h3>' + res['mensaje'] + '</h3>');
                                     tableRoles.ajax.reload();
                                 } else {
@@ -570,7 +570,115 @@ require_once '../../valida.php';
         });
 
         function agregarEliminarPermiso(event, id_rol) {
+            event.preventDefault();
 
+            var checkbox = event.target;
+            var valueCheck = $(checkbox).val();
+            var isChecked = $(checkbox).is(':checked');
+            if (isChecked) {
+                alertify.confirm("Aviso", "¿Está seguro(a) de agregar el rol " + valueCheck + "?",
+                    function() {
+                        var permisoSeleccionado = $(checkbox).data('id');
+                        //Peticion para agregar el permiso seleccionado al rol
+                        $.ajax({
+                            data: {
+                                accion: 'agregarPermisoDeRol',
+                                idRol: id_rol,
+                                idPermiso: permisoSeleccionado
+                            },
+                            url: 'conexion/consultasSQL.php',
+                            type: 'post',
+                            success: function(response) {
+                                var res = JSON.parse(response);
+                                if(res['success']) {
+                                    alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                    //Poner el checkbox como seleccionado
+                                    $(checkbox).prop('checked', true);
+                                    //$("#modalAddEdit").modal('hide');
+                                    tableRoles.ajax.reload();
+                                } else {
+                                    alertify.warning('<h3>' + res['mensaje'] + '</h3>');
+                                }
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            $('#estatus' + campo).html("");
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                        
+                    },
+                    function() {
+
+                    }
+                ).set('labels', {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                });
+            } else {
+                alertify.confirm("Aviso", "¿Está seguro(a) de eliminar el rol " + valueCheck + "?",
+                    function() {
+                        //Peticion para eliminar el permiso seleccionado al rol
+                        var permisoSeleccionado = $(checkbox).data('id');
+                        $.ajax({
+                            data: {
+                                accion: 'eliminarPermisoDeRol',
+                                idRol: id_rol,
+                                idPermiso: permisoSeleccionado
+                            },
+                            url: 'conexion/consultasSQL.php',
+                            type: 'post',
+                            success: function(response) {
+                                var res = JSON.parse(response);
+                                if(res['success']) {
+                                    alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                    //Poner el checkbox como seleccionado
+                                    $(checkbox).prop('checked', false);
+                                    //$("#modalAddEdit").modal('hide');
+                                    tableRoles.ajax.reload();
+                                } else {
+                                    alertify.warning('<h3>' + res['mensaje'] + '</h3>');
+                                }
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            $('#estatus' + campo).html("");
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                    },
+                    function() {
+
+                    }
+                ).set('labels', {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                });
+            }
         }
     </script>
 
