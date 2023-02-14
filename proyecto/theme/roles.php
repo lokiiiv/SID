@@ -246,11 +246,13 @@ require_once '../../valida.php';
                                 vista = '<div class="row"><p style="margin: auto;">Sin permisos.</p></div>'
                                 return vista;
                             }
-                        }
+                        },
+                        "orderable": false
                     },
                     {
                         "data": "acciones",
-                        "width": "200px"
+                        "width": "200px",
+                        "orderable": false
                     }
                 ]
             });

@@ -110,7 +110,7 @@ require_once("../../valida.php");
                             </tr>
                         </tbody>
                     </table>
-                    
+
                 </div>
             </div>
 
@@ -158,12 +158,25 @@ require_once("../../valida.php");
                     "language": {
                         "url": "datatables/es-ES.json"
                     },
-                    "columns": [
-                        {"width": "80px"},
-                        {"width": "300px"},
-                        {"width": "50px"},
-                        {"width": "80px"},
-                        {"width": "50px"}
+                    "columns": [{
+                            "width": "80px",
+                            "orderable": false
+                        },
+                        {
+                            "width": "300px"
+                        },
+                        {
+                            "width": "50px",
+                            "orderable": false
+                        },
+                        {
+                            "width": "80px",
+                            "orderable": false
+                        },
+                        {
+                            "width": "50px",
+                            "orderable": false
+                        }
                     ]
                 });
 
@@ -230,7 +243,7 @@ require_once("../../valida.php");
         function crearInstrumentacion(boton) {
 
             var fila = $(boton).closest('tr');
-            if(fila.hasClass('child')) {
+            if (fila.hasClass('child')) {
                 fila = fila.prev();
             }
 
@@ -389,7 +402,7 @@ require_once("../../valida.php");
         function abrirFAC14(boton) {
 
             var fila = $(boton).closest('tr');
-            if(fila.hasClass('child')) {
+            if (fila.hasClass('child')) {
                 fila = fila.prev();
             }
 
@@ -403,7 +416,7 @@ require_once("../../valida.php");
         function editarInstrumentacion(boton) {
 
             var fila = $(boton).closest('tr');
-            if(fila.hasClass('child')) {
+            if (fila.hasClass('child')) {
                 fila = fila.prev();
             }
 
@@ -411,7 +424,7 @@ require_once("../../valida.php");
             var cantTemas = fila.find('td:eq(2) input').val();
             var select = document.getElementById("selectPeriodo");
             var periodo = select.options[select.selectedIndex].value;
-            
+
 
             window.location = "contenido.php?grupo=" + encodeURIComponent(grupo) + "&p=" + encodeURIComponent(periodo) + "&temas=" + encodeURIComponent(cantTemas);
 
@@ -464,19 +477,19 @@ require_once("../../valida.php");
         function borrar(x, boton) {
             //Si el boton de eliminar al buscar el tr padre tiene como clase 'child' es por que se aplico el responsive en datatable
             var fila = $(boton).closest('tr');
-            if(fila.hasClass('child')) {
+            if (fila.hasClass('child')) {
                 fila = fila.prev();
             }
 
             //Al borrar, mostrar el mensaje de alerta de eliminacion solamente cuando la instrumentacion ya esta creada
-            if(typeof(fila.find('td:eq(3) .btn-info')[0]) === "undefined") {
+            if (typeof(fila.find('td:eq(3) .btn-info')[0]) === "undefined") {
                 alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la instrumentación del grupo(s) " + fila.find('td:eq(0) input').val() + " seleccionado?",
-                    function(){
+                    function() {
                         var grupo = fila.find('td:eq(0) input').val();
                         var materia = fila.find('td:eq(1) h6').text();
                         var select = document.getElementById("selectPeriodo");
                         var periodo = select.options[select.selectedIndex].value;
-                        
+
                         var parametros = {
                             "accion": "borrarInstrumentacion",
                             "grupo": grupo,
@@ -508,10 +521,13 @@ require_once("../../valida.php");
                             }
                         });
                     },
-                    function(){
+                    function() {
 
                     }
-                ).set('labels', {ok: 'Aceptar', cancel: 'Cancelar'});
+                ).set('labels', {
+                    ok: 'Aceptar',
+                    cancel: 'Cancelar'
+                });
             } else {
                 //Si aún no esta creada la instrumentacion, proceder a eliminar la fila automaticamente
                 tablaInstrumentaciones.row(fila).remove().draw();
@@ -573,7 +589,7 @@ require_once("../../valida.php");
         function buscarMateria(input) {
 
             var fila = $(input).closest('tr');
-            if(fila.hasClass('child')) {
+            if (fila.hasClass('child')) {
                 fila = fila.prev();
             }
 
