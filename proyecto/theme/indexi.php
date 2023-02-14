@@ -155,7 +155,8 @@ require_once("../../valida.php");
                     "orderable": false
                 },
                 {
-                    "width": "300px"
+                    "width": "300px",
+                    "orderable": false
                 },
                 {
                     "width": "50px",
