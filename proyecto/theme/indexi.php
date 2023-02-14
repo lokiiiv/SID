@@ -90,7 +90,7 @@ require_once("../../valida.php");
                     </button>
                 </div>
                 <div class="col-md-12">
-                    <table id="tablaInstrumentaciones" class="table table-hover" style="margin-top: 30px; padding-left:15px; padding-right:15px" width="100%">
+                    <table id="tablaInstrumentaciones" class="table table-hover">
                         <thead>
                             <tr>
                                 <th class="text-center">Grupo</th>
@@ -142,6 +142,31 @@ require_once("../../valida.php");
 
     <script>
         var tablaInstrumentaciones = null;
+        tablaInstrumentaciones = $("#tablaInstrumentaciones").DataTable({
+            "autoWidth": false,
+            "bDestroy": true,
+            "responsive": true,
+            "language": {
+                "url": "datatables/es-ES.json"
+            },
+            "columns": [{
+                    "width": "80px"
+                },
+                {
+                    "width": "300px"
+                },
+                {
+                    "width": "50px"
+                },
+                {
+                    "width": "80px"
+                },
+                {
+                    "width": "50px"
+                }
+            ]
+        });
+
         $(document).ready(function() {
             ocultar_mostrar(0);
         });
@@ -151,30 +176,6 @@ require_once("../../valida.php");
                 ocultar_mostrar(1);
                 var tabla = document.getElementById("tablaInstrumentaciones");
 
-                tablaInstrumentaciones = $("#tablaInstrumentaciones").DataTable({
-                    "autoWidth": false,
-                    "bDestroy": true,
-                    "responsive": true,
-                    "language": {
-                        "url": "datatables/es-ES.json"
-                    },
-                    "columns": [{
-                            "width": "80px"
-                        },
-                        {
-                            "width": "300px"
-                        },
-                        {
-                            "width": "50px"
-                        },
-                        {
-                            "width": "80px"
-                        },
-                        {
-                            "width": "50px"
-                        }
-                    ]
-                });
 
                 //var l = tabla.rows.length;
                 //for (var i = 1; i < l; i++) {
@@ -448,7 +449,7 @@ require_once("../../valida.php");
 
             //Agregar la nueva fila usando el plugin de Datatables
             tablaInstrumentaciones.row.add([
-                "<input " + estatus + " onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria(this); value='" + grupo + "'>",
+                "<input " + estatus + " class='form-control' onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria(this); value='" + grupo + "'>",
                 "<h6>" + mater + "</h6>",
                 "<input " + estatus + "  class='form-control text-center' max=8 min=1 type='number' value=" + temas + ">",
                 boton,
