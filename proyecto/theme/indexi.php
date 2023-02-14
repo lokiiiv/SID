@@ -84,7 +84,7 @@ require_once("../../valida.php");
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 25px;" id="tabla">
+            <div class="row" style="margin-left: 3px; margin-right: 3px; margin-top: 20px;" id="tabla">
                 <div class="col-md-12 mb-3">
                     <button onclick="agregarInstrumentacion()" align="center" type="button" class="btn btn-success btn-sm">Agregar
                     </button>
