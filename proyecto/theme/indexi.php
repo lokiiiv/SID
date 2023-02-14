@@ -159,23 +159,19 @@ require_once("../../valida.php");
                         "url": "datatables/es-ES.json"
                     },
                     "columns": [{
-                            "width": "80px",
-                            "orderable": false
+                            "width": "80px"
                         },
                         {
                             "width": "300px"
                         },
                         {
-                            "width": "50px",
-                            "orderable": false
+                            "width": "50px"
                         },
                         {
-                            "width": "80px",
-                            "orderable": false
+                            "width": "80px"
                         },
                         {
-                            "width": "50px",
-                            "orderable": false
+                            "width": "50px"
                         }
                     ]
                 });
