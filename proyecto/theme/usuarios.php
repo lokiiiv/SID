@@ -233,6 +233,9 @@ require_once '../../valida.php';
                 "autoWidth": false,
                 "order": [],
                 "responsive": true,
+                "language": {
+                    "url": "datatables/es-ES.json"
+                },
                 "ajax": {
                     "data": {
                         "accion": "listarUsuarios"

@@ -85,6 +85,10 @@ require_once("../../valida.php");
                 </div>
             </div>
             <div class="row" style="margin-top: 25px;" id="tabla">
+                <div class="col-md-12 mb-3">
+                    <button onclick="agregarInstrumentacion()" align="center" type="button" class="btn btn-success btn-sm">Agregar
+                    </button>
+                </div>
                 <div class="col-md-12">
                     <table id="tablaInstrumentaciones" class="table table-hover" style="margin-top: 30px; padding-left:15px; padding-right:15px" width="100%">
                         <thead>
@@ -106,8 +110,7 @@ require_once("../../valida.php");
                             </tr>
                         </tbody>
                     </table>
-                    <button onclick="agregarInstrumentacion()" align="center" type="button" class="btn btn-success btn-sm">Agregar
-                    </button>
+                    
                 </div>
             </div>
 
@@ -152,6 +155,9 @@ require_once("../../valida.php");
                     "autoWidth": false,
                     "bDestroy": true,
                     "responsive": true,
+                    "language": {
+                        "url": "datatables/es-ES.json"
+                    },
                     "columns": [
                         {"width": "80px"},
                         {"width": "300px"},

@@ -182,6 +182,9 @@ require_once '../../valida.php';
             tableRoles = $("#tablaRoles").DataTable({
                 "autoWidth": false,
                 "responsive": true,
+                "language": {
+                    "url": "datatables/es-ES.json"
+                },
                 "ajax": {
                     "data": {
                         "accion": "listarRoles"
