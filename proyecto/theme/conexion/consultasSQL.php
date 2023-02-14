@@ -109,7 +109,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
 
-        
+
         case 'listarUsuarios':
 
             //AQUI SE REALIZA EL SERVER SIDE DE DATATABLES, es decir, la busqueda, el ordenamiento y la paginacion
@@ -323,7 +323,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             echo json_encode($roles);
             break;
 
-                //Listar los permisos de manera general
+            //Listar los permisos de manera general
         case 'listarPermisosGeneral':
             $sql = "SELECT * FROM permisos";
             $roles = $connSQL->preparedQuery($sql);
@@ -448,7 +448,6 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                             echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar el usuario.']);
                             //echo 'Error al actualizar al usuario';
                         }
-
                     } else {
                         echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
                         //echo "Usuario no encontrado.";
@@ -531,7 +530,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             if (isset($_POST['operacion']) && isset($_POST['inputRol'])) {
                 if ($_POST["operacion"] === "Crear") {
                     //El nombre del rol sera el mismo que ingrese el usuario pero sin espacios remplazandolos por guion bajo
-                    $nombre = preg_replace('/\s+/', '_', $_POST['inputRol']);
+                    $nombre = mb_strtolower(preg_replace('/\s+/', '_', $_POST['inputRol']), 'UTF-8');
                     $descripcion = $_POST['inputRol'];
                     $permisos = $_POST['idPermisos'];
                     //Almacenar el nuevo rol
@@ -543,14 +542,28 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     ];
                     $connSQL->addRolesPermisos($sql, $params, json_decode($permisos));
                     echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
-
                 } else if ($_POST["operacion"] === "Actualizar") {
-
                 }
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
 
+            break;
+
+        case 'eliminarRol':
+            if (isset($_POST['idRol'])) {
+
+                $sql = "DELETE FROM rol WHERE id_rol = :idRol";
+                $params = ['idRol' => $_POST['idRol']];
+                $res = $connSQL->preparedDelete($sql, $params);
+                if ($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Rol eliminado existosamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar al rol.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+            }
             break;
     }
 }

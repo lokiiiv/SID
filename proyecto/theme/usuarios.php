@@ -538,7 +538,7 @@ require_once '../../valida.php';
                                         alertify.success('<h3>' + res['mensaje'] + '</h3>');
                                         tableUsuarios.ajax.reload();
                                     } else {
-                                        alertify.warning('<h3>' + res['mensaje'] + '</h3>')
+                                        alertify.warning('<h3>' + res['mensaje'] + '</h3>');
                                     }
 
                                 }

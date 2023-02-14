@@ -193,10 +193,10 @@ require_once '../../valida.php';
                     "url": "conexion/consultasSQL.php",
                     "type": "post",
                     "dataSrc": function(json) {
-                        if(typeof(json.success) != "undefined") {
-                            if(!json.success) {
+                        if (typeof(json.success) != "undefined") {
+                            if (!json.success) {
                                 alertify.error('<h3 style="color: white;">' + json.mensaje + '</h3>');
-                            } 
+                            }
                         } else {
                             return json;
                         }
@@ -292,7 +292,7 @@ require_once '../../valida.php';
 
                     //Obtener una lista de los permisos que se selccionaron en caso de que se agrege un nuevo rol
                     var selectedPermisos = [];
-                    $("#contenedor-permisos input:checked").each(function(){
+                    $("#contenedor-permisos input:checked").each(function() {
                         selectedPermisos.push($(this).data('id'));
                     });
                     formData.append('idPermisos', JSON.stringify(selectedPermisos));
@@ -308,7 +308,7 @@ require_once '../../valida.php';
                         processData: false,
                         success: function(response) {
                             var res = JSON.parse(response);
-                            if(res['success']) {
+                            if (res['success']) {
                                 alertify.success('<h3>' + res['mensaje'] + '</h3>');
                                 $("#formAddEdit").trigger('reset');
                                 $("#modalAddEdit").modal('hide');
@@ -510,10 +510,67 @@ require_once '../../valida.php';
                     }
                 });
             })
+
+            $(document).on('click', '.eliminar', function(e) {
+                e.preventDefault();
+
+                var fila = $(this).closest('tr');
+                if (fila.hasClass('child')) {
+                    fila = fila.prev();
+                }
+
+                //ID del rol a eliminar
+                var idRol = $(this).data('id');
+                var nombreRol = fila.find('td:eq(1)').text();
+                alertify.confirm("Aviso", "¿Está seguro de eliminar el rol " + nombreRol + "? Si lo hace, los usuarios perderán el rol seleccionado.",
+                    function() {
+                        $.ajax({
+                            data: {
+                                accion: 'eliminarRol',
+                                idRol: idRol
+                            },
+                            url: 'conexion/consultasSQL.php',
+                            type: 'post',
+                            success: function(response) {
+                                var res = JSON.parse(response);
+                                if(res['success']) {
+                                    alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                    tableUsuarios.ajax.reload();
+                                } else {
+                                    alertify.warning('<h3>' + res['mensaje'] + '</h3>');
+                                }
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            $('#estatus' + campo).html("");
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                    },
+                    function() {
+
+                    }
+                ).set("labels", {
+                    ok: "Aceptar",
+                    cancel: "Cancelar"
+                });
+            });
         });
 
         function agregarEliminarPermiso(event, id_rol) {
-            
+
         }
     </script>
 
