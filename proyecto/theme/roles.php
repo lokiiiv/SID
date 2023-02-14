@@ -231,13 +231,13 @@ require_once '../../valida.php';
                     {
                         "data": "permisos",
                         "render": function(data, type, row, meta) {
-                            //Obtener el string del JSON que contiene los roles que tiene el usuario
-                            var roles = JSON.parse(data);
+                            //Obtener el string del JSON que contiene los permisos que tiene el usuario
+                            var permisos = JSON.parse(data);
                             var vista = '';
                             //Si si tiene roles, entonces mostrarlos
-                            if (roles.length > 0) {
+                            if (permisos.length > 0) {
                                 vista += '<div class="row" style="padding:1px;"><div style="margin: 0 auto;">';
-                                roles.forEach(val => {
+                                permisos.forEach(val => {
                                     vista += '<span class="badge badge-primary" style="font-size:11px; margin: 2px;">' + val['descripcion'] + '</span>';        
                                 });
                                 vista += '</div></div>';
