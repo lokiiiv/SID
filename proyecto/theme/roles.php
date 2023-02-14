@@ -535,7 +535,7 @@ require_once '../../valida.php';
                                 var res = JSON.parse(response);
                                 if(res['success']) {
                                     alertify.success('<h3>' + res['mensaje'] + '</h3>');
-                                    tableUsuarios.ajax.reload();
+                                    tableRoles.ajax.reload();
                                 } else {
                                     alertify.warning('<h3>' + res['mensaje'] + '</h3>');
                                 }
