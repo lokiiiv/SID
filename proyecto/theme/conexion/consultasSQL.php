@@ -368,7 +368,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                             ':firma' => $imagen
                         ];
                         $connSQL->addUsuarioRoles($sql, $params, json_decode($_POST['idRoles']));
-                        echo json_encode(['success' => true, 'mensaje' => 'Ya existe un usuario con el correo indicado']);
+                        echo json_encode(['success' => true, 'mensaje' => 'Usuario registrado correctamente.']);
                         //echo 'Usuario registrado correctamente.';
                     }
                 } else if ($_POST["operacion"] === "Actualizar") {
@@ -446,13 +446,6 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                             echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar el usuario.']);
                             //echo 'Error al actualizar al usuario';
                         }
-
-                        //Consulta y parametros para obtener los roles actuales del usuario
-                        //$sql2 = "SELECT id_rol FROM docente_rol WHERE cat_ID = :idUser";
-                        //$params2 = [':idUser' => $_POST['idUser']];
-
-                        //$connSQL->updateUsuarioRoles($sql, $params, $sql2, $params2, json_decode($_POST['idRoles']));
-                        //echo 'Usuario registrado correctamente.';
 
                     } else {
                         echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
@@ -532,18 +525,28 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
 
         case 'crearActualizarRol':
-
             //Verificar que operacion es, si crear o actualizar
-            if (isset($_POST['operacion']) && isset($_POST['nombreRol'])) {
-
+            if (isset($_POST['operacion']) && isset($_POST['inputRol'])) {
                 if ($_POST["operacion"] === "Crear") {
-
+                    //El nombre del rol sera el mismo que ingrese el usuario pero sin espacios remplazandolos por guion bajo
+                    $nombre = preg_replace('/\s+/', '_', $_POST['inputRol']);
+                    $descripcion = $_POST['inputRol'];
+                    $permisos = $_POST['idPermisos'];
+                    //Almacenar el nuevo rol
+                    //Tambien almacenar y gurdar los permisos que se hayan elegido
+                    $sql = "INSERT INTO rol (nombre_rol, descripcion_rol) VALUES (:nombre, :descripcion)";
+                    $params = [
+                        ':nombre' => $nombre,
+                        ':descripcion' => $descripcion
+                    ];
+                    $connSQL->addRolesPermisos($sql, $params, json_decode($permisos));
+                    echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
+                    
                 } else if ($_POST["operacion"] === "Actualizar") {
 
                 }
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
-                //echo 'Ingrese todos los datos requeridos';
             }
 
             break;

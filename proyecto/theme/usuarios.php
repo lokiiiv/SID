@@ -381,7 +381,7 @@ require_once '../../valida.php';
                     //añadirle un nuevo elemento indicando la accion a realizar en el servidor
                     formData.append('accion', 'crearActualizarUsuario');
 
-                    //Obtener que una lista de los roles que se le van a asignar al usuario
+                    //Obtener que una lista de los roles que se le van a asignar al usuario en caso de agregar un nuevo usuario
                     var selectedRoles = [];
                     $("#contenedor-roles input:checked").each(function() {
                         selectedRoles.push($(this).data('id'));

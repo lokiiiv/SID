@@ -106,7 +106,7 @@ require_once '../../valida.php';
                                     <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label for="inputAp">Nombre del rol</label>
-                                            <input type="text" class="form-control" id="nombreRol" name="nombreRol" placeholder="Ingrese el nombre del rol">
+                                            <input type="text" class="form-control" id="inputRol" name="inputRol" placeholder="Ingrese el nombre del rol">
                                         </div>
                                     </div>
                                 </div>
@@ -173,6 +173,7 @@ require_once '../../valida.php';
 
     <script>
         var tableRoles;
+        var idRol;
 
         $(document).ready(function() {
             //Al cargar la pagina, cargar los datos con la información de los roles registrados
@@ -276,6 +277,57 @@ require_once '../../valida.php';
                 },
                 submitHandler: function(form, event) {
                     event.preventDefault();
+
+                    //Crear el formData con los datos a enviar que se ingresen en el formulario
+                    var formData = new FormData(form);
+                    formData.append('accion', 'crearActualizarRol');
+
+                    //Obtener una lista de los permisos que se selccionaron en caso de que se agrege un nuevo rol
+                    var selectedPermisos = [];
+                    $("#contenedor-permisos input:checked").each(function(){
+                        selectedPermisos.push($(this).data('id'));
+                    });
+                    formData.append('idPermisos', JSON.stringify(selectedPermisos));
+
+                    //Adjuntar el ID del rol en caso de actualizacion
+                    formData.append('idRol', idRol);
+
+                    $.ajax({
+                        data: formData,
+                        url: "conexion/consultasSQL.php",
+                        type: "post",
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            var res = JSON.parse(response);
+                            if(res['success']) {
+                                alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                $("#formAddEdit").trigger('reset');
+                                $("#modalAddEdit").modal('hide');
+                                //Recargar la tabla nuevamente
+                                tableRoles.ajax.reload();
+                            } else {
+                                alertify.warning('<h3>' + res['mensaje'] + '</h3>');
+                            }
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        $('#estatus' + campo).html("");
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    });
                 }
             });
 
