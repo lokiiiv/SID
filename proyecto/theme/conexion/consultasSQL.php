@@ -108,6 +108,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             echo json_encode($datos);
             break;
 
+
+        
         case 'listarUsuarios':
 
             //AQUI SE REALIZA EL SERVER SIDE DE DATATABLES, es decir, la busqueda, el ordenamiento y la paginacion
@@ -541,7 +543,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     ];
                     $connSQL->addRolesPermisos($sql, $params, json_decode($permisos));
                     echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
-                    
+
                 } else if ($_POST["operacion"] === "Actualizar") {
 
                 }

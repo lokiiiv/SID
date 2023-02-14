@@ -242,6 +242,15 @@ require_once '../../valida.php';
                     },
                     "url": "conexion/consultasSQL.php",
                     "type": "post",
+                    "dataSrc": function(json) {
+                        if(typeof(json.success) != "undefined") {
+                            if(!json.success) {
+                                alertify.error('<h3 style="color: white;">' + json.mensaje + '</h3>');
+                            } 
+                        } else {
+                            return json.data;
+                        }
+                    },
                     "error": function(jqXHR, textStatus, errorThrown) {
                         $('#estatus' + campo).html("");
                         if (jqXHR.status === 0) {

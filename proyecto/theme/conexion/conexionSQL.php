@@ -96,7 +96,8 @@ class connSQL
 			$query->execute();
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
+			//print "Error!: " . $e->getMessage();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 			die();
 		}
 	}
@@ -127,7 +128,8 @@ class connSQL
 			$query->execute();
 			return $query->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
+			//print "Error!: " . $e->getMessage();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 			die();
 		}
 	}
@@ -153,7 +155,8 @@ class connSQL
 			}
 			return $query->execute();
 		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
+			//print "Error!: " . $e->getMessage();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 			die();
 		}
 	}
@@ -180,7 +183,8 @@ class connSQL
 			return $query->execute();
 			//return $query->rowCount();
 		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
+			//print "Error!: " . $e->getMessage();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 			die();
 		}
 	}
@@ -207,7 +211,8 @@ class connSQL
 			return $query->execute();
 			//return $query->rowCount();
 		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
+			//print "Error!: " . $e->getMessage();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 			die();
 		}
 	}
@@ -245,7 +250,8 @@ class connSQL
 			$this->dbh->commit();
 		} catch (PDOException $e) {
 			$this->dbh->rollBack();
-			print "Error!: " . $e->getMessage();
+			//print "Error!: " . $e->getMessage();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 			die();
 		}
 	}
@@ -282,7 +288,8 @@ class connSQL
 			$this->dbh->commit();
 		} catch (PDOException $e) {
 			$this->dbh->rollBack();
-			print "Error!: " . $e->getMessage();
+			//print "Error!: " . $e->getMessage();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 			die();
 		}
 	}
