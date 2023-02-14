@@ -175,7 +175,7 @@ require_once '../../valida.php';
         var tableRoles;
 
         $(document).ready(function() {
-            //Al cargar la pagina, cargar los datos con la información de los usuarios registrados en la tabla y personalizarla
+            //Al cargar la pagina, cargar los datos con la información de los roles registrados
             var parametros = {
                 "accion": "listarRoles",
             };

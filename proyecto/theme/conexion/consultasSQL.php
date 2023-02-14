@@ -218,8 +218,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             //Mostrar la respuesta conforme a los requerimientos de Datatables
             $salida = [
                 "draw" => intval($_POST["draw"]),
-                "recordsTotal" => intval($total[0]['cant']),
-                "recordsFiltered" => intval(count($usuarios)),
+                "recordsTotal" => intval(count($usuarios)),
+                "recordsFiltered" => intval($total[0]['cant']),
                 "data" => $final_data
             ];
             echo json_encode($salida);

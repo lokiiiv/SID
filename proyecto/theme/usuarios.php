@@ -711,7 +711,7 @@ require_once '../../valida.php';
                                     alertify.success('<h3>' + res['mensaje'] + '</h3>');
                                     //Poner el checkbox como seleccionado
                                     $(checkbox).prop('checked', true);
-                                    $("#modalAddEdit").modal('hide');
+                                    //$("#modalAddEdit").modal('hide');
                                     tableUsuarios.ajax.reload();
                                 } else {
                                     alertify.warning('<h3>' + res['mensaje'] + '</h3>')
@@ -763,7 +763,7 @@ require_once '../../valida.php';
                                     alertify.success('<h3>' + res['mensaje'] + '</h3>');
                                     //Poner el checkbox como no seleccionado
                                     $(checkbox).prop('checked', false);
-                                    $("#modalAddEdit").modal('hide');
+                                    //$("#modalAddEdit").modal('hide');
                                     tableUsuarios.ajax.reload();
                                 } else {
                                     alertify.warning('<h4>' + res['mensaje'] + '</h3>')
