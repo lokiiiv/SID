@@ -543,6 +543,24 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     $connSQL->addRolesPermisos($sql, $params, json_decode($permisos));
                     echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
                 } else if ($_POST["operacion"] === "Actualizar") {
+                    
+                    $nombre = mb_strtolower(preg_replace('/\s+/', '_', $_POST['inputRol']), 'UTF-8');
+                    $descripcion = $_POST['inputRol'];
+                    $idRol = $_POST['idRol'];
+
+                    $sql = "UPDATE rol SET nombre_rol = :nombre, descripcion_rol = :descripcion WHERE id_rol = :idRol";
+                    $params = [
+                        'nombre' => $nombre,
+                        'descripcion' => $descripcion,
+                        'idRol' => $idRol
+                    ];
+
+                    $res = $connSQL->preparedUpdate($sql, $params);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Rol actualizado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar el rol.']);
+                    }
                 }
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);

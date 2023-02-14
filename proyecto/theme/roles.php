@@ -404,7 +404,7 @@ require_once '../../valida.php';
                 e.preventDefault();
 
                 //Obtener la información del rol a eliminar a través del ID
-                var idRol = $(this).data('id');
+                idRol = $(this).data('id');
 
                 $.ajax({
                     data: {
@@ -429,7 +429,7 @@ require_once '../../valida.php';
                             //Abrir el modal y mostrar los valores del rol en los inputs correspondientes
                             $("#modalAddEdit").modal('show');
                             $("#modalAddEdit .modal-title").text("Editar rol");
-                            $("#modalAddEdit #nombreRol").val(resp['descripcion_rol']);
+                            $("#modalAddEdit #inputRol").val(resp['descripcion_rol']);
 
                             //Obtener una lista de los permisos disponibles para mostrarlos en el modal
                             $("#modalAddEdit #contenedor-permisos").html("");
