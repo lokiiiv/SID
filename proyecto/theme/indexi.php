@@ -44,7 +44,7 @@ require_once("../../valida.php");
                 </div>
                 <div class="col-md-5 col-sm-5">
                     <!-- Logo and site link -->
-                    <h1><a>Hola <? echo ucwords(strtolower($_SESSION["userData"]['first_name'])); ?></a></h1>
+                    <h1><a>Hola <?php echo ucwords(strtolower($_SESSION["userData"]['first_name'])); ?></a></h1>
                     <h5> <?php echo $_SESSION["correo"]; ?> </h5>
                 </div>
             </div>

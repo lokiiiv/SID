@@ -1,5 +1,6 @@
 <?php
-require_once '../conexion/conexionSQL.php';
+//require_once realpath(dirname(__FILE__))  . '/conexion/conexionSQL.php';
+require_once realpath(dirname(__DIR__) . '/conexion/conexionSQL.php');
 require_once 'Usuario.php';
 require_once 'Rol.php';
 

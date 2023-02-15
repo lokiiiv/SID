@@ -1,5 +1,6 @@
 <?php
-require_once '../conexion/conexionSQL.php';
+//require_once '../conexion/conexionSQL.php';
+require_once realpath(dirname(__DIR__) . '/conexion/conexionSQL.php');
 class Rol
 {
     protected $permisos;
