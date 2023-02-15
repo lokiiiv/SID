@@ -2,7 +2,7 @@
 require_once '../conexion/conexionSQL.php';
 class Rol
 {
-    public $permisos;
+    protected $permisos;
     private static $connSQL;
 
     protected function __construct()

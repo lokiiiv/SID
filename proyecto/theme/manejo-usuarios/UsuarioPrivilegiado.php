@@ -5,7 +5,7 @@ require_once 'Rol.php';
 
 class UsuarioPrivilegiado extends Usuario {
 
-    public $roles;
+    private $roles;
     private static $connSQL;
 
     public function __construct()
