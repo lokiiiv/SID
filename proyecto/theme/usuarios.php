@@ -453,12 +453,7 @@ require_once '../../valida.php';
                 //Se asigna el valor de "Crear" dentro de un input type hiden
                 $("#action").val("Crear");
                 $("#operacion").val("Crear");
-                $("#imagen_subida").html("");
-
-                //Eliminar las propiedades de onclick de los checkbox, debido a que solo se usan cuando se quiere actualizar
-                $("#contenedor-roles input[type='checkbox']").each(function() {
-                    $(this).removeAttr("onclick");
-                });
+                $("#imagen_subida").html("");                
 
                 $("#modalAddEdit #contenedor-roles").html("");
                 //Obtener una lista de los roles disponibles para mostrarlos en el modal
@@ -620,26 +615,20 @@ require_once '../../valida.php';
                                 success: function(response) {
                                     //Obtener los roles que existen en el sistema y mostrarlos en forma de Checkbox
                                     var roles = JSON.parse(response);
-                                    var checkRoles = '';
+
+                                    //Obtener los roles que el usuario ya tiene asignados, extraer solo los ID
+                                    var rolesUsuario = JSON.parse(resp['roles']).map(obj => obj.id);
+
+                                    var html = '';
                                     roles.forEach(rol => {
-                                        checkRoles += '<div class="form-check">' +
-                                            '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '">' +
-                                            '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' +
-                                            rol['descripcion_rol'] +
-                                            '</label>' +
-                                            '</div>' +
-                                            '</div>';
+                                        //Si el id del los roles del sistema se encuentra en el array de los roles que el usuario tiene, marcar el checkbox como checked
+                                        var isChecked = rolesUsuario.includes(rol['id_rol']) ? 'checked' : '';
+                                        html += '<div class="form-check">' +
+                                                    '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '" ' + isChecked + '>' +
+                                                    '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' + rol['descripcion_rol'] + '</label>' +
+                                                '</div>';
                                     });
-                                    $("#modalAddEdit #contenedor-roles").html(checkRoles);
-
-
-
-                                    //Una vez que se muestran, poner como seleccionados aquellos roles que el usuario ya tiene asignados
-                                    var roles = JSON.parse(resp['roles']);
-                                    roles.forEach(rol => {
-                                        //Ir seleccionando los check de los roles conforme al data-id
-                                        $("#contenedor-roles .form-check-input[data-id=" + rol['id'] + "]").prop('checked', true);
-                                    });
+                                    $("#modalAddEdit #contenedor-roles").html(html);
 
                                     //Cuando se va a editar, añadir a los checkbox de roles la propiedad para onchange
                                     //de este modo se puede elegir eliminar o agregar los roles de ese usuario seleccionado

@@ -359,11 +359,6 @@ require_once '../../valida.php';
                 $("#action").val("Crear");
                 $("#operacion").val("Crear");
 
-                //Eliminar las propiedades de onclick de los checkbox, debido a que solo se usan cuando se quiere actualizar
-                $("#contenedor-permisos input[type='checkbox']").each(function() {
-                    $(this).removeAttr("onclick");
-                });
-
                 $("#modalAddEdit #contenedor-permisos").html("");
                 //Obtener una lista de los permisos disponibles para mostrarlos en el modal
                 $.ajax({
@@ -450,24 +445,20 @@ require_once '../../valida.php';
                                 success: function(response) {
                                     //Obtener los roles que existen en el sistema y mostrarlos en forma de Checkbox
                                     var permisos = JSON.parse(response);
-                                    var checkPermisos = '';
-                                    permisos.forEach(permiso => {
-                                        checkPermisos += '<div class="form-check">' +
-                                            '<input class="form-check-input" type="checkbox" value="' + permiso['descripcion_permiso'] + '" id="permiso_' + permiso['id_permiso'] + '" data-id="' + permiso['id_permiso'] + '">' +
-                                            '<label class="form-check-label" for="permiso_' + permiso['id_permiso'] + '">' +
-                                            permiso['descripcion_permiso'] +
-                                            '</label>' +
-                                            '</div>' +
-                                            '</div>';
-                                    });
-                                    $("#modalAddEdit #contenedor-permisos").html(checkPermisos);
 
-                                    //Una vez que se muestran, poner como seleccionados aquellos permisos que el usuario ya tiene asignados
-                                    var permisos = JSON.parse(resp['permisos']);
+                                    //Obtener los permisos que tiene el rol seleccionado, extraer solo los ID 
+                                    var permisosRoles = JSON.parse(resp['permisos']).map(obj => obj.id);
+
+                                    var html = '';
                                     permisos.forEach(permiso => {
-                                        //Ir seleccionando los check de los permisos conforme al data-id
-                                        $("#contenedor-permisos .form-check-input[data-id=" + permiso['id'] + "]").prop('checked', true);
+                                        //Si el id de los permisos en el sistema se encuentra en el array de permisos que el rol tiene. marcar como seleccionado
+                                        var isChecked = permisosRoles.includes(permiso['id_permiso']) ? 'checked' : '';
+                                        html += '<div class="form-check">' +
+                                                    '<input class="form-check-input" type="checkbox" value="' + permiso['descripcion_permiso'] + '" id="permiso_' + permiso['id_permiso'] + '" data-id="' + permiso['id_permiso'] + '" ' + isChecked + '>' +
+                                                    '<label class="form-check-label" for="permiso_' + permiso['id_permiso'] + '">' + permiso['descripcion_permiso'] + '</label>' +
+                                                '</div>';
                                     });
+                                    $("#modalAddEdit #contenedor-permisos").html(html);
 
                                     //Cuando se va a editar, añadir a los checkbox de permisos la propiedad para onchange
                                     //de este modo se puede elegir eliminar o agregar los permisos de ese rol seleccionado
