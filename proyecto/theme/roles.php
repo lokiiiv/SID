@@ -70,10 +70,11 @@ require_once '../../valida.php';
                     <table id="tablaRoles" class="table table-hover" style="margin-top: 30px;">
                         <thead>
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Permisos</th>
-                                <th class="text-center">Acciones</th>
+                                <th class="text-center" style="vertical-align: middle;">ID</th>
+                                <th class="text-center" style="vertical-align: middle;">Nombre en el sistema</th>
+                                <th class="text-center" style="vertical-align: middle;">Nombre</th>
+                                <th class="text-center" style="vertical-align: middle;">Permisos</th>
+                                <th class="text-center" style="vertical-align: middle;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -183,6 +184,7 @@ require_once '../../valida.php';
             tableRoles = $("#tablaRoles").DataTable({
                 "autoWidth": false,
                 "responsive": true,
+                "order": [],
                 "language": {
                     "url": "datatables/es-ES.json"
                 },
@@ -225,8 +227,12 @@ require_once '../../valida.php';
                         "width": "50px"
                     },
                     {
+                        "data": "nombre_rol",
+                        "width": "110px"
+                    },
+                    {
                         "data": "descripcion_rol",
-                        "width": "100px"
+                        "width": "110px"
                     },
                     {
                         "data": "permisos",
