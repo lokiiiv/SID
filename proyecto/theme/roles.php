@@ -118,7 +118,6 @@ require_once '../../valida.php';
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <h6>Asignación de permisos</h6>
-                                                    <small id="rolHelp" class="form-text text-muted" style="font-size: 13px;">¿No ve el permiso que necesita? <a href="permisos.php">Click aqui para administrar permisos</a></small>
                                                 </div>
                                             </div>
                                         </div>
