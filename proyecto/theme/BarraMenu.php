@@ -20,7 +20,6 @@ require_once("../../valida.php");
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="usuarios.php">Administrar usuarios</a>
 						<a class="dropdown-item" href="roles.php">Administrar roles</a>
-						<a class="dropdown-item" href="#">Administrar permisos</a>
 					</div>
 				</li>
 				<li class="nav-item dropdown">
