@@ -149,7 +149,7 @@ require_once '../../valida.php';
                                             <input type="file" class="form-control-file" id="inputFirma" name="inputFirma">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex justify-content-center align-items-center">
                                         <div class="row">
                                             <span id="imagen_subida" style="margin: auto"></span>
                                         </div>

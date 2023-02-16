@@ -220,7 +220,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             //Mostrar la respuesta conforme a los requerimientos de Datatables
             $salida = [
                 "draw" => intval($_POST["draw"]),
-                "recordsTotal" => intval(count($usuarios)),
+                "recordsTotal" => count($usuarios),
                 "recordsFiltered" => intval($total[0]['cant']),
                 "data" => $final_data
             ];
@@ -249,7 +249,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             if (!empty($usuario)) {
                 //Verificar si la firma esta vacia, en caso de que no, devolver una etiqueta html
                 if ($usuario['firma'] != "") {
-                    $usuario['firma'] = '<img src="./img/firmas/' . $usuario['firma'] . '" class="rounded mx-auto d-block img-fluid" width="100px"/><input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">';
+                    $usuario['firma'] = '<img src="./firmasimagenes/' . $usuario['firma'] . '" class="rounded mx-auto d-block img-fluid" width="100px"/><input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">';
                 } else {
                     $usuario['firma'] = '<input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">';
                 }
@@ -351,8 +351,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                             //Generar un nuevo nombre de la imagen y almacenar la misma en el servidor
                             if ($_FILES["inputFirma"]["name"] != "") {
                                 $extension = explode('.', $_FILES["inputFirma"]["name"]);
-                                $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . $extension[1];
-                                $ubicacion = "./../img/firmas/" . $imagen;
+                                $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . end($extension);
+                                $ubicacion = "./../firmasimagenes/" . $imagen;
                                 move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
                             }
                         }
@@ -408,13 +408,13 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                             //Generar un nuevo nombre de la imagen y almacenar la misma en el servidor
                             if ($_FILES["inputFirma"]["name"] != "") {
                                 $extension = explode('.', $_FILES["inputFirma"]["name"]);
-                                $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . $extension[1];
-                                $ubicacion = "./../img/firmas/" . $imagen;
+                                $imagen = rand() . '_' . $_POST["inputCorreo"] . '.' . end($extension);
+                                $ubicacion = "./../firmasimagenes/" . $imagen;
 
                                 //si el usuario ya tiene la imagen de su firma
                                 if (isset($_POST["imagen_firma_oculta"])) {
                                     if ($_POST["imagen_firma_oculta"] != "") {
-                                        unlink("./../img/firmas/" . $_POST["imagen_firma_oculta"]);
+                                        unlink("./../firmasimagenes/" . $_POST["imagen_firma_oculta"]);
                                         move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
                                     } else {
                                         move_uploaded_file($_FILES["inputFirma"]["tmp_name"], $ubicacion);
@@ -508,7 +508,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
                 //Eliminar la imagen de su firma si es que existe
                 if ($firma != "") {
-                    unlink("./../img/firmas/" . $firma);
+                    unlink("./../firmasimagenes/" . $firma);
                 }
 
                 $sql = "DELETE FROM docentes WHERE cat_ID = :idUser";
