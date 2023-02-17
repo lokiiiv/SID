@@ -250,9 +250,21 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             if (!empty($usuario)) {
                 //Verificar si la firma esta vacia, en caso de que no, devolver una etiqueta html
                 if ($usuario['firma'] != "") {
-                    $usuario['firma'] = '<img src="./firmasimagenes/' . $usuario['firma'] . '" class="rounded mx-auto d-block img-fluid" width="100px"/><input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">';
+                    $usuario['firma'] = '<div class="row">
+                                            <div class="col-md-9">
+                                                <img src="./firmasimagenes/' . $usuario['firma'] . '" class="rounded mx-auto d-block img-fluid" width="100px"/>
+                                                <input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">
+                                            </div>
+                                            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                                <button type="button" class="btn btn-danger btn-sm m-2" onclick="eliminarFirma(this)" data-firma="' . $usuario['firma'] . '" data-idUser="' . $usuario['ID'] . '"><i class="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </div>';
                 } else {
-                    $usuario['firma'] = '<input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">';
+                    $usuario['firma'] = '<div class="row">
+                                            <div class="col-md-12">
+                                                <input type="hidden" name="imagen_firma_oculta" value="' . $usuario['firma'] . '">
+                                            </div>
+                                        </div>';
                 }
                 echo json_encode(['success' => true, 'data' => $usuario]);
             } else {
@@ -617,6 +629,26 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 }
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+            }
+            break;
+
+        case 'eliminarFotoFirma':
+            if(isset($_POST['nombreFirma']) && isset($_POST['idUsuario'])) {
+                //Eliminar la foto de la firma en el servidor
+                unlink("./../firmasimagenes/" . $_POST['nombreFirma']);
+
+                //Actualizar y poner el vacio el campo de firma del usuario
+                $sql = "UPDATE docentes SET firma = :firma WHERE cat_ID = :idUsuario";
+                $params = [
+                    'firma' => '',
+                    'idUsuario' => $_POST['idUsuario'],
+                ];
+                $res = $connSQL->preparedUpdate($sql, $params);
+                if ($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Imagen de la firma eliminada correctamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar la imagen de la firma.']);
+                }    
             }
             break;
     }

@@ -243,10 +243,10 @@ require_once '../../valida.php';
                     "url": "conexion/consultasSQL.php",
                     "type": "post",
                     "dataSrc": function(json) {
-                        if(typeof(json.success) != "undefined") {
-                            if(!json.success) {
+                        if (typeof(json.success) != "undefined") {
+                            if (!json.success) {
                                 alertify.error('<h3 style="color: white;">' + json.mensaje + '</h3>');
-                            } 
+                            }
                         } else {
                             return json.data;
                         }
@@ -453,7 +453,7 @@ require_once '../../valida.php';
                 //Se asigna el valor de "Crear" dentro de un input type hiden
                 $("#action").val("Crear");
                 $("#operacion").val("Crear");
-                $("#imagen_subida").html("");                
+                $("#imagen_subida").html("");
 
                 $("#modalAddEdit #contenedor-roles").html("");
                 //Obtener una lista de los roles disponibles para mostrarlos en el modal
@@ -624,9 +624,9 @@ require_once '../../valida.php';
                                         //Si el id del los roles del sistema se encuentra en el array de los roles que el usuario tiene, marcar el checkbox como checked
                                         var isChecked = rolesUsuario.includes(rol['id_rol']) ? 'checked' : '';
                                         html += '<div class="form-check">' +
-                                                    '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '" ' + isChecked + '>' +
-                                                    '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' + rol['descripcion_rol'] + '</label>' +
-                                                '</div>';
+                                            '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '" ' + isChecked + '>' +
+                                            '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' + rol['descripcion_rol'] + '</label>' +
+                                            '</div>';
                                     });
                                     $("#modalAddEdit #contenedor-roles").html(html);
 
@@ -795,6 +795,62 @@ require_once '../../valida.php';
                     cancel: 'Cancelar'
                 });
             }
+        }
+
+        function eliminarFirma(boton) {
+            var nombreImgFirma = boton.getAttribute('data-firma');
+            var idUsuario = boton.getAttribute('data-idUser');
+            alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la foto de la firma?",
+                function() {
+                    $.ajax({
+                        data: {
+                            "accion": "eliminarFotoFirma",
+                            "nombreFirma": nombreImgFirma,
+                            'idUsuario': idUsuario
+                        },
+                        url: "conexion/consultasSQL.php",
+                        type: "post",
+                        success: function(respuesta) {
+                            var res = JSON.parse(respuesta);
+                            if (res['success']) {
+                                alertify.success('<h3>' + res['mensaje'] + '</h3>');
+                                tableUsuarios.ajax.reload();
+                                $("#modalAddEdit #imagen_subida input[type='hidden']").val('');
+                                $("#modalAddEdit #imagen_subida img").closest('.col-md-9').next().remove();
+                                $("#modalAddEdit #imagen_subida img").closest('.col-md-9').removeClass('col-md-9').addClass('col-md-12');
+                               
+                                $("#modalAddEdit #imagen_subida img").remove();
+                            } else {
+                                alertify.warning('<h4>' + res['mensaje'] + '</h3>')
+                            }
+
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        $('#estatus' + campo).html("");
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    });
+                },
+                function() {
+
+                }
+            ).set('labels', {
+                ok: 'Aceptar',
+                cancel: 'Cancelar'
+            });
         }
     </script>
 
