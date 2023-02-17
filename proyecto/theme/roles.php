@@ -203,7 +203,6 @@ require_once '../../valida.php';
                         }
                     },
                     "error": function(jqXHR, textStatus, errorThrown) {
-                        $('#estatus' + campo).html("");
                         if (jqXHR.status === 0) {
                             alert('No conectado, verifique su red.');
                         } else if (jqXHR.status == 404) {
@@ -326,7 +325,6 @@ require_once '../../valida.php';
                             }
                         }
                     }).fail(function(jqXHR, textStatus, errorThrown) {
-                        $('#estatus' + campo).html("");
                         if (jqXHR.status === 0) {
                             alert('No conectado, verifique su red.');
                         } else if (jqXHR.status == 404) {
@@ -382,7 +380,6 @@ require_once '../../valida.php';
                         $("#modalAddEdit #contenedor-permisos").html(checkPermisos);
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    $('#estatus' + campo).html("");
                     if (jqXHR.status === 0) {
                         alert('No conectado, verifique su red.');
                     } else if (jqXHR.status == 404) {
@@ -467,7 +464,6 @@ require_once '../../valida.php';
 
                                 }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
-                                $('#estatus' + campo).html("");
                                 if (jqXHR.status === 0) {
                                     alert('No conectado, verifique su red.');
                                 } else if (jqXHR.status == 404) {
@@ -490,7 +486,6 @@ require_once '../../valida.php';
                     }
 
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    $('#estatus' + campo).html("");
                     if (jqXHR.status === 0) {
                         alert('No conectado, verifique su red.');
                     } else if (jqXHR.status == 404) {
@@ -539,7 +534,6 @@ require_once '../../valida.php';
                                 }
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
-                            $('#estatus' + campo).html("");
                             if (jqXHR.status === 0) {
                                 alert('No conectado, verifique su red.');
                             } else if (jqXHR.status == 404) {
@@ -599,7 +593,6 @@ require_once '../../valida.php';
                                 }
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
-                            $('#estatus' + campo).html("");
                             if (jqXHR.status === 0) {
                                 alert('No conectado, verifique su red.');
                             } else if (jqXHR.status == 404) {
@@ -651,7 +644,6 @@ require_once '../../valida.php';
                                 }
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
-                            $('#estatus' + campo).html("");
                             if (jqXHR.status === 0) {
                                 alert('No conectado, verifique su red.');
                             } else if (jqXHR.status == 404) {
