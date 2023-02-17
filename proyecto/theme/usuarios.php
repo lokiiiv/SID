@@ -471,7 +471,6 @@ require_once '../../valida.php';
                                 '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' +
                                 rol['descripcion_rol'] +
                                 '</label>' +
-                                '</div>' +
                                 '</div>';
                         });
                         $("#modalAddEdit #contenedor-roles").html(checkRoles);

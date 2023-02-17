@@ -543,7 +543,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             if (isset($_POST['operacion']) && isset($_POST['inputRol'])) {
                 if ($_POST["operacion"] === "Crear") {
                     //El nombre del rol sera el mismo que ingrese el usuario pero sin espacios remplazandolos por guion bajo
-                    $nombre = mb_strtolower(preg_replace('/\s+/', '_', $_POST['inputRol']), 'UTF-8');
+                    setlocale(LC_ALL, 'en_US.utf8');
+                    $nombre = mb_strtolower(str_replace(' ', '_', preg_replace('/[^A-Za-z0-9 ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $_POST['inputRol']))), 'UTF-8');
                     $descripcion = $_POST['inputRol'];
                     $permisos = $_POST['idPermisos'];
                     //Almacenar el nuevo rol
@@ -557,7 +558,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
                 } else if ($_POST["operacion"] === "Actualizar") {
 
-                    $nombre = mb_strtolower(preg_replace('/\s+/', '_', $_POST['inputRol']), 'UTF-8');
+                    $nombre = mb_strtolower(str_replace(' ', '_', preg_replace('/[^A-Za-z0-9 ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $_POST['inputRol']))), 'UTF-8');
                     $descripcion = $_POST['inputRol'];
                     $idRol = $_POST['idRol'];
 

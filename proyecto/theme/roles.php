@@ -374,7 +374,6 @@ require_once '../../valida.php';
                                 '<label class="form-check-label" for="permiso_' + permiso['id_permiso'] + '">' +
                                 permiso['descripcion_permiso'] +
                                 '</label>' +
-                                '</div>' +
                                 '</div>';
                         });
                         $("#modalAddEdit #contenedor-permisos").html(checkPermisos);
@@ -514,7 +513,7 @@ require_once '../../valida.php';
 
                 //ID del rol a eliminar
                 var idRol = $(this).data('id');
-                var nombreRol = fila.find('td:eq(1)').text();
+                var nombreRol = fila.find('td:eq(2)').text();
                 alertify.confirm("Aviso", "¿Está seguro de eliminar el rol " + nombreRol + "? Si lo hace, los usuarios perderán el rol seleccionado.",
                     function() {
                         $.ajax({
