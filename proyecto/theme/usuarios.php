@@ -791,7 +791,7 @@ require_once '../../valida.php';
         function eliminarFirma(boton) {
             var nombreImgFirma = boton.getAttribute('data-firma');
             var idUsuario = boton.getAttribute('data-idUser');
-            alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la foto de la firma?",
+            alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la imagen de la firma?",
                 function() {
                     $.ajax({
                         data: {
