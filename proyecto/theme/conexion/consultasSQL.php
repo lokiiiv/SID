@@ -220,11 +220,12 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             //Mostrar la respuesta conforme a los requerimientos de Datatables
             $salida = [
                 "draw" => intval($_POST["draw"]),
-                "recordsTotal" => count($usuarios),
-                "recordsFiltered" => intval($total[0]['cant']),
+                "recordsFiltered" => !isset($_POST["search"]["value"]) || empty($_POST["search"]["value"]) ? $total[0]['cant'] : count($usuarios),
+                "recordsTotal" => $total[0]['cant'],
                 "data" => $final_data
             ];
             echo json_encode($salida);
+
             break;
 
             //Método para obtener un solo usuario a través de su ID
