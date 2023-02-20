@@ -9,7 +9,7 @@ class Rol
     protected function __construct()
     {
         //Permisos es un array que contiene los nombre de los permisos de este rol
-        $this->permisos = array();
+        $this->permisos = [];
         self::$connSQL = connSQL::singleton();
     }
 

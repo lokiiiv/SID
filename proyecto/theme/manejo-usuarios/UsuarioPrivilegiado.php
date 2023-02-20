@@ -4,7 +4,7 @@ require_once realpath(dirname(__DIR__) . '/conexion/conexionSQL.php');
 require_once 'Usuario.php';
 require_once 'Rol.php';
 
-class UsuarioPrivilegiado extends Usuario {
+class UsuarioPrivilegiado extends Usuario{
 
     private $roles;
     private static $connSQL;
@@ -28,13 +28,6 @@ class UsuarioPrivilegiado extends Usuario {
         //Generar el objeto indicando sus propiedades conforme a la consulta
         if(!empty($result)) {
             $usuarioPriv->user_id = $result[0]["cat_ID"];
-            $usuarioPriv->clave = $result[0]["cat_Clave"];
-            $usuarioPriv->apellidoPaterno = $result[0]["cat_ApePat"];
-            $usuarioPriv->apellidoMaterno = $result[0]["cat_ApeMat"];
-            $usuarioPriv->nombre = $result[0]["cat_Nombre"];
-            $usuarioPriv->correo = $correo;
-            $usuarioPriv->firma = $result[0]["firma"];
-            //Inicialiar y obtener los roles del usuario
             $usuarioPriv->initRoles();
             return $usuarioPriv;
         } else {
@@ -44,7 +37,7 @@ class UsuarioPrivilegiado extends Usuario {
 
     //Llenar roles con sus permisos asociados
     protected function initRoles(){
-        $this->roles = array();
+        $this->roles = [];
         //Obtener todos los roles que tiene el usuario logueado
         $sql = "SELECT dr.id_rol, r.nombre_rol
                 FROM docente_rol as dr
@@ -72,5 +65,14 @@ class UsuarioPrivilegiado extends Usuario {
     public function hasRol($rolNombre) {
         return isset($this->roles[$rolNombre]);
     }
+}
+
+header('Content-Type: application/json');
+$u = UsuarioPrivilegiado::getByCorreo('18030290@itesa.edu.mx');
+print_r($u);
+if($u->hasPrivilegio('consultar_instrumentaciones')) {
+    echo 'Si tiene permiso';
+} else {
+    echo 'No tiene permiso';
 }
 ?>
