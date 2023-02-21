@@ -15,7 +15,7 @@
 		session_destroy();
 
 		// Redirect to homepage
-		header("Location: http://localhost/sid_1/index1.php");
+		header("Location: http://localhost/sid/index.php");
 	}
 	
  ?>

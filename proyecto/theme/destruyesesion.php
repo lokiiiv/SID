@@ -11,6 +11,6 @@
 
 	// Reset OAuth access token
 	$gClient->revokeToken();
-	header("Location:../../index1.php");
+	header("Location:../../index.php");
 
 ?>
