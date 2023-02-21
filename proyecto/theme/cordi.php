@@ -73,7 +73,7 @@
 <?php
 	include("menucordi.php");
 	include("presi2.php");
-	include("pie.php");
+	include("footer.php");
 	?>
 			
 		<!-- Scroll to top -->

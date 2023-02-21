@@ -26,6 +26,9 @@ require_once("../../valida.php");
     <!-- Favicon -->
     <link rel="shortcut icon" href="img/favicon/favicon.png">
 
+    <!-- Font awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <!-- Datatables -->
     <link rel="stylesheet" href="datatables/datatables.min.css">
     <link rel="stylesheet" href="datatables/DataTables-1.13.1/css/dataTables.bootstrap4.min.css">
@@ -117,10 +120,11 @@ require_once("../../valida.php");
         </div>
     </div>
 
-
-    <!-- Scroll to top -->
-    <span class="totop"><a href="#"><i class="fa fa-angle-up"></i></a></span>
     <br>
+
+    <?php
+    require 'footer.php';
+    ?>
 
     <!-- Javascript files -->
     <!-- jQuery -->

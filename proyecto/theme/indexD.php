@@ -43,6 +43,9 @@ require("conexion/verificaMongo.php");
     <link rel="stylesheet" href="css/general_styles.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="img/favicon/favicon.png">
+
+	<!-- Font awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	
 	<script type="text/javascript" src="js/accionesinstrumentacion.js"></script>
 	
@@ -95,4 +98,6 @@ require("conexion/verificaMongo.php");
 		<!-- Custom JS -->
 		<script src="js/custom.js"></script>
 	</body>	
+
+	<?php require 'footer.php'; ?>
 </html>

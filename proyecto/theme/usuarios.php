@@ -192,8 +192,9 @@ require_once '../../valida.php';
     </div>
     <br>
 
-    <!-- Scroll to top -->
-    <span class="totop"><a href="#"><i class="fa fa-angle-up"></i></a></span>
+    <?php
+    require 'footer.php';
+    ?>
 
     <!-- Javascript files -->
     <!-- jQuery -->
