@@ -19,11 +19,11 @@
 				<div class="widget">
 					<h4>Conoce</h4>
 					<ul>
-						<li><i class="fa fa-angle-right"></i> <a href="#">Teléfono: 01 748-912-4450</a></li>
-						<li><i class="fa fa-angle-right"></i> <a href="#">Teléfono: 01 748-912-3489</a></li>
-						<li><i class="fa fa-angle-right"></i> <a href="#">Email: informes@itesa.edu.mx</a></li>
-						<li><i class="fa fa-angle-right"></i> <a href="#">Email: sugerencias@itesa.edu.mx</a></li>
-						<li><i class="fa fa-angle-right"></i> <a href="#">Fax: 01 748-912-4450 Ext. 106</a></li>
+						<li><i class="fa fa-angle-right"></i> <a href="#" onclick="return false;" style="cursor: default;">Teléfono: 01 748-912-4450</a></li>
+						<li><i class="fa fa-angle-right"></i> <a href="#" onclick="return false;" style="cursor: default;">Teléfono: 01 748-912-3489</a></li>
+						<li><i class="fa fa-angle-right"></i> <a href="mailto: informes@itesa.edu.mx" style="cursor: default;">Email: informes@itesa.edu.mx</a></li>
+						<li><i class="fa fa-angle-right"></i> <a href="mailto: sugerencias@itesa.edu.mx" style="cursor: default;">Email: sugerencias@itesa.edu.mx</a></li>
+						<li><i class="fa fa-angle-right"></i> <a href="#" onclick="return false;" style="cursor: default;">Fax: 01 748-912-4450 Ext. 106</a></li>
 					</ul>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 			<div class="col-md-12">
 				<p class="copy pull-left">
 					<!-- Copyright information. You can remove my site link. -->
-					Copyright &copy; <a href="#">Sistema de instrumentaciones didácticas</a> | Diseñado por <a href="http://responsivewebinc.com">Sistemas ITESA <?php echo date("Y"); ?></a>
+					Copyright &copy; <a href="#" onclick="return false;" style="cursor: default;">Sistema de instrumentaciones didácticas</a> | Diseñado por <a href="#" onclick="return false;" style="cursor: default;">Sistemas ITESA <?php echo date("Y"); ?></a>
 				</p>
 			</div>
 		</div>

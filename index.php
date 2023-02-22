@@ -20,7 +20,7 @@ require_once 'config.php';
     <link rel="stylesheet" href="proyecto/theme/alertify/css/themes/bootstrap.min.css">
 
     <!-- Custom CSS -->
-	<link href="proyecto/theme/css/style.css" rel="stylesheet">
+	<link href="proyecto/theme/css/general_styles.css" rel="stylesheet">
 	<!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
 	<link href="proyecto/theme/css/green.css" rel="stylesheet">
 	<!--STYLESHEETS-->
@@ -35,26 +35,26 @@ require_once 'config.php';
 
 <body>
     <div class="content">
-        <div class="container">
-            <div class="row">
+        <div class="container mt-3">
+            <div class="row justify-content-center">
                 <div class="col-md-5 d-flex justify-content-center align-items-center">
-                    <img class="img-fluid" src="images/itesa.png">
+                    <img class="img-fluid" src="images/itesa.png" width="400px">
                 </div>
 
-                <div class="col-md-5">
+                <div class="col-md-5 text-center">
                     <h2>Sistema de Instrumentaciones Didacticas</h2>
                     <h2>Bienvenido (a)</h2>
                     <h4>Esta es la primera fase en prueba del sistema de Instrumentaciones didacticas, favor de reportar cualquier anomalia al área de sistemas</h4>
                     <hr>
                 </div>
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-5">
                 </div>
-                <div class="col-md-5 justify-content-center">
+                <div class="col-md-5 justify-content-center text-center">
                     <p class="text-danger"> Para acelerar su acceso le recomendamos abrir su correo electrónico <b>institucional</b> en otra pestaña. </p>
 
-                    <a class="btn btn-success" href="<?php echo filter_var($gClient->createAuthUrl(), FILTER_SANITIZE_URL); ?>" style="margin-bottom: 20px;">
+                    <a class="btn btn-success" href="<?php echo filter_var($gClient->createAuthUrl(), FILTER_SANITIZE_URL); ?>" style="margin-bottom: 20px; color:white;">
                         Iniciar Sesión
                     </a>
                 </div>
@@ -62,6 +62,9 @@ require_once 'config.php';
         </div>
     </div>
 
+    <?php
+    include 'proyecto/theme/footer.php';
+    ?>
     
     <!-- Javascript files -->
     <!-- jQuery -->
