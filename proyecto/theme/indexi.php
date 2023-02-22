@@ -154,6 +154,7 @@ require_once("../../valida.php");
                 "url": "datatables/es-ES.json"
             },
             "order": [],
+            "paging": false,
             "columns": [{
                     "width": "80px",
                     "orderable": false

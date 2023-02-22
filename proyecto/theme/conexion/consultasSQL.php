@@ -652,5 +652,42 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 }    
             }
             break;
+
+        
+        //Metodos para la administración de grupos academicos
+        case 'mostrarGruposAcademicos': {
+            //Consultar los grupos academicos del sistema
+            $sql = "SELECT ga.id_grupoacademico, 
+                           ga.nombre, 
+                           pro.*, 
+                           d.cat_ID, 
+                           CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombreDoc, 
+                           d.cat_CorreoE as correo
+                    FROM gruposacademicos ga
+                    LEFT OUTER JOIN programae pro ON pro.id_programaE = ga.id_programaE
+                    INNER JOIN docentes d ON d.cat_ID = ga.cat_ID";
+            $grupos = $connSQL->preparedQuery($sql);
+
+            echo json_encode(['success' => true, 'data' => $grupos]);
+            break;
+        }
+
+        case 'mostrarProgramasYPresidentes':
+            //Consultar de igual forma los programas educativos 
+            $sql = "SELECT * FROM programae";
+            $programas = $connSQL->preparedQuery($sql);
+
+            //Consultar a todos los usuarios cuyo rol sea jefe de grupo academico
+            $sql = "SELECT d.cat_ID, 
+                           d.cat_Clave, 
+                           CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre, 
+                           d.cat_CorreoE as correo
+                    FROM docentes d 
+                    INNER JOIN docente_rol dr ON d.cat_ID = dr.cat_ID
+                    WHERE dr.id_rol = 3";
+            $presidentes = $connSQL->preparedQuery($sql);
+
+            echo json_encode(['success' => true, 'data' => ['programas' => $programas, 'presidentes' => $presidentes]]);
+            break;
     }
 }

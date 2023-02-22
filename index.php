@@ -20,10 +20,10 @@ require_once 'config.php';
     <link rel="stylesheet" href="proyecto/theme/alertify/css/themes/bootstrap.min.css">
 
     <!-- Custom CSS -->
-	<link href="proyecto/theme/css/general_styles.css" rel="stylesheet">
-	<!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
-	<link href="proyecto/theme/css/green.css" rel="stylesheet">
-	<!--STYLESHEETS-->
+    <link href="proyecto/theme/css/general_styles.css" rel="stylesheet">
+    <!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
+    <link href="proyecto/theme/css/green.css" rel="stylesheet">
+    <!--STYLESHEETS-->
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="proyecto/theme/img/favicon/favicon.png">
@@ -55,6 +55,7 @@ require_once 'config.php';
                     <p class="text-danger"> Para acelerar su acceso le recomendamos abrir su correo electrónico <b>institucional</b> en otra pestaña. </p>
 
                     <a class="btn btn-success" href="<?php echo filter_var($gClient->createAuthUrl(), FILTER_SANITIZE_URL); ?>" style="margin-bottom: 20px; color:white;">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i>
                         Iniciar Sesión
                     </a>
                 </div>
@@ -65,7 +66,7 @@ require_once 'config.php';
     <?php
     include 'proyecto/theme/footer.php';
     ?>
-    
+
     <!-- Javascript files -->
     <!-- jQuery -->
     <script src="proyecto/theme/bootstrap/js/jquery.js"></script>
@@ -80,24 +81,24 @@ require_once 'config.php';
     <script src="proyecto/theme/alertify/alertify.min.js"></script>
 
     <?php
-        //Este es un array de mensajes para mostrar conforme al parametro $_GET que se reciba
-        $mensajes = [
-            1 => 'Está intentando acceder con una cuenta que no pertenece a ITESA, intente con otra cuenta.',
-            2 => 'Aún no ha sido registrado en el sistema. Por favor, notifique al administrador.'
-        ];
-        $mensaje_id = isset($_GET['mensaje']) ? intval($_GET['mensaje']) : 0;
+    //Este es un array de mensajes para mostrar conforme al parametro $_GET que se reciba
+    $mensajes = [
+        1 => 'Está intentando acceder con una cuenta que no pertenece a ITESA, intente con otra cuenta.',
+        2 => 'Aún no ha sido registrado en el sistema. Por favor, notifique al administrador.'
+    ];
+    $mensaje_id = isset($_GET['mensaje']) ? intval($_GET['mensaje']) : 0;
     ?>
 
     <script>
-        <?php 
+        <?php
         //Si hay mensaje, mostrar el un alert y limpiar los parametros de la URL
-        if($mensaje_id != 0) { ?>
+        if ($mensaje_id != 0) { ?>
             alertify.alert("Aviso", "<?php echo $mensajes[$mensaje_id]; ?>");
-            if(typeof window.history.pushState == 'function') {
+            if (typeof window.history.pushState == 'function') {
                 window.history.pushState({}, 'Hide', '<?php echo (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/sid'; ?>')
             }
-        <?php 
-        } 
+        <?php
+        }
         ?>
     </script>
 </body>
