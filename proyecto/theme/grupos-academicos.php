@@ -70,10 +70,10 @@ require_once '../../valida.php';
                     <table id="tablaGrupos" class="table table-hover" style="margin-top: 30px;">
                         <thead>
                             <tr>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Programa educativo</th>
-                                <th class="text-center">Presidente de grupo acádemico</th>
-                                <th class="text-center">Acciones</th>
+                                <th>Nombre</th>
+                                <th>Programa educativo</th>
+                                <th>Presidente de grupo acádemico</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,7 +86,7 @@ require_once '../../valida.php';
 
     <!-- Modal para editar y registrar un nuevo usuario -->
     <div class="modal fade" tabindex="-1" role="dialog" id="modalAddEdit">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <form method="POST" id="formAddEdit" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -97,31 +97,66 @@ require_once '../../valida.php';
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="inputNombre">Nombre</label>
-                                    <input type="text" class="form-control" id="inputNombre" name="inputNombre" placeholder="Ingrese el nombre del grupo académico">
+                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h6>Información general</h6>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="inputPrograma">Programa educativo</label>
-                                    <select class="form-control" id="inputPrograma" name="inputPrograma">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="inputNombre">Nombre</label>
+                                            <input type="text" class="form-control" id="inputNombre" name="inputNombre" placeholder="Ingrese el nombre del grupo académico">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="inputPrograma">Programa educativo</label>
+                                            <select class="form-control" id="selectPrograma" name="selectPrograma">
 
-                                    </select>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="inputPresidente">Presidente de grupo académico</label>
+                                            <select class="form-control" id="selectPresidente" name="selectPresidente">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10 col-xs-12 col-sm-12 col-lg-10 d-flex align-items-center">
+                                        <h6>Asignación de materias</h6>
+                                    </div>
+                                    <div class="col-md-2 col-xs-12 col-sm-12 col-lg-2 d-flex justify-content-center justify-content-sm-center justify-content-md-end align-items-center">
+                                        <button id="agregar" type="button" class="btn btn-info btn-sm">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row mt-3" id="div-search" style="display: none;">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input type="text" name="search" id="search" class="form-control rounded-1 border-info" placeholder="Clave o nombre de materia." autocomplete="off" required>
+                                            <div class="input-group-append">
+                                                <input type="button" name="search" value="Buscar" class="btn btn-info rounded-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" style="position: absolute; z-index: 999;">
+                                        <div class="list-group" id="show-list-materias">
+                                            <!-- Aqui se mostraran las materias que se vayam buscando -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="inputPresidente">Presidente de grupo académico</label>
-                                    <select class="form-control" id="inputPresidente" name="inputPresidente">
 
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="id_usuario" id="id_usuario">
@@ -161,6 +196,7 @@ require_once '../../valida.php';
 
     <script>
         var tablaGrupos;
+        var idGrupo;
 
         $(document).ready(function() {
             tablaGrupos = $("#tablaGrupos").DataTable({
@@ -170,65 +206,66 @@ require_once '../../valida.php';
                 "language": {
                     "url": "datatables/es-ES.json"
                 },
+                "ajax": {
+                    "data": {
+                        "accion": "mostrarGruposAcademicos"
+                    },
+                    "url": "conexion/consultasSQL.php",
+                    "type": "post",
+                    "dataSrc": function(json) {
+                        if (json.success) {
+                            return json.data;
+                        } else {
+                            alertify.warning('<h3>' + json.mensaje + '</h3>');
+                        }
+                    },
+                    "error": function(jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    }
+                },
                 "columns": [{
-                        "width": "20%",
-                        "orderable": false
-                    },
-                    {
-                        "width": "40%",
-                        "orderable": false
-                    },
-                    {
-                        "width": "30%",
-                        "orderable": false
-                    },
-                    {
+                        "data": "nombre",
                         "width": "10%",
+                    },
+                    {
+                        "data": "nombrePrograma",
+                        "width": "40%",
+                    },
+                    {
+                        "data": "presidente",
+                        "width": "40%",
+                    },
+                    {
+                        "data": "acciones",
+                        "width": "10%",
+                    }
+                ],
+                "columnDefs": [{
+                        "targets": "_all",
                         "orderable": false
+                    },
+                    {
+                        "targets": [0, 1, 2],
+                        "render": function(data, type, row, meta) {
+                            return '<h6>' + data + '</h6>'
+                        }
                     }
                 ]
             });
-
-            //Obtener los grupos academicos desde la base de datos
-            $.ajax({
-                data: {
-                    "accion": "mostrarGruposAcademicos"
-                },
-                url: "conexion/consultasSQL.php",
-                type: "post",
-                success: function(response) {
-                    var res = JSON.parse(response);
-                    if (res.success) {
-                        //Mostrar información en el DataTable
-                        //Obtener los grupos
-                        var grupos = res.data;
-                        console.log(res.data);
-                        grupos.forEach(grupo => {
-                            agregarGrupo(grupo);
-                        });
-
-                    } else {
-                        alertify.warning('<h3>' + res['mensaje'] + '</h3>');
-                    }
-                }
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 0) {
-                    alert('No conectado, verifique su red.');
-                } else if (jqXHR.status == 404) {
-                    alert('Pagina no encontrada [404]');
-                } else if (jqXHR.status == 500) {
-                    alert('Internal Server Error [500].');
-                } else if (textStatus === 'parsererror') {
-                    alert('Falló la respuesta.');
-                } else if (textStatus === 'timeout') {
-                    alert('Se acabó el tiempo de espera.');
-                } else if (textStatus === 'abort') {
-                    alert('Conexión abortada.');
-                } else {
-                    alert('Error: ' + jqXHR.responseText);
-                }
-            });
-
 
             var validate = $("#formAddEdit").validate({
                 rules: {
@@ -238,16 +275,16 @@ require_once '../../valida.php';
                             return $.trim(value);
                         }
                     },
-                    inputPresidente: {
+                    selectPresidente: {
                         required: true
                     }
                 },
                 messages: {
                     inputNombre: {
-                        required: "Se requiere la clave."
+                        required: "Se requiere el nombre."
                     },
-                    inputPresidente: {
-                        required: "Se requiere el apellido materno."
+                    selectPresidente: {
+                        required: "Se requiere el presidente de grupo académico."
                     }
                 },
                 errorElement: "span",
@@ -263,7 +300,46 @@ require_once '../../valida.php';
                 },
                 submitHandler: function(form, event) {
                     event.preventDefault();
-                    
+
+                    var formData = new FormData(form);
+                    formData.append('accion', 'crearActualizarGrupoAcademico');
+                    formData.append('idGrupo', idGrupo);
+
+                    $.ajax({
+                        data: formData,
+                        url: 'conexion/consultasSQL.php',
+                        type: 'post',
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            var res = JSON.parse(response);
+                            if(res.success) {
+                                alertify.success('<h3>' + res.mensaje + '</h3>');
+                                $("#formAddEdit").trigger('reset');
+                                $("#modalAddEdit").modal('hide');
+                                //Recargar la tabla nuevamente
+                                tablaGrupos.ajax.reload();
+                            } else {
+                                alertify.warning('<h3>' + res.mensaje + '</h3>');
+                            }
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    });;
                 }
             });
 
@@ -299,13 +375,13 @@ require_once '../../valida.php';
                             programas.forEach(p => {
                                 optionsPE += '<option data-id="' + p.id_programaE + '" data-letra="' + p.letra + '" data-nombre="' + p.nombrePE + '" data-plan="' + p.planEstudio + '" value="' + p.id_programaE + '">' + p.nombrePE + ' - ' + p.planEstudio + '</option>';
                             });
-                            $("#inputPrograma").html(optionsPE);
+                            $("#selectPrograma").html(optionsPE);
 
                             optionsPresidentes = '<option value="" disable selected>Seleccione presidente</option>';
                             presidentes.forEach(p => {
-                                optionsPresidentes += '<option data-id="' + p.cat_ID + '" data-clave="' + p.cat_Clave + '" data-correo="' + p.correo + '">' + p.nombre + '</option>';
+                                optionsPresidentes += '<option data-id="' + p.cat_ID + '" data-clave="' + p.cat_Clave + '" data-correo="' + p.correo + '" value="' + p.cat_ID + '">' + p.cat_Clave + ' - ' + p.nombre + '</option>';
                             });
-                            $("#inputPresidente").html(optionsPresidentes);
+                            $("#selectPresidente").html(optionsPresidentes);
 
                         }
                     }
@@ -329,32 +405,51 @@ require_once '../../valida.php';
             });
         });
 
-        function agregarGrupo(grupo) {
-            var nombre = "";
-            var programaEdu = "";
-            var presidente = "";
-            var acciones = '<div class="row">' +
-                '<div class="col-md-12">' +
-                '<div style="margin: 0 auto;">' +
-                '<button type="button" class="btn btn-warning btn-sm m-1"><i class="fa-solid fa-pen-to-square"></i></button>' +
-                '<button type="button" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
+        $("#agregar").on('click', function() {
+            //Cuando se le de click al botón de agregar, mostrar la barra de busqueda para buscar materia
+            $("#div-search").css('display', 'block');
+        });
 
-            nombre = '<h6>' + grupo.nombre.toUpperCase() + '</h6>';
+        //Obtener las materias que vayan coincidiendo con lo que el usuario va ingresando
+        $("#search").keyup(function() {
+            var searchText = $(this).val().trim();
+            if (searchText != "") {
+                $.ajax({
+                    data: {
+                        "accion": "searchMaterias",
+                        "search": searchText
+                    },
+                    url: "conexion/consultasSQL.php",
+                    type: "post",
+                    success: function(response) {
+                        $("#show-list-materias").html(JSON.parse(response).data);
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 0) {
+                        alert('No conectado, verifique su red.');
+                    } else if (jqXHR.status == 404) {
+                        alert('Pagina no encontrada [404]');
+                    } else if (jqXHR.status == 500) {
+                        alert('Internal Server Error [500].');
+                    } else if (textStatus === 'parsererror') {
+                        alert('Falló la respuesta.');
+                    } else if (textStatus === 'timeout') {
+                        alert('Se acabó el tiempo de espera.');
+                    } else if (textStatus === 'abort') {
+                        alert('Conexión abortada.');
+                    } else {
+                        alert('Error: ' + jqXHR.responseText);
+                    }
+                });
+            } else {
+                $("#show-list-materias").html("");
+            }
+        });
 
-            programaEdu = '<h6>' + (grupo.nombrePE != null ? grupo.nombrePE : 'NO APLICA.') + '</h6>';
-
-            presidente = '<h6>' + grupo.nombreDoc + '</h6>';
-
-            tablaGrupos.row.add([
-                nombre,
-                programaEdu,
-                presidente,
-                acciones
-            ]).draw();
-        }
+        $("#div-search").on('click', 'a', function(e) {
+            e.preventDefault();
+            $("#search").val($(this).text());
+        });
     </script>
 </body>
 

@@ -634,7 +634,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
         case 'eliminarFotoFirma':
-            if(isset($_POST['nombreFirma']) && isset($_POST['idUsuario'])) {
+            if (isset($_POST['nombreFirma']) && isset($_POST['idUsuario'])) {
                 //Eliminar la foto de la firma en el servidor
                 unlink("./../firmasimagenes/" . $_POST['nombreFirma']);
 
@@ -649,15 +649,15 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     echo json_encode(['success' => true, 'mensaje' => 'Imagen de la firma eliminada correctamente.']);
                 } else {
                     echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar la imagen de la firma.']);
-                }    
+                }
             }
             break;
 
-        
-        //Metodos para la administración de grupos academicos
+
+            //Metodos para la administración de grupos academicos
         case 'mostrarGruposAcademicos': {
-            //Consultar los grupos academicos del sistema
-            $sql = "SELECT ga.id_grupoacademico, 
+                //Consultar los grupos academicos del sistema
+                $sql = "SELECT ga.id_grupoacademico, 
                            ga.nombre, 
                            pro.*, 
                            d.cat_ID, 
@@ -666,11 +666,33 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     FROM gruposacademicos ga
                     LEFT OUTER JOIN programae pro ON pro.id_programaE = ga.id_programaE
                     INNER JOIN docentes d ON d.cat_ID = ga.cat_ID";
-            $grupos = $connSQL->preparedQuery($sql);
+                $grupos = $connSQL->preparedQuery($sql);
 
-            echo json_encode(['success' => true, 'data' => $grupos]);
-            break;
-        }
+                $final_data = [];
+                foreach ($grupos as $grupo) {
+                    $acciones = '<div class="row"><div class="btn-group" style="margin: 0 auto;">' .
+                        '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+                        'Acciones' .
+                        '</button>' .
+                        '<div class="dropdown-menu">' .
+                        '<a class="dropdown-item asignarMateria" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-book mr-2"></i>Asignar materias</a>' .
+                        '<a class="dropdown-item editar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-pen-to-square mr-2"></i>Editar</a>' .
+                        '<a class="dropdown-item eliminar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-trash mr-2"></i>Eliminar</a>' .
+                        '</div>' .
+                        '</div></div>';
+
+                    $final_data[] = [
+                        'ID' => $grupo['id_grupoacademico'],
+                        'nombre' => $grupo['nombre'],
+                        'nombrePrograma' => $grupo['id_programaE'] != null ? $grupo['planEstudio'] . ' / ' . $grupo['nombrePE'] : 'NO APLICA',
+                        'presidente' => $grupo['nombreDoc'],
+                        'acciones' => $acciones
+                    ];
+                }
+
+                echo json_encode(['success' => true, 'data' => $final_data]);
+                break;
+            }
 
         case 'mostrarProgramasYPresidentes':
             //Consultar de igual forma los programas educativos 
@@ -688,6 +710,59 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             $presidentes = $connSQL->preparedQuery($sql);
 
             echo json_encode(['success' => true, 'data' => ['programas' => $programas, 'presidentes' => $presidentes]]);
+            break;
+
+        case 'searchMaterias':
+            //Hacer una consulta con el operador LIKE de las materias disponibles
+            if (isset($_POST['search'])) {
+                $str = trim($_POST['search']);
+                $sql = "SELECT *
+                        FROM cereticula
+                        WHERE ret_Clave LIKE :clave
+                        OR ret_ClaveInt LIKE :claveInt
+                        OR ret_NomCorto LIKE :nomCorto
+                        OR ret_NomCompleto LIKE :nomCompleto
+                        OR ret_ClaveOficial LIKE :claveOficial";
+                $materias = $connSQL->preparedQuery($sql, ["clave" => "%" . $str . "%", "claveInt" => "%" . $str . "%", "nomCorto" => "%" . $str . "%", "nomCompleto" => "%" . $str . "%", "claveOficial" => "%" . $str . "%"]);
+
+                //Devolver la información en forma de enlaces para agregarlos directamente a la lista HTML de Boostrap
+                $final_data = '';
+                if (count($materias) > 0) {
+                    foreach ($materias as $materia) {
+                        $final_data .= '<a href="#" class="list-group-item list-group-item-action border-1" data-id="' . $materia['ret_ID'] . '" data-clave="' . $materia['ret_Clave'] . '" data-nombre="' . $materia['ret_NomCompleto'] . '" data-claveOficial="' . $materia['ret_ClaveOficial'] . '">' . $materia['ret_Clave'] . ' - ' . $materia['ret_NomCompleto'] . '</a>';
+                    }
+                } else {
+                    $final_data .= '<p class="list-group-item border-1">No se encontraron resultados.</p>';
+                }
+                echo json_encode(['success' => true, 'data' => $final_data]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+            }
+            break;
+
+        case 'crearActualizarGrupoAcademico':
+            //Verificar que operacion es, si crear o actualizar
+            if (isset($_POST['operacion']) && isset($_POST['inputNombre']) && isset($_POST['selectPrograma']) && isset($_POST['selectPresidente'])) {
+                if ($_POST["operacion"] === "Crear") {
+
+                    $nombre = $_POST['inputNombre'];
+                    $idPrograma = $_POST['selectPrograma'] != '' ? $_POST['selectPrograma'] : null;
+                    $idPresidente = $_POST['selectPresidente'];
+
+                    //Insertar el nuevo grupo academico
+                    $sql = "INSERT INTO gruposacademicos (nombre, id_programaE, cat_ID) VALUES(:nombre, :idPrograma, :idUser)";
+                    $params = ['nombre' => $nombre, 'idPrograma' => $idPrograma, 'idUser' => $idPresidente];
+                    $res = $connSQL->preparedInsert($sql, $params);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Grupo académico agregado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al agregar el grupo académico.']);
+                    }
+                } else if ($_POST["operacion"] === "Actualizar") {
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+            }
             break;
     }
 }
