@@ -218,6 +218,7 @@ require_once '../../valida.php';
 
     <script>
         var tableUsuarios;
+        var validate;
 
         $(document).ready(function() {
 
@@ -314,7 +315,7 @@ require_once '../../valida.php';
                     return true;
                 }
             });
-            var validate = $("#formAddEdit").validate({
+            validate = $("#formAddEdit").validate({
                 rules: {
                     inputClave: {
                         required: true,
@@ -568,115 +569,122 @@ require_once '../../valida.php';
 
                 //Obtener el id del usuario el cual esta incrustado en la propiedad data-id del enlace o boton
                 idUser = $(this).data('id');
-                //Ejecutar una petición al servidor para obtener al usuario
-                $.ajax({
-                    data: {
-                        "accion": "listarUsuarioById",
-                        "idUser": idUser
-                    },
-                    url: "conexion/consultasSQL.php",
-                    type: "post",
-                    success: function(respuesta) {
-                        var resp = JSON.parse(respuesta);
 
-                        if (resp['success']) {
-                            resp = resp['data'];
+                mostrarRolesActuales(idUser);
 
-                            //Resetar la validacion del formulario y limpiar errores por si es necesario
-                            validate.resetForm(); //Resetar el validador de campos
-                            $("#formAddEdit").find('.is-invalid').removeClass('is-invalid'); //Remover las clases is-invalid para que no se evan los campos en rojo
-
-                            //Definir el el submit del formulario con un valor de actualizar
-                            $("#action").val("Actualizar");
-                            $("#operacion").val("Actualizar");
-
-                            //Abrir el modal y mostrar los valores del usuario en los inputs correspondientes
-                            $("#modalAddEdit").modal('show');
-                            $("#modalAddEdit .modal-title").text("Editar usuario");
-                            $("#modalAddEdit #inputClave").val(resp['clave'])
-                            $("#modalAddEdit #inputAp").val(resp['ap']);
-                            $("#modalAddEdit #inputAm").val(resp['am']);
-                            $("#modalAddEdit #inputNombre").val(resp['nombre']);
-                            $("#modalAddEdit #inputCorreo").val(resp['correo']);
-                            $("#modalAddEdit #imagen_subida").html(resp['firma']);
-
-                            //Obtener una lista de los roles disponibles para mostrarlos en el modal
-                            $("#modalAddEdit #contenedor-roles").html("");
-                            $.ajax({
-                                data: {
-                                    "accion": "listarRolesGeneral"
-                                },
-                                "url": "conexion/consultasSQL.php",
-                                "type": "post",
-                                success: function(response) {
-                                    //Obtener los roles que existen en el sistema y mostrarlos en forma de Checkbox
-                                    var roles = JSON.parse(response);
-
-                                    //Obtener los roles que el usuario ya tiene asignados, extraer solo los ID
-                                    var rolesUsuario = JSON.parse(resp['roles']).map(obj => obj.id);
-
-                                    var html = '';
-                                    roles.forEach(rol => {
-                                        //Si el id del los roles del sistema se encuentra en el array de los roles que el usuario tiene, marcar el checkbox como checked
-                                        var isChecked = rolesUsuario.includes(rol['id_rol']) ? 'checked' : '';
-                                        html += '<div class="form-check">' +
-                                            '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '" ' + isChecked + '>' +
-                                            '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' + rol['descripcion_rol'] + '</label>' +
-                                            '</div>';
-                                    });
-                                    $("#modalAddEdit #contenedor-roles").html(html);
-
-                                    //Cuando se va a editar, añadir a los checkbox de roles la propiedad para onchange
-                                    //de este modo se puede elegir eliminar o agregar los roles de ese usuario seleccionado
-                                    $("#contenedor-roles input[type='checkbox']").each(function() {
-                                        $(this).attr("onclick", "agregarEliminarRol(event, " + idUser + ")");
-                                    });
-
-                                }
-                            }).fail(function(jqXHR, textStatus, errorThrown) {
-                                if (jqXHR.status === 0) {
-                                    alert('No conectado, verifique su red.');
-                                } else if (jqXHR.status == 404) {
-                                    alert('Pagina no encontrada [404]');
-                                } else if (jqXHR.status == 500) {
-                                    alert('Internal Server Error [500].');
-                                } else if (textStatus === 'parsererror') {
-                                    alert('Falló la respuesta.');
-                                } else if (textStatus === 'timeout') {
-                                    alert('Se acabó el tiempo de espera.');
-                                } else if (textStatus === 'abort') {
-                                    alert('Conexión abortada.');
-                                } else {
-                                    alert('Error: ' + jqXHR.responseText);
-                                }
-                            });
-                        } else {
-                            alertify.warning(resp['mensaje']);
-                        }
-
-                    }
-
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 0) {
-                        alert('No conectado, verifique su red.');
-                    } else if (jqXHR.status == 404) {
-                        alert('Pagina no encontrada [404]');
-                    } else if (jqXHR.status == 500) {
-                        alert('Internal Server Error [500].');
-                    } else if (textStatus === 'parsererror') {
-                        alert('Falló la respuesta.');
-                    } else if (textStatus === 'timeout') {
-                        alert('Se acabó el tiempo de espera.');
-                    } else if (textStatus === 'abort') {
-                        alert('Conexión abortada.');
-                    } else {
-                        alert('Error: ' + jqXHR.responseText);
-                    }
-                });
             });
 
 
         });
+
+        function mostrarRolesActuales(idUser) {
+            //Metodo para llenar los checkboxes con los roles del sustema y poner como seleccionados solo los que el usuario tiene asignados
+            //Ejecutar una petición al servidor para obtener al usuario
+            $.ajax({
+                data: {
+                    "accion": "listarUsuarioById",
+                    "idUser": idUser
+                },
+                url: "conexion/consultasSQL.php",
+                type: "post",
+                success: function(respuesta) {
+                    var resp = JSON.parse(respuesta);
+
+                    if (resp['success']) {
+                        resp = resp['data'];
+
+                        //Resetar la validacion del formulario y limpiar errores por si es necesario
+                        validate.resetForm(); //Resetar el validador de campos
+                        $("#formAddEdit").find('.is-invalid').removeClass('is-invalid'); //Remover las clases is-invalid para que no se evan los campos en rojo
+
+                        //Definir el el submit del formulario con un valor de actualizar
+                        $("#action").val("Actualizar");
+                        $("#operacion").val("Actualizar");
+
+                        //Abrir el modal y mostrar los valores del usuario en los inputs correspondientes
+                        $("#modalAddEdit").modal('show');
+                        $("#modalAddEdit .modal-title").text("Editar usuario");
+                        $("#modalAddEdit #inputClave").val(resp['clave'])
+                        $("#modalAddEdit #inputAp").val(resp['ap']);
+                        $("#modalAddEdit #inputAm").val(resp['am']);
+                        $("#modalAddEdit #inputNombre").val(resp['nombre']);
+                        $("#modalAddEdit #inputCorreo").val(resp['correo']);
+                        $("#modalAddEdit #imagen_subida").html(resp['firma']);
+
+                        //Obtener una lista de los roles disponibles para mostrarlos en el modal
+                        $("#modalAddEdit #contenedor-roles").html("");
+                        $.ajax({
+                            data: {
+                                "accion": "listarRolesGeneral"
+                            },
+                            "url": "conexion/consultasSQL.php",
+                            "type": "post",
+                            success: function(response) {
+                                //Obtener los roles que existen en el sistema y mostrarlos en forma de Checkbox
+                                var roles = JSON.parse(response);
+
+                                //Obtener los roles que el usuario ya tiene asignados, extraer solo los ID
+                                var rolesUsuario = JSON.parse(resp['roles']).map(obj => obj.id);
+
+                                var html = '';
+                                roles.forEach(rol => {
+                                    //Si el id del los roles del sistema se encuentra en el array de los roles que el usuario tiene, marcar el checkbox como checked
+                                    var isChecked = rolesUsuario.includes(rol['id_rol']) ? 'checked' : '';
+                                    html += '<div class="form-check">' +
+                                        '<input class="form-check-input" type="checkbox" value="' + rol['descripcion_rol'] + '" id="rol_' + rol['id_rol'] + '" data-id="' + rol['id_rol'] + '" ' + isChecked + '>' +
+                                        '<label class="form-check-label" for="rol_' + rol['id_rol'] + '">' + rol['descripcion_rol'] + '</label>' +
+                                        '</div>';
+                                });
+                                $("#modalAddEdit #contenedor-roles").html(html);
+
+                                //Cuando se va a editar, añadir a los checkbox de roles la propiedad para onchange
+                                //de este modo se puede elegir eliminar o agregar los roles de ese usuario seleccionado
+                                $("#contenedor-roles input[type='checkbox']").each(function() {
+                                    $(this).attr("onclick", "agregarEliminarRol(event, " + idUser + ")");
+                                });
+
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                    } else {
+                        alertify.warning(resp['mensaje']);
+                    }
+
+                }
+
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 0) {
+                    alert('No conectado, verifique su red.');
+                } else if (jqXHR.status == 404) {
+                    alert('Pagina no encontrada [404]');
+                } else if (jqXHR.status == 500) {
+                    alert('Internal Server Error [500].');
+                } else if (textStatus === 'parsererror') {
+                    alert('Falló la respuesta.');
+                } else if (textStatus === 'timeout') {
+                    alert('Se acabó el tiempo de espera.');
+                } else if (textStatus === 'abort') {
+                    alert('Conexión abortada.');
+                } else {
+                    alert('Error: ' + jqXHR.responseText);
+                }
+            });
+        }
 
         function agregarEliminarRol(event, id_user) {
             //Prevenir el comportamiento por defecto del check, evitando que se marque o desmarque automaticamente
@@ -702,8 +710,10 @@ require_once '../../valida.php';
                                 if (res['success']) {
                                     alertify.success('<h3>' + res['mensaje'] + '</h3>');
                                     //Poner el checkbox como seleccionado
-                                    $(checkbox).prop('checked', true);
+                                    //$(checkbox).prop('checked', true);
                                     //$("#modalAddEdit").modal('hide');
+
+                                    mostrarRolesActuales(id_user);
                                     tableUsuarios.ajax.reload();
                                 } else {
                                     alertify.warning('<h3>' + res['mensaje'] + '</h3>')
@@ -753,8 +763,9 @@ require_once '../../valida.php';
                                 if (res['success']) {
                                     alertify.success('<h3>' + res['mensaje'] + '</h3>');
                                     //Poner el checkbox como no seleccionado
-                                    $(checkbox).prop('checked', false);
+                                    //$(checkbox).prop('checked', false);
                                     //$("#modalAddEdit").modal('hide');
+                                    mostrarRolesActuales(id_user);
                                     tableUsuarios.ajax.reload();
                                 } else {
                                     alertify.warning('<h4>' + res['mensaje'] + '</h3>')
@@ -810,7 +821,7 @@ require_once '../../valida.php';
                                 $("#modalAddEdit #imagen_subida input[type='hidden']").val('');
                                 $("#modalAddEdit #imagen_subida img").closest('.col-md-9').next().remove();
                                 $("#modalAddEdit #imagen_subida img").closest('.col-md-9').removeClass('col-md-9').addClass('col-md-12');
-                               
+
                                 $("#modalAddEdit #imagen_subida img").remove();
                             } else {
                                 alertify.warning('<h4>' + res['mensaje'] + '</h3>')
