@@ -675,7 +675,6 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                         'Acciones' .
                         '</button>' .
                         '<div class="dropdown-menu">' .
-                        '<a class="dropdown-item asignarMateria" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-book mr-2"></i>Asignar materias</a>' .
                         '<a class="dropdown-item editar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-pen-to-square mr-2"></i>Editar</a>' .
                         '<a class="dropdown-item eliminar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-trash mr-2"></i>Eliminar</a>' .
                         '</div>' .
@@ -751,13 +750,11 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
                     //Insertar el nuevo grupo academico
                     $sql = "INSERT INTO gruposacademicos (nombre, id_programaE, cat_ID) VALUES(:nombre, :idPrograma, :idUser)";
-                    $params = ['nombre' => $nombre, 'idPrograma' => $idPrograma, 'idUser' => $idPresidente];
-                    $res = $connSQL->preparedInsert($sql, $params);
-                    if ($res) {
-                        echo json_encode(['success' => true, 'mensaje' => 'Grupo académico agregado correctamente.']);
-                    } else {
-                        echo json_encode(['success' => false, 'mensaje' => 'Error al agregar el grupo académico.']);
-                    }
+                    $params = [':nombre' => $nombre, ':idPrograma' => $idPrograma, ':idUser' => $idPresidente];
+                    
+                    $connSQL->addGrupoAcaMaterias($sql, $params, json_decode($_POST['idMaterias']));
+                    echo json_encode(['success' => true, 'mensaje' => 'Grupo académico registrado correctamente.']);
+
                 } else if ($_POST["operacion"] === "Actualizar") {
                 }
             } else {

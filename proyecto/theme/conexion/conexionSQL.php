@@ -293,4 +293,41 @@ class connSQL
 			die();
 		}
 	}
+
+	public function addGrupoAcaMaterias($sqlGrupo, $paramsGrupo, $idMaterias) {
+		try {
+			$this->dbh->beginTransaction();
+
+			//Prepara la sentencia para agregar nuevo grupo academico
+			$query = $this->dbh->prepare($sqlGrupo);
+			$query->execute($paramsGrupo);
+
+			//Obtener el ultimo ID generado del grupo academico que se inserto
+			$insertId = $this->dbh->lastInsertId();
+
+			//Actualizar la llave foranea de cada una de las materias elegidas y asignarles el valor del grupo academico generado
+			//De este modo, las materias quedan relacionadas con un grupo academico
+			$paramUpdateMaterias = [];
+			if(count($idMaterias) > 0) {
+				//Generar los parametros para la actualización de la clave foranea de la materia
+				foreach ($idMaterias as $value) {
+					$paramUpdateMaterias[] = [
+						':idGrupoAcademico' => $insertId,
+						':materiaID' => $value
+					];
+				}
+
+				$query2 = $this->dbh->prepare("UPDATE cereticula SET id_grupoacademico = :idGrupoAcademico WHERE ret_ID = :materiaID");
+				foreach ($paramUpdateMaterias as $row) {
+					$query2->execute($row);
+				}
+			}
+
+			$this->dbh->commit();
+		} catch (PDOException $e) {
+			$this->dbh->rollBack();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
+			die();
+		}
+	}
 }

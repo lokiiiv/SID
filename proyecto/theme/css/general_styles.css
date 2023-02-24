@@ -277,3 +277,25 @@ footer .fa-angle-right {
   color: #eee;
   text-decoration: none;
 }
+
+#contenedor-materias .badge {
+  white-space: normal;
+}
+
+#contenedor-materias .item-materia {
+  margin-right: 6px;
+}
+
+#contenedor-materias .badge a {
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  opacity: 0.6;
+  margin: 0 0 0 .3em;
+}
+#contenedor-materias .badge .remove {
+  margin: 4px;
+}
+#contenedor-materias .badge a:hover {
+  opacity: 1.0;
+}

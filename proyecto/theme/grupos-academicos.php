@@ -130,27 +130,32 @@ require_once '../../valida.php';
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-10 col-xs-12 col-sm-12 col-lg-10 d-flex align-items-center">
+                                    <div class="col-md-10 col-xs-10 col-sm-10 col-lg-10 col-10 d-flex align-items-center">
                                         <h6>Asignación de materias</h6>
                                     </div>
-                                    <div class="col-md-2 col-xs-12 col-sm-12 col-lg-2 d-flex justify-content-center justify-content-sm-center justify-content-md-end align-items-center">
+                                    <div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-center justify-content-sm-center justify-content-md-end align-items-center">
                                         <button id="agregar" type="button" class="btn btn-info btn-sm">
                                             <i class="fa-solid fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
+                                <div class="row mt-2">
+                                    <div class="col d-flex justify-content-start flex-wrap" id="contenedor-materias">
+
+                                    </div>
+                                </div>
                                 <div class="row mt-3" id="div-search" style="display: none;">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 col-sm-12 col-12">
                                         <div class="input-group">
                                             <input type="text" name="search" id="search" class="form-control rounded-1 border-info" placeholder="Clave o nombre de materia." autocomplete="off" required>
                                             <div class="input-group-append">
-                                                <input type="button" name="search" value="Buscar" class="btn btn-info rounded-1">
+                                                <input type="button" name="search" value="Cancelar" class="btn btn-danger cancelar-search rounded-1">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-8" style="position: absolute; z-index: 999;">
                                         <div class="list-group" id="show-list-materias">
-                                            <!-- Aqui se mostraran las materias que se vayam buscando -->
+                                            <!-- Aqui se mostraran las materias que se vayan buscando -->
                                         </div>
                                     </div>
                                 </div>
@@ -277,6 +282,9 @@ require_once '../../valida.php';
                     },
                     selectPresidente: {
                         required: true
+                    },
+                    search: {
+                        required: false
                     }
                 },
                 messages: {
@@ -305,6 +313,13 @@ require_once '../../valida.php';
                     formData.append('accion', 'crearActualizarGrupoAcademico');
                     formData.append('idGrupo', idGrupo);
 
+                    //Obtener los ID de las materias que se vayan seleccionado en caso de agregar un nuevo grupo academico
+                    var selectedMaterias = [];
+                    $("#contenedor-materias a").each(function() {
+                        selectedMaterias.push($(this).data('id'));
+                    });
+                    formData.append('idMaterias', JSON.stringify(selectedMaterias));
+
                     $.ajax({
                         data: formData,
                         url: 'conexion/consultasSQL.php',
@@ -313,7 +328,7 @@ require_once '../../valida.php';
                         processData: false,
                         success: function(response) {
                             var res = JSON.parse(response);
-                            if(res.success) {
+                            if (res.success) {
                                 alertify.success('<h3>' + res.mensaje + '</h3>');
                                 $("#formAddEdit").trigger('reset');
                                 $("#modalAddEdit").modal('hide');
@@ -339,13 +354,15 @@ require_once '../../valida.php';
                         } else {
                             alert('Error: ' + jqXHR.responseText);
                         }
-                    });;
+                    });
                 }
             });
 
             $("#botonCrear").on('click', function() {
                 validate.resetForm(); //Resetar el validador de campos
                 $("#formAddEdit").find('.is-invalid').removeClass('is-invalid');
+                $("#div-search").css('display', 'none');
+                $("#contenedor-materias").html("");
 
                 $("#modalAddEdit #formAddEdit").trigger('reset')
                 $("#modalAddEdit .modal-title").text('Crear nuevo grupo académico');
@@ -410,6 +427,11 @@ require_once '../../valida.php';
             $("#div-search").css('display', 'block');
         });
 
+        $(".cancelar-search").on('click', function() {
+            //Ocultar el buscador de materias
+            $(this).closest('#div-search').css('display', 'none');
+        });
+
         //Obtener las materias que vayan coincidiendo con lo que el usuario va ingresando
         $("#search").keyup(function() {
             var searchText = $(this).val().trim();
@@ -446,9 +468,38 @@ require_once '../../valida.php';
             }
         });
 
+        //Al dar click en alguna materia encontrada al buscarla en el input search
         $("#div-search").on('click', 'a', function(e) {
             e.preventDefault();
-            $("#search").val($(this).text());
+            $("#show-list-materias").html("");
+            $("#search").val("");
+            $("#search").focus();
+
+            var idMateria = $(this).data('id');
+            var claveMateria = $(this).data('clave');
+            var nombreMateria = $(this).data('nombre');
+
+            //Ante de agregar la materia al contendor de materias, verificar que no se repitan e ingresen la misma materia
+            var ban = true;
+            $("#contenedor-materias a").each(function() {
+                if (idMateria == $(this).data('id')) {
+                    alertify.warning("<h3>La materia de " + nombreMateria + " (" + claveMateria + ") ya fue seleccionada.</h3>");
+                    ban = false;
+                    return false;
+                } else {
+                    ban = true;
+                }
+            });
+            if (ban) {
+                var html = '<div class="item-materia"><h5><span class="badge badge-dark">' + claveMateria + ' - ' + nombreMateria + '<a href="" data-id="' + idMateria + '"><i class="fa-solid fa-circle-xmark remove"></i></a></span></h5></div>';
+                $("#contenedor-materias").append(html);
+            }
+        });
+
+        //Eliminar las metarias que va agregando por si es necesario
+        $("#contenedor-materias").on('click', 'a', function(e) {
+            e.preventDefault();
+            $(this).closest('.item-materia').remove();
         });
     </script>
 </body>
