@@ -202,6 +202,7 @@ require_once '../../valida.php';
     <script>
         var tablaGrupos;
         var idGrupo;
+        var validate;
 
         $(document).ready(function() {
             tablaGrupos = $("#tablaGrupos").DataTable({
@@ -272,7 +273,7 @@ require_once '../../valida.php';
                 ]
             });
 
-            var validate = $("#formAddEdit").validate({
+            validate = $("#formAddEdit").validate({
                 rules: {
                     inputNombre: {
                         required: true,
@@ -491,7 +492,7 @@ require_once '../../valida.php';
                 }
             });
             if (ban) {
-                var html = '<div class="item-materia"><h5><span class="badge badge-dark">' + claveMateria + ' - ' + nombreMateria + '<a href="" data-id="' + idMateria + '"><i class="fa-solid fa-circle-xmark remove"></i></a></span></h5></div>';
+                var html = '<div class="item-materia"><h5><span class="badge badge-dark">' + claveMateria + ' - ' + nombreMateria + '<a href="" data-id="' + idMateria + '" data-nuevo="1"><i class="fa-solid fa-circle-xmark remove"></i></a></span></h5></div>';
                 $("#contenedor-materias").append(html);
             }
         });
@@ -499,8 +500,156 @@ require_once '../../valida.php';
         //Eliminar las metarias que va agregando por si es necesario
         $("#contenedor-materias").on('click', 'a', function(e) {
             e.preventDefault();
-            $(this).closest('.item-materia').remove();
+
+            //Si la operacion es crear, solo eliminar el elemento del DOM
+            if ($("#operacion").val() == "Crear") {
+                $(this).closest('.item-materia').remove();
+
+            } else if ($("#operacion").val() == "Actualizar") {
+                //Si es actualizar, entonces se elige eliminar y quitar la metaria del grupo academico seleccionado
+
+                //Si en la actualización, se decide agregar una materia nuevo, verificar si su data "nuevo" es igual a 1
+                //Si el data "nuevo" es igual a 0, quiere decir que la materia ya esta aisgnada en la base de datos, por lo que se debe mostrar advertancia y realizar modificación
+                if ($(this).data('nuevo') == 1) {
+                    $(this).closest('.item-materia').remove();
+                } else if ($(this).data('nuevo') == 0) {
+
+                    alertify.confirm("Aviso", "¿Está seguro(a) de quitar la materia:  " + $(this).closest('.badge').text() + "?",
+                        function() {
+                            //Eliminar la relacion que tiene la materia con el grupo academico
+                        },
+                        function() {
+
+                        }
+                    ).set('labels', {
+                        ok: 'Aceptar',
+                        cancel: 'Cancelar'
+                    });
+                }
+            }
         });
+
+
+        //Funcionalidad para cuando se eliga la opción de editar en alguno de los grupos academicos
+        $(document).on('click', '.editar', function(e) {
+            e.preventDefault();
+            $("#div-search").css('display', 'none');
+            //Obtener el ID del grupo, el cual esta dentro de la propieda data-id del boton
+            idGrupo = $(this).data('id');
+
+            mostrarMateriasActuales(idGrupo);
+        });
+
+        function mostrarMateriasActuales(idGrupo) {
+            //Metodo para llenar los datos del grupo académico, además de las materias que forman parte del mismo
+            $.ajax({
+                data: {
+                    "accion": "obtenerGrupoAcademicoById",
+                    "idGrupo": idGrupo
+                },
+                url: "conexion/consultasSQL.php",
+                type: "post",
+                success: function(respuesta) {
+                    var resp = JSON.parse(respuesta);
+                    if (resp.success) {
+                        resp = resp.data;
+                        validate.resetForm();
+                        $("#formAddEdit").find('.is-invalid').removeClass('is-invalid');
+
+                        $("#accion").val("Actualizar");
+                        $("#operacion").val("Actualizar");
+
+                        //Abrir el modal y mostrar los valores
+                        $("#modalAddEdit").modal("show");
+                        $("#modalAddEdit .modal-title").text("Editar grupo académico");
+                        $("#modalAddEdit #inputNombre").val(resp.nombre);
+
+                        //Obtener los programas educativos y presidentes registrados en el sistema
+                        $.ajax({
+                            data: {
+                                "accion": "mostrarProgramasYPresidentes"
+                            },
+                            url: "conexion/consultasSQL.php",
+                            type: "post",
+                            success: function(response) {
+                                var res = JSON.parse(response);
+                                if (res.success) {
+                                    //Obtener los programas educativos y presidentes de academia
+                                    var programas = res.data.programas;
+                                    var presidentes = res.data.presidentes;
+
+                                    //Obtener el ID del programa educativo que tiene asignado este grupo academico
+                                    var idPrograma = resp.id_programaE;
+                                    var idPresidente = resp.cat_ID;
+
+                                    //Generar los Select de los programas educativos y los presidentes
+                                    var optionsPE = '';
+                                    var optionsPresidentes = '';
+
+                                    //Ponser los select como seleccionados conforme a los datos
+                                    optionsPE = idPrograma == null ? '<option value="" disable selected>NINGUNO (NO APLICA)</option>' : '<option value="" disable>NINGUNO (NO APLICA)</option>';
+                                    programas.forEach(p => {
+                                        var isSelected = idPrograma == p.id_programaE ? 'selected' : '';
+                                        optionsPE += '<option data-id="' + p.id_programaE + '" data-letra="' + p.letra + '" data-nombre="' + p.nombrePE + '" data-plan="' + p.planEstudio + '" value="' + p.id_programaE + '" ' + isSelected + '>' + p.nombrePE + ' - ' + p.planEstudio + '</option>';
+                                    });
+                                    $("#modalAddEdit #selectPrograma").html(optionsPE);
+
+                                    optionsPresidentes = '<option value="" disable>Seleccione presidente</option>';
+                                    presidentes.forEach(p => {
+                                        var isSelected = idPresidente == p.cat_ID ? 'selected' : '';
+                                        optionsPresidentes += '<option data-id="' + p.cat_ID + '" data-clave="' + p.cat_Clave + '" data-correo="' + p.correo + '" value="' + p.cat_ID + '" ' + isSelected + '>' + p.cat_Clave + ' - ' + p.nombre + '</option>';
+                                    });
+                                    $("#modalAddEdit #selectPresidente").html(optionsPresidentes);
+
+                                    //Llenar el contenedor de materias con las materias que el grupo academico tiene asignadas
+                                    var materiasDelGrupo = resp.materias;
+                                    var html = '';
+                                    materiasDelGrupo.forEach(mat => {
+                                        html += '<div class="item-materia"><h5><span class="badge badge-dark">' + mat.clave + ' - ' + mat.nombre + '<a href="" data-id="' + mat.id + '" data-nuevo="0"><i class="fa-solid fa-circle-xmark remove"></i></a></span></h5></div>';
+                                    });
+                                    $("#contenedor-materias").html(html);
+                                }
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            if (jqXHR.status === 0) {
+                                alert('No conectado, verifique su red.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Pagina no encontrada [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (textStatus === 'parsererror') {
+                                alert('Falló la respuesta.');
+                            } else if (textStatus === 'timeout') {
+                                alert('Se acabó el tiempo de espera.');
+                            } else if (textStatus === 'abort') {
+                                alert('Conexión abortada.');
+                            } else {
+                                alert('Error: ' + jqXHR.responseText);
+                            }
+                        });
+                    } else {
+                        alertify.warning('<h3>' + resp.mensaje + '</h3>')
+                    }
+                }
+
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 0) {
+                    alert('No conectado, verifique su red.');
+                } else if (jqXHR.status == 404) {
+                    alert('Pagina no encontrada [404]');
+                } else if (jqXHR.status == 500) {
+                    alert('Internal Server Error [500].');
+                } else if (textStatus === 'parsererror') {
+                    alert('Falló la respuesta.');
+                } else if (textStatus === 'timeout') {
+                    alert('Se acabó el tiempo de espera.');
+                } else if (textStatus === 'abort') {
+                    alert('Conexión abortada.');
+                } else {
+                    alert('Error: ' + jqXHR.responseText);
+                }
+            });
+        }
     </script>
 </body>
 

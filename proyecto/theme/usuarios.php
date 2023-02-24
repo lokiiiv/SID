@@ -662,7 +662,7 @@ require_once '../../valida.php';
                             }
                         });
                     } else {
-                        alertify.warning(resp['mensaje']);
+                        alertify.warning('<h3>' + resp['mensaje'] + '</h3>');
                     }
 
                 }

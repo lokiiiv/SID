@@ -761,5 +761,26 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
             }
             break;
+
+        case 'obtenerGrupoAcademicoById':
+            if (isset($_POST['idGrupo'])) {
+                $sql = "SELECT ga.*, 
+                               IF(ce.ret_ID IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', ce.ret_ID, 'clave', ce.ret_Clave, 'nombre', ce.ret_NomCompleto)), ']'), '[]') AS materias 
+                        FROM gruposacademicos ga 
+                        LEFT JOIN cereticula ce ON ga.id_grupoacademico = ce.id_grupoacademico 
+                        WHERE ga.id_grupoacademico = :idGrupoAcademico 
+                        GROUP BY ga.id_grupoacademico";
+
+                $grupo = $connSQL->singlePreparedQuery($sql, ['idGrupoAcademico' => $_POST['idGrupo']]);
+                if($grupo) {
+                    $grupo['materias'] = json_decode($grupo['materias']);
+                    echo json_encode(['success' => true, 'data' => $grupo]);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Grupo académico no encontrado.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
+            break;
     }
 }
