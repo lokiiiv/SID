@@ -665,7 +665,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                            d.cat_CorreoE as correo
                     FROM gruposacademicos ga
                     LEFT OUTER JOIN programae pro ON pro.id_programaE = ga.id_programaE
-                    INNER JOIN docentes d ON d.cat_ID = ga.cat_ID";
+                    LEFT JOIN docentes d ON d.cat_ID = ga.cat_ID";
                 $grupos = $connSQL->preparedQuery($sql);
 
                 $final_data = [];
@@ -684,7 +684,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                         'ID' => $grupo['id_grupoacademico'],
                         'nombre' => $grupo['nombre'],
                         'nombrePrograma' => $grupo['id_programaE'] != null ? $grupo['planEstudio'] . ' / ' . $grupo['nombrePE'] : 'NO APLICA',
-                        'presidente' => $grupo['nombreDoc'],
+                        'presidente' => $grupo['cat_ID'] != null ? $grupo['nombreDoc'] : 'SIN PRESIDENTE',
                         'acciones' => $acciones
                     ];
                 }

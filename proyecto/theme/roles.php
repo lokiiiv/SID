@@ -244,7 +244,7 @@ require_once '../../valida.php';
                             var vista = '';
                             //Si si tiene roles, entonces mostrarlos
                             if (permisos.length > 0) {
-                                vista += '<div class="row" style="padding:1px;"><div style="margin: 0 auto;">';
+                                vista += '<div class="row" style="padding:1px;"><div>';
                                 permisos.forEach(val => {
                                     vista += '<span class="badge badge-primary" style="font-size:11px; margin: 2px;">' + val['descripcion'] + '</span>';        
                                 });
