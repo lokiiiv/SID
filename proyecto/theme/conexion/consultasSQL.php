@@ -751,11 +751,19 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     //Insertar el nuevo grupo academico
                     $sql = "INSERT INTO gruposacademicos (nombre, id_programaE, cat_ID) VALUES(:nombre, :idPrograma, :idUser)";
                     $params = [':nombre' => $nombre, ':idPrograma' => $idPrograma, ':idUser' => $idPresidente];
-                    
+
                     $connSQL->addGrupoAcaMaterias($sql, $params, json_decode($_POST['idMaterias']));
                     echo json_encode(['success' => true, 'mensaje' => 'Grupo académico registrado correctamente.']);
-
                 } else if ($_POST["operacion"] === "Actualizar") {
+                    $nombre = $_POST['inputNombre'];
+                    $idPrograma = $_POST['selectPrograma'] != '' ? $_POST['selectPrograma'] : null;
+                    $idPresidente = $_POST['selectPresidente'];
+
+                    $sql = "UPDATE gruposacademicos SET nombre = :nombre, id_programaE = :idPrograma, cat_ID = :idPresidente WHERE id_grupoacademico = :idGrupo";
+                    $params = [':nombre' => $nombre, ':idPrograma' => $idPrograma, ':idPresidente' => $idPresidente, ':idGrupo' => $_POST['idGrupo']];
+
+                    $connSQL->updateGrupoAcaMaterias($sql, $params, $_POST['idGrupo'], json_decode($_POST['idMaterias']));
+                    echo json_encode(['success' => true, 'mensaje' => 'Grupo académico actualizado correctamente.']);
                 }
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
@@ -764,19 +772,99 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
         case 'obtenerGrupoAcademicoById':
             if (isset($_POST['idGrupo'])) {
-                $sql = "SELECT ga.*, 
-                               IF(ce.ret_ID IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', ce.ret_ID, 'clave', ce.ret_Clave, 'nombre', ce.ret_NomCompleto)), ']'), '[]') AS materias 
+                $sql = "SELECT ga.*, ce.ret_ID, ce.ret_Clave, ce.ret_NomCompleto, ce.ret_ClaveOficial
                         FROM gruposacademicos ga 
                         LEFT JOIN cereticula ce ON ga.id_grupoacademico = ce.id_grupoacademico 
-                        WHERE ga.id_grupoacademico = :idGrupoAcademico 
-                        GROUP BY ga.id_grupoacademico";
+                        WHERE ga.id_grupoacademico = :idGrupoAcademico";
 
-                $grupo = $connSQL->singlePreparedQuery($sql, ['idGrupoAcademico' => $_POST['idGrupo']]);
-                if($grupo) {
-                    $grupo['materias'] = json_decode($grupo['materias']);
-                    echo json_encode(['success' => true, 'data' => $grupo]);
+                $grupo = $connSQL->preparedQuery($sql, ['idGrupoAcademico' => $_POST['idGrupo']]);
+                if (count($grupo) > 0) {
+                    //Al ejecutar el LEFT JOIN, devuelve una o varias filas, sin embargo, se requiere un
+                    //formato parecido al siguiente, por ejemplo:
+                    /* 
+                    [
+                        {
+                            "id_grupoacademico": 16,
+                            "nombre": "Arquitectura de computadoras",
+                            "id_programaE": 10,
+                            "cat_ID": 162,
+                            "materias": [
+                                {
+                                    "id": 824,
+                                    "clave": "4F6",
+                                    "nombre": "PRINCIPIOS ELÉCTRICOS Y APLICACIONES DIGITALES"
+                                },
+                               {
+                                    "id": 830,
+                                    "clave": "5F4",
+                                    "nombre": "SIMULACIÓN"
+                               },
+                               {...},
+                               {...}
+                        },
+                        {...},
+                        {...}
+                    ] 
+                    */
+
+                    //Manejar el resultado y los arrays para generar la salida deseada
+                    $finalData = [];
+                    foreach ($grupo as $row) {
+                        if (!isset($finalData[$row['id_grupoacademico']])) {
+                            $finalData[$row['id_grupoacademico']] = [
+                                'id_grupoacademico' => $row['id_grupoacademico'],
+                                'nombre' => $row['nombre'],
+                                'id_programaE' => $row['id_programaE'],
+                                'cat_ID' => $row['cat_ID']
+                            ];
+                        }
+
+                        if ($row['ret_ID'] != null) {
+                            $finalData[$row['id_grupoacademico']]['materias'][] = [
+                                'id' => $row['ret_ID'],
+                                'clave' => $row['ret_Clave'],
+                                'nombre' => $row['ret_NomCompleto']
+                            ];
+                        } else {
+                            $finalData[$row['id_grupoacademico']]['materias'] = [];
+                        }
+                    }
+                    echo json_encode(['success' => true, 'data' => array_values($finalData)]);
                 } else {
                     echo json_encode(['success' => false, 'mensaje' => 'Grupo académico no encontrado.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
+            break;
+
+        case 'quitarMateriaDeGrupoAcademico':
+            if (isset($_POST['idMateria'])) {
+                //Actualizar y poner el vacio el campo de firma del usuario
+                $sql = "UPDATE cereticula SET id_grupoacademico = :idGrupoAcademico WHERE ret_ID = :idMateria";
+                $params = [
+                    'idGrupoAcademico' => null,
+                    'idMateria' => $_POST['idMateria'],
+                ];
+                $res = $connSQL->preparedUpdate($sql, $params);
+                if ($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'La materia ya no forma parte del grupo académico.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al quitar materia del grupo académico.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
+            break;
+
+        case 'eliminarGrupoAcademico':
+            if(isset($_POST['idGrupo'])) {
+                $sql = "DELETE FROM gruposacademicos WHERE id_grupoacademico = :idGrupo";
+                $res = $connSQL->preparedDelete($sql, ['idGrupo' => $_POST['idGrupo']]);
+                if($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Grupo académico eliminado correctamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el grupo académico.']);
                 }
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);

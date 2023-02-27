@@ -171,7 +171,7 @@ class connSQL
 				} elseif (is_bool($value)) {
 					$param = PDO::PARAM_BOOL;
 				} elseif (is_null($value)) {
-					$param = PDO::PARAM_NULL;
+					$param = PDO::PARAM_STR;
 				} elseif (is_string($value)) {
 					$param = PDO::PARAM_STR;
 				} else {
@@ -199,7 +199,7 @@ class connSQL
 				} elseif (is_bool($value)) {
 					$param = PDO::PARAM_BOOL;
 				} elseif (is_null($value)) {
-					$param = PDO::PARAM_NULL;
+					$param = PDO::PARAM_STR;
 				} elseif (is_string($value)) {
 					$param = PDO::PARAM_STR;
 				} else {
@@ -313,6 +313,40 @@ class connSQL
 				foreach ($idMaterias as $value) {
 					$paramUpdateMaterias[] = [
 						':idGrupoAcademico' => $insertId,
+						':materiaID' => $value
+					];
+				}
+
+				$query2 = $this->dbh->prepare("UPDATE cereticula SET id_grupoacademico = :idGrupoAcademico WHERE ret_ID = :materiaID");
+				foreach ($paramUpdateMaterias as $row) {
+					$query2->execute($row);
+				}
+			}
+
+			$this->dbh->commit();
+		} catch (PDOException $e) {
+			$this->dbh->rollBack();
+			echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
+			die();
+		}
+	}
+
+	public function updateGrupoAcaMaterias($sqlGrupo, $paramsGrupo, $idGrupo, $idMaterias) {
+		try {
+			$this->dbh->beginTransaction();
+
+			//Prepara la sentencia para agregar nuevo grupo academico
+			$query = $this->dbh->prepare($sqlGrupo);
+			$query->execute($paramsGrupo);
+
+			//Actualizar la llave foranea de cada una de las materias elegidas y asignarles el valor del grupo academico generado
+			//De este modo, las materias quedan relacionadas con un grupo academico
+			$paramUpdateMaterias = [];
+			if(count($idMaterias) > 0) {
+				//Generar los parametros para la actualización de la clave foranea de la materia
+				foreach ($idMaterias as $value) {
+					$paramUpdateMaterias[] = [
+						':idGrupoAcademico' => $idGrupo,
 						':materiaID' => $value
 					];
 				}

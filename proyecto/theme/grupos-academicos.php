@@ -316,9 +316,18 @@ require_once '../../valida.php';
 
                     //Obtener los ID de las materias que se vayan seleccionado en caso de agregar un nuevo grupo academico
                     var selectedMaterias = [];
-                    $("#contenedor-materias a").each(function() {
-                        selectedMaterias.push($(this).data('id'));
-                    });
+                    if ($("#operacion").val() == "Crear") {
+                        $("#contenedor-materias a").each(function() {
+                            selectedMaterias.push($(this).data('id'));
+                        });
+                    } else if ($("#operacion").val() == "Actualizar") {
+                        $("#contenedor-materias a").each(function() {
+                            if ($(this).data('nuevo') == 1) {
+                                selectedMaterias.push($(this).data('id'));
+                            }
+                        });
+                    }
+
                     formData.append('idMaterias', JSON.stringify(selectedMaterias));
 
                     $.ajax({
@@ -480,7 +489,7 @@ require_once '../../valida.php';
             var claveMateria = $(this).data('clave');
             var nombreMateria = $(this).data('nombre');
 
-            //Ante de agregar la materia al contendor de materias, verificar que no se repitan e ingresen la misma materia
+            //Antes de agregar la materia al contendor de materias, verificar que no se repitan e ingresen la misma materia
             var ban = true;
             $("#contenedor-materias a").each(function() {
                 if (idMateria == $(this).data('id')) {
@@ -509,14 +518,48 @@ require_once '../../valida.php';
                 //Si es actualizar, entonces se elige eliminar y quitar la metaria del grupo academico seleccionado
 
                 //Si en la actualización, se decide agregar una materia nuevo, verificar si su data "nuevo" es igual a 1
-                //Si el data "nuevo" es igual a 0, quiere decir que la materia ya esta aisgnada en la base de datos, por lo que se debe mostrar advertancia y realizar modificación
+                //Si el data "nuevo" es igual a 0, quiere decir que la materia ya esta asignada en la base de datos, por lo que se debe mostrar advertancia y realizar modificación
                 if ($(this).data('nuevo') == 1) {
                     $(this).closest('.item-materia').remove();
                 } else if ($(this).data('nuevo') == 0) {
-
+                    var idMateria = $(this).data('id');
                     alertify.confirm("Aviso", "¿Está seguro(a) de quitar la materia:  " + $(this).closest('.badge').text() + "?",
                         function() {
                             //Eliminar la relacion que tiene la materia con el grupo academico
+                            $.ajax({
+                                data: {
+                                    "accion": "quitarMateriaDeGrupoAcademico",
+                                    "idMateria": idMateria
+                                },
+                                url: 'conexion/consultasSQL.php',
+                                type: 'post',
+                                success: function(response) {
+                                    var res = JSON.parse(response);
+                                    if (res.success) {
+                                        alertify.success('<h3>' + res.mensaje + '</h3>');
+                                        mostrarMateriasActuales(idGrupo);
+                                        tablaGrupos.ajax.reload();
+                                    } else {
+                                        alertify.warning('<h3>' + res.mensaje + '</h3>');
+                                    }
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                if (jqXHR.status === 0) {
+                                    alert('No conectado, verifique su red.');
+                                } else if (jqXHR.status == 404) {
+                                    alert('Pagina no encontrada [404]');
+                                } else if (jqXHR.status == 500) {
+                                    alert('Internal Server Error [500].');
+                                } else if (textStatus === 'parsererror') {
+                                    alert('Falló la respuesta.');
+                                } else if (textStatus === 'timeout') {
+                                    alert('Se acabó el tiempo de espera.');
+                                } else if (textStatus === 'abort') {
+                                    alert('Conexión abortada.');
+                                } else {
+                                    alert('Error: ' + jqXHR.responseText);
+                                }
+                            });
                         },
                         function() {
 
@@ -552,7 +595,7 @@ require_once '../../valida.php';
                 success: function(respuesta) {
                     var resp = JSON.parse(respuesta);
                     if (resp.success) {
-                        resp = resp.data;
+                        resp = resp.data[0];
                         validate.resetForm();
                         $("#formAddEdit").find('.is-invalid').removeClass('is-invalid');
 
@@ -650,6 +693,62 @@ require_once '../../valida.php';
                 }
             });
         }
+
+        //Acciones para eliminar un grupo academico por completo
+        $(document).on('click', '.eliminar', function(e) {
+            var fila = $(this).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+
+            idGrupo = $(this).data('id');
+
+            e.preventDefault();
+            alertify.confirm("Aviso", "¿Está seguro(a) de eliminar el grupo académico de " + fila.find('td:eq(0)').text() + "?",
+                function() {
+                    //Eliminar la relacion que tiene la materia con el grupo academico
+                    $.ajax({
+                        data: {
+                            "accion": "eliminarGrupoAcademico",
+                            "idGrupo": idGrupo
+                        },
+                        url: 'conexion/consultasSQL.php',
+                        type: 'post',
+                        success: function(response) {
+                            var res = JSON.parse(response);
+                            if (res.success) {
+                                alertify.success('<h3>' + res.mensaje + '</h3>');
+                                tablaGrupos.ajax.reload();
+                            } else {
+                                alertify.warning('<h3>' + res.mensaje + '</h3>');
+                            }
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                        } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                        } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                        } else {
+                            alert('Error: ' + jqXHR.responseText);
+                        }
+                    });
+                },
+                function() {
+
+                }
+            ).set('labels', {
+                ok: 'Aceptar',
+                cancel: 'Cancelar'
+            });
+        });
     </script>
 </body>
 
