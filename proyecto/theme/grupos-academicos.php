@@ -696,6 +696,8 @@ require_once '../../valida.php';
 
         //Acciones para eliminar un grupo academico por completo
         $(document).on('click', '.eliminar', function(e) {
+            e.preventDefault();
+
             var fila = $(this).closest('tr');
             if(fila.hasClass('child')) {
                 fila = fila.prev();
@@ -703,7 +705,6 @@ require_once '../../valida.php';
 
             idGrupo = $(this).data('id');
 
-            e.preventDefault();
             alertify.confirm("Aviso", "¿Está seguro(a) de eliminar el grupo académico de " + fila.find('td:eq(0)').text() + "?",
                 function() {
                     //Eliminar la relacion que tiene la materia con el grupo academico
