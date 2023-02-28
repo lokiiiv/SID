@@ -840,7 +840,6 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
         case 'quitarMateriaDeGrupoAcademico':
             if (isset($_POST['idMateria'])) {
-                //Actualizar y poner el vacio el campo de firma del usuario
                 $sql = "UPDATE cereticula SET id_grupoacademico = :idGrupoAcademico WHERE ret_ID = :idMateria";
                 $params = [
                     'idGrupoAcademico' => null,
