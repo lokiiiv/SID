@@ -37,24 +37,6 @@ require_once("../../valida.php");
 
 
 <body>
-
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7 col-sm-7">
-                    <!-- Logo and site link -->
-                    <h1><a>Instrumentaciones Didácticas</a></h1>
-                </div>
-                <div class="col-md-5 col-sm-5">
-                    <!-- Logo and site link -->
-                    <h1><a>Hola <?php echo ucwords(strtolower($_SESSION["userData"]['first_name'])); ?></a></h1>
-                    <h5> <?php echo $_SESSION["correo"]; ?> </h5>
-                </div>
-            </div>
-        </div>
-    </header>
-
-
     <?php
     include("BarraMenu.php");
     ?>

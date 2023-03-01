@@ -1,6 +1,22 @@
 <?php
 require_once("../../valida.php");
 ?>
+<header>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-7 col-sm-7">
+            <!-- Logo and site link -->
+               <h1><a>Instrumentaciones Didácticas</a></h1>           
+         </div>
+         <div class="col-md-5 col-sm-5">
+            <!-- Logo and site link -->
+			<h3><a><?php echo $_SESSION["nombreCompleto"];?></a></h3> 
+			<h4> <?php echo $_SESSION["correo"];?></h4>
+         </div>
+      </div>
+   </div>
+</header>
+
 <div id="contenedor-navbar">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="#"></a>
