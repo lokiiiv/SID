@@ -1,6 +1,7 @@
 
 <?php
 require_once 'config.php';
+require_once 'proyecto/theme/manejo-usuarios/UsuarioPrivilegiado.php';
 
 //Obtener los datos de la autenticación de Google
 if (isset($_GET["code"])) {
@@ -42,7 +43,7 @@ if (isset($token["error"]) != "invalid_grant") {
 			$_SESSION["userData"] = $gpUserData;
 
 			$_SESSION["nombreCompleto"] = $docente[0][0] . " " . $docente[0][1] . " " . $docente[0][2];
-		
+			
 			//Redirigir a la pagina principal
 			header("Location:proyecto/theme/indexD.php");
 		} else {
