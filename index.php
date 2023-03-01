@@ -38,11 +38,11 @@ require_once 'valida.php';
     <div class="content">
         <div class="container mt-3">
             <div class="row justify-content-center">
-                <div class="col-md-5 d-flex justify-content-center align-items-center">
+                <div class="col-lg-5 col-md-12 col-sm-12 col-12 d-flex justify-content-center align-items-center">
                     <img class="img-fluid" src="images/itesa.png" width="400px">
                 </div>
 
-                <div class="col-md-5 text-center">
+                <div class="col-lg-5 col-md-12 col-sm-12 col-12 text-center">
                     <h2>Sistema de Instrumentaciones Didacticas</h2>
                     <h2>Bienvenido (a)</h2>
                     <h4>Esta es la primera fase en prueba del sistema de Instrumentaciones didacticas, favor de reportar cualquier anomalia al área de sistemas</h4>
@@ -50,9 +50,9 @@ require_once 'valida.php';
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-5">
+                <div class="col-lg-5 col-md-12 col-sm-12 col-12">
                 </div>
-                <div class="col-md-5 justify-content-center text-center">
+                <div class="col-lg-5 col-md-12 col-sm-12 col-12 justify-content-center text-center">
                     <p class="text-danger"> Para acelerar su acceso le recomendamos abrir su correo electrónico <b>institucional</b> en otra pestaña. </p>
 
                     <a class="btn btn-success" href="<?php echo filter_var($gClient->createAuthUrl(), FILTER_SANITIZE_URL); ?>" style="margin-bottom: 20px; color:white;">

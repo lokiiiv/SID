@@ -45,7 +45,7 @@ if (isset($token["error"]) != "invalid_grant") {
 			$_SESSION["nombreCompleto"] = $docente[0][0] . " " . $docente[0][1] . " " . $docente[0][2];
 			
 			//Redirigir a la pagina principal
-			header("Location:proyecto/theme/indexD.php");
+			header("Location:proyecto/theme/index.php");
 		} else {
 			//Si el usuario no existe aun en el catalgo, redirigir con su mensaje
 			header("Location: index.php?mensaje=2");
