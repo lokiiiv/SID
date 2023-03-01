@@ -1,5 +1,7 @@
 <?php
 require_once 'conexionSQL.php';
+require_once './../manejo-usuarios/UsuarioPrivilegiado.php';
+require_once './../../../valida.php';
 $connSQL = connSQL::singleton();
 
 
@@ -112,119 +114,124 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
         case 'listarUsuarios':
 
-            //AQUI SE REALIZA EL SERVER SIDE DE DATATABLES, es decir, la busqueda, el ordenamiento y la paginacion
-            //se ejecutan desde aqui en lugar desde el cliente, esto para aumentar la eficiencia al cargar muchos datos
-            //evitando dejar todo el trabajao al cliente y solo devolviendo lo necesario
+            if (UsuarioPrivilegiado::getByCorreo($_SESSION["correo"])->hasPrivilegio("consultar_usuarios")) {
+                //AQUI SE REALIZA EL SERVER SIDE DE DATATABLES, es decir, la busqueda, el ordenamiento y la paginacion
+                //se ejecutan desde aqui en lugar desde el cliente, esto para aumentar la eficiencia al cargar muchos datos
+                //evitando dejar todo el trabajao al cliente y solo devolviendo lo necesario
 
-            //Definir la consulta para listar usuarios
-            $sql = "SELECT d.cat_ID AS ID, d.cat_Clave AS clave, d.cat_ApePat AS ap, d.cat_ApeMat AS am, d.cat_Nombre as nombre, d.cat_CorreoE as correo, d.firma as firma, IF(r.id_rol IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', r.id_rol, 'descripcion', r.descripcion_rol)), ']'), '[]') AS roles
+                //Definir la consulta para listar usuarios
+                $sql = "SELECT d.cat_ID AS ID, d.cat_Clave AS clave, d.cat_ApePat AS ap, d.cat_ApeMat AS am, d.cat_Nombre as nombre, d.cat_CorreoE as correo, d.firma as firma, IF(r.id_rol IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', r.id_rol, 'descripcion', r.descripcion_rol)), ']'), '[]') AS roles
                         FROM docentes d
                         LEFT JOIN docente_rol d_r on d.cat_ID = d_r.cat_ID
                         LEFT JOIN rol r on r.id_rol = d_r.id_rol ";
 
-            //Verificar si el usuario manda valores para filtrar los datos de la tabla
-            $bindings = [];
-            if (isset($_POST["search"]["value"]) && !empty($_POST["search"]["value"])) {
-                //Obtener el valor a buscar
-                $str = trim($_POST["search"]["value"]);
+                //Verificar si el usuario manda valores para filtrar los datos de la tabla
+                $bindings = [];
+                if (isset($_POST["search"]["value"]) && !empty($_POST["search"]["value"])) {
+                    //Obtener el valor a buscar
+                    $str = trim($_POST["search"]["value"]);
 
-                //Añadir a la consulta base las condiciones WHERE o LIKE conforme a los valores que se quieren buscar de manera preparada
-                $sql .= 'WHERE d.cat_Clave LIKE ' . ':clave ';
-                $sql .= 'OR d.cat_ApePat LIKE ' . ':ap ';
-                $sql .= 'OR d.cat_ApeMat LIKE ' . ':am ';
-                $sql .= 'OR d.cat_Nombre LIKE ' . ':nombre ';
-                $sql .= 'OR d.cat_CorreoE LIKE ' . ':correo ';
+                    //Añadir a la consulta base las condiciones WHERE o LIKE conforme a los valores que se quieren buscar de manera preparada
+                    $sql .= 'WHERE d.cat_Clave LIKE ' . ':clave ';
+                    $sql .= 'OR d.cat_ApePat LIKE ' . ':ap ';
+                    $sql .= 'OR d.cat_ApeMat LIKE ' . ':am ';
+                    $sql .= 'OR d.cat_Nombre LIKE ' . ':nombre ';
+                    $sql .= 'OR d.cat_CorreoE LIKE ' . ':correo ';
 
-                //Generar el array con los paramaetros para la consulta preparada
-                $bindings = ["clave" => "%" . $str . "%", "ap" => "%" . $str . "%", "am" => "%" . $str . "%", "nombre" => "%" . $str . "%", "correo" => "%" . $str . "%"];
-            }
-
-            //Agrupar para completar la consulta original
-            $sql .= " GROUP BY d.cat_ID ";
-
-            //Si el usuario elige ordenar los datos conforme a los valores de una tabla
-            if (isset($_POST["order"])) {
-                //Adjuntar a la consultar principal los operadores ORDER BY correspondientes
-                $sql .= 'ORDER BY ' . $_POST['columns'][$_POST["order"]["0"]["column"]]['data'] . ' ' . $_POST["order"][0]['dir'] . ' ';
-            } else {
-                $sql .= 'ORDER BY ID ASC ';
-            }
-
-            //Limitar la cantidad de datos, paginacion...
-            if ($_POST["length"] != -1) {
-                $sql .= 'LIMIT ' . $_POST["start"] . ',' . $_POST["length"];
-            }
-
-            //Ejecutar y obtener el resultado de la consulta
-            $usuarios = $connSQL->preparedQuery($sql, $bindings);
-
-            $final_data = [];
-            //Recorrer el resultado para hacer una verificaciones extras y agregar datos extras
-            foreach ($usuarios as $usuario) {
-                $firma = "";
-                $roles = "";
-
-                //Si la firma es vacia, retornar un nuevo html
-                if ($usuario['firma'] == "") {
-                    $firma = '<div class="row"><p style="margin: auto;">Sin firma.</p></div>';
-                } else {
-                    $firma = '<div class="row"><span style="margin: 0 auto;"><i class="fa-solid fa-circle-check"></i></span></div>';
+                    //Generar el array con los paramaetros para la consulta preparada
+                    $bindings = ["clave" => "%" . $str . "%", "ap" => "%" . $str . "%", "am" => "%" . $str . "%", "nombre" => "%" . $str . "%", "correo" => "%" . $str . "%"];
                 }
 
-                //Verificar el datos de roles, si es diferente de vacio, retonar un html con la informacion
-                if ($usuario['roles'] != "[]") {
-                    $jsonRoles = json_decode($usuario['roles']);
+                //Agrupar para completar la consulta original
+                $sql .= " GROUP BY d.cat_ID ";
 
-                    foreach ($jsonRoles as $rol) {
-                        $roles .= '<div class="row" style="padding:1px;">' .
-                            '<span class="badge badge-primary" style="font-size:11px;margin: auto;">' . $rol->descripcion . '</span>' .
-                            '</div>';
+                //Si el usuario elige ordenar los datos conforme a los valores de una tabla
+                if (isset($_POST["order"])) {
+                    //Adjuntar a la consultar principal los operadores ORDER BY correspondientes
+                    $sql .= 'ORDER BY ' . $_POST['columns'][$_POST["order"]["0"]["column"]]['data'] . ' ' . $_POST["order"][0]['dir'] . ' ';
+                } else {
+                    $sql .= 'ORDER BY ID ASC ';
+                }
+
+                //Limitar la cantidad de datos, paginacion...
+                if ($_POST["length"] != -1) {
+                    $sql .= 'LIMIT ' . $_POST["start"] . ',' . $_POST["length"];
+                }
+
+                //Ejecutar y obtener el resultado de la consulta
+                $usuarios = $connSQL->preparedQuery($sql, $bindings);
+
+                $final_data = [];
+                //Recorrer el resultado para hacer una verificaciones extras y agregar datos extras
+                foreach ($usuarios as $usuario) {
+                    $firma = "";
+                    $roles = "";
+
+                    //Si la firma es vacia, retornar un nuevo html
+                    if ($usuario['firma'] == "") {
+                        $firma = '<div class="row"><p style="margin: auto;">Sin firma.</p></div>';
+                    } else {
+                        $firma = '<div class="row"><span style="margin: 0 auto;"><i class="fa-solid fa-circle-check"></i></span></div>';
                     }
-                } else {
-                    $roles = '<div class="row"><p style="margin: auto;">Sin roles.</p></div>';
+
+                    //Verificar el datos de roles, si es diferente de vacio, retonar un html con la informacion
+                    if ($usuario['roles'] != "[]") {
+                        $jsonRoles = json_decode($usuario['roles']);
+
+                        foreach ($jsonRoles as $rol) {
+                            $roles .= '<div class="row" style="padding:1px;">' .
+                                '<span class="badge badge-primary" style="font-size:11px;margin: auto;">' . $rol->descripcion . '</span>' .
+                                '</div>';
+                        }
+                    } else {
+                        $roles = '<div class="row"><p style="margin: auto;">Sin roles.</p></div>';
+                    }
+
+                    //Adjuntar el valor del ID del usuario a la propiedad ID del boton desplegable
+                    $acciones = '<div class="row"><div class="btn-group" style="margin: 0 auto;">' .
+                        '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+                        'Acciones' .
+                        '</button>' .
+                        '<div class="dropdown-menu">' .
+                        '<a class="dropdown-item editar" href="" data-id="' . $usuario['ID'] . '">Editar</a>' .
+                        '<a class="dropdown-item eliminar" href="" data-id="' . $usuario['ID'] . '">Eliminar</a>' .
+                        '</div>' .
+                        '</div></div>';
+
+                    $final_data[] = [
+                        'ID' => $usuario['ID'],
+                        'clave' => $usuario['clave'],
+                        'ap' => $usuario['ap'],
+                        'am' => $usuario['am'],
+                        'nombre' => $usuario['nombre'],
+                        'correo' => $usuario['correo'],
+                        'firma' => $firma,
+                        'roles' => $roles,
+                        'acciones' => $acciones
+                    ];
                 }
 
-                //Adjuntar el valor del ID del usuario a la propiedad ID del boton desplegable
-                $acciones = '<div class="row"><div class="btn-group" style="margin: 0 auto;">' .
-                    '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                    'Acciones' .
-                    '</button>' .
-                    '<div class="dropdown-menu">' .
-                    '<a class="dropdown-item editar" href="" data-id="' . $usuario['ID'] . '">Editar</a>' .
-                    '<a class="dropdown-item eliminar" href="" data-id="' . $usuario['ID'] . '">Eliminar</a>' .
-                    '</div>' .
-                    '</div></div>';
-
-                $final_data[] = [
-                    'ID' => $usuario['ID'],
-                    'clave' => $usuario['clave'],
-                    'ap' => $usuario['ap'],
-                    'am' => $usuario['am'],
-                    'nombre' => $usuario['nombre'],
-                    'correo' => $usuario['correo'],
-                    'firma' => $firma,
-                    'roles' => $roles,
-                    'acciones' => $acciones
-                ];
-            }
-
-            //Ejecutar la consulta para obtener la cantidad de datos total de usuarios
-            $sql2 = "SELECT COUNT(x.ID) AS cant
+                //Ejecutar la consulta para obtener la cantidad de datos total de usuarios
+                $sql2 = "SELECT COUNT(x.ID) AS cant
                         FROM (SELECT d.cat_ID AS ID, d.cat_Clave AS clave, d.cat_ApePat AS ap, d.cat_ApeMat AS am, d.cat_Nombre as nombre, d.cat_CorreoE as correo, d.firma as firma, IF(r.id_rol IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', r.id_rol, 'descripcion', r.descripcion_rol)), ']'), '[]') AS roles
-                                FROM docentes d
-                                LEFT JOIN docente_rol d_r on d.cat_ID = d_r.cat_ID
-                                LEFT JOIN rol r on r.id_rol = d_r.id_rol
-                                GROUP BY d.cat_ID) x";
-            $total = $connSQL->preparedQuery($sql2);
+                        FROM docentes d
+                        LEFT JOIN docente_rol d_r on d.cat_ID = d_r.cat_ID
+                        LEFT JOIN rol r on r.id_rol = d_r.id_rol
+                        GROUP BY d.cat_ID) x";
+                $total = $connSQL->preparedQuery($sql2);
 
-            //Mostrar la respuesta conforme a los requerimientos de Datatables
-            $salida = [
-                "draw" => intval($_POST["draw"]),
-                "recordsFiltered" => !isset($_POST["search"]["value"]) || empty($_POST["search"]["value"]) ? $total[0]['cant'] : count($usuarios),
-                "recordsTotal" => $total[0]['cant'],
-                "data" => $final_data
-            ];
-            echo json_encode($salida);
+                //Mostrar la respuesta conforme a los requerimientos de Datatables
+                $salida = [
+                    "draw" => intval($_POST["draw"]),
+                    "recordsFiltered" => !isset($_POST["search"]["value"]) || empty($_POST["search"]["value"]) ? $total[0]['cant'] : count($usuarios),
+                    "recordsTotal" => $total[0]['cant'],
+                    "data" => $final_data
+                ];
+                echo json_encode($salida);
+
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado(a) para acceder a este contenido.']);
+            }
 
             break;
 
@@ -857,10 +864,10 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
         case 'eliminarGrupoAcademico':
-            if(isset($_POST['idGrupo'])) {
+            if (isset($_POST['idGrupo'])) {
                 $sql = "DELETE FROM gruposacademicos WHERE id_grupoacademico = :idGrupo";
                 $res = $connSQL->preparedDelete($sql, ['idGrupo' => $_POST['idGrupo']]);
-                if($res) {
+                if ($res) {
                     echo json_encode(['success' => true, 'mensaje' => 'Grupo académico eliminado correctamente.']);
                 } else {
                     echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el grupo académico.']);

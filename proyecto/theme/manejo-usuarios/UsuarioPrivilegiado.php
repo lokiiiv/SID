@@ -66,13 +66,4 @@ class UsuarioPrivilegiado extends Usuario{
         return isset($this->roles[$rolNombre]);
     }
 }
-
-header('Content-Type: application/json');
-$u = UsuarioPrivilegiado::getByCorreo('18030290@itesa.edu.mx');
-print_r($u);
-if($u->hasPrivilegio('consultar_instrumentaciones')) {
-    echo 'Si tiene permiso';
-} else {
-    echo 'No tiene permiso';
-}
 ?>

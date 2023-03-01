@@ -101,7 +101,7 @@ header a, header a:hover, a:visited, a:active, a:link
   font-family: "Oswald", sans-serif;
   font-size: 36px;
   font-weight: 500;
-  color: #0e8ce4;
+  color: #30add1;
 }
 
 .wishlist_cart {
@@ -120,7 +120,7 @@ header a, header a:hover, a:visited, a:active, a:link
 .wishlist_text a {
   font-size: 22px;
   font-weight: 400;
-  color: #000000;
+  color: #363434;
   -webkit-transition: all 200ms ease;
   -moz-transition: all 200ms ease;
   -ms-transition: all 200ms ease;
