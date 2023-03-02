@@ -65,5 +65,41 @@ class UsuarioPrivilegiado extends Usuario{
     public function hasRol($rolNombre) {
         return isset($this->roles[$rolNombre]);
     }
+
+    //Verificar si un usuario tiene un privilegio especifico de alguno de sus roles en especifico
+    public function hasPrivilegioRol($rol, $perm) {
+        if(isset($this->roles[$rol])) {
+            if($this->roles[$rol]->hasPermiso($perm)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        } 
+    }
+
+    //Verificar si un usuario tiene acceso a un modulo del sistema
+    public function hasModulo($modulo) {
+        foreach($this->roles as $rol) {
+            if($rol->hasModulo($modulo)) {
+                return true;
+            }
+        }
+        return false;
+    } 
+
+    //Verificar si un usuario tiene acceso a un modulo del sistema de uno de sus roles en especificos
+    public function hasModuloRol($modulo, $rol) {
+        if(isset($this->roles[$rol])){
+            if($this->roles[$rol]->hasModulo($modulo)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
 ?>
