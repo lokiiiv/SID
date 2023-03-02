@@ -101,5 +101,10 @@ class UsuarioPrivilegiado extends Usuario{
             return false;
         }
     }
+
+
+    public function getRoles() {
+        return $this->roles;
+    }
 }
 ?>

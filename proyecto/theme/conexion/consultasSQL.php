@@ -905,5 +905,61 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
             break;
+
+        case 'obtenerDetalleCuenta':
+            $correoUser = $_POST['correoUser'];
+
+            $sql = "SELECT d.cat_ID AS ID, 
+                               d.cat_Clave AS clave, 
+                               CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre,
+                               d.cat_CorreoE as correo, 
+                               d.firma as firma, 
+                               IF(r.id_rol IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', r.id_rol, 'descripcion', r.descripcion_rol)), ']'), '[]') as roles 
+                        FROM docentes d 
+                        LEFT JOIN docente_rol d_r on d.cat_ID = d_r.cat_ID 
+                        LEFT JOIN rol r on r.id_rol = d_r.id_rol 
+                        WHERE d.cat_CorreoE = :correo
+                        GROUP BY d.cat_ID";
+            $usuario = $connSQL->singlePreparedQuery($sql, ['correo' => $correoUser]);
+
+            if (!empty($usuario)) {
+
+                $roles = json_decode($usuario['roles']);
+                $rolesHTML = '';
+                if(count($roles) > 0) {
+                    foreach($roles as $rol) {
+                        $rolesHTML .= '<div class="row pl-3" style="padding:1px;">' .
+                        '<span class="badge badge-primary" style="font-size:11px;">' . $rol->descripcion . '</span>' .
+                        '</div>';
+                    }
+                } else {
+                    $rolesHTML = '<div class="row"><p style="margin: auto;">Sin roles.</p></div>';
+                }
+                $usuario['roles'] = $rolesHTML;
+
+                if ($usuario['firma'] != "") {
+                    $usuario['firma'] = '<div class="row">
+                                            <div class="col-md-9 col-lg-9 col-sm-9 col-9">
+                                                <img src="./firmasimagenes/' . $usuario['firma'] . '" class="rounded img-fluid" width="80"/>
+                                            </div>
+                                            <div class="col-md-3 col-lg-3 col-sm-3 col-3 d-flex justify-content-end align-items-center">
+                                                <button type="button" class="btn btn-warning btn-sm m-2" onclick="actualizarFirma(this)" data-firma="' . $usuario['firma'] . '" data-iduser="' . $usuario['ID'] . '"><i class="fa-solid fa-pen-to-square"></i></button>
+                                            </div>
+                                        </div>';
+                } else {
+                    $usuario['firma'] = '<div class="row">
+                                            <div class="col-md-9 col-lg-9 col-sm-9 col-9">
+                                                <h6>Aún no sube firma.</h6>
+                                            </div>
+                                            <div class="col-md-3 col-lg-3 col-sm-3 col-3 d-flex justify-content-end align-items-center">
+                                                <button type="button" class="btn btn-warning btn-sm m-2" onclick="actualizarFirma(this)" data-firma="' . $usuario['firma'] . '" data-iduser="' . $usuario['ID'] . '"><i class="fa-solid fa-pen-to-square"></i></button>
+                                            </div>
+                                        </div>';
+                }
+                echo json_encode(['success' => true, 'data' => $usuario]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
+            }
+            break;
     }
 }

@@ -17,7 +17,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 				</div>
 
 				<!-- Wishlist -->
-				<div class="col-lg-9 col-md-9 col-12 col-sm-12 d-flex justify-content-md-end justify-content-sm-start align-items-center">
+				<div class="col-lg-9 col-md-9 col-12 col-sm-12 d-flex justify-content-md-end justify-content-sm-start align-items-center" id="fotoNombre">
 					<div class="wishlist_cart">
 						<div class="wishlist d-flex flex-row align-items-center justify-content-end">
 							<div class="wishlist_icon"><img src="<?php header('Access-Control-Allow-Origin: *');

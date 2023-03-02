@@ -36,7 +36,7 @@ require_once 'valida.php';
 
 <body>
     <div class="content">
-        <div class="container mt-3">
+        <div class="container mt-3 pl-4 pr-4">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-12 col-sm-12 col-12 d-flex justify-content-center align-items-center">
                     <img class="img-fluid" src="images/itesa.png" width="400px">
