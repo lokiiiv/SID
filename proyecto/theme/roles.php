@@ -52,7 +52,6 @@ require_once '../../valida.php';
                     </div>
                 </div>
             <?php } ?>
-            
             <div class="row" style="margin-top: 25px;">
                 <div class="col-md-12">
                     <table id="tablaRoles" class="table table-hover" style="margin-top: 30px;">

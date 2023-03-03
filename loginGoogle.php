@@ -33,7 +33,7 @@ if (isset($token["error"]) != "invalid_grant") {
 		//Buscar mediate correo en el catalogo de docentes
 		require_once 'proyecto/theme/conexion/conexionSQL.php';
 		$connSQL = connSQL::singleton();
-		$query = "Select cat_Nombre, cat_ApePat, cat_ApeMat from docentes where cat_CorreoE='" . $gpUserData['email'] . "'";
+		$query = "Select cat_ID, cat_Nombre, cat_ApePat, cat_ApeMat from docentes where cat_CorreoE='" . $gpUserData['email'] . "'";
 		$docente = $connSQL->consulta($query);
 
 		if (count($docente) > 0 && !is_null($docente)) {
@@ -42,7 +42,8 @@ if (isset($token["error"]) != "invalid_grant") {
 			$_SESSION["correo"] = $gpUserData["email"];
 			$_SESSION["userData"] = $gpUserData;
 
-			$_SESSION["nombreCompleto"] = $docente[0][0] . " " . $docente[0][1] . " " . $docente[0][2];
+			$_SESSION["nombreCompleto"] = $docente[0][1] . " " . $docente[0][2] . " " . $docente[0][3];
+			$_SESSION["idUsuario"] = $docente[0][0];
 			
 			//Redirigir a la pagina principal
 			header("Location:proyecto/theme/index.php");

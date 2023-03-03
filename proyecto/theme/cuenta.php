@@ -47,8 +47,8 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                                 <img src="<?php echo $_SESSION["userData"]["picture"] ?>" alt="Imagen de perfil de cuenta de Google ITESA" class="rounded-circle" width="100">
                                 <div class="mt-3">
                                     <h4><?php echo $_SESSION["userData"]["first_name"]; ?></h4>
-                                    <h6 class="text-secondary mb-1">Instituto Tecnológico Superior del Oriente del Estado de Hidalgo</h6>
-                                    <a class="btn btn-info btn-sm mt-2" href="destruyesesion.php"><i class="fas fa-sign-out-alt pr-2"></i>Cerrar sesión</a>
+                                    <h6 class="text-secondary mb-3">Instituto Tecnológico Superior del Oriente del Estado de Hidalgo</h6>
+                                    <a class="btn btn-info btn-sm" href="destruyesesion.php"><i class="fas fa-sign-out-alt pr-2"></i>Cerrar sesión</a>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                         $("#roles").html(resp.data.roles);
                         $("#firma").html(resp.data.firma);
                     } else {
-                        alertify.warning('<h4>' + res.mensaje + '</h3>');
+                        alertify.warning('<h3>' + res.mensaje + '</h3>');
                     }
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -172,9 +172,71 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
         });
 
         function actualizarFirma(boton) {
-            console.log($(boton).data('iduser'));
+            var nombreImagen = $(boton).attr('data-firma');
+            var imagenFirma;
+
+            //Crear un elemento input type file
             var input = document.createElement('input');
             input.type = 'file';
+            input.onchange = e => {
+                //Validar que solo se permitan imagenes
+                imagenFirma = e.target.files[0];
+                var re = /(\.jpg|\.jpeg|\.gif|\.png)$/i;
+                if (!re.exec(imagenFirma.name)) {
+                    alertify.warning('<h3>Solo se permiten subir imágenes.</h3>');
+                } else {
+                    //Actualizar la firma
+                    alertify.confirm("Aviso", "¿Está seguro(a) actualizar la imagen de su firma?",
+                        function() {
+                            var formData = new FormData();
+                            formData.append('nuevaFirma', imagenFirma);
+                            formData.append('accion', 'actualizarFirmaUsuario');
+                            formData.append('idUser', '<?php echo $_SESSION['idUsuario']; ?>');
+                            formData.append('nombreImagen', nombreImagen);
+                            formData.append('correo', '<?php echo $_SESSION['correo']; ?>')
+                            $.ajax({
+                                url: 'conexion/consultasSQL.php',
+                                data: formData,
+                                method: 'post',
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    var resp = JSON.parse(response);
+                                    if(resp.success) {
+                                        $("#firma img").attr('src', './firmasimagenes/' + resp.data);
+                                        $("#firma button").attr('data-firma', resp.data);
+                                        //boton.setAttribute("data-firma", resp.data);
+                                        boton.dataset.firma = resp.data;
+                                        alertify.success('<h3>' + resp.mensaje + '</h3>');
+                                    } else {
+                                        alertify.warning('<h3>' + resp.mensaje + '</h3>');
+                                    }
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                if (jqXHR.status === 0) {
+                                    alert('No conectado, verifique su red.');
+                                } else if (jqXHR.status == 404) {
+                                    alert('Pagina no encontrada [404]');
+                                } else if (jqXHR.status == 500) {
+                                    alert('Internal Server Error [500].');
+                                } else if (textStatus === 'parsererror') {
+                                    alert('Falló la respuesta.');
+                                } else if (textStatus === 'timeout') {
+                                    alert('Se acabó el tiempo de espera.');
+                                } else if (textStatus === 'abort') {
+                                    alert('Conexión abortada.');
+                                } else {
+                                    alert('Error: ' + jqXHR.responseText);
+                                }
+                            });
+                        },
+                        function() {}
+                    ).set('labels', {
+                        ok: 'Aceptar',
+                        cancel: 'Cancelar'
+                    });
+                }
+            }
             input.click();
         }
     </script>

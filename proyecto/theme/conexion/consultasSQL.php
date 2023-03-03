@@ -1011,5 +1011,28 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
             }
             break;
+
+        case 'actualizarFirmaUsuario':
+            if (isset($_FILES['nuevaFirma']) && $_FILES['nuevaFirma']['name']) {
+                $extension = explode('.', $_FILES["nuevaFirma"]["name"]);
+                $imagen = rand() . '_' . $_POST["correo"] . '.' . end($extension);
+                $ubicacion = "./../firmasimagenes/" . $imagen;
+
+                $sql = "UPDATE docentes SET firma = :firma WHERE cat_ID = :id";
+                $res = $connSQL->preparedUpdate($sql, ['firma' => $imagen, 'id' => $_POST['idUser']]);
+                if ($res) {
+                    if (file_exists("./../firmasimagenes/" . $_POST["nombreImagen"])) {
+                        unlink("./../firmasimagenes/" . $_POST["nombreImagen"]);
+                    }
+
+                    move_uploaded_file($_FILES["nuevaFirma"]["tmp_name"], $ubicacion);
+                    echo json_encode(['success' => true, 'mensaje' => 'Imagen de la firma actualizada correctamente.', 'data' => $imagen]);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar la firma.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'No seleccionó ninguna imagen.']);
+            }
+            break;
     }
 }
