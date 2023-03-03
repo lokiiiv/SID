@@ -23,8 +23,6 @@ require_once 'valida.php';
     <!-- Custom CSS -->
     <link href="proyecto/theme/css/general_styles.css" rel="stylesheet">
     <!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
-    <link href="proyecto/theme/css/green.css" rel="stylesheet">
-    <!--STYLESHEETS-->
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="proyecto/theme/img/favicon/favicon.png">
@@ -55,7 +53,7 @@ require_once 'valida.php';
                 <div class="col-lg-5 col-md-12 col-sm-12 col-12 justify-content-center text-center">
                     <p class="text-danger"> Para acelerar su acceso le recomendamos abrir su correo electrónico <b>institucional</b> en otra pestaña. </p>
 
-                    <a class="btn btn-success" href="<?php echo filter_var($gClient->createAuthUrl(), FILTER_SANITIZE_URL); ?>" style="margin-bottom: 20px; color:white;">
+                    <a class="btn btn-info btn-sm" href="<?php echo filter_var($gClient->createAuthUrl(), FILTER_SANITIZE_URL); ?>" style="margin-bottom: 20px; color:white;">
                         <i class="fa-solid fa-right-to-bracket mr-2"></i>
                         Iniciar Sesión
                     </a>

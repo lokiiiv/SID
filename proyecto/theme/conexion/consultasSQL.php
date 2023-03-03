@@ -285,63 +285,79 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                     echo json_encode(['success' => false, 'mensaje' => 'Usuario no encontrado.']);
                 }
             } else {
-                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado(a) para ver la información de este usuario.']);
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para ver la información de este usuario.']);
             }
 
             break;
 
             //Lista los roles incluyendo sus permisos
         case 'listarRoles':
-            $sql = "SELECT r.*, IF(p.id_permiso IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', p.id_permiso, 'descripcion', p.descripcion_permiso)), ']'), '[]') AS permisos
+
+            if ($u->hasPrivilegio("consultar_roles")) {
+                $sql = "SELECT r.*, IF(p.id_permiso IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', p.id_permiso, 'descripcion', p.descripcion_permiso)), ']'), '[]') AS permisos
                         FROM rol r
                         LEFT JOIN rol_permisos rp ON r.id_rol = rp.id_rol
                         LEFT JOIN permisos p ON p.id_permiso = rp.id_permiso
                         GROUP BY r.id_rol
                         ORDER BY r.id_rol ASC";
-            $roles = $connSQL->preparedQuery($sql);
+                $roles = $connSQL->preparedQuery($sql);
 
-            $final_data = [];
-            foreach ($roles as $rol) {
-                $acciones = '<div class="row">' .
-                    '<div class="btn-group" style="margin: 0 auto;">' .
-                    '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                    'Acciones' .
-                    '</button>' .
-                    '<div class="dropdown-menu">' .
-                    '<a class="dropdown-item editar" href="" data-id="' . $rol['id_rol'] . '">Editar</a>' .
-                    '<a class="dropdown-item eliminar" href="" data-id="' . $rol['id_rol'] . '">Eliminar</a>' .
-                    '</div>' .
-                    '</div>' .
-                    '</div>';
+                $final_data = [];
+                foreach ($roles as $rol) {
 
-                $final_data[] = [
-                    'id_rol' => $rol['id_rol'],
-                    'nombre_rol' => $rol['nombre_rol'],
-                    'descripcion_rol' => $rol['descripcion_rol'],
-                    'permisos' => $rol['permisos'],
-                    'acciones' => $acciones
-                ];
+                    $htmlEditar = $u->hasPrivilegio("actualizar_roles") ? '<a class="dropdown-item editar" href="" data-id="' . $rol['id_rol'] . '">Editar</a>' : '';
+                    $htmlBorrar = $u->hasPrivilegio("eliminar_roles") ? '<a class="dropdown-item eliminar" href="" data-id="' . $rol['id_rol'] . '">Eliminar</a>' :  '';
+                    $htmlDefault = !$u->hasPrivilegio("actualizar_roles") && !$u->hasPrivilegio("eliminar_roles") ? '<button class="dropdown-item disabled">Ninguna acción disponible</button>' : '';
+                    $acciones = '<div class="row">' .
+                        '<div class="btn-group" style="margin: 0 auto;">' .
+                        '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+                        'Acciones' .
+                        '</button>' .
+                        '<div class="dropdown-menu">' .
+                        $htmlEditar .
+                        $htmlBorrar .
+                        $htmlDefault .
+                        '</div>' .
+                        '</div>' .
+                        '</div>';
+
+                    $final_data[] = [
+                        'id_rol' => $rol['id_rol'],
+                        'nombre_rol' => $rol['nombre_rol'],
+                        'descripcion_rol' => $rol['descripcion_rol'],
+                        'permisos' => $rol['permisos'],
+                        'acciones' => $acciones
+                    ];
+                }
+
+                echo json_encode($final_data, JSON_UNESCAPED_UNICODE);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para ver la información de los roles.']);
             }
 
-            echo json_encode($final_data, JSON_UNESCAPED_UNICODE);
             break;
 
             //Método para obtener un solo rol a través de su ID
         case 'listarRolById':
-            $idRol = $_POST['idRol'];
 
-            $sql = "SELECT r.*, IF(p.id_permiso IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', p.id_permiso, 'descripcion', p.descripcion_permiso)), ']'), '[]') AS permisos
+            if ($u->hasPrivilegio("actualizar_roles")) {
+                $idRol = $_POST['idRol'];
+
+                $sql = "SELECT r.*, IF(p.id_permiso IS NOT NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', p.id_permiso, 'descripcion', p.descripcion_permiso)), ']'), '[]') AS permisos
                     FROM rol r
                     LEFT JOIN rol_permisos rp ON r.id_rol = rp.id_rol
                     LEFT JOIN permisos p ON p.id_permiso = rp.id_permiso
                     WHERE r.id_rol = :idRol
                     GROUP BY r.id_rol";
 
-            $rol = $connSQL->singlePreparedQuery($sql, ['idRol' => $idRol]);
-            if (!empty($rol)) {
-                echo json_encode(['success' => true, 'data' => $rol]);
+                $rol = $connSQL->singlePreparedQuery($sql, ['idRol' => $idRol]);
+                if (!empty($rol)) {
+                    echo json_encode(['success' => true, 'data' => $rol]);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Rol no encontrado.']);
+                }
             } else {
-                echo json_encode(['success' => false, 'mensaje' => 'Rol no encontrado.']);
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para ver la información de este rol.']);
             }
 
             break;
@@ -545,31 +561,35 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
         case 'eliminarUsuario':
-            if (isset($_POST['idUser'])) {
+            if ($u->hasPrivilegio("eliminar_usuarios")) {
+                if (isset($_POST['idUser'])) {
 
-                //Primero hay que obtener el nombre de la imagen que guarda su firma para poder eliminarlo posteriormente
-                $sql = "SELECT firma FROM docentes WHERE cat_ID = :idUser";
-                $correo = $connSQL->singlePreparedQuery($sql, ['idUser' => $_POST['idUser']]);
-                $firma = "";
-                if ($correo) {
-                    $firma = $correo['firma'];
-                }
+                    //Primero hay que obtener el nombre de la imagen que guarda su firma para poder eliminarlo posteriormente
+                    $sql = "SELECT firma FROM docentes WHERE cat_ID = :idUser";
+                    $correo = $connSQL->singlePreparedQuery($sql, ['idUser' => $_POST['idUser']]);
+                    $firma = "";
+                    if ($correo) {
+                        $firma = $correo['firma'];
+                    }
 
-                //Eliminar la imagen de su firma si es que existe
-                if ($firma != "") {
-                    unlink("./../firmasimagenes/" . $firma);
-                }
+                    //Eliminar la imagen de su firma si es que existe
+                    if ($firma != "") {
+                        unlink("./../firmasimagenes/" . $firma);
+                    }
 
-                $sql = "DELETE FROM docentes WHERE cat_ID = :idUser";
-                $params = ['idUser' => $_POST['idUser']];
-                $res = $connSQL->preparedDelete($sql, $params);
-                if ($res) {
-                    echo json_encode(['success' => true, 'mensaje' => 'Usuario eliminado existosamente.']);
+                    $sql = "DELETE FROM docentes WHERE cat_ID = :idUser";
+                    $params = ['idUser' => $_POST['idUser']];
+                    $res = $connSQL->preparedDelete($sql, $params);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Usuario eliminado existosamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar al usuario']);
+                    }
                 } else {
-                    echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar al usuario']);
+                    echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
                 }
             } else {
-                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para eliminar usuarios.']);
             }
             break;
 
@@ -578,38 +598,47 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             //Verificar que operacion es, si crear o actualizar
             if (isset($_POST['operacion']) && isset($_POST['inputRol'])) {
                 if ($_POST["operacion"] === "Crear") {
-                    //El nombre del rol sera el mismo que ingrese el usuario pero sin espacios remplazandolos por guion bajo
-                    setlocale(LC_ALL, 'en_US.utf8');
-                    $nombre = mb_strtolower(str_replace(' ', '_', preg_replace('/[^A-Za-z0-9 ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $_POST['inputRol']))), 'UTF-8');
-                    $descripcion = $_POST['inputRol'];
-                    $permisos = $_POST['idPermisos'];
-                    //Almacenar el nuevo rol
-                    //Tambien almacenar y gurdar los permisos que se hayan elegido
-                    $sql = "INSERT INTO rol (nombre_rol, descripcion_rol) VALUES (:nombre, :descripcion)";
-                    $params = [
-                        ':nombre' => $nombre,
-                        ':descripcion' => $descripcion
-                    ];
-                    $connSQL->addRolesPermisos($sql, $params, json_decode($permisos));
-                    echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
+
+                    if ($u->hasPrivilegio("agregar_roles")) {
+                        //El nombre del rol sera el mismo que ingrese el usuario pero sin espacios remplazandolos por guion bajo
+                        setlocale(LC_ALL, 'en_US.utf8');
+                        $nombre = mb_strtolower(str_replace(' ', '_', preg_replace('/[^A-Za-z0-9 ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $_POST['inputRol']))), 'UTF-8');
+                        $descripcion = $_POST['inputRol'];
+                        $permisos = $_POST['idPermisos'];
+                        //Almacenar el nuevo rol
+                        //Tambien almacenar y gurdar los permisos que se hayan elegido
+                        $sql = "INSERT INTO rol (nombre_rol, descripcion_rol) VALUES (:nombre, :descripcion)";
+                        $params = [
+                            ':nombre' => $nombre,
+                            ':descripcion' => $descripcion
+                        ];
+                        $connSQL->addRolesPermisos($sql, $params, json_decode($permisos));
+                        echo json_encode(['success' => true, 'mensaje' => 'Rol registrado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para agregar roles.']);
+                    }
                 } else if ($_POST["operacion"] === "Actualizar") {
 
-                    $nombre = mb_strtolower(str_replace(' ', '_', preg_replace('/[^A-Za-z0-9 ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $_POST['inputRol']))), 'UTF-8');
-                    $descripcion = $_POST['inputRol'];
-                    $idRol = $_POST['idRol'];
+                    if ($u->hasPrivilegio("actualizar_roles")) {
+                        $nombre = mb_strtolower(str_replace(' ', '_', preg_replace('/[^A-Za-z0-9 ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $_POST['inputRol']))), 'UTF-8');
+                        $descripcion = $_POST['inputRol'];
+                        $idRol = $_POST['idRol'];
 
-                    $sql = "UPDATE rol SET nombre_rol = :nombre, descripcion_rol = :descripcion WHERE id_rol = :idRol";
-                    $params = [
-                        'nombre' => $nombre,
-                        'descripcion' => $descripcion,
-                        'idRol' => $idRol
-                    ];
+                        $sql = "UPDATE rol SET nombre_rol = :nombre, descripcion_rol = :descripcion WHERE id_rol = :idRol";
+                        $params = [
+                            'nombre' => $nombre,
+                            'descripcion' => $descripcion,
+                            'idRol' => $idRol
+                        ];
 
-                    $res = $connSQL->preparedUpdate($sql, $params);
-                    if ($res) {
-                        echo json_encode(['success' => true, 'mensaje' => 'Rol actualizado correctamente.']);
+                        $res = $connSQL->preparedUpdate($sql, $params);
+                        if ($res) {
+                            echo json_encode(['success' => true, 'mensaje' => 'Rol actualizado correctamente.']);
+                        } else {
+                            echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar el rol.']);
+                        }
                     } else {
-                        echo json_encode(['success' => false, 'mensaje' => 'Error al actualizar el rol.']);
+                        echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para actualizar roles.']);
                     }
                 }
             } else {
@@ -619,73 +648,94 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
         case 'eliminarPermisoDeRol':
-            if (isset($_POST['idRol']) && isset($_POST['idPermiso'])) {
-                $sql = "DELETE FROM rol_permisos WHERE id_rol = :idRol AND id_permiso = :idPermiso";
-                $params = ['idRol' => $_POST['idRol'], 'idPermiso' => $_POST['idPermiso']];
+            if ($u->hasPrivilegio("actualizar_roles")) {
+                if (isset($_POST['idRol']) && isset($_POST['idPermiso'])) {
+                    $sql = "DELETE FROM rol_permisos WHERE id_rol = :idRol AND id_permiso = :idPermiso";
+                    $params = ['idRol' => $_POST['idRol'], 'idPermiso' => $_POST['idPermiso']];
 
-                $res = $connSQL->preparedDelete($sql, $params);
-                if ($res) {
-                    echo json_encode(['success' => true, 'mensaje' => 'Permiso eliminado correctamente.']);
-                    //echo 'Rol eliminado correctamente.';
+                    $res = $connSQL->preparedDelete($sql, $params);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Permiso eliminado correctamente.']);
+                        //echo 'Rol eliminado correctamente.';
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el permiso.']);
+                        //echo 'Error al eliminar el rol.';
+                    }
                 } else {
-                    echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el permiso.']);
-                    //echo 'Error al eliminar el rol.';
+                    echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
                 }
             } else {
-                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para eliminar permisos a los roles.']);
             }
 
             break;
 
         case 'agregarPermisoDeRol':
-            if (isset($_POST['idRol']) && isset($_POST['idPermiso'])) {
-                $sql = "INSERT INTO rol_permisos (id_rol, id_permiso) VALUES (:idRol, :idPermiso)";
-                $params = ['idRol' => $_POST['idRol'], 'idPermiso' => $_POST['idPermiso']];
 
-                $res = $connSQL->preparedInsert($sql, $params);
-                if ($res) {
-                    echo json_encode(['success' => true, 'mensaje' => 'Permiso agregado correctamente.']);
+            if ($u->hasPrivilegio("actualizar_roles")) {
+                if (isset($_POST['idRol']) && isset($_POST['idPermiso'])) {
+                    $sql = "INSERT INTO rol_permisos (id_rol, id_permiso) VALUES (:idRol, :idPermiso)";
+                    $params = ['idRol' => $_POST['idRol'], 'idPermiso' => $_POST['idPermiso']];
+
+                    $res = $connSQL->preparedInsert($sql, $params);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Permiso agregado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al agregar el permiso.']);
+                    }
                 } else {
-                    echo json_encode(['success' => false, 'mensaje' => 'Error al agregar el permiso.']);
+                    echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
                 }
             } else {
-                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para asignar permisos a los roles.']);
             }
+
             break;
 
         case 'eliminarRol':
-            if (isset($_POST['idRol'])) {
 
-                $sql = "DELETE FROM rol WHERE id_rol = :idRol";
-                $params = ['idRol' => $_POST['idRol']];
-                $res = $connSQL->preparedDelete($sql, $params);
-                if ($res) {
-                    echo json_encode(['success' => true, 'mensaje' => 'Rol eliminado existosamente.']);
+            if ($u->hasPrivilegio("eliminar_roles")) {
+                if (isset($_POST['idRol'])) {
+
+                    $sql = "DELETE FROM rol WHERE id_rol = :idRol";
+                    $params = ['idRol' => $_POST['idRol']];
+                    $res = $connSQL->preparedDelete($sql, $params);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Rol eliminado existosamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar al rol.']);
+                    }
                 } else {
-                    echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar al rol.']);
+                    echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
                 }
             } else {
-                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para eliminar roles.']);
             }
+
             break;
 
         case 'eliminarFotoFirma':
-            if (isset($_POST['nombreFirma']) && isset($_POST['idUsuario'])) {
-                //Eliminar la foto de la firma en el servidor
-                unlink("./../firmasimagenes/" . $_POST['nombreFirma']);
 
-                //Actualizar y poner el vacio el campo de firma del usuario
-                $sql = "UPDATE docentes SET firma = :firma WHERE cat_ID = :idUsuario";
-                $params = [
-                    'firma' => '',
-                    'idUsuario' => $_POST['idUsuario'],
-                ];
-                $res = $connSQL->preparedUpdate($sql, $params);
-                if ($res) {
-                    echo json_encode(['success' => true, 'mensaje' => 'Imagen de la firma eliminada correctamente.']);
-                } else {
-                    echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar la imagen de la firma.']);
+            if ($u->hasPrivilegio("actualizar_usuarios")) {
+                if (isset($_POST['nombreFirma']) && isset($_POST['idUsuario'])) {
+                    //Eliminar la foto de la firma en el servidor
+                    unlink("./../firmasimagenes/" . $_POST['nombreFirma']);
+
+                    //Actualizar y poner el vacio el campo de firma del usuario
+                    $sql = "UPDATE docentes SET firma = :firma WHERE cat_ID = :idUsuario";
+                    $params = [
+                        'firma' => '',
+                        'idUsuario' => $_POST['idUsuario'],
+                    ];
+                    $res = $connSQL->preparedUpdate($sql, $params);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Imagen de la firma eliminada correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al intentar eliminar la imagen de la firma.']);
+                    }
                 }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para eliminar las firmas de los usuarios.']);
             }
             break;
 
@@ -926,11 +976,11 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
                 $roles = json_decode($usuario['roles']);
                 $rolesHTML = '';
-                if(count($roles) > 0) {
-                    foreach($roles as $rol) {
+                if (count($roles) > 0) {
+                    foreach ($roles as $rol) {
                         $rolesHTML .= '<div class="row pl-3" style="padding:1px;">' .
-                        '<span class="badge badge-primary" style="font-size:11px;">' . $rol->descripcion . '</span>' .
-                        '</div>';
+                            '<span class="badge badge-primary" style="font-size:11px;">' . $rol->descripcion . '</span>' .
+                            '</div>';
                     }
                 } else {
                     $rolesHTML = '<div class="row"><p style="margin: auto;">Sin roles.</p></div>';

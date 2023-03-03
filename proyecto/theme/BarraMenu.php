@@ -51,15 +51,15 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 						</a>
 						<div class="dropdown-menu">
 							<?php if ($u->hasModulo("administrar_usuarios")) { ?>
-								<a class="dropdown-item" href="usuarios.php">Leer/editar usuarios</a>
+								<a class="dropdown-item" href="usuarios.php"><i class="fas fa-users pr-2"></i>Leer/editar usuarios</a>
 							<?php } ?>
 
 							<?php if ($u->hasModulo("administrar_roles")) { ?>
-								<a class="dropdown-item" href="roles.php">Leer/editar roles</a>
+								<a class="dropdown-item" href="roles.php"><i class="fas fa-user-tag pr-2"></i>Leer/editar roles</a>
 							<?php } ?>
 
 							<?php if ($u->hasModulo("administrar_grupos_academicos")) { ?>
-								<a class="dropdown-item" href="grupos-academicos.php">Leer/editar grupos académicos</a>
+								<a class="dropdown-item" href="grupos-academicos.php"><i class="fas fa-chalkboard-teacher pr-2"></i>Leer/editar grupos académicos</a>
 							<?php } ?>
 						</div>
 					</li>
@@ -82,8 +82,8 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							Cuenta
 						</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="cuenta.php">Información de cuenta</a>
-							<a class="dropdown-item" href="destruyesesion.php">Cerrar sesion</a>
+							<a class="dropdown-item" href="cuenta.php"><i class="fas fa-user-circle pr-2"></i>Información de cuenta</a>
+							<a class="dropdown-item" href="destruyesesion.php"><i class="fas fa-sign-out-alt pr-2"></i>Cerrar sesion</a>
 						</div>
 					</li>
 				</ul>

@@ -48,7 +48,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                                 <div class="mt-3">
                                     <h4><?php echo $_SESSION["userData"]["first_name"]; ?></h4>
                                     <h6 class="text-secondary mb-1">Instituto Tecnológico Superior del Oriente del Estado de Hidalgo</h6>
-                                    <a class="btn btn-info mt-2" href="destruyesesion.php">Cerrar sesión</a>
+                                    <a class="btn btn-info btn-sm mt-2" href="destruyesesion.php"><i class="fas fa-sign-out-alt pr-2"></i>Cerrar sesión</a>
                                 </div>
                             </div>
                         </div>
