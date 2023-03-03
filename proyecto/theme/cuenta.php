@@ -206,7 +206,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                                         $("#firma img").attr('src', './firmasimagenes/' + resp.data);
                                         $("#firma button").attr('data-firma', resp.data);
                                         //boton.setAttribute("data-firma", resp.data);
-                                        boton.dataset.firma = resp.data;
+                                        //boton.dataset.firma = resp.data;
                                         alertify.success('<h3>' + resp.mensaje + '</h3>');
                                     } else {
                                         alertify.warning('<h3>' + resp.mensaje + '</h3>');
