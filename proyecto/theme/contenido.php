@@ -550,7 +550,7 @@ require_once("../../valida.php");
                     </h4>
                   </div>
                 </div><!--Fin row -->
-
+                            
 
 
 
@@ -601,26 +601,26 @@ require_once("../../valida.php");
                         <!--row  -->
                         <div class="row">
                           <div class="col-md-3 azul" id="columna">
-                            <h5>Documento <span class="color" id="campoDocumento"></span></h5>
+                            <h5>Documento: <span class="color" id="campoDocumento"></span></h5>
                           </div>
                           <div class="col-md-6 azul" id="columna">
-                            <h5>Cláusula ISO 9001 2008 <span class="color" id="campoClausula"></span></h5>
+                            <h5>Cláusula ISO 9001 2008: <span class="color" id="campoClausula"></span></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h5>Revisión <span class="color" id="campoRevision"></span></h5>
+                            <h5>Revisión: <span class="color" id="campoRevision"></span></h5>
                           </div>
                         </div><!--Fin row -->
 
                         <!--row -->
                         <div class="row">
                           <div class="col-md-3 azul" id="columna">
-                            <h5>Responsable <span class="color" id="campoResponsable"></span></h5>
+                            <h5>Responsable: <span class="color" id="campoResponsable"></span></h5>
                           </div>
                           <div class="col-md-6 azul" id="columna">
-                            <h5>Fecha de emisión <span class="color" id="campoFechaEmision"></span></h5>
+                            <h5>Fecha de emisión: <span class="color" id="campoFechaEmision"></span></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h5>Código del documento <span class="color" id="campoCodigoDocumento"></span></h5>
+                            <h5>Código del documento: <span class="color" id="campoCodigoDocumento"></span></h5>
                           </div>
                         </div><!--Fin row-->
 
@@ -2929,7 +2929,7 @@ require_once("../../valida.php");
                       </div>
                       <div id="collapseGen" class="collapse" aria-labelledby="headingGen" data-parent="#accordion">
                         <div class="panel-body">
-                          <form target="_blank" action="generarInstrumentacion.php" method="get">
+                          <form target="_blank" action="generarInstrumentacion.php" method="get" id="formGenerarInstru">
                             <input type="hidden" id="enviarGrupo" name="grupo" />
                             <input type="hidden" id="enviarPeriodo" name="periodo" />
                             <input type="hidden" id="enviarTema" name="tema" />
@@ -3285,6 +3285,48 @@ require_once("../../valida.php");
     <script src="js/html5shiv.js"></script>
     <!-- Custom JS -->
     <script src="js/custom.js"></script>
+
+    <script>
+      //Antes de generar la instrumentación, verificar si el usuario actual ya subio su firma correspondiente
+      $("#formGenerarInstru").on("submit", function(e) {
+        e.preventDefault();
+        $.ajax({
+          data: {
+            'idUsuario': '<?php echo $_SESSION['idUsuario']; ?>',
+            'accion': 'verificarFirmaUsuario'
+          },
+          url: 'conexion/consultasSQL.php',
+          type: 'post',
+          success: function(resultado) {
+            var res = JSON.parse(resultado);
+            if(res.success) {
+              //formulario.submit();
+              $('#formGenerarInstru').append('<input type="hidden" name="firma" value="' + res.data + '" id="enviarFirma"/>');
+              e.currentTarget.submit();
+            } else {
+              alertify.warning('<h3>' + res.mensaje + '</h3>');
+            }
+          }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+          if (jqXHR.status === 0) {
+            alert('No conectado, verifique su red.');
+          } else if (jqXHR.status == 404) {
+            alert('Pagina no encontrada [404]');
+          } else if (jqXHR.status == 500) {
+            alert('Internal Server Error [500].');
+          } else if (textStatus === 'parsererror') {
+            alert('Falló la respuesta.');
+          } else if (textStatus === 'timeout') {
+            alert('Se acabó el tiempo de espera.');
+          } else if (textStatus === 'abort') {
+            alert('Conexión abortada.');
+          } else {
+            alert('Error: ' + jqXHR.responseText);
+          }
+        });
+      });
+
+    </script>
     <script>
       function VerinstrumentoLista() {
         var cual = cualinstru;

@@ -1035,5 +1035,24 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'No seleccionó ninguna imagen.']);
             }
             break;
+
+        //Verificar si un usuario ya subio su firma
+        case 'verificarFirmaUsuario':
+            if(isset($_POST["idUsuario"])) {
+                $sql = "SELECT firma FROM docentes WHERE cat_ID = :idUsuario";
+                $usuario = $connSQL->singlePreparedQuery($sql, ["idUsuario" => $_POST["idUsuario"]]);
+                if($usuario) {
+                    if($usuario["firma"] != "") {
+                        echo json_encode(["success" => true, "data" => $usuario["firma"]]);
+                    } else {
+                        echo json_encode(["success" => false, "mensaje" => "Aún no sube la firma, por favor, actualice o suba su firma en el apartado de cuenta."]);
+                    }
+                } else {
+                    echo json_encode(["success" => false, "mensaje" => "Usuario no encontrado."]);
+                }
+            } else {
+                echo json_encode(["success" => false, "mensaje" => "Ingrese toda la información."]);
+            }
+            break;
     }
 }

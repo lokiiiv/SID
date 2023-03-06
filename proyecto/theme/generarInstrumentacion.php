@@ -23,6 +23,7 @@
   $correo = $_SESSION['correo'];
   $nombre = $_SESSION['nombreCompleto'];
   $tema = $_GET['tema'];
+  $firma = $_GET['firma'];
   $projeccion = ["projection" => 
                   ["periodos_Inst.".$periodo.".".$grupo=>1,
                   "_id"=>0]];
