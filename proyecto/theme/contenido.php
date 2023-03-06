@@ -339,7 +339,7 @@ require_once("../../valida.php");
             document.getElementById("CompetenciaET").innerHTML = (typeof x[tema]['CompetenciaET'] != "undefined") ? x[tema]['CompetenciaET'] : "";
             document.getElementById("campoCompetenciaET").value = (typeof x[tema]['CompetenciaET'] != "undefined") ? x[tema]['CompetenciaET'] : '';
             document.getElementById("CompetenciasGen").innerHTML = (typeof x[tema]['CompetenciasGen'] != "undefined") ? x[tema]['CompetenciasGen'] : "";
-            document.getElementById("campoCompetenciasGen").value = (typeof x[tema]['CompetenciasGen'] != "undefined") ? x[tema]['CompetenciasGen'] : '';
+            document.getElementById("campoCompetenciasGen").value = (typeof x[tema]['CompetenciasGen'] != "undefined") ? x[tema]['CompetenciasGen'] : "";
             document.getElementById("Indicadores").innerHTML = (typeof x[tema]['Indicadores'] != "undefined") ? x[tema]['Indicadores'] : '';
             document.getElementById("campoIndicadores").value = (typeof x[tema]['Indicadores'] != "undefined") ? x[tema]['Indicadores'] : '';
             document.getElementById("Recursos").innerHTML = (typeof x[tema]['Recursos'] != "undefined") ? x[tema]['Recursos'] : '';
@@ -392,6 +392,7 @@ require_once("../../valida.php");
             document.getElementById("CompetenciaET").innerHTML = "";
             document.getElementById("CompetenciasGen").innerHTML = "";
             document.getElementById("campoCompetenciaET").value = "";
+            document.getElementById("campoCompetenciasGen").value = "";
             document.getElementById("Indicadores").innerHTML = "";
             document.getElementById("campoIndicadores").value = "";
             document.getElementById("Recursos").innerHTML = "";
@@ -3425,7 +3426,7 @@ require_once("../../valida.php");
         var materia = $(this).attr("data-materia");
         var presidente = $(this).attr("data-presidente");
     
-        var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo academico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
+        var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo académico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
         //Mostrar un mensaje de confirmación indicando que no se pueden deshacer cambios.
         alertify.confirm("Aviso", textoMensaje,
           function() {
