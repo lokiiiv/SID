@@ -103,7 +103,6 @@ require_once("../../valida.php");
       document.getElementById('miColor7').style.backgroundColor = el_color;
       document.getElementById('miColor8').style.backgroundColor = el_color;
 
-
       //ProcesoEA(valor1);
     }
 
@@ -466,9 +465,9 @@ require_once("../../valida.php");
 
 <body>
   <?php
-    include("BarraMenu.php");
-    require_once 'conexion/conexionSQL.php';
-    $connSQL = connSQL::singleton();
+  include("BarraMenu.php");
+  require_once 'conexion/conexionSQL.php';
+  $connSQL = connSQL::singleton();
   ?>
   <!--<input type="text" name="comida" id="pruebaR" value="" /> -->
 
@@ -550,7 +549,7 @@ require_once("../../valida.php");
                     </h4>
                   </div>
                 </div><!--Fin row -->
-                            
+
 
 
 
@@ -1648,9 +1647,15 @@ require_once("../../valida.php");
                         <table id="tablaPracticas" class="table table-hover">
                           <thead>
                             <tr>
-                              <th class="text-center"><h6>No.</h6></th>
-                              <th class="text-center"><h6>Título de la práctica</h6></th>
-                              <th class="text-center"><h6>Laboratorio</h6></th>
+                              <th class="text-center">
+                                <h6>No.</h6>
+                              </th>
+                              <th class="text-center">
+                                <h6>Título de la práctica</h6>
+                              </th>
+                              <th class="text-center">
+                                <h6>Laboratorio</h6>
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1840,9 +1845,15 @@ require_once("../../valida.php");
                         <table class="table table-hover text-justify" style="width: 100%;">
                           <thead>
                             <tr>
-                              <th class="text-center"><h6>Indicador</h6></th>
-                              <th class="text-center"><h6>Descripción del indicador</h6></th>
-                              <th class="text-center"><h6>Valor del indicador</h6></th>
+                              <th class="text-center">
+                                <h6>Indicador</h6>
+                              </th>
+                              <th class="text-center">
+                                <h6>Descripción del indicador</h6>
+                              </th>
+                              <th class="text-center">
+                                <h6>Valor del indicador</h6>
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -2306,10 +2317,14 @@ require_once("../../valida.php");
                                 <td colspan="2" class="text-center">
                                 </td>
                                 <td colspan="6" class="text-center">
-                                  <strong><h6>Indicador de alcance</h6> </strong>
+                                  <strong>
+                                    <h6>Indicador de alcance</h6>
+                                  </strong>
                                 </td>
                                 <td colspan="4" class="text-center">
-                                  <strong> <h6>Método de evaluación</h6> </strong>
+                                  <strong>
+                                    <h6>Método de evaluación</h6>
+                                  </strong>
                                 </td>
                               </tr>
                               <tr>
@@ -2696,9 +2711,15 @@ require_once("../../valida.php");
                           <table id="tablaFechas" class="table table-hover" style="width: 100%">
                             <thead>
                               <tr>
-                                <th class="text-center"><h6>Grupo</h6></th>
-                                <th class="text-center"><h6>Fecha de inicio programado</h6></th>
-                                <th class="text-center"><h6>Fecha de Término</h6></th>
+                                <th class="text-center">
+                                  <h6>Grupo</h6>
+                                </th>
+                                <th class="text-center">
+                                  <h6>Fecha de inicio programado</h6>
+                                </th>
+                                <th class="text-center">
+                                  <h6>Fecha de Término</h6>
+                                </th>
                               </tr>
                             </thead>
                             <tbody id="cuerpoTablafechas">
@@ -2812,9 +2833,15 @@ require_once("../../valida.php");
                         <table id="tablaFechasNM" class="table table-hover" style="width: 100%;">
                           <thead>
                             <tr>
-                              <th class="text-center"><h6>Grupo</h6></th>
-                              <th class="text-center"><h6>Fecha de inicio programado</h6></th>
-                              <th class="text-center"><h6>Fecha de Término</h6></th>
+                              <th class="text-center">
+                                <h6>Grupo</h6>
+                              </th>
+                              <th class="text-center">
+                                <h6>Fecha de inicio programado</h6>
+                              </th>
+                              <th class="text-center">
+                                <h6>Fecha de Término</h6>
+                              </th>
                               <th></th>
                             </tr>
                           </thead>
@@ -2823,7 +2850,7 @@ require_once("../../valida.php");
                         </table>
 
                         <!-- tabla de semanas de otros grupos -->
-                        <table id="tablasemanaso" class="table table-hover">
+                        <table id="tablasemanaso" class="table table-hover table-responsive">
                           <thead>
                             <tr>
 
@@ -2938,6 +2965,23 @@ require_once("../../valida.php");
                         </div>
                       </div>
                     </div>
+
+                    <div class="panel">
+                      <div class="panel-heading" id="headingSave">
+                        <a data-toggle="collapse" data-target="#collapseSave" aria-expanded="false" aria-controls="collapseSave">
+                          <h5 class="panel-title" id="miColor9">Guardar instrumentación</h5>
+                        </a>
+                      </div>
+                      <div id="collapseSave" class="collapse" aria-labelledby="headingSave" data-parent="#accordion">
+                        <div class="panel-body">
+                          <div class="form-group">
+                            <p class="text-danger" id="textGuardar"></p>
+                            <button type="button" class="btn btn-secondary" value="Guardar" id="btnGuardarInstru">Guardar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -3299,7 +3343,7 @@ require_once("../../valida.php");
           type: 'post',
           success: function(resultado) {
             var res = JSON.parse(resultado);
-            if(res.success) {
+            if (res.success) {
               //formulario.submit();
               $('#formGenerarInstru').append('<input type="hidden" name="firma" value="' + res.data + '" id="enviarFirma"/>');
               e.currentTarget.submit();
@@ -3326,6 +3370,74 @@ require_once("../../valida.php");
         });
       });
 
+      $("#collapseSave").on("show.bs.collapse", function() {
+        //Cuando se abra el ultimo panel de guardar, verificar si la materia de la instrumentacion
+        //ya tiene asignado un grupo academico y por ende un presidente de grupo academico
+        //habilitar/deshabilitar el boton dependiendo al resultado
+        var boton = $(this).find('button');
+        boton.prop('disabled', true);
+
+        var grupo = document.getElementById("campoGrupo").innerHTML;
+        $.ajax({
+          data: {
+            'grupo': grupo,
+            'accion': 'obtenerPresidenteDeGrupoAcademico'
+          },
+          url: 'conexion/consultasSQL.php',
+          type: 'post',
+          success: function(resultado) {
+            var res = JSON.parse(resultado);
+            if (res.success) {
+              boton.prop('disabled', false);
+              $("#textGuardar").css("display", "none");
+              $("#textGuardar").text("");
+
+              boton.attr("data-materia", res.data.ret_NomCompleto);
+              boton.attr("data-presidente", res.data.nombre);
+              boton.attr("data-idpresidente", res.data.cat_ID);
+
+            } else {
+              $("#textGuardar").css("display", "block");
+              $("#textGuardar").text(res.mensaje);
+            }
+          }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+          if (jqXHR.status === 0) {
+            alert('No conectado, verifique su red.');
+          } else if (jqXHR.status == 404) {
+            alert('Pagina no encontrada [404]');
+          } else if (jqXHR.status == 500) {
+            alert('Internal Server Error [500].');
+          } else if (textStatus === 'parsererror') {
+            alert('Falló la respuesta.');
+          } else if (textStatus === 'timeout') {
+            alert('Se acabó el tiempo de espera.');
+          } else if (textStatus === 'abort') {
+            alert('Conexión abortada.');
+          } else {
+            alert('Error: ' + jqXHR.responseText);
+          }
+        });
+
+      });
+
+      $("#btnGuardarInstru").on("click", function() {
+        var materia = $(this).attr("data-materia");
+        var presidente = $(this).attr("data-presidente");
+    
+        var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo academico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
+        //Mostrar un mensaje de confirmación indicando que no se pueden deshacer cambios.
+        alertify.confirm("Aviso", textoMensaje,
+          function() {
+
+          },
+          function() {
+          }
+        ).set('labels', {
+          ok: 'Aceptar',
+          cancel: 'Cancelar'
+        });
+      });
     </script>
     <script>
       function VerinstrumentoLista() {

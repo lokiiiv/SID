@@ -578,7 +578,7 @@ padding:5px 10px;
 	border:none;
 }
 
-.events .panel-heading { padding: 0; }
+.events .panel-heading { padding: 0; cursor: pointer; }
 .events .panel-heading h5{
 	font-size:16px;
 	color:#fff;

@@ -1054,5 +1054,24 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(["success" => false, "mensaje" => "Ingrese toda la información."]);
             }
             break;
+
+        case 'obtenerPresidenteDeGrupoAcademico':
+            if (isset($_POST["grupo"])) {
+                $grupoins = substr($_POST["grupo"], 0, 3);
+                $sql = "SELECT cr.ret_ID, cr.ret_Clave, cr.ret_NomCompleto, ga.id_grupoacademico, ga.nombre, d.cat_ID, CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre
+                        FROM cereticula cr
+                        INNER JOIN gruposacademicos ga ON cr.id_grupoacademico = ga.id_grupoacademico
+                        INNER JOIN docentes d ON ga.cat_ID = d.cat_ID
+                        WHERE cr.ret_Clave = :grupo";
+                $presidente = $connSQL->singlePreparedQuery($sql, ['grupo' => $grupoins]);
+                if($presidente) {
+                    echo json_encode(['success' => true, 'data' => $presidente]);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Esta materia aún no tiene grupo académico asignado ni presidente, por favor notifique al administrador.']);
+                }
+            } else {
+                echo json_encode(["success" => false, "mensaje" => "Ingrese todos los datos."]);
+            }
+            break;
     }
 }
