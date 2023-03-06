@@ -4,8 +4,8 @@ require_once("../../valida.php");
 //if(!isset($_GET["grupo"])) header("Location:indexi.php");
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html lang="es">
 
 <head>
   <meta charset="utf-8">
@@ -37,6 +37,8 @@ require_once("../../valida.php");
   <!-- Custom CSS -->
   <link href="css/style_2.css" rel="stylesheet">
   <!-- Custom CSS -->
+  <!-- Estiles generales personalizados -->
+  <link rel="stylesheet" href="css/general_styles.css">
 
   <!-- Color Stylesheet - orange, blue, pink, brown, red or green-->
   <link href="css/blue.css" rel="stylesheet">
@@ -460,41 +462,20 @@ require_once("../../valida.php");
   </script>
 
   <!-- Conexiones a bases de datos -->
-
-
-
-
 </head>
 
 <body>
-
-  <!-- Header starts -->
-  <header>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-7 col-sm-7">
-          <!-- Logo and site link -->
-          <h1><a>Instrumentaciones Didácticas</a></h1>
-        </div>
-        <div class="col-md-5 col-sm-5">
-          <!-- Logo and site link -->
-          <h1><a>Hola <?php echo ucwords(strtolower($_SESSION["userData"]['first_name'])); ?></a></h1>
-          <h5> <?php echo $_SESSION["correo"]; ?> </h5>
-        </div>
-      </div>
-    </div>
-  </header>
-  <?
-  include("BarraMenu.php");
-  require_once 'conexion/conexionSQL.php';
-  $connSQL = connSQL::singleton();
-
+  <?php
+    include("BarraMenu.php");
+    require_once 'conexion/conexionSQL.php';
+    $connSQL = connSQL::singleton();
   ?>
   <!--<input type="text" name="comida" id="pruebaR" value="" /> -->
 
   <!-- Content strats -->
+
   <div class="content">
-    <div class="container" style="margin-top: 30px;">
+    <div class="container" style="margin-top: 30px; margin-bottom:30px;">
       <div class="row">
 
         <form action="indexi.php">
@@ -574,7 +555,7 @@ require_once("../../valida.php");
 
 
 
-                <div id="accordion">
+                <div id="accordion" style="text-align: center;">
 
                   <!-- First Accordion [Detalles generales]-->
                   <div class="panel">
@@ -635,10 +616,10 @@ require_once("../../valida.php");
                           <div class="col-md-3 azul" id="columna">
                             <h5>Responsable <span class="color" id="campoResponsable"></span></h5>
                           </div>
-                          <div class="col-md-5 azul" id="columna">
+                          <div class="col-md-6 azul" id="columna">
                             <h5>Fecha de emisión <span class="color" id="campoFechaEmision"></span></h5>
                           </div>
-                          <div class="col-md-4 azul" id="columna">
+                          <div class="col-md-3 azul" id="columna">
                             <h5>Código del documento <span class="color" id="campoCodigoDocumento"></span></h5>
                           </div>
                         </div><!--Fin row-->
@@ -3139,6 +3120,10 @@ require_once("../../valida.php");
         </div>
       </div>
     </div>
+
+    <?php
+    require 'footer.php';
+    ?>
 
 
 

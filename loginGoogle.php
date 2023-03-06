@@ -45,6 +45,8 @@ if (isset($token["error"]) != "invalid_grant") {
 			$_SESSION["nombreCompleto"] = $docente[0][1] . " " . $docente[0][2] . " " . $docente[0][3];
 			$_SESSION["idUsuario"] = $docente[0][0];
 			
+			require_once './proyecto/theme/conexion/verificaMongo.php';
+
 			//Redirigir a la pagina principal
 			header("Location:proyecto/theme/index.php");
 		} else {

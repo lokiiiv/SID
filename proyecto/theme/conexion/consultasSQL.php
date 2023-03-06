@@ -989,7 +989,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
                 if ($usuario['firma'] != "") {
                     $usuario['firma'] = '<div class="row">
-                                            <div class="col-md-9 col-lg-9 col-sm-9 col-9">
+                                            <div class="col-md-9 col-lg-9 col-sm-9 col-9" id="firmaImg">
                                                 <img src="./firmasimagenes/' . $usuario['firma'] . '" class="rounded img-fluid" width="80"/>
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-3 d-flex justify-content-end align-items-center">
@@ -998,7 +998,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                                         </div>';
                 } else {
                     $usuario['firma'] = '<div class="row">
-                                            <div class="col-md-9 col-lg-9 col-sm-9 col-9">
+                                            <div class="col-md-9 col-lg-9 col-sm-9 col-9" id="firmaImg">
                                                 <h6>Aún no sube firma.</h6>
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-3 d-flex justify-content-end align-items-center">
@@ -1022,7 +1022,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 $res = $connSQL->preparedUpdate($sql, ['firma' => $imagen, 'id' => $_POST['idUser']]);
                 if ($res) {
                     if (file_exists("./../firmasimagenes/" . $_POST["nombreImagen"])) {
-                        unlink("./../firmasimagenes/" . $_POST["nombreImagen"]);
+                        if($_POST["nombreImagen"] != "") 
+                            unlink("./../firmasimagenes/" . $_POST["nombreImagen"]);
                     }
 
                     move_uploaded_file($_FILES["nuevaFirma"]["tmp_name"], $ubicacion);

@@ -203,8 +203,10 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                                 success: function(response) {
                                     var resp = JSON.parse(response);
                                     if(resp.success) {
-                                        $("#firma img").attr('src', './firmasimagenes/' + resp.data);
-                                        $("#firma button").attr('data-firma', resp.data);
+                                        console.log(resp.data);
+                                        $("#firmaImg").html('<img src="./firmasimagenes/' + resp.data + '" class="rounded img-fluid" width="80"/>');
+                                        //$("#firma img").attr('src', './firmasimagenes/' + resp.data);
+                                        $("#firmaImg").next().find("button").attr("data-firma", resp.data);
                                         //boton.setAttribute("data-firma", resp.data);
                                         //boton.dataset.firma = resp.data;
                                         alertify.success('<h3>' + resp.mensaje + '</h3>');

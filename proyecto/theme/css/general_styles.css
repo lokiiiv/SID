@@ -68,12 +68,15 @@ header .list hr {
   margin: 2px 0px 6px 0px;
 }
 
-header a, header a:hover, a:visited, a:active, a:link
-{
-	text-decoration: none;
-	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+header a,
+header a:hover,
+a:visited,
+a:active,
+a:link {
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
+  text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
 }
 
 .header_main {
@@ -387,3 +390,5 @@ footer .fa-angle-right {
 #contenedor-materias .badge a:hover {
   opacity: 1;
 }
+
+
