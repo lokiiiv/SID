@@ -128,6 +128,20 @@ require_once("../../valida.php");
 
           //Verificar el estatus de la instrumentación y habilitar o deshabilitar inputs, botones, etc conforme al estatus
           estatusActual = (typeof x['Estatus'] != "undefined") ? x['Estatus'] : "";
+          switch (estatusActual) {
+            case "A":
+              $("#mensajeEstatus").addClass("text-success").text("Ahora puede editar o administrar la instrumentación.");
+              break;
+            case "B":
+              $("#mensajeEstatus").addClass("text-danger").text("Ya no puede editar la instrumentación, se encuentra en proceso de validación por parte del presidente de grupo académico de la asignatura.");
+              break;
+            case "C":
+              $("#mensajeEstatus").addClass("text-danger").text("Ya no puede editar la instrumentación, se encuentra en proceso de validación por parte del jefe de división correspondiente.");
+              break;
+            case "D":
+              $("#mensajeEstatus").addClass("text-success").text("La instrumentación ya ha sido validada y ahora puede ser publicada.");
+              break;
+          }
 
           document.getElementById("campoMateria").innerHTML = (typeof x['Materia'] != "undefined") ? x['Materia'] : "-";
           document.getElementById("Caracterizacion").innerHTML = (typeof x['Caracterizacion'] != "undefined") ? x['Caracterizacion'] : "";
@@ -575,7 +589,7 @@ require_once("../../valida.php");
                       </form>
                     </div>
                   </div>
-                  <div class="col-md-9 col-sm-12 col-12 col-lg-9 d-flex align-items-center justify-content-md-end justify-content-sm-center justify-content-center">
+                  <div class="col-md-9 col-sm-12 col-12 col-lg-9 d-flex align-items-end pb-2 justify-content-md-end justify-content-sm-center justify-content-center">
                     <h5 id="mensajeEstatus"></h5>
                   </div>
 
@@ -3471,19 +3485,90 @@ require_once("../../valida.php");
       });
 
       $("#btnGuardarInstru").on("click", function() {
+
         var materia = $(this).attr("data-materia");
         var presidente = $(this).attr("data-presidente");
 
         var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo académico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
-        //Mostrar un mensaje de confirmación indicando que no se pueden deshacer cambios.
-        alertify.confirm("Aviso", textoMensaje,
-          function() {
 
+
+        $.ajax({
+          data: {
+            'idUsuario': '<?php echo $_SESSION['idUsuario']; ?>',
+            'accion': 'verificarFirmaUsuario'
           },
-          function() {}
-        ).set('labels', {
-          ok: 'Aceptar',
-          cancel: 'Cancelar'
+          url: 'conexion/consultasSQL.php',
+          type: 'post',
+          success: function(resultado) {
+            var res = JSON.parse(resultado);
+            if (res.success) {
+              //Mostrar un mensaje de confirmación indicando que no se pueden deshacer cambios.
+              alertify.confirm("Aviso", textoMensaje,
+                function() {
+                  var parametros = {
+                    "accion": "mandarInstrumentacionDocente",
+                    "grupo": document.getElementById("campoGrupo").innerHTML,
+                    "periodo": document.getElementById("campoPeriodo").innerHTML
+                  };
+
+                  $.ajax({
+                    data: parametros,
+                    url: 'conexion/consultasNoSQL.php',
+                    type: 'post',
+                    success: function(response) {
+                      var resp = JSON.parse(response);
+                      if (resp.success) {
+                        alertify.success('<h3>' + resp.mensaje + '</h3>', 2, function(){
+                          //Recargar la pagina y mostrar nuevamente la informacion
+                          window.location.reload();
+                        });
+                      } else {
+                        alertify.warning('<h3>' + resp.mensaje + '</h3>');
+                      }
+                    }
+                  }).fail(function(jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 0) {
+                      alert('No conectado, verifique su red.');
+                    } else if (jqXHR.status == 404) {
+                      alert('Pagina no encontrada [404]');
+                    } else if (jqXHR.status == 500) {
+                      alert('Internal Server Error [500].');
+                    } else if (textStatus === 'parsererror') {
+                      alert('Falló la respuesta.');
+                    } else if (textStatus === 'timeout') {
+                      alert('Se acabó el tiempo de espera.');
+                    } else if (textStatus === 'abort') {
+                      alert('Conexión abortada.');
+                    } else {
+                      alert('Error: ' + jqXHR.responseText);
+                    }
+                  });
+                },
+                function() {}
+              ).set('labels', {
+                ok: 'Aceptar',
+                cancel: 'Cancelar'
+              });
+            } else {
+              alertify.warning('<h3>' + res.mensaje + '</h3>');
+            }
+          }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+          if (jqXHR.status === 0) {
+            alert('No conectado, verifique su red.');
+          } else if (jqXHR.status == 404) {
+            alert('Pagina no encontrada [404]');
+          } else if (jqXHR.status == 500) {
+            alert('Internal Server Error [500].');
+          } else if (textStatus === 'parsererror') {
+            alert('Falló la respuesta.');
+          } else if (textStatus === 'timeout') {
+            alert('Se acabó el tiempo de espera.');
+          } else if (textStatus === 'abort') {
+            alert('Conexión abortada.');
+          } else {
+            alert('Error: ' + jqXHR.responseText);
+          }
         });
       });
     </script>

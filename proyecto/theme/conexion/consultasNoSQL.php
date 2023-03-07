@@ -349,6 +349,20 @@
                     echo "";
                 }
             break;
+
+
+
+            case 'mandarInstrumentacionDocente':
+                //Cambiar el estatus de la instrumentacion y ponerlo en "B"
+                //B = En espera de validación el presidente de grupo academico
+                $valor="B";
+                $campo="Estatus";
+                $grupo=$_POST['grupo'];
+                $grupoins = substr($grupo, 0,3);
+                $periodo = $_POST['periodo'];
+                $correo = $_SESSION['correo'];
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".".$campo=>$valor]);
+                echo json_encode(['success' => true, 'mensaje' => 'La instrumentación ahora podrá ser vista por el presidente de grupo académico para su respectiva validación.']);
+                break;
         }
     }
-?>
