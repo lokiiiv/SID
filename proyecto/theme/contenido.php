@@ -2804,16 +2804,16 @@ require_once("../../valida.php");
 
                         <div class="row">
                           <div class="col-md-3 azul" id="columna">
-                            <h5>SD <span class="color">Seguimiento departamental</span></h5>
+                            <h6>SD <span class="color">Seguimiento departamental</span></h6>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h5>ED <span class="color">Evaluación diagnóstica</span></h5>
+                            <h6>ED <span class="color">Evaluación diagnóstica</span></h6>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h5>Efn <span class="color">Evaluación formativa (competencia específica)</span></h5>
+                            <h6>Efn <span class="color">Evaluación formativa (competencia específica)</span></h6>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h5>ES <span class="color">Evaluación sumativa</span></h5>
+                            <h6>ES <span class="color">Evaluación sumativa</span></h6>
                           </div>
                         </div>
 
@@ -2830,7 +2830,7 @@ require_once("../../valida.php");
 
                       <br>
                       <div id="otrosdatos">
-                        <h2>Otros grupos</h2>
+                        <h3>Otros grupos</h3>
                         <table id="tablaFechasNM" class="table table-hover" style="width: 100%;">
                           <thead>
                             <tr>
