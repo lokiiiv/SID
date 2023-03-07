@@ -333,7 +333,8 @@ require_once("../../valida.php");
                             "carrera": carrera,
                             "semestre": semestreletra,
                             "clave": clavemate,
-                            "encabezado": datosencabezado
+                            "encabezado": datosencabezado,
+                            "estatus": "A"
                         };
                         $.ajax({
                             data: parametros,

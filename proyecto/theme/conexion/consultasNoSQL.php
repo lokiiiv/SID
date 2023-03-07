@@ -18,6 +18,7 @@
                 $carrera = $_POST['carrera'];
                 $clave = $_POST["clave"];
                 $correo = $_SESSION['correo'];
+                $estatus = $_POST['estatus'];
                 //Encabezado
                 $encabezado = $_POST['encabezado'];
                 $revision = substr($encabezado, 36, 1);
@@ -36,6 +37,7 @@
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".totalTemas"=>$temas]);
 
                 //Para guardar dentro de instrumentaciones //Carrera > Periodo > Grupo > Todo lo demás.
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Estatus"=>$estatus]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Materia"=>$materia]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".PE"=>$carrera]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Semestre"=>$semestre]);
@@ -158,8 +160,9 @@
                 $competenciaEA = "";
 
                 $projeccion = ["projection" => 
-                                ["periodos_Inst.".$periodo.".".$grupoins.".Caracterizacion"=>1,
-                                "periodos_Inst.".$periodo.".".$grupoins.".totalTemas"=>1,
+                                ["periodos_Inst.".$periodo.".".$grupoins.".Estatus"=>1,
+                                 "periodos_Inst.".$periodo.".".$grupoins.".Caracterizacion"=>1,
+                                 "periodos_Inst.".$periodo.".".$grupoins.".totalTemas"=>1,
                                  "periodos_Inst.".$periodo.".".$grupoins.".Materia"=>1,
                                  "periodos_Inst.".$periodo.".".$grupoins.".IntencionDidactica"=>1,
                                  "periodos_Inst.".$periodo.".".$grupoins.".CompetenciasPrevias"=>1,

@@ -47,6 +47,7 @@ require_once("../../valida.php");
   <link rel="shortcut icon" href="img/favicon/favicon.png">
 
   <script type="text/javascript">
+    var estatusActual = null;
     window.onload = function() {
       ocultar_mostrar(0);
       actualizarCampos();
@@ -124,6 +125,10 @@ require_once("../../valida.php");
           if (x != "") {
             x = JSON.parse(x);
           }
+
+          //Verificar el estatus de la instrumentación y habilitar o deshabilitar inputs, botones, etc conforme al estatus
+          estatusActual = (typeof x['Estatus'] != "undefined") ? x['Estatus'] : "";
+
           document.getElementById("campoMateria").innerHTML = (typeof x['Materia'] != "undefined") ? x['Materia'] : "-";
           document.getElementById("Caracterizacion").innerHTML = (typeof x['Caracterizacion'] != "undefined") ? x['Caracterizacion'] : "";
           document.getElementById("campoCaracterizacion").innerHTML = (typeof x['Caracterizacion'] != "undefined") ? x['Caracterizacion'] : "";
@@ -146,11 +151,15 @@ require_once("../../valida.php");
 
 
           buscarCatalogo("nombrePE", "programae", (typeof x["PE"] != "undefined") ? x['PE'] : "", function(res) {
-            document.getElementById("PE").innerHTML = '<select class="form-control" Onchange = "buscarPlanEstudios(this.options[this.selectedIndex].innerHTML);" style="width: 90%" readonly="true" id="campoPE" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
+            document.getElementById("PE").innerHTML = '<select class="form-control editable" Onchange = "buscarPlanEstudios(this.options[this.selectedIndex].innerHTML);" style="width: 90%" readonly="true" id="campoPE" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
+            habilitarDeshabilitarCampos();
           });
 
           buscarPlanEstudios((typeof x["PE"] != "undefined") ? x['PE'] : "", (typeof x["PlanEstudios"] != "undefined") ? x['PlanEstudios'] : "")
 
+
+          //Habilitar/mostrar inputs/botones conforme al estatus de la instrumentacion
+          habilitarDeshabilitarCampos();
         }
       });
     }
@@ -311,7 +320,6 @@ require_once("../../valida.php");
     }
 
     function actualizaCamposTema(tema) {
-
       var parametros = {
         "accion": "obtenerTemas",
         "tema": tema,
@@ -411,6 +419,8 @@ require_once("../../valida.php");
           }
 
 
+          habilitarDeshabilitarCampos()
+
         }
       }).fail(function(jqXHR, textStatus, errorThrown) {
         $('#estatus' + campo).html("");
@@ -458,6 +468,32 @@ require_once("../../valida.php");
       document.getElementById('panelFuentes').style.display = display;
       document.getElementById('panelGen').style.display = display;
 
+    }
+
+
+    // --------------- METODO PARA HABILITAR O DESHABILITAR LOS CAMPOS CONFORME AL ESTATUS DE LA INSTRUMENTACION -----------------
+    function habilitarDeshabilitarCampos() {
+      var elementos = document.getElementsByClassName("editable");
+      if (estatusActual != "") {
+        //console.log(elementos);
+        switch (estatusActual) {
+          case "A":
+            for (var i = 0; i < elementos.lenght; i++) {
+              elementos[i].disabled = false;
+            }
+            break;
+          case "B":
+            for (var i = 0; i < elementos.length; i++) {
+              elementos[i].disabled = true;
+              elementos[i].classList.add("disabled");
+            }
+            break;
+        }
+      } else {
+        for (var i = 0; i < elementos.length; i++) {
+          elementos[i].disabled = true;
+        }
+      }
     }
   </script>
 
@@ -511,24 +547,21 @@ require_once("../../valida.php");
 
                 <!--row -->
                 <div class="row">
-                  <div class="col-md-6 azul" id="columna">
+                  <div class="col-md-3 col-sm-12 col-12 col-lg-3">
                     <div class="form-group">
-
-
-                      <div class="col-md-7">
-                        <label class="control-label col-md-3" for="select">
-                          <h4>Tema</h4>
-                        </label>
-                        <form action="miphp.php" method="POST">
-                          <select class="form-control color" id="selectTema" name="nombreTema" Onchange="mostrarValor(this.options[this.selectedIndex].innerHTML);">
-                            <option>&nbsp;</option>
-                            <?php
-                            //Mostrar la cantidad de temas conforme a lo obtenido al generar la instrumentacion anteriormente
-                            for ($i = 1; $i <= intval($_GET['temas']); $i++) {
-                              echo "<option value='" . $i . "'>" . $i . "</option>";
-                            }
-                            ?>
-                            <!--<option value='1'>1</option>
+                      <label class="control-label col-md-3" for="select">
+                        <h4>Tema</h4>
+                      </label>
+                      <form action="miphp.php" method="POST">
+                        <select class="form-control color" id="selectTema" name="nombreTema" Onchange="mostrarValor(this.options[this.selectedIndex].innerHTML);">
+                          <option>&nbsp;</option>
+                          <?php
+                          //Mostrar la cantidad de temas conforme a lo obtenido al generar la instrumentacion anteriormente
+                          for ($i = 1; $i <= intval($_GET['temas']); $i++) {
+                            echo "<option value='" . $i . "'>" . $i . "</option>";
+                          }
+                          ?>
+                          <!--<option value='1'>1</option>
                             <option value='2'>2</option>
                             <option value='3'>3</option>
                             <option value='4'>4</option>
@@ -537,9 +570,21 @@ require_once("../../valida.php");
                             <option value='7'>7</option>
                             <option value='8'>8</option> 
                             -->
-                          </select>
-                          <p id="prueba1"></p>
-                        </form>
+                        </select>
+                        <p id="prueba1"></p>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="col-md-9 col-sm-12 col-12 col-lg-9 d-flex align-items-center justify-content-md-end justify-content-sm-center justify-content-center">
+                    <h5 id="mensajeEstatus"></h5>
+                  </div>
+
+                  <!-- <div class="col-md-6 azul" id="columna">
+                    <div class="form-group">
+
+
+                      <div class="col-md-7">
+
                       </div>
                     </div>
                   </div>
@@ -549,8 +594,8 @@ require_once("../../valida.php");
                       <span class="color" id="NombreTema" value="NombreTema"></span>
                     </h4>
                   </div>
-                </div><!--Fin row -->
-
+                </div>Fin row -->
+                </div>
 
 
 
@@ -699,7 +744,7 @@ require_once("../../valida.php");
                                 <h5>Plan de estudios:</h5>
                               </label>
                               <div class="col-md-12">
-                                <select class="form-control color" id="campoPlanEstudios">
+                                <select class="form-control color editable" id="campoPlanEstudios">
                                   <option>&nbsp;</option>
                                 </select>
                               </div>
@@ -716,7 +761,7 @@ require_once("../../valida.php");
                             <h5>Clave de la asignatura: <span class="color" id="campoClaveAsignatura"></span></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
-                            <h5>Créditos: <input width="40px" class="color text-center" id="campoCreditos"></h5>
+                            <h5>Créditos: <input width="40px" class="color text-center editable" id="campoCreditos"></h5>
                           </div>
                           <div class="col-md-3 azul" id="columna">
                             <h5>Número de Tema: <span class="color" id="campoTemas">[Seleccione un tema]</span></h5>
@@ -742,7 +787,7 @@ require_once("../../valida.php");
 
                         <div align="center" id="guardarDetallesGenerales" style="margin-bottom: 10px; margin-top: 5px">
                           <h4 id="estatusDetallesGenerales"></h4>
-                          <button type="button" class="btn btn-secondary" onclick="guardarDatosGenerales()">Guardar</button>
+                          <button type="button" class="btn btn-secondary editable" onclick="guardarDatosGenerales()">Guardar</button>
                         </div>
                         <!-- Fin Contenido                  -->
 
@@ -766,7 +811,7 @@ require_once("../../valida.php");
 
                         <!-- Modal -->
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModal1"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModal1"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal1" class="modal fade">
@@ -813,7 +858,7 @@ require_once("../../valida.php");
 
                         <!-- Modal -->
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModal2"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModal2"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal2" class="modal fade" role="dialog">
@@ -854,7 +899,7 @@ require_once("../../valida.php");
                         </div>
                         <!-- Modal -->
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModal3"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModal3"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal3" class="modal fade" role="dialog">
@@ -896,7 +941,7 @@ require_once("../../valida.php");
                         <!-- Modal -->
 
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModal4"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModal4"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal4" class="modal fade" role="dialog">
@@ -1000,9 +1045,9 @@ require_once("../../valida.php");
                     <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                       <div class="panel-body">
 
-                        <h5>Tema: <input id="TituloTema"></h5>
+                        <h5>Tema: <input id="TituloTema" class="editable"></h5>
                         <h4 id="estatusTituloTema"></h4>
-                        <button type="button" class="btn btn-secondary" onclick="guardarCampoTemaValor('TituloTema',document.getElementById('TituloTema').value)">Guardar</button></p>
+                        <button type="button" class="btn btn-secondary editable" onclick="guardarCampoTemaValor('TituloTema',document.getElementById('TituloTema').value)">Guardar</button></p>
 
                         <div class="dividerM"></div>
 
@@ -1013,7 +1058,7 @@ require_once("../../valida.php");
                         <!-- Modal -->
 
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModal5"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModal5"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal5" class="modal fade" role="dialog">
@@ -1047,7 +1092,7 @@ require_once("../../valida.php");
 
                         <!-- Trigger the modal with a button -->
 
-                        <div class="button" data-toggle="modal" data-target="#myModal51"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModal51"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal51" class="modal fade" role="dialog">
@@ -1090,7 +1135,7 @@ require_once("../../valida.php");
                         </div>
 
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModalTemas"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModalTemas"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModalTemas" class="modal fade" role="dialog">
@@ -1123,9 +1168,9 @@ require_once("../../valida.php");
                             var estudiante = fila.insertCell(1);
                             var borrar = fila.insertCell(2);
 
-                            docente.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%; height: 12em"></textarea>';
-                            estudiante.innerHTML = '<textarea class="mostrarContenido" align="center" style="width: 100%; height: 12em"></textarea>';
-                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
+                            docente.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width:100%; height: 12em"></textarea>';
+                            estudiante.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width: 100%; height: 12em"></textarea>';
+                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm editable" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                           }
 
                           function agregarActividad2(aa, bb) {
@@ -1135,9 +1180,9 @@ require_once("../../valida.php");
                             var estudiante = fila.insertCell(1);
                             var borrar = fila.insertCell(2);
 
-                            docente.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%; height: 12em">' + aa + '</textarea>';
-                            estudiante.innerHTML = '<textarea class="mostrarContenido" align="center" style="width: 100%; height: 12em">' + bb + '</textarea>';
-                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
+                            docente.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width:100%; height: 12em">' + aa + '</textarea>';
+                            estudiante.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width: 100%; height: 12em">' + bb + '</textarea>';
+                            borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm editable" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                           }
 
                           function borrarActividad(x) {
@@ -1235,9 +1280,9 @@ require_once("../../valida.php");
                                 var estudiante = fila.insertCell(1);
                                 var borrar = fila.insertCell(2);
 
-                                docente.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%; height: 12em">' + actividad[0] + '</textarea>';
-                                estudiante.innerHTML = '<textarea class="mostrarContenido" align="center" style="width: 100%; height: 12em">' + actividad[1] + '</textarea>';
-                                borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
+                                docente.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width:100%; height: 12em">' + actividad[0] + '</textarea>';
+                                estudiante.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width: 100%; height: 12em">' + actividad[1] + '</textarea>';
+                                borrar.innerHTML = '<button onclick="borrarActividad($(this).closest(\'tr\').index()+1)" type="button" class="btn btn-danger btn-sm editable" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                               });
                             }
                           }
@@ -1258,7 +1303,7 @@ require_once("../../valida.php");
                             <tr>
                               <td colspan="2">
                               <td>
-                                <button onclick="agregarActividad()" align="center" type="button" class="btn btn-success btn-sm" style="font-size: 12px">Agregar
+                                <button onclick="agregarActividad()" align="center" type="button" class="btn btn-success btn-sm editable" style="font-size: 12px">Agregar
                                 </button>
                               </td>
                             </tr>
@@ -1268,7 +1313,7 @@ require_once("../../valida.php");
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusActividades"></h4>
-                            <button type="button" class="btn btn-secondary" onclick="guardarActividades()">Guardar</button>
+                            <button type="button" class="btn btn-secondary editable" onclick="guardarActividades()">Guardar</button>
                           </div>
                         </div>
 
@@ -1284,7 +1329,7 @@ require_once("../../valida.php");
                         </div>
 
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModalHTP"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModalHTP"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModalHTP" class="modal fade" role="dialog">
@@ -1317,7 +1362,7 @@ require_once("../../valida.php");
                         </div>
 
                         <!-- Trigger the modal with a button -->
-                        <div class="button" data-toggle="modal" data-target="#myModalRecursos"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModalRecursos"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModalRecursos" class="modal fade" role="dialog">
@@ -1371,7 +1416,7 @@ require_once("../../valida.php");
                           type: 'post',
                           success: function(resultado) {
                             laboratorio.innerHTML =
-                              '<select class="form-control" align="center" style=""' +
+                              '<select class="form-control editable" align="center" style=""' +
                               'id="selectLaboratorio' + (tablaPracticas.rows.length - 2) + '" name="laboratorio">' +
                               '<option>&nbsp;</option>' + resultado + '</select>';
                           }
@@ -1409,8 +1454,8 @@ require_once("../../valida.php");
 
 
 
-                        titulo.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '"></textarea>';
-                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
+                        titulo.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '"></textarea>';
+                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm editable" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                         celdaNo.innerHTML = tablaPracticas.rows.length - 2;
 
                       }
@@ -1434,7 +1479,7 @@ require_once("../../valida.php");
                           type: 'post',
                           success: function(resultado) {
                             laboratorio.innerHTML =
-                              '<select value="' + la + '" class="form-control" align="center" style=""' +
+                              '<select value="' + la + '" class="form-control editable" align="center" style=""' +
                               'id="selectLaboratorio' + cualap + '" name="laboratorio">' +
                               '<option>&nbsp;</option>' + resultado + '</select>';
                             $num = cualap;
@@ -1477,8 +1522,8 @@ require_once("../../valida.php");
 
 
 
-                        titulo.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '">' + ti + '</textarea>';
-                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
+                        titulo.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '">' + ti + '</textarea>';
+                        borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm editable" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                         celdaNo.innerHTML = tablaPracticas.rows.length - 2;
 
                       }
@@ -1511,9 +1556,10 @@ require_once("../../valida.php");
                               url: 'conexion/consultasSQL.php',
                               type: 'post',
                               success: function(resultado) {
-                                laboratorio.innerHTML = '<select class="form-control" align="center"' +
+                                laboratorio.innerHTML = '<select class="form-control editable" align="center"' +
                                   'id="selectLaboratorio' + (tablaPracticas.rows.length - 2) + '" name="laboratorio">' +
                                   '<option>&nbsp;</option>' + resultado + '</select>';
+                                habilitarDeshabilitarCampos();
                               }
                             }).fail(function(jqXHR, textStatus, errorThrown) {
                               $('#estatus' + campo).html("");
@@ -1547,8 +1593,8 @@ require_once("../../valida.php");
                               }
                             });
 
-                            titulo.innerHTML = '<textarea class="mostrarContenido" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '">' + practica[0] + '</textarea>';
-                            borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
+                            titulo.innerHTML = '<textarea class="mostrarContenido editable" align="center" style="width:100%" id="tituloPractica' + (tablaPracticas.rows.length - 2) + '">' + practica[0] + '</textarea>';
+                            borrar.innerHTML = '<button onclick="borrarPractica($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm editable" style="margin-left:10px"><i class="fa-solid fa-trash"></button>';
                             celdaNo.innerHTML = tablaPracticas.rows.length - 2;
                           });
                         }
@@ -1663,7 +1709,7 @@ require_once("../../valida.php");
                             <tr>
                               <td colspan="3"></td>
                               <td>
-                                <button onclick="agregarPractica()" align="center" type="button" class="btn btn-success btn-sm" style="font-size: 12px">Agregar
+                                <button onclick="agregarPractica()" align="center" type="button" class="btn btn-success btn-sm editable" style="font-size: 12px">Agregar
                                 </button>
                               </td>
                             </tr>
@@ -1675,7 +1721,7 @@ require_once("../../valida.php");
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusPracticas"></h4>
-                            <button type="button" class="btn btn-secondary" onclick="guardarPracticas()">Guardar</button>
+                            <button type="button" class="btn btn-secondary editable" onclick="guardarPracticas()">Guardar</button>
                           </div>
                         </div>
                       </div>
@@ -1701,7 +1747,7 @@ require_once("../../valida.php");
 
                         <!-- Trigger the modal with a button -->
 
-                        <div class="button" data-toggle="modal" data-target="#myModal10"><a href="#">Editar</a> </div>
+                        <div class="button editable" data-toggle="modal" data-target="#myModal10"><a href="#responsive" class="btn btn-info editable">Editar</a> </div>
 
                         <!-- Modal -->
                         <div id="myModal10" class="modal fade" role="dialog">
@@ -2012,53 +2058,54 @@ require_once("../../valida.php");
                             if (typeof filaEvidencia != 'undefined') {
                               if (buscarEvidenciaExiste(filaEvidencia[12])) {
                                 cadeextra = "disabled";
-                                botonborrarevi = '<button type="button" class="btn btn-danger btn-sm"  onclick="borrainstrumentoevi(\'' + filaEvidencia[12] + '\');"><i class="fa-solid fa-trash"></i></button>';
+                                botonborrarevi = '<button type="button" class="btn btn-danger btn-sm editable"  onclick="borrainstrumentoevi(\'' + filaEvidencia[12] + '\');"><i class="fa-solid fa-trash"></i></button>';
                               }
                             }
 
                             //alert(cadeextra);
                             var catalogoEvidencias = "";
                             buscarCatalogo("evidencia", "evidencias", (typeof filaEvidencia != "undefined") ? filaEvidencia[0] : "", function(res) {
-                              evidencia.innerHTML = '<select ' + cadeextra + ' class="form-control" style="width: 90%" id="selectEvidencia" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
+                              evidencia.innerHTML = '<select ' + cadeextra + ' class="form-control editable" style="width: 90%" id="selectEvidencia" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
+                              habilitarDeshabilitarCampos();
                             });
 
                             //alert(buscarEvidenciaExiste(filaEvidencia[12]));
 
                             buscarCatalogo("instrumento", "instrumentos", (typeof filaEvidencia != "undefined") ? filaEvidencia[8] : "", function(res) {
                               //alert(res);
-                              instrumento.innerHTML = '<select ' + cadeextra + ' class="form-control" style="width: 90%' + cadeextra + '" id="selectInstrumento" onchange="cambiainstruH()" name="instrumento"><option>&nbsp;</option>' + res + '</select>';
+                              instrumento.innerHTML = '<select ' + cadeextra + ' class="form-control editable" style="width: 90%' + cadeextra + '" id="selectInstrumento" onchange="cambiainstruH()" name="instrumento"><option>&nbsp;</option>' + res + '</select>';
 
                               //alert(filaEvidencia);
                               if (typeof filaEvidencia == 'undefined') {
-                                instrumento.innerHTML = instrumento.innerHTML + '<input value="" type="text" style="display:none"/>';
+                                instrumento.innerHTML = instrumento.innerHTML + '<input class="editable" value="" type="text" style="display:none"/>';
                                 //alert("ok");
                               }
 
                               if (typeof filaEvidencia[8] != 'undefined') {
 
 
-                                instrumento.innerHTML = instrumento.innerHTML + '<button  type="button" class="ediInstruH btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="abreinstrumento(' + continstru + ');"><i class="fa-solid fa-pen-to-square"></i></button>' + botonborrarevi + '<input value="' + filaEvidencia[12] + '" style="display:none"/>';
+                                instrumento.innerHTML = instrumento.innerHTML + '<button  type="button" class="ediInstruH btn btn-primary btn-sm editable" data-toggle="modal" data-target="#exampleModal" onclick="abreinstrumento(' + continstru + ');"><i class="fa-solid fa-pen-to-square"></i></button>' + botonborrarevi + '<input value="' + filaEvidencia[12] + '" style="display:none"/>';
 
                                 //alert("kkkkk");
                               }
 
-
+                              habilitarDeshabilitarCampos();
                             });
 
 
                             //ban=false;
 
-                            perc.innerHTML = '<strong><input type="text" ' + cadeextra + ' class="border" size="3" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[1] : "") + '></strong>';
-                            a.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[2] : "") + '></strong>';
-                            b.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[3] : "") + '></strong>';
-                            c.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[4] : "") + '></strong>';
-                            d.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[5] : "") + '></strong>';
-                            e.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[6] : "") + '></strong>';
-                            f.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[7] : "") + '></strong>';
-                            mp.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[9] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input" id="defaultUnchecked"></div>';
-                            mc.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[10] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input" id="defaultUnchecked"></div>';
-                            ma.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[11] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input" id="defaultUnchecked"></div>';
-                            borrar.innerHTML = '<button ' + cadeextra + ' onclick="borrarEvidencia($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm" style="margin-left:10px"><i class="fa-solid fa-trash"></i></button>';
+                            perc.innerHTML = '<strong><input type="text" ' + cadeextra + ' class="border editable" size="3" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[1] : "") + '></strong>';
+                            a.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border editable" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[2] : "") + '></strong>';
+                            b.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border editable" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[3] : "") + '></strong>';
+                            c.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border editable" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[4] : "") + '></strong>';
+                            d.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border editable" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[5] : "") + '></strong>';
+                            e.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border editable" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[6] : "") + '></strong>';
+                            f.innerHTML = '<strong><input ' + cadeextra + ' type="text"class="border editable" size="1" style="text-align: center;" onkeypress="return soloLetras(event)" onchange="sumarPerc()" value=' + ((typeof filaEvidencia != "undefined") ? filaEvidencia[7] : "") + '></strong>';
+                            mp.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[9] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input editable" id="defaultUnchecked"></div>';
+                            mc.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[10] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input editable" id="defaultUnchecked"></div>';
+                            ma.innerHTML = '<div class="custom-control custom-checkbox"><input ' + cadeextra + '  ' + ((typeof filaEvidencia != "undefined") ? ((filaEvidencia[11] == "1") ? "checked" : "") : "") + ' type="checkbox" class="form-check-input editable" id="defaultUnchecked"></div>';
+                            borrar.innerHTML = '<button ' + cadeextra + ' onclick="borrarEvidencia($(this).closest(\'tr\').index())" type="button" class="btn btn-danger btn-sm editable" style="margin-left:10px"><i class="fa-solid fa-trash"></i></button>';
                             sumarPerc();
 
                             //alert("ok");
@@ -2342,7 +2389,7 @@ require_once("../../valida.php");
                                 <th> C </th>
                                 <th> A </th>
                                 <td class="text-center" align="center">
-                                  <button onclick="agregarEvidencia()" align="center" type="button" class="btn btn-success btn-sm" style="font-size: 12px">
+                                  <button onclick="agregarEvidencia()" align="center" type="button" class="btn btn-success btn-sm editable" style="font-size: 12px">
                                     Agregar
                                   </button>
                                 </td>
@@ -2375,7 +2422,7 @@ require_once("../../valida.php");
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusMatrizEvaluacion"></h4>
-                            <button type="button" class="btn btn-secondary" onclick="guardarEvidencia()">Guardar</button>
+                            <button type="button" class="btn btn-secondary editable" onclick="guardarEvidencia()">Guardar</button>
                           </div>
                         </div>
                         <!--Fin contenido -->
@@ -2554,7 +2601,7 @@ require_once("../../valida.php");
                                   }
                                   if (ban) { //fechass[jj][0]==gruph){//mis grupos
                                     //alert(fff);
-                                    tablaFechass.append('<tr><td><h3 id="calendarClaveGrupo">' + fechass[jj][1] + '</h3></td><td><input id="inicio" type="date" value="' + fi + '"></td><td><input id="fin" type="date" value="' + fff + '"></td><td></td></tr>');
+                                    tablaFechass.append('<tr><td><h3 id="calendarClaveGrupo">' + fechass[jj][1] + '</h3></td><td><input class="editable" id="inicio" type="date" value="' + fi + '"></td><td><input class="editable" id="fin" type="date" value="' + fff + '"></td><td></td></tr>');
                                     cont++;
                                   } else { //Grupos de alguien mas                        
                                     //tablaFechass.append('<tr><td>hola<h3 id="calendarClaveGrupo">'+grupht[0]+'</h3></td><td><input id="inicio" type="date" value="3-3-2022"></td><td><input id="fin" type="date" value="3-3-2022"></td><td></td></tr>');
@@ -2576,7 +2623,7 @@ require_once("../../valida.php");
                                   //alert(grupht.length);
 
                                   for (let jjjj = 0; jjjj < grupht.length; jjjj++) {
-                                    tablaFechass.append('<tr><td><h3 id="calendarClaveGrupo">' + grupht[jjjj] + '</h3></td><td><input id="inicio" type="date" value="3/3/2022"></td><td><input id="fin" type="date" value="3/3/2022"></td><td></td></tr>');
+                                    tablaFechass.append('<tr><td><h3 id="calendarClaveGrupo">' + grupht[jjjj] + '</h3></td><td><input id="inicio" class="editable" type="date" value="3/3/2022"></td><td><input id="fin" class="editable" type="date" value="3/3/2022"></td><td></td></tr>');
                                     //alert("oksi");
                                   }
                                   //$("#cuerpoTablafechas").show();
@@ -2616,7 +2663,7 @@ require_once("../../valida.php");
                                 for (let jj = 0; jj < semanas.length; jj++) {
                                   //alert(semanas[jj][0]);
                                   if (semanas[jj][0] != gruph) {
-                                    temsem = '<tr><td><button onclick="copiarsemanas(this)" type="button" class="btn btn-default btn-xs"><i class="fa-solid fa-arrow-up"></i></button>' + semanas[jj][0] + '</td><td>Tiempo planeado</td>';
+                                    temsem = '<tr><td><button onclick="copiarsemanas(this)" type="button" class="btn btn-default btn-xl editable"><i class="fa-solid fa-arrow-up"></i></button>' + semanas[jj][0] + '</td><td>Tiempo planeado</td>';
                                   }
                                   for (let jjj = 1; jjj < 19; jjj++) {
                                     if (semanas[jj][0] == gruph) { //mis grupos
@@ -2624,14 +2671,14 @@ require_once("../../valida.php");
                                       $("#sem" + (jjj)).val(semanas[jj][jjj]);
                                     } else { //otros grupos
                                       //alert("okk");
-                                      temsem = temsem + '<td><textarea disabled style="font-size:12px;" cols=3 rows="3">' + semanas[jj][jjj] + '</textarea></td>';
+                                      temsem = temsem + '<td><textarea class="editable" disabled style="font-size:12px;" cols=3 rows="3">' + semanas[jj][jjj] + '</textarea></td>';
                                       //alert("okkk");
                                     }
                                   }
                                   //alert(semanas[jj][0]+" "+gruph);
                                   if (semanas[jj][0] != gruph) {
 
-                                    temsem = temsem + '<td><button onclick="copiarsemanas(this)">Copiar</button></td></tr>';
+                                    temsem = temsem + '<td><button onclick="copiarsemanas(this)" type="button" class="btn btn-default btn-sm editable">Copiar</button></td></tr>';
                                     //alert(temsem);
                                     $("#otrassemanas").append(temsem);
                                     $("#otrosdatos").show();
@@ -2659,7 +2706,7 @@ require_once("../../valida.php");
                               $textomio = '';
                               for ($ij = 0; $ij < count($porciones); $ij++) {
                                 $sines = str_replace(" ", "", $porciones[$ij]);
-                                $textomio = $textomio . '<tr><td><h3 id="calendarClaveGrupo">' . $sines . '</h3></td><td><input id="inicio" type="date"></td><td><input id="fin" type="date"></td><td></td></tr>';
+                                $textomio = $textomio . '<tr><td><h3 id="calendarClaveGrupo">' . $sines . '</h3></td><td><input class="editable" id="inicio" type="date"></td><td><input class="editable" id="fin" type="date"></td><td></td></tr>';
                               }
                               ?>
                               //let texx= ;
@@ -2779,24 +2826,24 @@ require_once("../../valida.php");
                             <tbody>
                               <tr>
                                 <th>Tiempo planeado</th>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem1" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem2" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem3" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem4" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem5" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem6" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem7" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem8" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem9" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem10" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem11" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem12" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem13" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem14" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem15" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem16" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem17" cols=3 rows="3"></textarea></strong></td>
-                                <td><strong><textarea style="font-size:12px;" name="" id="sem18" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem1" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem2" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem3" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem4" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem5" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem6" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem7" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem8" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem9" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem10" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem11" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem12" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem13" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem14" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem15" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem16" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem17" cols=3 rows="3"></textarea></strong></td>
+                                <td><strong><textarea class="editable" style="font-size:12px;" name="" id="sem18" cols=3 rows="3"></textarea></strong></td>
                               </tr>
                             </tbody>
                           </table>
@@ -2822,7 +2869,7 @@ require_once("../../valida.php");
                         <div class="row">
                           <div class="col-md-12" align="right" id="guardarDetallesGenerales" style="margin-bottom: 10px;">
                             <h4 id="estatusSemanas"></h4>
-                            <button type="button" class="btn btn-secondary" onclick="guardarCalendarizacion()">Guardar</button>
+                            <button type="button" class="btn btn-secondary editable" onclick="guardarCalendarizacion()">Guardar</button>
                           </div>
                         </div>
 
@@ -2917,7 +2964,7 @@ require_once("../../valida.php");
                                   <h5> Fuente de Información</h5>
                                 </th>
                                 <td>
-                                  <button align="center" type="button" class="btn btn-success btn-sm" style="font-size: 14px" data-toggle="modal" data-target="#myModalFuentes">Editar
+                                  <button align="center" type="button" class="btn btn-success btn-sm editable" style="font-size: 14px" data-toggle="modal" data-target="#myModalFuentes">Editar
                                   </button>
                                 </td>
                               </tr>
@@ -2934,7 +2981,7 @@ require_once("../../valida.php");
                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                  <p><textarea style="width:100%; height:30em; font-size: 11px" id="campoFuentes"></textarea></p>
+                                  <p><textarea style="width:100%; height:30em; font-size: 13px" id="campoFuentes"></textarea></p>
                                 </div>
                                 <div class="modal-footer">
                                   <h4 id="estatusFuentes"></h4>
@@ -2977,7 +3024,7 @@ require_once("../../valida.php");
                         <div class="panel-body">
                           <div class="form-group">
                             <p class="text-danger" id="textGuardar"></p>
-                            <button type="button" class="btn btn-secondary" value="Guardar" id="btnGuardarInstru">Guardar</button>
+                            <button type="button" class="btn btn-secondary editable" value="Guardar" id="btnGuardarInstru">Guardar</button>
                           </div>
                         </div>
                       </div>
@@ -3396,6 +3443,7 @@ require_once("../../valida.php");
               boton.attr("data-materia", res.data.ret_NomCompleto);
               boton.attr("data-presidente", res.data.nombre);
               boton.attr("data-idpresidente", res.data.cat_ID);
+              habilitarDeshabilitarCampos();
 
             } else {
               $("#textGuardar").css("display", "block");
@@ -3425,15 +3473,14 @@ require_once("../../valida.php");
       $("#btnGuardarInstru").on("click", function() {
         var materia = $(this).attr("data-materia");
         var presidente = $(this).attr("data-presidente");
-    
+
         var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo académico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
         //Mostrar un mensaje de confirmación indicando que no se pueden deshacer cambios.
         alertify.confirm("Aviso", textoMensaje,
           function() {
 
           },
-          function() {
-          }
+          function() {}
         ).set('labels', {
           ok: 'Aceptar',
           cancel: 'Cancelar'
@@ -3539,7 +3586,7 @@ require_once("../../valida.php");
 
         var instrumento = tabla.rows[cual].cells[8].getElementsByTagName("select")[0].value;
         //alert(instrumento);
-        alertify.confirm("<h4>Si realizó alguna modificación y no gardó, perderá los cambios, desea continuar</h4>",
+        alertify.confirm("<h4>Si realizó alguna modificación y no guardó, perderá los cambios, desea continuar</h4>",
           function() {
             if (instrumento == "Lista de cotejo") {
               VerinstrumentoLista();
