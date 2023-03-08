@@ -13,7 +13,7 @@ $D = $_POST["D"];
 $E = $_POST["E"];
 $F = $_POST["F"];
 //echo $A;
-$INDALC = '<select  onchange="cambioInd(this)" class="form-control"><option value=""></option>';
+$INDALC = '<select  onchange="cambioInd(this)" class="form-control editable"><option value=""></option>';
 if ($A != "0" && $A != "") {
 	$INDALC = $INDALC . '<option value="A">A</option>';
 }
@@ -75,7 +75,7 @@ $num = $num - 2;
 					<div class="row" style="text-align: end">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="form-group">
-								<input type="button" id="ElegirExistente" class="btn btn-success" value="Elegir de uno existente">
+								<input type="button" id="ElegirExistente" class="btn btn-success editable" value="Elegir de uno existente">
 							</div>
 						</div>
 					</div>
@@ -83,22 +83,22 @@ $num = $num - 2;
 						<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 							<div class="form-group">
 								<label for="fa">Ingrese fecha de aplicación:</label>
-								<input type="text" class="form-control" id="fa" placeholder="<?php $fecha = date('d/m/Y');
+								<input type="text" class="form-control editable" id="fa" placeholder="<?php $fecha = date('d/m/Y');
 																								echo $fecha; ?>">
 							</div>
 						</div>
 						<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 							<div class="form-group">
 								<label for="te">Ingrese tiempo de evaluación:</label>
-								<input type="text" class="form-control" id="te" placeholder="1 hora; 30 minutos">
+								<input type="text" class="form-control editable" id="te" placeholder="1 hora; 30 minutos">
 							</div>
 						</div>
 					</div>
 					<div class="row" style="text-align: left;">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="form-group">
-								<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-								<input type="button" id="leerexcel" class="btn btn-success " style="margin:0 auto;" value="Leer Excel">
+								<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6 editable">
+								<input type="button" id="leerexcel" class="btn btn-success editable" style="margin:0 auto;" value="Leer Excel">
 							</div>
 						</div>
 					</div>
@@ -112,7 +112,7 @@ $num = $num - 2;
 								</div>
 								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 									<div class="form-group">
-										<button id="agregar" type="button" class="btn btn-primary btn-sm">
+										<button id="agregar" type="button" class="btn btn-primary btn-sm editable">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -145,7 +145,7 @@ $num = $num - 2;
 								</div>
 								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-end">
 									<div class="form-group">
-										<button id="agregar2" type="button" class="btn btn-primary btn-sm">
+										<button id="agregar2" type="button" class="btn btn-primary btn-sm editable">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -167,7 +167,7 @@ $num = $num - 2;
 								</div>
 								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 									<div class="form-group">
-										<button id="agregar3" type="button" class="btn btn-primary btn-sm">
+										<button id="agregar3" type="button" class="btn btn-primary btn-sm editable">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -206,20 +206,20 @@ $num = $num - 2;
 			</script>
 			<script>
 				$("#agregar").click(function() {
-					var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
+					var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm editable" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
 					var texto2 = '<?php echo $INDALC; ?>';
 					var texto = '<div class="col-lg-4 col-sm-12 col-md-6">' +
 									'<div class="form-group" style="text-align: start;"> ' +
 										'<label>Pregunta:</label>' +
-										'<input class="form-control" type="text"> ' +
+										'<input class="form-control editable" type="text"> ' +
 									'</div>' +
 									'<div class="form-group" style="text-align: start;">' +
 										'<label>Respuesta:</label>' +
-										'<input  onkeyup="funckp(event,this)" class="form-control">' +
+										'<input  onkeyup="funckp(event,this)" class="form-control editable">' +
 									'</div>' +
 									'<div class="form-group" style="text-align: start;">' +
 										'<label>Puntaje:</label>' +
-										'<input  type="number"  class="form-control">' +
+										'<input  type="number"  class="form-control editable">' +
 									'</div>' +
 									'<div class="form-group" style="text-align: start;">' +
 										'<label>Indicador:</label>' +
@@ -246,9 +246,9 @@ $num = $num - 2;
 							cal = 2;
 						}
 						$("#mps")[0].disabled = true;
-						var botoncerrar = '<button type="button" class="btn btn-danger btn-sm" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
+						var botoncerrar = '<button type="button" class="btn btn-danger btn-sm editable" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
 						for (var i = 0; i < n; i++) {
-							texto3 = texto3 + '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox"></div></div><input placeholder="Respuesta ' + (i + 1) + '" class="form-control" type="text"></div>';
+							texto3 = texto3 + '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" class="editable"></div></div><input placeholder="Respuesta ' + (i + 1) + '" class="form-control editable" type="text"></div>';
 						}
 						var texto2 = '<?php echo $INDALC; ?>';
 						//var texto = '<div class="form-group" style="padding-top:10px;padding-bottom:10px;"><hr style="height:1px; width: 100%; border-style:dotted;  background-color: black;">' +
@@ -270,10 +270,10 @@ $num = $num - 2;
 							'<div class="row">' +
 							'<div class="col-lg-10 col-sm-10 col-md-10 col-12">' +
 							'<div class="form-group">' +
-							'<input placeholder="Ingrese la pregunta" class="form-control">' +
+							'<input placeholder="Ingrese la pregunta" class="form-control editable">' +
 							'</div>' +
 							'<div class="form-group">' +
-							'<input placeholder="Ingrese puntaje" type="number" class="form-control">' +
+							'<input placeholder="Ingrese puntaje" type="number" class="form-control editable">' +
 							'</div>' +
 							'<div class="form-group">' +
 							texto2 +
@@ -292,13 +292,13 @@ $num = $num - 2;
 
 
 				$("#agregar3").click(function() {
-					var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
-					var fv = '<select class="form-control"><option selected>V</option><option>F</option></select>';
+					var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm editable" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
+					var fv = '<select class="form-control editable"><option selected>V</option><option>F</option></select>';
 					var texto2 = '<?php echo $INDALC; ?>';
 					var texto = '<div class="col-lg-4 col-sm-4 col-md-6 mb-4">' +
 						'<div class="form-group" style="text-align: start;">' +
 						'<label>Pregunta</label>' +
-						'<input class="form-control" type="text">' +
+						'<input class="form-control editable" type="text">' +
 						'</div>' +
 						'<div class="form-group" style="text-align: start;">' +
 						'<label>Falso | Verdadero</label>' +
@@ -306,7 +306,7 @@ $num = $num - 2;
 						'</div>' +
 						'<div class="form-group" style="text-align: start;">' +
 						'<label>Puntaje</label>' +
-						'<input  type="number"  class="form-control">' +
+						'<input  type="number"  class="form-control editable">' +
 						'</div>' +
 						'<div class="form-group" style="text-align: start;">' +
 						'<label>Indicador</label>' +
@@ -408,22 +408,22 @@ $num = $num - 2;
 							var r = prel2[1];
 							var v2 = prel2[2];
 							var i = prel2[3];
-							var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
+							var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm editable" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
 							var textoind = indicadoresselect(i);
 							var texto2 = textoind;
 							//var texto = '<div class="form-group"><div class="col-lg-4 col-sm-4 col-md-4"><input title="' + p + '" class="form-control" value="' + p + '"></div><div class="col-lg-3 col-sm-3 col-md-3"><input  onkeyup="funckp(event,this)" class="form-control"  value="' + r + '"></div><div class="col-lg-2 col-sm-2 col-md-2"><input  class="form-control" type="number" value="' + v2 + '"></div><div class="col-lg-2 col-sm-2 col-md-2">' + texto2 + '</div>' + botoncerrar + '</div>';
 							var texto = '<div class="col-lg-4 col-sm-12 col-md-6">' +
 								'<div class="form-group" style="text-align: start;"> ' +
 								'<label>Pregunta:</label>' +
-								'<input class="form-control" type="text" title="' + p + '" value="' + p + '"> ' +
+								'<input class="form-control editable" type="text" title="' + p + '" value="' + p + '"> ' +
 								'</div>' +
 								'<div class="form-group" style="text-align: start;">' +
 								'<label>Respuesta:</label>' +
-								'<input  onkeyup="funckp(event,this)" class="form-control" value="' + r + '">' +
+								'<input  onkeyup="funckp(event,this)" class="form-control editable" value="' + r + '">' +
 								'</div>' +
 								'<div class="form-group" style="text-align: start;">' +
 								'<label>Puntaje:</label>' +
-								'<input  type="number"  class="form-control" value="' + v2 + '">' +
+								'<input  type="number"  class="form-control editable" value="' + v2 + '">' +
 								'</div>' +
 								'<div class="form-group" style="text-align: start;">' +
 								'<label>Indicador:</label>' +
@@ -468,7 +468,7 @@ $num = $num - 2;
 								cal = 2;
 							}
 							$("#mps")[0].disabled = true;
-							var botoncerrar = '<button type="button" class="btn btn-danger btn-sm" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
+							var botoncerrar = '<button type="button" class="btn btn-danger btn-sm editable" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
 
 
 							for (var j = 2; j < pregs.length - 1; j += 2) {
@@ -482,7 +482,7 @@ $num = $num - 2;
 
 								//texto3 = texto3 + '<div class="col-lg-' + cal + ' col-sm-' + cal + ' col-md-' + cal + '"><input placeholder="Respuesta ' + (i + 1) + '" value="' + r1 + '" class="form-control"><input type="checkbox" ' + h11 + '></div>';
 
-								texto3 = texto3 + '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" ' + h11 + '></div></div><input placeholder="Respuesta ' + (i + 1) + '" value="' + h1 + '" class="form-control" type="text"></div>';
+								texto3 = texto3 + '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" class="editable" ' + h11 + '></div></div><input placeholder="Respuesta ' + (i + 1) + '" value="' + h1 + '" class="form-control editable" type="text"></div>';
 
 
 							}
@@ -507,10 +507,10 @@ $num = $num - 2;
 										'<div class="row">' +
 											'<div class="col-lg-10 col-sm-10 col-md-10 col-12">' +
 												'<div class="form-group">' + 
-												 	'<input title="' + pr + '" placeholder="Ingrese la pregunta" class="form-control" value="' + pr + '">' +
+												 	'<input title="' + pr + '" placeholder="Ingrese la pregunta" class="form-control editable" value="' + pr + '">' +
 												'</div>' +
 												'<div class="form-group">' + 
-												 	'<input placeholder="Ingrese puntaje" type="number" class="form-control" value="' + punr + '">' +
+												 	'<input placeholder="Ingrese puntaje" type="number" class="form-control editable" value="' + punr + '">' +
 												'</div>' +
 												'<div class="form-group">' + 
 												 	texto2 +
@@ -541,7 +541,7 @@ $num = $num - 2;
 							var i = prel2[3];
 							var fv = falsoverdaderopreg(vf);
 							var textoind = indicadoresselect(i);
-							var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
+							var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm editable" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
 
 							var texto2 = textoind;
 							//var texto = '<div class="form-group"><div class="col-lg-4 col-sm-4 col-md-4"><input class="form-control"  title="' + p + '" value="' + p + '"></div><div class="col-lg-3 col-sm-3 col-md-3">' + fv + '</div><div class="col-lg-2 col-sm-2 col-md-2"><input  type="number"  class="form-control"  value="' + pfv + '"></div><div class="col-lg-2 col-sm-2 col-md-2">' + texto2 + '</div>' + botoncerrar + '</div>';
@@ -549,7 +549,7 @@ $num = $num - 2;
 							var texto = '<div class="col-lg-4 col-sm-4 col-md-6 mb-4">' + 
 									'<div class="form-group" style="text-align: start;">' +
 										'<label>Pregunta</label>' +
-										'<input class="form-control" type="text" title="' + p + '" value="' + p + '">' +
+										'<input class="form-control editable" type="text" title="' + p + '" value="' + p + '">' +
 									'</div>' +
 									'<div class="form-group" style="text-align: start;">' +
 										'<label>Falso | Verdadero</label>' +
@@ -557,7 +557,7 @@ $num = $num - 2;
 									'</div>' +
 									'<div class="form-group" style="text-align: start;">' +
 										'<label>Puntaje</label>' +
-										'<input  type="number"  class="form-control" value="' + pfv + '">' +
+										'<input  type="number"  class="form-control editable" value="' + pfv + '">' +
 									'</div>' + 
 									'<div class="form-group" style="text-align: start;">' + 
 										'<label>Indicador</label>' +
@@ -579,10 +579,11 @@ $num = $num - 2;
 
 
 					}
+					habilitarDeshabilitarCampos();
 				});
 
 				function falsoverdaderopreg(i) {
-					var textoind = '<select class="form-control">';
+					var textoind = '<select class="form-control editable">';
 					//var ti="";
 					if (i == "V") {
 						textoind = textoind + '<option selected>V</option><option>F</option></select>';
@@ -645,7 +646,7 @@ $num = $num - 2;
 
 
 				function indicadoresselect(i) {
-					var textoind = '<select onchange="cambioInd(this)" class="form-control"><option value=""></option>';
+					var textoind = '<select onchange="cambioInd(this)" class="form-control editable"><option value=""></option>';
 					var ti = "";
 					<?php
 					if ($A != "0" && $A != "") {

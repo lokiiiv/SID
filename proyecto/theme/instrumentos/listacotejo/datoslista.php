@@ -52,7 +52,7 @@ $num = $num - 2;
 				<div class="row" style="text-align: end;">
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="form-group">
-							<input type="button" id="ElegirExistente" class="btn btn-success " value="Elegir de uno existente">
+							<input type="button" id="ElegirExistente" class="btn btn-success editable" value="Elegir de uno existente">
 						</div>
 					</div>
 				</div>
@@ -60,22 +60,22 @@ $num = $num - 2;
 					<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 						<div class="form-group">
 							<label for="fa">Ingrese fecha de aplicación</label>
-							<input type="text" class="form-control" id="fa" placeholder="<?php $fecha = date('d/m/Y');
+							<input type="text" class="form-control editable" id="fa" placeholder="<?php $fecha = date('d/m/Y');
 																							echo $fecha; ?>">
 						</div>
 					</div>
 					<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 						<div class="form-group">
 							<label for="te">Ingrese tiempo de evaluación</label>
-							<input type="text" class="form-control" id="te" placeholder="1 hora; 30 minutos">
+							<input type="text" class="form-control editable" id="te" placeholder="1 hora; 30 minutos">
 						</div>
 					</div>
 				</div>
 				<div class="row" style="text-align: left;">
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="form-group">
-							<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-							<input type="button" id="leerexcel" class="btn btn-success " style="margin:0 auto;" value="Leer Excel">
+							<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6 editable">
+							<input type="button" id="leerexcel" class="btn btn-success editable" style="margin:0 auto;" value="Leer Excel">
 						</div>
 					</div>
 				</div>
@@ -91,27 +91,27 @@ $num = $num - 2;
 							<?php
 							if ($A != "0" && $A != "") {
 								# code...
-								echo 'Ingrese indicador A <textarea rows="4" class="form-control" id="A" placeholder=""></textarea>';
+								echo 'Ingrese indicador A <textarea rows="4" class="form-control editable" id="A" placeholder=""></textarea>';
 							}
 							if ($B != "0" && $B != "") {
 								# code...
-								echo 'Ingrese indicador B <textarea rows="4" class="form-control" id="B" placeholder=""></textarea>';
+								echo 'Ingrese indicador B <textarea rows="4" class="form-control editable" id="B" placeholder=""></textarea>';
 							}
 							if ($C != "0" && $C != "") {
 								# code...
-								echo 'Ingrese indicador C <textarea rows="4"  class="form-control" id="C" placeholder=""></textarea>';
+								echo 'Ingrese indicador C <textarea rows="4"  class="form-control editable" id="C" placeholder=""></textarea>';
 							}
 							if ($D != "0" && $D != "") {
 								# code...
-								echo 'Ingrese indicador D <textarea rows="4"  class="form-control" id="D" placeholder=""></textarea>';
+								echo 'Ingrese indicador D <textarea rows="4"  class="form-control editable" id="D" placeholder=""></textarea>';
 							}
 							if ($E != "0" && $E != "") {
 								# code...
-								echo 'Ingrese indicador E <textarea rows="4"  class="form-control" id="E" placeholder=""></textarea>';
+								echo 'Ingrese indicador E <textarea rows="4"  class="form-control editable" id="E" placeholder=""></textarea>';
 							}
 							if ($F != "0" && $F != "") {
 								# code...
-								echo 'Ingrese indicador F <textarea rows="4"  class="form-control" id="F" placeholder=""></textarea>';
+								echo 'Ingrese indicador F <textarea rows="4"  class="form-control editable" id="F" placeholder=""></textarea>';
 							}
 
 							?>
@@ -129,7 +129,7 @@ $num = $num - 2;
 							</div>
 							<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 								<div class="form-group">
-									<button id="agregar" type="button" class="btn btn-primary btn-sm">
+									<button id="agregar" type="button" class="btn btn-primary btn-sm editable">
 										<i class="fa-solid fa-plus"></i>
 									</button>
 								</div>
@@ -160,15 +160,15 @@ $num = $num - 2;
 				'</div>' +
 				'</div>' +
 				'<div class="input-group mb-3">' +
-				'<textarea class="form-control M" rows="4" id="M' + contt + '"></textarea>' +
+				'<textarea class="form-control M editable" rows="4" id="M' + contt + '"></textarea>' +
 				'<div class="input-group-append" style="max-width: 30%;">' +
-				'<textarea class="form-control PM" id="M' + contt + '"></textarea>' +
+				'<textarea class="form-control PM" id="M editable' + contt + '"></textarea>' +
 				'</div>' +
 				'</div>' +
 				'</div>' +
 				'<div class="col-lg-1 col-sm-12 col-md-1 col-12 d-flex justify-content-end align-items-center">' +
 				'<div class="form-group">' +
-				'<button type="button" class="btn btn-danger btn-sm" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
+				'<button type="button" class="btn btn-danger btn-sm editable" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
 				'</div>' +
 				'</div>' +
 				'</div>' +
@@ -270,7 +270,7 @@ $num = $num - 2;
 				//alert("ok");
 				for (var i = 2; i < v[0].length; i = i + 3) {
 					if (v[0][i + 1] != "M") {
-						cadA = cadA + 'Ingrese indicador ' + v[0][i + 1] + ' <textarea rows="4" class="form-control" id="' + v[0][i + 1] + '" placeholder="">' + v[0][i] + '</textarea>';
+						cadA = cadA + 'Ingrese indicador ' + v[0][i + 1] + ' <textarea rows="4" class="form-control editable" id="' + v[0][i + 1] + '" placeholder="">' + v[0][i] + '</textarea>';
 					} else {
 						//cadM = cadM + '<div id="d' + contMin + '"><textarea id="M' + contMin + '" rows="4" class="col-lg-9 col-sm-9 col-md-9" class="M">' + v[0][i] + '</textarea><textarea id="M' + contMin + '" rows="4" class="col-lg-2 col-sm-2 col-md-2" class="PM">' + v[0][i + 2] + '</textarea><button type="button" class="btn btn-danger col-lg-1 col-sm-1 col-md-1" onclick="bot(' + contMin + ')">X</button></div>';
 
@@ -285,15 +285,15 @@ $num = $num - 2;
 							'</div>' +
 							'</div>' +
 							'<div class="input-group mb-3">' +
-							'<textarea class="form-control M" rows="4" id="M' + contMin + '">' + v[0][i] + '</textarea>' +
+							'<textarea class="form-control M editable" rows="4" id="M' + contMin + '">' + v[0][i] + '</textarea>' +
 							'<div class="input-group-append" style="max-width: 30%;">' +
-							'<textarea class="form-control PM" id="M' + contMin + '">' + v[0][i + 2] + '</textarea>' +
+							'<textarea class="form-control PM editable" id="M' + contMin + '">' + v[0][i + 2] + '</textarea>' +
 							'</div>' +
 							'</div>' +
 							'</div>' +
 							'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-12 d-flex justify-content-end align-items-center">' +
 							'<div class="form-group">' +
-							'<button type="button" class="btn btn-danger btn-sm" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
+							'<button type="button" class="btn btn-danger btn-sm editable" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
 							'</div>' +
 							'</div>' +
 							'</div>' +
@@ -309,6 +309,8 @@ $num = $num - 2;
 				$("#alcance")[0].innerHTML = cadA;
 
 			}
+
+			habilitarDeshabilitarCampos();
 		});
 	</script>
 

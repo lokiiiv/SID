@@ -24,7 +24,7 @@ $_SESSION["D"] = $D;
 $_SESSION["E"] = $E;
 $_SESSION["F"] = $F;
 $num = $num - 2;
-$INDALC = '<select  onchange="cambioInd(this)" class="form-control">';
+$INDALC = '<select  onchange="cambioInd(this)" class="form-control editable">';
 if ($A != "0" && $A != "") {
 	$INDALC = $INDALC . '<option value="A">A</option>';
 }
@@ -74,7 +74,7 @@ $INDALC = $INDALC . "</select>";
 				<div class="row" style="text-align: end;">
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="form-group">
-							<input type="button" id="ElegirExistente" class="btn btn-success " style="margin:0 auto;" value="Elegir de uno existente">
+							<input type="button" id="ElegirExistente" class="btn btn-success editable" style="margin:0 auto;" value="Elegir de uno existente">
 						</div>
 					</div>
 				</div>
@@ -82,22 +82,22 @@ $INDALC = $INDALC . "</select>";
 					<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 						<div class="form-group">
 							<label for="fa">Ingrese fecha de aplicación</label>
-							<input type="text" class="form-control" id="fa" placeholder="<?php $fecha = date('d/m/Y');
+							<input type="text" class="form-control editable" id="fa" placeholder="<?php $fecha = date('d/m/Y');
 																							echo $fecha; ?>">
 						</div>
 					</div>
 					<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 						<div class="form-group">
 							<label for="te">Ingrese tiempo de evaluación</label>
-							<input type="text" class="form-control" id="te" placeholder="1 hora; 30 minutos">
+							<input type="text" class="form-control editable" id="te" placeholder="1 hora; 30 minutos">
 						</div>
 					</div>
 				</div>
 				<div class="row" style="text-align: left;">
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="form-group">
-							<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-							<input type="button" id="leerexcel" class="btn btn-success " style="margin:0 auto;" value="Leer Excel">
+							<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6 editable">
+							<input type="button" id="leerexcel" class="btn btn-success editable" style="margin:0 auto;" value="Leer Excel">
 						</div>
 					</div>
 				</div>
@@ -111,7 +111,7 @@ $INDALC = $INDALC . "</select>";
 							</div>
 							<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 								<div class="form-group">
-									<button id="agregarcateguia" type="button" class="btn btn-primary btn-sm">
+									<button id="agregarcateguia" type="button" class="btn btn-primary btn-sm editable">
 										<i class="fa-solid fa-plus"></i>
 									</button>
 								</div>
@@ -158,7 +158,7 @@ $INDALC = $INDALC . "</select>";
 											'<div class="col-lg-9 col-sm-12 col-md-9 col-xs-12">' +
 												'<div class="form-group">' +
 													'<label>Aspecto a evaluar</label>' +
-													'<input class="form-control" type="text" placeholder="Ingrese el aspecto a evaluar">' +
+													'<input class="form-control editable" type="text" placeholder="Ingrese el aspecto a evaluar">' +
 												'</div>' +
 											'</div>' +
 											'<div class="col-lg-3 col-sm-12 col-md-3 col-xs-12">' +
@@ -170,30 +170,30 @@ $INDALC = $INDALC . "</select>";
 										'</div>' +
 										'<div class="row">' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Excelente<textarea onblur="nfoco(this)" onfocus="foco(this)" class="form-control" style="resize: none;"></textarea>' +
-												'<input type="number" placeholder="Valor" class="form-control">' +
+												'Excelente<textarea onblur="nfoco(this)" onfocus="foco(this)" class="form-control editable" style="resize: none;"></textarea>' +
+												'<input type="number" placeholder="Valor" class="form-control editable">' +
 											'</div>' + 
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Notable<textarea  onblur="nfoco(this)" onfocus="foco(this)" style="resize: none;" class="form-control"></textarea>' +
-												'<input  type="number"  placeholder="Valor"  class="form-control">' +
+												'Notable<textarea  onblur="nfoco(this)" onfocus="foco(this)" style="resize: none;" class="form-control editable"></textarea>' +
+												'<input  type="number"  placeholder="Valor"  class="form-control editable">' +
 											'</div>' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' + 
-												'Bueno<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control" style="resize: none;"></textarea>' +
-												'<input placeholder="Valor"   type="number" class="form-control">' +
+												'Bueno<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control editable" style="resize: none;"></textarea>' +
+												'<input placeholder="Valor"   type="number" class="form-control editable">' +
 											'</div>' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Suficiente<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control" style="resize: none;"></textarea>' +
-												'<input  placeholder="Valor" type="number" class="form-control">' +
+												'Suficiente<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control editable" style="resize: none;"></textarea>' +
+												'<input  placeholder="Valor" type="number" class="form-control editable">' +
 											'</div>' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Insuficiente<textarea  onblur="nfoco(this)" onfocus="foco(this)"  style="resize: none;" class="form-control"></textarea>' +
-												'<input placeholder="Valor" type="number" class="form-control">' +
+												'Insuficiente<textarea  onblur="nfoco(this)" onfocus="foco(this)"  style="resize: none;" class="form-control editable"></textarea>' +
+												'<input placeholder="Valor" type="number" class="form-control editable">' +
 											'</div>' +
 										'</div>' +
 									'</div>' +
 									'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-1 d-flex justify-content-end align-items-center">' +
 										'<div class="form-group pt-3">' +
-											'<button class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+											'<button class="btn btn-danger btn-sm editable" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
 										'</div>' +
 									'</div>' +
 								'</div>';
@@ -212,7 +212,7 @@ $INDALC = $INDALC . "</select>";
 			}
 
 			function agregarindicador(tag) {
-				var nindi = '<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control" type="text" placeholder="Digite el indicador"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control" type="number" placeholder="Valor"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><?php echo $INDALC; ?></div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger" onclick="quitaindicador(this)"><span class="glyphicon glyphicon-remove"></span></button></div></div>';
+				var nindi = '<div class="items row"><div class="col-md-7 col-xs-7 col-sm-7 col-lg-7"><input class="form-control editable" type="text" placeholder="Digite el indicador"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><input class="form-control editable" type="number" placeholder="Valor"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><?php echo $INDALC; ?></div><div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"><button class="btn btn-danger editable" onclick="quitaindicador(this)"><span class="glyphicon glyphicon-remove"></span></button></div></div>';
 				//alert(tag.parentNode.nextElementSibling.innerHTML);
 				var htmll = $.parseHTML(nindi);
 				//alert("ok");
@@ -401,7 +401,7 @@ $INDALC = $INDALC . "</select>";
 											'<div class="col-lg-9 col-sm-12 col-md-9 col-xs-12">' +
 												'<div class="form-group">' +
 													'<label>Aspecto a evaluar</label>' +
-													'<input class="form-control" type="text" placeholder="Ingrese el aspecto a evaluar" value="' + categoriag + '">' +
+													'<input class="form-control editable" type="text" placeholder="Ingrese el aspecto a evaluar" value="' + categoriag + '">' +
 												'</div>' +
 											'</div>' +
 											'<div class="col-lg-3 col-sm-12 col-md-3 col-xs-12">' +
@@ -413,30 +413,30 @@ $INDALC = $INDALC . "</select>";
 										'</div>' +
 										'<div class="row">' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Excelente<textarea onblur="nfoco(this)" onfocus="foco(this)" class="form-control" style="resize: none;">' + vvi[0] + '</textarea>' +
-												'<input type="number" placeholder="Valor" class="form-control" value="' + vvvi[0] + '">' +
+												'Excelente<textarea onblur="nfoco(this)" onfocus="foco(this)" class="form-control editable" style="resize: none;">' + vvi[0] + '</textarea>' +
+												'<input type="number" placeholder="Valor" class="form-control editable" value="' + vvvi[0] + '">' +
 											'</div>' + 
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Notable<textarea  onblur="nfoco(this)" onfocus="foco(this)" style="resize: none;" class="form-control">' + vvi[1] + '</textarea>' +
-												'<input  type="number"  placeholder="Valor"  class="form-control" value="' + vvvi[1] + '">' +
+												'Notable<textarea  onblur="nfoco(this)" onfocus="foco(this)" style="resize: none;" class="form-control editable">' + vvi[1] + '</textarea>' +
+												'<input  type="number"  placeholder="Valor"  class="form-control editable" value="' + vvvi[1] + '">' +
 											'</div>' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' + 
-												'Bueno<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control" style="resize: none;">' + vvi[2] + '</textarea>' +
-												'<input placeholder="Valor"   type="number" class="form-control" value="' + vvvi[2] + '">' +
+												'Bueno<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control editable" style="resize: none;">' + vvi[2] + '</textarea>' +
+												'<input placeholder="Valor"   type="number" class="form-control editable" value="' + vvvi[2] + '">' +
 											'</div>' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Suficiente<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control" style="resize: none;">' + vvi[3] + '</textarea>' +
-												'<input  placeholder="Valor" type="number" class="form-control" value="' + vvvi[3] + '">' +
+												'Suficiente<textarea onblur="nfoco(this)" onfocus="foco(this)"  class="form-control editable" style="resize: none;">' + vvi[3] + '</textarea>' +
+												'<input  placeholder="Valor" type="number" class="form-control editable" value="' + vvvi[3] + '">' +
 											'</div>' +
 											'<div class="col-md-4 col-xs-6 col-sm-4 col-lg-2">' +
-												'Insuficiente<textarea  onblur="nfoco(this)" onfocus="foco(this)"  style="resize: none;" class="form-control"> ' + vvi[4] + '</textarea>' +
-												'<input placeholder="Valor" type="number" class="form-control" value="' + vvvi[4] + '">' +
+												'Insuficiente<textarea  onblur="nfoco(this)" onfocus="foco(this)"  style="resize: none;" class="form-control editable"> ' + vvi[4] + '</textarea>' +
+												'<input placeholder="Valor" type="number" class="form-control editable" value="' + vvvi[4] + '">' +
 											'</div>' +
 										'</div>' +
 									'</div>' +
 									'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-1 d-flex justify-content-end align-items-center">' +
 										'<div class="form-group pt-3">' +
-											'<button class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+											'<button class="btn btn-danger btn-sm editable" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
 										'</div>' +
 									'</div>' +
 								'</div>';
@@ -454,11 +454,13 @@ $INDALC = $INDALC . "</select>";
 					//var texto = "";
 
 				}
+
+				habilitarDeshabilitarCampos();
 			});
 		</script>
 		<script>
 			function indicadoresselect(i) {
-				var textoind = '<select onchange="cambioInd(this)" class="form-control">';
+				var textoind = '<select onchange="cambioInd(this)" class="form-control editable">';
 				var ti = "";
 				<?php
 				if ($A != "0" && $A != "") {

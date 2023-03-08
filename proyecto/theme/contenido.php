@@ -3220,7 +3220,7 @@ require_once("../../valida.php");
             </div>
           </div>
           <div class="modal-footer">
-            <button id="ginstind" type="button" class="btn btn-success">Guardar</button>
+            <button id="ginstind" type="button" class="btn btn-success editable">Guardar</button>
             <button id="ver" type="button" class="btn btn-info">Ver instrumento en PDF</button>
           </div>
         </div>
@@ -3281,6 +3281,7 @@ require_once("../../valida.php");
             instrug: instrug
           }, function(res) {
             //alert(res);
+            habilitarDeshabilitarCampos();
 
           });
         } else if (instrumento == "Lista de cotejo") {
@@ -3304,6 +3305,7 @@ require_once("../../valida.php");
             instrug: instrug
           }, function(res) {
             //alert(res);
+            habilitarDeshabilitarCampos();
 
           });
         } else if (instrumento == "Cuestionario") {
@@ -3326,7 +3328,7 @@ require_once("../../valida.php");
             instrug: instrug
           }, function(res) {
             //alert(res);
-
+            habilitarDeshabilitarCampos();
           });
 
         } else if (instrumento == "Rúbrica") {
@@ -3349,7 +3351,7 @@ require_once("../../valida.php");
             instrug: instrug
           }, function(res) {
             //alert(res);
-
+            habilitarDeshabilitarCampos();
           });
 
         }

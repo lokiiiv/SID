@@ -23,7 +23,7 @@ $_SESSION["D"] = $D;
 $_SESSION["E"] = $E;
 $_SESSION["F"] = $F;
 $num = $num - 2;
-$INDALC = '<select  onchange="cambioInd(this)" class="form-control">';
+$INDALC = '<select  onchange="cambioInd(this)" class="form-control editable">';
 if ($A != "0" && $A != "") {
 	$INDALC = $INDALC . '<option value="A">A</option>';
 }
@@ -73,7 +73,7 @@ $INDALC = $INDALC . "</select>";
 					<div class="row" style="text-align: end">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="form-group">
-								<input type="button" id="ElegirExistente" class="btn btn-success " style="margin:0 auto;" value="Elegir de uno existente">
+								<input type="button" id="ElegirExistente" class="btn btn-success editable" style="margin:0 auto;" value="Elegir de uno existente">
 							</div>
 						</div>
 					</div>
@@ -81,22 +81,22 @@ $INDALC = $INDALC . "</select>";
 						<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 							<div class="form-group">
 								<label for="fa">Ingrese fecha de aplicación:</label>
-								<input type="text" class="form-control" id="fa" placeholder="<?php $fecha = date('d/m/Y');
+								<input type="text" class="form-control editable" id="fa" placeholder="<?php $fecha = date('d/m/Y');
 																								echo $fecha; ?>">
 							</div>
 						</div>
 						<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">
 							<div class="form-group">
 								<label for="te">Ingrese tiempo de evaluación:</label>
-								<input type="text" class="form-control" id="te" placeholder="1 hora; 30 minutos">
+								<input type="text" class="form-control editable" id="te" placeholder="1 hora; 30 minutos">
 							</div>
 						</div>
 					</div>
 					<div class="row" style="text-align: left;">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="form-group">
-								<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-								<input type="button" id="leerexcel" class="btn btn-success " style="margin:0 auto;" value="Leer Excel">
+								<input name="archivo" type="file" id="aex" class="col-md-6 col-xs-6 col-sm-6 col-lg-6 editable">
+								<input type="button" id="leerexcel" class="btn btn-success editable" style="margin:0 auto;" value="Leer Excel">
 							</div>
 						</div>
 					</div>
@@ -111,7 +111,7 @@ $INDALC = $INDALC . "</select>";
 								</div>
 								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 									<div class="form-group">
-										<button class="btn btn-primary btn-sm" id="agregarcateguia">
+										<button class="btn btn-primary btn-sm editable" id="agregarcateguia">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -138,13 +138,13 @@ $INDALC = $INDALC . "</select>";
 							'<div class="col-md-9 col-sm-9 col-lg-9 col-9">' +
 								'<div class="form-group" style="text-align: left;">' +
 									'<h6>Nueva categoría</h6>' +
-									'<input class="form-control" type="text" placeholder="Digite la categoría a observar">' +
+									'<input class="form-control editable" type="text" placeholder="Digite la categoría a observar">' +
 								'</div>' +
 							'</div>' + 
 							'<div class="col-md-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-end align-items-center">' +
 								'<div class="btn-group mt-2" role="group" aria-label="Basic example">' +
-									'<button type="button" class="btn btn-success btn-sm" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button>' +
-									'<button type="button" class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+									'<button type="button" class="btn btn-success btn-sm editable" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button>' +
+									'<button type="button" class="btn btn-danger btn-sm editable" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
 									'</div>' +
 							'</div>' + 
 						'</div>';
@@ -164,12 +164,12 @@ $INDALC = $INDALC . "</select>";
 							'<div class="items row" style="margin-left: 10px;">' + 
 								'<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">'+
 									'<div class="form-group">' +
-										'<input class="form-control" type="text" placeholder="Digite el indicador">' + 
+										'<input class="form-control editable" type="text" placeholder="Digite el indicador">' + 
 									'</div>' +
 								'</div>' +
 								'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2">'+
 									'<div class="form-group">' +
-										'<input class="form-control" type="number" placeholder="Valor">' +
+										'<input class="form-control editable" type="number" placeholder="Valor">' +
 									'</div>' +
 								'</div>' +
 								'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2">'+
@@ -179,7 +179,7 @@ $INDALC = $INDALC . "</select>";
 								'</div>' +
 								'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-end align-items-center">' + 
 									'<div class="form-group">' + 
-										'<button class="btn btn-danger btn-sm" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
+										'<button class="btn btn-danger btn-sm editable" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
 									'</div>' +	
 								'</div>' +
 							'</div>'+
@@ -279,7 +279,7 @@ $INDALC = $INDALC . "</select>";
 					alertify.error("Ya no puedes elegir indicador " + va.value);
 					va.value = "";
 				} else {
-					va.parentNode.parentNode.querySelectorAll("input[type='number']")[0].value = val;
+					va.closest(".items").querySelectorAll("input[type='number']")[0].value = val;
 				}
 
 			}
@@ -346,12 +346,12 @@ $INDALC = $INDALC . "</select>";
 											'<div class="items row" style="margin-left: 10px;">' +
 												'<div class="col-md-6 col-xs-6 col-sm-12 col-lg-6">' +
 													'<div class="form-group">' +
-														'<input class="form-control" type="text" placeholder="Digite el indicador" value="' +  tex + '">' + 
+														'<input class="form-control editable" type="text" placeholder="Digite el indicador" value="' +  tex + '">' + 
 													'</div>' +
 												'</div>' +
 												'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2">'+
 													'<div class="form-group">' +
-														'<input class="form-control" type="number" placeholder="Valor" value="' + val + '">' +
+														'<input class="form-control editable" type="number" placeholder="Valor" value="' + val + '">' +
 													'</div>' +
 												'</div>' +
 												'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2">'+
@@ -361,7 +361,7 @@ $INDALC = $INDALC . "</select>";
 												'</div>' +
 												'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-end align-items-center">' + 
 													'<div class="form-group">' + 
-														'<button class="btn btn-danger btn-sm" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
+														'<button class="btn btn-danger btn-sm editable" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
 													'</div>' +	
 												'</div>' +
 											'</div>' +
@@ -374,13 +374,13 @@ $INDALC = $INDALC . "</select>";
 										'<div class="col-md-9 col-sm-9 col-lg-9 col-9">' +
 											'<div class="form-group" style="text-align: left;">' +
 												'<h6>Nueva categoría</h6>' +
-												'<input class="form-control" type="text" placeholder="Digite la categoría a observar" value="' + general + '">' +
+												'<input class="form-control editable" type="text" placeholder="Digite la categoría a observar" value="' + general + '">' +
 											'</div>' +
 										'</div>' + 
 										'<div class="col-md-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-end align-items-center">' +
 											'<div class="btn-group mt-2" role="group" aria-label="Basic example">' +
-												'<button type="button" class="btn btn-success btn-sm" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button>' +
-												'<button type="button" class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+												'<button type="button" class="btn btn-success btn-sm editable" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button>' +
+												'<button type="button" class="btn btn-danger btn-sm editable" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
 											'</div>' +
 										'</div>' + 
 										nindi +
@@ -391,12 +391,14 @@ $INDALC = $INDALC . "</select>";
 
 				var texto = "";
 
+				habilitarDeshabilitarCampos();
+
 			}
 		});
 	</script>
 	<script>
 		function indicadoresselect(i) {
-			var textoind = '<select onchange="cambioInd(this)" class="form-control">';
+			var textoind = '<select onchange="cambioInd(this)" class="form-control editable">';
 			var ti = "";
 			<?php
 			if ($A != "0" && $A != "") {
