@@ -3459,6 +3459,7 @@ require_once("../../valida.php");
               boton.attr("data-materia", res.data.ret_NomCompleto);
               boton.attr("data-presidente", res.data.nombre);
               boton.attr("data-idpresidente", res.data.cat_ID);
+              boton.attr("data-correopresidente", res.data.cat_CorreoE);
               habilitarDeshabilitarCampos();
 
             } else {

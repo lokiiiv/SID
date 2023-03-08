@@ -1058,7 +1058,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
         case 'obtenerPresidenteDeGrupoAcademico':
             if (isset($_POST["grupo"])) {
                 $grupoins = substr($_POST["grupo"], 0, 3);
-                $sql = "SELECT cr.ret_ID, cr.ret_Clave, cr.ret_NomCompleto, ga.id_grupoacademico, ga.nombre, d.cat_ID, CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre
+                $sql = "SELECT cr.ret_ID, cr.ret_Clave, cr.ret_NomCompleto, ga.id_grupoacademico, ga.nombre, d.cat_ID, CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre, d.cat_CorreoE
                         FROM cereticula cr
                         INNER JOIN gruposacademicos ga ON cr.id_grupoacademico = ga.id_grupoacademico
                         INNER JOIN docentes d ON ga.cat_ID = d.cat_ID
