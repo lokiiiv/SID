@@ -68,7 +68,7 @@ $num = $num - 2;
 
 <body>
 
-	<div class="container" style="width: 100%;">
+	<div class="container-fluid">
 		<!–– primer encabezado ––>
 			<div class="row">
 				<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -102,17 +102,17 @@ $num = $num - 2;
 							</div>
 						</div>
 					</div>
-					<div class="row mt-4" style="text-align: left;">
+					<div class="row mt-4">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="row">
-								<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
+								<div class="col-md-10 col-sm-10 col-lg-10 col-10">
 									<div class="form-group">
-										<h3>Preguntas de relacionar</h3>
+										<h5>Preguntas de relacionar</h5>
 									</div>
 								</div>
-								<div class="col-md-1 col-xs-1 col-sm-11 col-lg-1  d-flex justify-content-center align-items-center">
+								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 									<div class="form-group">
-										<button id="agregar" type="button" class="btn btn-primary">
+										<button id="agregar" type="button" class="btn btn-primary btn-sm">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -130,22 +130,22 @@ $num = $num - 2;
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 									<div class="form-group">
-										<h3>Preguntas de subrayar</h3>
+										<h5>Preguntas de subrayar</h5>
 									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
+								<div class="col-md-10 col-sm-10 col-lg-10 col-10">
 									<form class="form-inline">
-										<div class="form-group mb-2">
+										<div class="form-group">
 											<label for="mps" class="mr-3">Ingrese el número máximo de respuestas: </label>
-											<input id="mps" type="number" class="form-control" min="2" max="6">
+											<input id="mps" type="number" class="form-control form-control-sm" min="2" max="6">
 										</div>
 									</form>
 								</div>
-								<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 d-flex justify-content-center align-items-center">
+								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-end">
 									<div class="form-group">
-										<button id="agregar2" type="button" class="btn btn-primary">
+										<button id="agregar2" type="button" class="btn btn-primary btn-sm">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -160,14 +160,14 @@ $num = $num - 2;
 					<div class="row mt-4" style="text-align: left;">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="row">
-								<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
+								<div class="col-md-10 col-sm-10 col-lg-10 col-10">
 									<div class="form-group">
-										<h3>Preguntas de verdadero-falso</h3>
+										<h5>Preguntas de verdadero-falso</h5>
 									</div>
 								</div>
-								<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 d-flex justify-content-center align-items-center">
+								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 									<div class="form-group">
-										<button id="agregar3" type="button" class="btn btn-primary">
+										<button id="agregar3" type="button" class="btn btn-primary btn-sm">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -206,7 +206,7 @@ $num = $num - 2;
 			</script>
 			<script>
 				$("#agregar").click(function() {
-					var botoncerrar = '<button type="button" class="btn btn-danger float-right" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
+					var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
 					var texto2 = '<?php echo $INDALC; ?>';
 					var texto = '<div class="col-lg-4 col-sm-12 col-md-6">' +
 									'<div class="form-group" style="text-align: start;"> ' +
@@ -246,7 +246,7 @@ $num = $num - 2;
 							cal = 2;
 						}
 						$("#mps")[0].disabled = true;
-						var botoncerrar = '<button type="button" class="btn btn-danger" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
+						var botoncerrar = '<button type="button" class="btn btn-danger btn-sm" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
 						for (var i = 0; i < n; i++) {
 							texto3 = texto3 + '<div class="input-group mb-3"><div class="input-group-prepend"><div class="input-group-text"><input type="checkbox"></div></div><input placeholder="Respuesta ' + (i + 1) + '" class="form-control" type="text"></div>';
 						}
@@ -268,7 +268,7 @@ $num = $num - 2;
 							'</div>' +
 							'</div>' +
 							'<div class="row">' +
-							'<div class="col-lg-11 col-sm-11 col-md-12">' +
+							'<div class="col-lg-10 col-sm-10 col-md-10 col-12">' +
 							'<div class="form-group">' +
 							'<input placeholder="Ingrese la pregunta" class="form-control">' +
 							'</div>' +
@@ -280,7 +280,7 @@ $num = $num - 2;
 							'</div>' +
 							texto3 +
 							'</div>' +
-							'<div class="col-lg-1 col-sm-1 col-md-12 d-flex justify-content-center align-items-center">' +
+							'<div class="col-lg-2 col-sm-2 col-md-2 col-12 d-flex justify-content-end align-items-center">' +
 							botoncerrar +
 							'</div>' +
 							'</div>' +
@@ -292,7 +292,7 @@ $num = $num - 2;
 
 
 				$("#agregar3").click(function() {
-					var botoncerrar = '<button type="button" class="btn btn-danger float-right" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
+					var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
 					var fv = '<select class="form-control"><option selected>V</option><option>F</option></select>';
 					var texto2 = '<?php echo $INDALC; ?>';
 					var texto = '<div class="col-lg-4 col-sm-4 col-md-6 mb-4">' +
@@ -408,7 +408,7 @@ $num = $num - 2;
 							var r = prel2[1];
 							var v2 = prel2[2];
 							var i = prel2[3];
-							var botoncerrar = '<button type="button" class="btn btn-danger float-right" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
+							var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecr(this)"><i class="fa-solid fa-trash"></i></button>';
 							var textoind = indicadoresselect(i);
 							var texto2 = textoind;
 							//var texto = '<div class="form-group"><div class="col-lg-4 col-sm-4 col-md-4"><input title="' + p + '" class="form-control" value="' + p + '"></div><div class="col-lg-3 col-sm-3 col-md-3"><input  onkeyup="funckp(event,this)" class="form-control"  value="' + r + '"></div><div class="col-lg-2 col-sm-2 col-md-2"><input  class="form-control" type="number" value="' + v2 + '"></div><div class="col-lg-2 col-sm-2 col-md-2">' + texto2 + '</div>' + botoncerrar + '</div>';
@@ -468,7 +468,7 @@ $num = $num - 2;
 								cal = 2;
 							}
 							$("#mps")[0].disabled = true;
-							var botoncerrar = '<button type="button" class="btn btn-danger" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
+							var botoncerrar = '<button type="button" class="btn btn-danger btn-sm" onclick="botonecs(this)"><i class="fa-solid fa-trash"></i></button>';
 
 
 							for (var j = 2; j < pregs.length - 1; j += 2) {
@@ -505,7 +505,7 @@ $num = $num - 2;
 											'</div>' +
 										'</div>' +
 										'<div class="row">' +
-											'<div class="col-lg-11 col-sm-11 col-md-12">' +
+											'<div class="col-lg-10 col-sm-10 col-md-10 col-12">' +
 												'<div class="form-group">' + 
 												 	'<input title="' + pr + '" placeholder="Ingrese la pregunta" class="form-control" value="' + pr + '">' +
 												'</div>' +
@@ -517,7 +517,7 @@ $num = $num - 2;
 												'</div>' +
 												texto3 +
 											'</div>' +
-											'<div class="col-lg-1 col-sm-1 col-md-12 d-flex justify-content-center align-items-center">' +
+											'<div class="col-lg-2 col-sm-2 col-md-2 col-12 d-flex justify-content-center justify-content-sm-end justify-content-md-end justify-content-lg-end align-items-center">' +
 												botoncerrar +
 											'</div>' +
 										'</div>' +
@@ -541,7 +541,7 @@ $num = $num - 2;
 							var i = prel2[3];
 							var fv = falsoverdaderopreg(vf);
 							var textoind = indicadoresselect(i);
-							var botoncerrar = '<button type="button" class="btn btn-danger float-right" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
+							var botoncerrar = '<button type="button" class="btn btn-danger float-right btn-sm" onclick="botonecfv(this)"><i class="fa-solid fa-trash"></i></button>';
 
 							var texto2 = textoind;
 							//var texto = '<div class="form-group"><div class="col-lg-4 col-sm-4 col-md-4"><input class="form-control"  title="' + p + '" value="' + p + '"></div><div class="col-lg-3 col-sm-3 col-md-3">' + fv + '</div><div class="col-lg-2 col-sm-2 col-md-2"><input  type="number"  class="form-control"  value="' + pfv + '"></div><div class="col-lg-2 col-sm-2 col-md-2">' + texto2 + '</div>' + botoncerrar + '</div>';
@@ -632,7 +632,7 @@ $num = $num - 2;
 						}
 					}
 					if (contselA > 1 || contselB > 1 || contselC > 1 || contselD > 1 || contselE > 1 || contselF > 1) {
-						alertify.error("Ya no puedes elegir indicador " + va.value);
+						alertify.error("<h3 style='color: white;'>Ya no puedes elegir indicador " + va.value + "</h3>");
 						va.value = "";
 					} else {
 						//alert(val);

@@ -81,6 +81,11 @@ $num = $num - 2;
 				</div>
 
 				<div class="row mt-4" style="text-align: left;">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
+						<div class="form-group">
+							<h5>Indicadores de alcance</h5>
+						</div>
+					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="form-group" id="alcance">
 							<?php
@@ -117,14 +122,14 @@ $num = $num - 2;
 				<div class="row" style="text-align: left;">
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="row">
-							<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
+							<div class="col-md-10 col-sm-10 col-lg-10 col-10">
 								<div class="form-group">
-									<h3>Indicadores minímos</h3>
+									<h5>Indicadores minímos</h5>
 								</div>
 							</div>
-							<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1  d-flex justify-content-center align-items-center">
+							<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 								<div class="form-group">
-									<button id="agregar" type="button" class="btn btn-primary">
+									<button id="agregar" type="button" class="btn btn-primary btn-sm">
 										<i class="fa-solid fa-plus"></i>
 									</button>
 								</div>
@@ -146,28 +151,28 @@ $num = $num - 2;
 			cont++;
 
 			var textoHTML = '<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 conte-indic-min" id="d' + cont + '">' +
-								'<div class="row">' +
-									'<div class="col-lg-11 col-sm-12 col-md-11 col-xs-11">' +
-										'<div class="row" style="text-align: start;">' +
-											'<div class="col">' +
-												'<label style="width: 70%;">Ingrese indicador</label>' +
-												'<label style="width: 30%;">Puntaje</label>' +
-											'</div>' +
-										'</div>' +
-										'<div class="input-group mb-5">' +
-											'<textarea class="form-control M" rows="4" id="M' + contt + '"></textarea>' + 
-											'<div class="input-group-append" style="max-width: 30%;">' + 
-												'<textarea class="form-control PM" id="M' + contt + '"></textarea>' +
-											'</div>' +
-										'</div>' +  
-									'</div>' +
-									'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-12 d-flex justify-content-center align-items-center">' +
-										'<div class="form-group">' +
-											'<button type="button" class="btn btn-danger" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
-										'</div>' +
-									'</div>' +
-								'</div>' +
-							'</div>';
+				'<div class="row">' +
+				'<div class="col-lg-11 col-sm-12 col-md-11 col-12">' +
+				'<div class="row" style="text-align: start;">' +
+				'<div class="col">' +
+				'<label style="width: 70%;">Ingrese indicador</label>' +
+				'<label style="width: 30%;">Puntaje</label>' +
+				'</div>' +
+				'</div>' +
+				'<div class="input-group mb-3">' +
+				'<textarea class="form-control M" rows="4" id="M' + contt + '"></textarea>' +
+				'<div class="input-group-append" style="max-width: 30%;">' +
+				'<textarea class="form-control PM" id="M' + contt + '"></textarea>' +
+				'</div>' +
+				'</div>' +
+				'</div>' +
+				'<div class="col-lg-1 col-sm-12 col-md-1 col-12 d-flex justify-content-end align-items-center">' +
+				'<div class="form-group">' +
+				'<button type="button" class="btn btn-danger btn-sm" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
+				'</div>' +
+				'</div>' +
+				'</div>' +
+				'</div>';
 
 			//a$("#minimos").append('<div id="d' + contt + '"><textarea id="M' + contt + '" rows="4" class="col-lg-9 col-sm-9 col-md-9 M"></textarea><textarea id="M' + contt + '" rows="4" class="col-lg-2 col-sm-2 col-md-2" class="PM"></textarea><button type="button" class="btn btn-danger col-lg-1 col-sm-1 col-md-1" onclick="bot(' + contt + ')">X</button><div>');
 
@@ -268,33 +273,33 @@ $num = $num - 2;
 						cadA = cadA + 'Ingrese indicador ' + v[0][i + 1] + ' <textarea rows="4" class="form-control" id="' + v[0][i + 1] + '" placeholder="">' + v[0][i] + '</textarea>';
 					} else {
 						//cadM = cadM + '<div id="d' + contMin + '"><textarea id="M' + contMin + '" rows="4" class="col-lg-9 col-sm-9 col-md-9" class="M">' + v[0][i] + '</textarea><textarea id="M' + contMin + '" rows="4" class="col-lg-2 col-sm-2 col-md-2" class="PM">' + v[0][i + 2] + '</textarea><button type="button" class="btn btn-danger col-lg-1 col-sm-1 col-md-1" onclick="bot(' + contMin + ')">X</button></div>';
-						
+
 
 						cadM = cadM + '<div class="col-md-12 col-xs-12 col-ms-12 col-lg-12 conte-indic-min" id="d' + contMin + '">' +
-										'<div class="row">' +
-											'<div class="col-lg-11 col-sm-12 col-md-11 col-xs-11">' +
-												'<div class="row" style="text-align: start;">' +
-													'<div class="col">' +
-														'<label style="width: 70%;">Ingrese indicador</label>' +
-														'<label style="width: 30%;">Puntaje</label>' +
-													'</div>' +
-												'</div>' +
-												'<div class="input-group mb-5">' +
-													'<textarea class="form-control M" rows="4" id="M' + contMin + '">' + v[0][i] + '</textarea>' + 
-													'<div class="input-group-append" style="max-width: 30%;">' + 
-														'<textarea class="form-control PM" id="M' + contMin + '">' + v[0][i + 2] + '</textarea>' +
-													'</div>' +
-												'</div>' +  
-											'</div>' +
-											'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-12 d-flex justify-content-center align-items-center">' +
-												'<div class="form-group">' +
-													'<button type="button" class="btn btn-danger" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
-												'</div>' +
-											'</div>' +
-										'</div>' +
-									  '</div>';
-									  
-						 contMin++;
+							'<div class="row">' +
+							'<div class="col-lg-11 col-sm-12 col-md-11 col-xs-11">' +
+							'<div class="row" style="text-align: start;">' +
+							'<div class="col">' +
+							'<label style="width: 70%;">Ingrese indicador</label>' +
+							'<label style="width: 30%;">Puntaje</label>' +
+							'</div>' +
+							'</div>' +
+							'<div class="input-group mb-3">' +
+							'<textarea class="form-control M" rows="4" id="M' + contMin + '">' + v[0][i] + '</textarea>' +
+							'<div class="input-group-append" style="max-width: 30%;">' +
+							'<textarea class="form-control PM" id="M' + contMin + '">' + v[0][i + 2] + '</textarea>' +
+							'</div>' +
+							'</div>' +
+							'</div>' +
+							'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-12 d-flex justify-content-end align-items-center">' +
+							'<div class="form-group">' +
+							'<button type="button" class="btn btn-danger btn-sm" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
+							'</div>' +
+							'</div>' +
+							'</div>' +
+							'</div>';
+
+						contMin++;
 					}
 				}
 				cont = contMin;

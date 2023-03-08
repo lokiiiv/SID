@@ -104,14 +104,14 @@ $INDALC = $INDALC . "</select>";
 				<div class="row" style="text-align: left;">
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="row">
-							<div class="col-md-11 col-xs-11 col-sm-11 col-lg-11">
+							<div class="col-md-10 col-sm-10 col-lg-10 col-10">
 								<div class="form-group">
-									<h3>Categoría o aspecto a evaluar</h3>
+									<h5>Categoría o aspecto a evaluar</h5>
 								</div>
 							</div>
-							<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1  d-flex justify-content-center align-items-center">
+							<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 								<div class="form-group">
-									<button id="agregarcateguia" type="button" class="btn btn-primary">
+									<button id="agregarcateguia" type="button" class="btn btn-primary btn-sm">
 										<i class="fa-solid fa-plus"></i>
 									</button>
 								</div>
@@ -151,7 +151,7 @@ $INDALC = $INDALC . "</select>";
 				//$("#contenedor").append(ncate);
 
 				
-				var texto = '<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 mb-5 conte-aspecto">' +
+				var texto = '<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 mb-4 conte-aspecto">' +
 								'<div class="row">' +
 									'<div class="col-lg-11 col-sm-12 col-md-11 col-xs-11">' +
 										'<div class="row" style="text-align: start;">' +
@@ -191,9 +191,9 @@ $INDALC = $INDALC . "</select>";
 											'</div>' +
 										'</div>' +
 									'</div>' +
-									'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-1 d-flex justify-content-center align-items-center">' +
+									'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-1 d-flex justify-content-end align-items-center">' +
 										'<div class="form-group pt-3">' +
-											'<button class="btn btn-danger" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+											'<button class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
 										'</div>' +
 									'</div>' +
 								'</div>';
@@ -394,7 +394,7 @@ $INDALC = $INDALC . "</select>";
 						//ncate = ncate + nate;
 
 
-						var texto = '<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 mb-5 conte-aspecto">' +
+						var texto = '<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 mb-4 conte-aspecto">' +
 								'<div class="row">' +
 									'<div class="col-lg-11 col-sm-12 col-md-11 col-xs-11">' +
 										'<div class="row" style="text-align: start;">' +
@@ -434,9 +434,9 @@ $INDALC = $INDALC . "</select>";
 											'</div>' +
 										'</div>' +
 									'</div>' +
-									'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-1 d-flex justify-content-center align-items-center">' +
+									'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-1 d-flex justify-content-end align-items-center">' +
 										'<div class="form-group pt-3">' +
-											'<button class="btn btn-danger" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+											'<button class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
 										'</div>' +
 									'</div>' +
 								'</div>';

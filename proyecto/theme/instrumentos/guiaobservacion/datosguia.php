@@ -104,14 +104,14 @@ $INDALC = $INDALC . "</select>";
 					<div class="row mt-4" style="text-align: left;">
 						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 							<div class="row">
-								<div class="col-md-10 col-xs-10 col-sm-12 col-lg-10">
+								<div class="col-md-10 col-sm-10 col-lg-10 col-10">
 									<div class="form-group">
-										<h3>Con el siguiente boton agregará las categorías, y después tendrá que agregar indicadores a cada categoría.</h3>
+										<h5>Con el siguiente boton agregará las categorías, y después tendrá que agregar indicadores a cada categoría.</h5>
 									</div>
 								</div>
-								<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2  d-flex justify-content-center align-items-center">
+								<div class="col-md-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-end align-items-center">
 									<div class="form-group">
-										<button class="btn btn-primary" id="agregarcateguia">
+										<button class="btn btn-primary btn-sm" id="agregarcateguia">
 											<i class="fa-solid fa-plus"></i>
 										</button>
 									</div>
@@ -135,16 +135,17 @@ $INDALC = $INDALC . "</select>";
 			//alert("ok");
 			//var ncate = '<div class="categ row"><br><h5>Nueva categoría</h5><div class="col-md-10 col-xs-10 col-sm-10 col-lg-10"><input class="form-control" type="text" placeholder="Digite la categoría a observar"></div><div class="col-md-2 col-xs-2 col-sm-2 col-lg-2"><button class="btn btn-success" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button><button class="btn btn-danger" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button></div><div class="col-md-12 col-xs-12 col-sm-12 col-lg-12"> </div></div>';
 			var ncate = '<div class="categ row">' +
-							'<div class="col-md-10 col-xs-10 col-sm-12 col-lg-10">' +
+							'<div class="col-md-9 col-sm-9 col-lg-9 col-9">' +
 								'<div class="form-group" style="text-align: left;">' +
-									'<h5>Nueva categoría</h5>' +
+									'<h6>Nueva categoría</h6>' +
 									'<input class="form-control" type="text" placeholder="Digite la categoría a observar">' +
 								'</div>' +
 							'</div>' + 
-							'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-center align-items-center">' +
-								'<div class="form-group">' + 
-									'<button class="btn btn-success" onclick="agregarindicador(this)" style="margin: 0px 2px 0px 2px;"><i class="fa-solid fa-plus"></i></button><button class="btn btn-danger" onclick="quitacategoria(this)" style="margin: 0px 2px 0px 2px;"><i class="fa-solid fa-trash"></i></button>' +
-								'</div>' + 
+							'<div class="col-md-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-end align-items-center">' +
+								'<div class="btn-group mt-2" role="group" aria-label="Basic example">' +
+									'<button type="button" class="btn btn-success btn-sm" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button>' +
+									'<button type="button" class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+									'</div>' +
 							'</div>' + 
 						'</div>';
 			$("#contenedor").append(ncate);
@@ -176,9 +177,9 @@ $INDALC = $INDALC . "</select>";
 										'<?php echo $INDALC; ?>' + 
 									'</div>' +
 								'</div>' +
-								'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-center align-items-center">' + 
+								'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-end align-items-center">' + 
 									'<div class="form-group">' + 
-										'<button class="btn btn-danger" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
+										'<button class="btn btn-danger btn-sm" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
 									'</div>' +	
 								'</div>' +
 							'</div>'+
@@ -358,9 +359,9 @@ $INDALC = $INDALC . "</select>";
 														indi + 
 													'</div>' +
 												'</div>' +
-												'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-center align-items-center">' + 
+												'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-end align-items-center">' + 
 													'<div class="form-group">' + 
-														'<button class="btn btn-danger" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
+														'<button class="btn btn-danger btn-sm" onclick="quitaindicador(this)"><i class="fa-solid fa-trash"></i></button>' +
 													'</div>' +	
 												'</div>' +
 											'</div>' +
@@ -370,16 +371,17 @@ $INDALC = $INDALC . "</select>";
 					//ncate = ncate  + nindi + '</div></div>';
 					
 					ncate = ncate + '<div class="categ row">' +
-										'<div class="col-md-10 col-xs-10 col-sm-12 col-lg-10">' +
+										'<div class="col-md-9 col-sm-9 col-lg-9 col-9">' +
 											'<div class="form-group" style="text-align: left;">' +
-												'<h5>Nueva categoría</h5>' +
+												'<h6>Nueva categoría</h6>' +
 												'<input class="form-control" type="text" placeholder="Digite la categoría a observar" value="' + general + '">' +
 											'</div>' +
 										'</div>' + 
-										'<div class="col-md-2 col-xs-2 col-sm-12 col-lg-2 d-flex justify-content-center align-items-center">' +
-											'<div class="form-group">' + 
-												'<button class="btn btn-success" onclick="agregarindicador(this)" style="margin: 0px 2px 0px 2px;"><i class="fa-solid fa-plus"></i></button><button class="btn btn-danger" onclick="quitacategoria(this)" style="margin: 0px 2px 0px 2px;"><i class="fa-solid fa-trash"></i></button>' +
-											'</div>' + 
+										'<div class="col-md-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-end align-items-center">' +
+											'<div class="btn-group mt-2" role="group" aria-label="Basic example">' +
+												'<button type="button" class="btn btn-success btn-sm" onclick="agregarindicador(this)"><i class="fa-solid fa-plus"></i></button>' +
+												'<button type="button" class="btn btn-danger btn-sm" onclick="quitacategoria(this)"><i class="fa-solid fa-trash"></i></button>' +
+											'</div>' +
 										'</div>' + 
 										nindi +
 									'</div>';

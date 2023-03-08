@@ -2098,7 +2098,7 @@ require_once("../../valida.php");
                               if (typeof filaEvidencia[8] != 'undefined') {
 
 
-                                instrumento.innerHTML = instrumento.innerHTML + '<button  type="button" class="ediInstruH btn btn-primary btn-sm editable" data-toggle="modal" data-target="#exampleModal" onclick="abreinstrumento(' + continstru + ');"><i class="fa-solid fa-pen-to-square"></i></button>' + botonborrarevi + '<input value="' + filaEvidencia[12] + '" style="display:none"/>';
+                                instrumento.innerHTML = instrumento.innerHTML + '<button  type="button" class="ediInstruH btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="abreinstrumento(' + continstru + ');"><i class="fa-solid fa-pen-to-square"></i></button>' + botonborrarevi + '<input value="' + filaEvidencia[12] + '" style="display:none"/>';
 
                                 //alert("kkkkk");
                               }
