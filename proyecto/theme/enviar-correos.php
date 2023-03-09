@@ -8,64 +8,55 @@ require_once './../../valida.php';
 require './../../vendor/autoload.php';
 
 try {
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->SMTPDebug = 
+    if (isset($_POST['accionCorreo']) && !empty($_POST['accionCorreo'])) {
+        $accion = $_POST['accionCorreo'];
+        $para = $_POST['presidenteCorreo'];
+        $nombrePresidente = $_POST['presidenteNombre'];
+        $asignatura = $_POST['asignatura'];
+        $grupo = $_POST['grupo'];
+        $asunto = "";
+        $contenido = "";
 
-    //Set the hostname of the mail server
-    $mail->Host = 'smtp.gmail.com';
-    $mail->Port = 465; // o 587
+        //Preparar el envio del correo electronico
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 465;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->SMTPAuth = true;
+        //Credenciales de la cuenta origen
+        $email = 'programador_isc@itesa.edu.mx';
+        $mail->Username = $email;
+        $mail->Password = '9641GDH2023';
+        $mail->setFrom($email, 'Instrumentaciones didácticas ITESA.');
 
-    // Propiedad para establecer la seguridad de encripción de la comunicación
-    $mail->SMTPSecure    = PHPMailer::ENCRYPTION_SMTPS; // tls o ssl para gmail obligado
+        //Destinatario
+        $mail->addAddress($para, $nombrePresidente);
 
-    // Para activar la autenticación smtp del servidor
-    $mail->SMTPAuth      = true;
-
-    // Credenciales de la cuenta
-    $email = 'programador_isc@itesa.edu.mx';
-    $mail->Username     = $email;
-    $mail->Password     = '9641GDH2023';
-
-    // Quien envía este mensaje
-    $mail->setFrom($email, 'Instrumentaciones didácticas ITESA');
-
-
-    // Destinatario
-    $mail->addAddress('18030290@itesa.edu.mx');
-    // Asunto del correo
-    $mail->Subject = 'Prueba';
-
-    // Contenido
-    $mail->IsHTML(true);
-    $mail->CharSet = 'UTF-8';
-    $mail->Body    = sprintf('<h1>El mensaje es:</h1><br><p>%s</p>', 'Contenido de prueba');
- 
-    // Texto alternativo
-    $mail->AltBody = 'No olvides suscribirte a nuestro canal.';
-
-    // Agregar algún adjunto
-    //$mail->addAttachment(IMAGES_PATH.'logo.png');
- 
-    // Enviar el correo
-    if (!$mail->send()) 
-      throw new Exception($mail->ErrorInfo);
-    echo 'Correo enviado con exito';
-
-    /* if (isset($_POST['accionCorreo'])  && !empty($_POST['accionCorreo'])) {
-        $action = $_POST['accionCorreo'];
-        switch ($action) {
+        //Generar el asunto y contenido del correo conforme a la accion requerida
+        switch($accion) {
             case 'validaPresidente':
-                break;
-            case '':
+                //Asunto y contenido del correo cuando es para avisar de que el presidente de grupo academico debe validar instrumentacion
+                $asunto = "Validación de instrumentación didáctica - Presidente de grupo académico";
+                $contenido = "<h3>La instrumentación didáctica de la asignatura de <b>" . $asignatura . "</b> del grupo/grupos <b>" . $grupo . "</b> ha sido generada y enviada por <b>" . $nombrePresidente . "</b> para su respectiva validación.<br><br>Por favor ingrese a la página del sistema de instrumentaciones didácticas y revise la instrumentación para validarla o cancelarla si es necesario.</h3>";
                 break;
             case '':
                 break;
         }
-    } */
+
+        $mail->Subject = $asunto;
+        $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->Body = $contenido;
+
+        if(!$mail->send())
+            throw new Exception($mail->ErrorInfo);
+        echo json_encode(['success' => true, 'mensaje' => 'El presidente de grupo academico de la asignatura ha sido notificado.']);
+
+    }
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+    echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
 }
 
 ?>

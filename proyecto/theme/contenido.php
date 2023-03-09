@@ -3457,6 +3457,7 @@ require_once("../../valida.php");
               $("#textGuardar").text("");
 
               boton.attr("data-materia", res.data.ret_NomCompleto);
+              boton.attr("data-grupo", grupo);
               boton.attr("data-presidente", res.data.nombre);
               boton.attr("data-idpresidente", res.data.cat_ID);
               boton.attr("data-correopresidente", res.data.cat_CorreoE);
@@ -3490,7 +3491,9 @@ require_once("../../valida.php");
       $("#btnGuardarInstru").on("click", function() {
 
         var materia = $(this).attr("data-materia");
-        var presidente = $(this).attr("data-presidente");
+        var presidente = '<?php echo $_SESSION["nombreCompleto"]; ?>';
+        var presidenteCorreo = $(this).attr('data-correopresidente');
+        var grupo = $(this).attr('data-grupo');
 
         var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo académico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
 
@@ -3521,8 +3524,23 @@ require_once("../../valida.php");
                     success: function(response) {
                       var resp = JSON.parse(response);
                       if (resp.success) {
-                        alertify.success('<h3>' + resp.mensaje + '</h3>', 2, function(){
-                          //Recargar la pagina y mostrar nuevamente la informacion
+                        //Mandar el correo electronico al presidente de academica
+                        $.ajax({
+                          data: {
+                            'accionCorreo': 'validaPresidente',
+                            'presidenteCorreo': presidenteCorreo,
+                            'presidenteNombre': presidente,
+                            'asignatura': materia,
+                            'grupo': grupo
+                          },
+                          url: 'enviar-correos.php',
+                          method: 'post',
+                          success: function(response) {
+                            
+                          }
+                        });
+
+                        alertify.success('<h3>' + resp.mensaje + '</h3>', 2, function() {
                           window.location.reload();
                         });
                       } else {
