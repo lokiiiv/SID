@@ -659,26 +659,26 @@ require_once("../../valida.php");
                         <!-- Contenido                  -->
                         <!--row  -->
                         <div class="row">
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Documento: <span class="color" id="campoDocumento"></span></h5>
                           </div>
-                          <div class="col-md-6 azul" id="columna">
+                          <div class="col-md-6 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Cláusula ISO 9001 2008: <span class="color" id="campoClausula"></span></h5>
                           </div>
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Revisión: <span class="color" id="campoRevision"></span></h5>
                           </div>
                         </div><!--Fin row -->
 
                         <!--row -->
                         <div class="row">
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Responsable: <span class="color" id="campoResponsable"></span></h5>
                           </div>
-                          <div class="col-md-6 azul" id="columna">
+                          <div class="col-md-6 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Fecha de emisión: <span class="color" id="campoFechaEmision"></span></h5>
                           </div>
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Código del documento: <span class="color" id="campoCodigoDocumento"></span></h5>
                           </div>
                         </div><!--Fin row-->
@@ -767,29 +767,29 @@ require_once("../../valida.php");
                         </div><!--Fin row -->
 
                         <!--row -->
-                        <div class="row">
-                          <div class="col-md-3 azul" id="columna">
+                        <div class="row mb-3">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Nombre de la asignatura: <span class="color" id="campoMateria"></span></h5>
                           </div>
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Clave de la asignatura: <span class="color" id="campoClaveAsignatura"></span></h5>
                           </div>
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Créditos: <input width="40px" class="color text-center editable" id="campoCreditos"></h5>
                           </div>
-                          <div class="col-md-3 azul" id="columna">
+                          <div class="col-md-3 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Número de Tema: <span class="color" id="campoTemas">[Seleccione un tema]</span></h5>
                           </div>
                         </div><!--Fin row -->
                         <!--row -->
                         <div class="row">
-                          <div class="col-md-4 azul" id="columna">
+                          <div class="col-md-4 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Semestre: <span class="color" id="campoSemestre"></span></h5>
                           </div>
-                          <div class="col-md-4 azul" id="columna">
+                          <div class="col-md-4 azul d-flex justify-content-center align-items-center" id="columna">
                             <h5>Clave de grupo: <span class="color" id="campoGrupo"><?php echo $_GET["grupo"] ?></span></h5>
                           </div>
-                          <div class="col-md-4 azul" id="columna">
+                          <div class="col-md-4 azul d-flex justify-content-center align-items-center" id="columna">
                             <label class="control-label" for="select">
                               <h5>Periodo: <span class="color" id="campoPeriodo"><?php echo $_GET["p"] ?></span></h5>
                             </label>

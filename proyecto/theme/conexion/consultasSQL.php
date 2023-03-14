@@ -1073,5 +1073,19 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(["success" => false, "mensaje" => "Ingrese todos los datos."]);
             }
             break;
+
+        //Obtener los grupos academicos de un usuario o presidente de academica
+        case 'obtenerGruposAcademicosPorPresidente':
+            if (isset($_POST["idUsuario"])) {
+                $idUsuario = $_POST["idUsuario"];
+                $sql = "SELECT * 
+                        FROM gruposacademicos
+                        WHERE cat_ID = :idUsuario";
+                $grupos = $connSQL->preparedQuery($sql, ["idUsuario" => $idUsuario]);
+                echo json_encode(['success' => true, 'data' => $grupos]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
+            }
+            break;
     }
 }
