@@ -184,11 +184,31 @@
 			}
 		}
 
-
 		public function eliminar($dbc,$doc){
 			$bulk = new MongoDB\Driver\BulkWrite;
 			$bulk->delete($doc);			
 			$this->connection->executeBulkWrite($this->db.".".$dbc, $bulk);
+		}
+
+		public function agregacion($coleccion, $pipeline) {
+			try{
+                $command = new \MongoDB\Driver\Command([
+					'aggregate' => $coleccion,
+					'pipeline' => $pipeline,
+					'cursor' => new stdClass
+				]);
+				$filas = $this->connection->executeCommand($this->db, $command);
+                return $filas->toArray();
+			}catch (MongoDB\Driver\Exception\Exception $e){
+				$filename = basename(__FILE__);
+				echo "ERROR en $filename .\n";
+				echo "<pre>";
+				echo "Exception:", $e->getMessage(), "\n";
+				echo "<pre>";
+				echo "En archivo:", $e->getFile(), "\n";
+				echo "<pre>";
+				echo "En la linea:", $e->getLine(), "\n";    
+			}
 		}
 
 	}

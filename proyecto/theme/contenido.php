@@ -2191,6 +2191,10 @@ require_once("../../valida.php");
                               var select = row.cells[0].getElementsByTagName("select")[0];
 
                               var val = select.options[select.selectedIndex].innerHTML;
+                              if(val == "&nbsp;") {
+                                alertify.warning("<h3>Por favor seleccione la evidencia de aprendizaje.</h3>");
+                                return;
+                              }
                               var evi = val;
                               r.push(val);
                               val = row.cells[1].getElementsByTagName("input")[0].value;
@@ -2209,6 +2213,10 @@ require_once("../../valida.php");
                               r.push((val != "") ? parseInt(val) : "");
                               select = row.cells[8].getElementsByTagName("select")[0];
                               val = select.options[select.selectedIndex].innerHTML;
+                              if(val == "&nbsp;") {
+                                alertify.warning("<h3>Por favor, seleccione el instrumento de evaluación.</h3>");
+                                return;
+                              }
                               var instru = val;
                               r.push(val);
                               val = row.cells[9].getElementsByTagName("input")[0].checked;
@@ -2223,13 +2231,21 @@ require_once("../../valida.php");
                               //alert("okok"+select);
                               var result = '';
                               if (select == "") {
-                                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                                var charactersLength = characters.length;
-                                for (var j = 0; j < 10; j++) {
-                                  result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                                }
+                                //var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                                //var charactersLength = characters.length;
+                                //for (var j = 0; j < 10; j++) {
+                                  //result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                                //}
 
-                                result = result + instru.substring(0, 4) + evi.substring(0, 4);
+                                //result = result + instru.substring(0, 4) + evi.substring(0, 4);
+
+                                //Generar un ID unico para el instrumento 
+                                var prefix = instru.substring(0, 4) + evi.substring(0, 4);
+                                var random = true;
+                                const sec = Date.now() * 1000 + Math.random() * 1000;
+                                const id = sec.toString(16).replace(/\./g, "").padEnd(14, "0");
+                                result = `${prefix}${id}${random ? `_${Math.trunc(Math.random() * 100000000)}`: ""}`;
+
                               } else {
                                 result = select;
                               }
@@ -3491,7 +3507,7 @@ require_once("../../valida.php");
       $("#btnGuardarInstru").on("click", function() {
 
         var materia = $(this).attr("data-materia");
-        var presidente = '<?php echo $_SESSION["nombreCompleto"]; ?>';
+        var presidente = $(this).attr('data-presidente');
         var presidenteCorreo = $(this).attr('data-correopresidente');
         var grupo = $(this).attr('data-grupo');
 
@@ -3531,7 +3547,8 @@ require_once("../../valida.php");
                             'presidenteCorreo': presidenteCorreo,
                             'presidenteNombre': presidente,
                             'asignatura': materia,
-                            'grupo': grupo
+                            'grupo': grupo,
+                            'docente': '<?php echo $_SESSION['nombreCompleto']; ?>'
                           },
                           url: 'enviar-correos.php',
                           method: 'post',

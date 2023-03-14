@@ -139,7 +139,7 @@ $num = $num - 2;
 									<form class="form-inline">
 										<div class="form-group">
 											<label for="mps" class="mr-3">Ingrese el número máximo de respuestas: </label>
-											<input id="mps" type="number" class="form-control form-control-sm" min="2" max="6">
+											<input id="mps" type="number" class="form-control form-control-sm editable" min="2" max="6">
 										</div>
 									</form>
 								</div>

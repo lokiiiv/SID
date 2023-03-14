@@ -214,15 +214,16 @@
                 //$numero=$_POST["numero"];
                 $periodo=$_POST["periodo"];
                 $grupo=$_POST["grupo"];
+                $grupoins = substr($grupo, 0, 3);
                 $tema=$_POST["tema"];
                 $cualevi=$_POST["cualevi"];
                 $projeccion = ["projection" => 
-                    ["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$cualevi=>1,
+                    ["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$cualevi=>1,
                      "_id"=>0]];
                 $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
                 //echo $cualevi;
-                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupo->Temas->$tema->$cualevi)){
-                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupo->Temas->$tema->$cualevi;
+                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$cualevi)){
+                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$cualevi;
                     echo "si";
                     //return $instrumenta
                 }else{
@@ -236,18 +237,19 @@
                 $numero=$_POST["numero"];
                 $periodo=$_POST["periodo"];
                 $grupo=$_POST["grupo"];
+                $grupoins = substr($grupo, 0, 3);
                 $tema=$_POST["tema"];
                 $numero=$numero-2;
                 $instru=$instrumento;
                 //echo "ok".$grupo;
                 $projeccion = ["projection" => 
-                    ["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$instru=>1,
+                    ["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$instru=>1,
                      "_id"=>0]];
                 //echo $projeccion["projection"];
                 $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
 
-                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupo->Temas->$tema->$instru)){
-                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupo->Temas->$tema->$instru;
+                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$instru)){
+                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$instru;
                     echo json_encode($instrumentacion);
                     //return $instrumenta
                 }else{
@@ -269,16 +271,20 @@
                 $alcances=$_POST["alcance"];
                 $minimos=$_POST["minimos"];
                 $campo="12";
+                $grupoins = substr($grupo, 0, 3);
                 //$numero=$numero-2;
                  //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$campo=>$valor]);
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$instrumento=>$alcances]);              
-                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$instrumento=>$alcances]);
+                //$connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$instrumento=>$alcances]);
+                
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$instrumento=>$alcances]);
 
             break;
             case 'borrarInstrumentoHec':
                 //$instrumentacion = $_POST['ins'];
                 //echo "ok";
                 $grupo = $_POST['grupo'];
+                $grupoins = substr($grupo, 0, 3);
                 $periodo = $_POST['periodo'];
                 //$grupo = $_POST['grupo'];
                 $correo = $_SESSION['correo'];
@@ -288,7 +294,7 @@
 
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
                 //$campo = ["periodos_Inst.".$periodo.".".$grupo=>1];
-                $campo = ["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$instru=>1];
+                $campo = ["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$instru=>1];
                 echo $instru;
                 $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],$campo);
             break;
