@@ -113,6 +113,59 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
 
+        case 'buscarDatosMateria':
+            $grupo = $_POST['grupo'];
+        
+            //Buscar la carrera del grupo de la instrumentacion a generar
+            $carrera = "";
+            $letrac = substr($grupo, 1, 1);
+            $sql = "SELECT DISTINCT nombrePE
+                    FROM programae
+                    WHERE letra = :letra";
+            $res = $connSQL->singlePreparedQuery($sql, ['letra' => $letrac]);
+            if($res) $carrera = $res['nombrePE'];
+
+            //Buscar la clave oficial de asignatura o clave de plan de estudio
+            $claveOficial = "";
+            $clave = substr($grupo, 0, 3);
+            $sql = "SELECT DISTINCT ret_ClaveOficial
+                    FROM cereticula
+                    WHERE ret_Clave = :clave";
+            $res = $connSQL->singlePreparedQuery($sql, ['clave' => $clave]);
+            if($res) $claveOficial = $res['ret_ClaveOficial'];
+
+            //Obtener las claves de asignatura que pertenecen a la clave oficial de asignatura o clave de plan de estudio
+            $sql = "SELECT ce.ret_Clave, pro.nombrePE
+                    FROM cereticula ce
+                    INNER JOIN programae pro ON SUBSTRING(ce.ret_Clave, 2, 1) = pro.letra
+                    WHERE ce.ret_ClaveOficial = :claveOficial
+                    GROUP BY ce.ret_Clave";
+            $claves = $connSQL->preparedQuery($sql, ['claveOficial' => $claveOficial]);
+
+            //Buscar encabezado
+            $encabezado = "";
+            $sql = "SELECT *
+                    FROM formato
+                    WHERE id_formato = :idFormato";
+            $res = $connSQL->singlePreparedQuery($sql, ['idFormato' => '1']);
+            if($res) $encabezado = $res;
+
+            //Buscar nombre materia y temas
+            $materiaNombre = "";
+            $temas = 0;
+            $creditos = 0;
+            $sql = "SELECT DISTINCT ret_NomCompleto, temas, ret_Creditos
+                    FROM cereticula 
+                    WHERE ret_Clave = :clave";
+            $res = $connSQL->singlePreparedQuery($sql, ['clave' => $clave]);
+            if($res) {
+                $materiaNombre = $res['ret_NomCompleto'];
+                $temas = $res['temas'];
+                $creditos = $res['ret_Creditos'];
+            }
+
+            echo json_encode(['success' => true, 'data' => ['carrera' => $carrera, 'clave' => $claveOficial, 'encabezado' => $encabezado, 'materia' => $materiaNombre, 'temas' => $temas, 'creditos' => $creditos, 'otrasMaterias' => $claves]]);
+            break;
 
         case 'listarUsuarios':
 

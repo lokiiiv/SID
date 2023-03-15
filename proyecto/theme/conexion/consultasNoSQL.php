@@ -21,12 +21,20 @@
                 $estatus = $_POST['estatus'];
                 //Encabezado
                 $encabezado = $_POST['encabezado'];
-                $revision = substr($encabezado, 36, 1);
-                $documento = substr($encabezado, 0,7);
-                $responsable = substr($encabezado, 37,21);
-                $fechaemision = substr($encabezado, 58,20);
-                $codigodocumento = substr($encabezado, 78,7);
-                $clausula = substr($encabezado, 7,29);
+                //$revision = substr($encabezado, 36, 1);
+                //$documento = substr($encabezado, 0,7);
+                //$responsable = substr($encabezado, 37,21);
+                //$fechaemision = substr($encabezado, 58,20);
+                //$codigodocumento = substr($encabezado, 78,7);
+                //$clausula = substr($encabezado, 7,29);
+
+                $revision = $encabezado['revision'];
+                $documento = $encabezado['documento'];
+                $responsable = $encabezado['responsable'];
+                $fechaemision = $encabezado['fechaEmision'];
+                $codigodocumento = $encabezado['codigo'];
+                $clausula = $encabezado['clausula'];
+                $creditos = $_POST['creditos'];
 
                 //Después del grupo. //Para guardar en docentes. //Carrera - Periodo - Clave de grupo - Materia.
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
@@ -37,7 +45,7 @@
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".totalTemas"=>$temas]);
 
                 //Para guardar dentro de instrumentaciones //Carrera > Periodo > Grupo > Todo lo demás.
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Estatus"=>$estatus]);
+                //$connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Estatus"=>$estatus]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Materia"=>$materia]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".PE"=>$carrera]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Semestre"=>$semestre]);
@@ -50,6 +58,7 @@
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".FechaEmision"=>$fechaemision]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".CodigoDocumento"=>$codigodocumento]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Clausula"=>$clausula]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Creditos"=>$creditos]);
 
             break;
             case 'borrarInstrumentacion':

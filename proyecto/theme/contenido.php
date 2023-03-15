@@ -165,7 +165,7 @@ require_once("../../valida.php");
 
 
           buscarCatalogo("nombrePE", "programae", (typeof x["PE"] != "undefined") ? x['PE'] : "", function(res) {
-            document.getElementById("PE").innerHTML = '<select class="form-control editable" Onchange = "buscarPlanEstudios(this.options[this.selectedIndex].innerHTML);" style="width: 90%" readonly="true" id="campoPE" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
+            document.getElementById("PE").innerHTML = '<select class="form-control editable" Onchange = "buscarPlanEstudios(this.options[this.selectedIndex].innerHTML);" readonly="true" id="campoPE" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
             habilitarDeshabilitarCampos();
           });
 
@@ -487,7 +487,7 @@ require_once("../../valida.php");
 
     // --------------- METODO PARA HABILITAR O DESHABILITAR LOS CAMPOS CONFORME AL ESTATUS DE LA INSTRUMENTACION -----------------
     function habilitarDeshabilitarCampos() {
-      var elementos = document.getElementsByClassName("editable");
+      /* var elementos = document.getElementsByClassName("editable");
       if (estatusActual != "") {
         //console.log(elementos);
         switch (estatusActual) {
@@ -507,7 +507,7 @@ require_once("../../valida.php");
         for (var i = 0; i < elementos.length; i++) {
           elementos[i].disabled = true;
         }
-      }
+      } */
     }
   </script>
 
@@ -686,14 +686,14 @@ require_once("../../valida.php");
                         <div class="dividerM" style="margin-bottom: 15px"></div>
 
                         <!--row -->
-                        <div class="row">
+                        <div class="row mt-3">
                           <div class="col-md-6 azul" id="columna">
                             <!-- Select box -->
                             <div class="form-group">
-                              <label class="control-label col-md-3" for="select">
+                              <label class="control-label col-md-12" for="select">
                                 <h5>Programa Educativo:</h5>
                               </label>
-                              <div class="col-md-12" id="PE">
+                              <div class="col-md-12 d-flex justify-content-center align-items-center" id="PE">
 
                               </div>
                             </div>
@@ -754,10 +754,10 @@ require_once("../../valida.php");
 
                             <!-- Select box -->
                             <div class="form-group">
-                              <label class="control-label col-md-3" for="select">
+                              <label class="control-label col-md-12" for="select">
                                 <h5>Plan de estudios:</h5>
                               </label>
-                              <div class="col-md-12">
+                              <div class="col-md-12 d-flex justify-content-center align-items-center">
                                 <select class="form-control color editable" id="campoPlanEstudios">
                                   <option>&nbsp;</option>
                                 </select>

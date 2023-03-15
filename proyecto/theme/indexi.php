@@ -229,6 +229,7 @@ require_once("../../valida.php");
         var semestreletra = "";
         var clavemate = "";
         var datosencabezado = "";
+        var creditos = "";
 
         function crearInstrumentacion(boton) {
 
@@ -334,6 +335,7 @@ require_once("../../valida.php");
                             "semestre": semestreletra,
                             "clave": clavemate,
                             "encabezado": datosencabezado,
+                            "creditos": creditos,
                             "estatus": "A"
                         };
                         $.ajax({
@@ -343,7 +345,7 @@ require_once("../../valida.php");
                             success: function(resultado) {
                                 grupo.attr('readonly', true);
                                 temas.attr('readonly', true);
-                                tablaInstrumentaciones.cell(fila, 3).data('<div class="row"><div style="margin: 0 auto;"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button></div></div>').draw();
+                                tablaInstrumentaciones.cell(fila, 3).data('<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button></div></div>').draw();
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
                             $('#estatus' + campo).html("");
@@ -545,7 +547,7 @@ require_once("../../valida.php");
             document.getElementById('tabla').style.display = display;
         }
 
-        function buscarCarrera(letrac) {
+        /* function buscarCarrera(letrac) {
             var parametros = {
                 "accion": "buscarCarrera",
                 "letrae": letrac,
@@ -575,7 +577,7 @@ require_once("../../valida.php");
                     alert('Error: ' + jqXHR.responseText);
                 }
             });
-        }
+        } */
 
         function buscarMateria(input) {
 
@@ -626,16 +628,16 @@ require_once("../../valida.php");
             } else {
                 fila.find('td:eq(1) h6').text("");
                 fila.find('td:eq(2) input').val(0);
-                alertify.warning("<h3>Ingrese un grupo válido o si son varios grupos separados por comas.</h3>");
+                alertify.warning("<h3>Ingrese un grupo válido o si son varios grupos, separelos por comas.</h3>");
                 return;
             }
 
 
-            buscarCarrera(busMate);
-            buscarClave(busMate);
-            encabezado();
+            //buscarCarrera(busMate);
+            //buscarClave(busMate);
+            //encabezado();
 
-            var parametros = {
+           /*  var parametros = {
                 "accion": "buscarMateria",
                 "letrae": busMate,
             };
@@ -674,10 +676,53 @@ require_once("../../valida.php");
                 } else {
                     alert('Error: ' + jqXHR.responseText);
                 }
+            }); */
+
+            var parametros = {
+                "accion": "buscarDatosMateria",
+                "grupo": busMate,
+            };
+            $.ajax({
+                data: parametros,
+                url: 'conexion/consultasSQL.php',
+                type: 'post',
+                success: function(respuesta) {
+                    res = JSON.parse(respuesta)
+                    if(res.success) {
+                        carrera = res.data.carrera;
+                        clavemate = res.data.clave;
+                        datosencabezado = res.data.encabezado;
+                        creditos = res.data.creditos;
+
+                        var mater = res.data.materia;
+                        var cantTemas = res.data.temas != "" && res.data.temas != null ? parseInt(res.data.temas) : 0;
+
+                        tablaInstrumentaciones.cell(fila, 1).data("<h6>" + mater + "</h6>").draw();
+                        tablaInstrumentaciones.cell(fila, 2).data("<input class='form-control form-control-sm text-center' max=8 min=1 type='number' value=" + cantTemas + ">").draw();
+                    }
+                    
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                $('#estatus' + campo).html("");
+                if (jqXHR.status === 0) {
+                    alert('No conectado, verifique su red.');
+                } else if (jqXHR.status == 404) {
+                    alert('Pagina no encontrada [404]');
+                } else if (jqXHR.status == 500) {
+                    alert('Internal Server Error [500].');
+                } else if (textStatus === 'parsererror') {
+                    alert('Falló la respuesta.');
+                } else if (textStatus === 'timeout') {
+                    alert('Se acabó el tiempo de espera.');
+                } else if (textStatus === 'abort') {
+                    alert('Conexión abortada.');
+                } else {
+                    alert('Error: ' + jqXHR.responseText);
+                }
             });
         }
 
-        function buscarClave(busClav) {
+        /* function buscarClave(busClav) {
             var parametros = {
                 "accion": "buscarClave",
                 "letrae": busClav,
@@ -738,7 +783,7 @@ require_once("../../valida.php");
                     alert('Error: ' + jqXHR.responseText);
                 }
             });
-        }
+        } */
 
 
         function letraSemestre(letraSem) {
