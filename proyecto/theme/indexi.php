@@ -28,7 +28,7 @@ require_once("../../valida.php");
 
     <!-- Font awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+
     <!-- Datatables -->
     <link rel="stylesheet" href="datatables/datatables.min.css">
     <link rel="stylesheet" href="datatables/DataTables-1.13.1/css/dataTables.bootstrap4.min.css">
@@ -385,7 +385,7 @@ require_once("../../valida.php");
                 });
 
             } else {
-                alertify.error("<h3>Llene correctamente los campos.</h3>");
+                alertify.error("<h3 style='color: white;'>Llene correctamente los campos.</h3>");
             }
         }
 
@@ -428,7 +428,7 @@ require_once("../../valida.php");
             mater = "";
             var temas = 0;
             var estatus = "";
-            var boton = '<div class="row"><div style="margin: 0 auto;"><button onclick="crearInstrumentacion(this)" class="btn btn-info btn-sm" style="margin-right: 3px;">Crear</button></div></div>';
+            var boton = '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="crearInstrumentacion(this)" class="btn btn-info btn-sm" style="margin-right: 3px;">Crear</button></div></div>';
             if (typeof instrumentacion != "undefined") {
                 //grupo = instrumentacion[0];
                 //mater = instrumentacion[1];
@@ -437,17 +437,17 @@ require_once("../../valida.php");
                 grupo = instrumentacion["Grupo"];
                 mater = instrumentacion["Materia"];
                 temas = parseInt(instrumentacion["totalTemas"]);
-                boton = '<div class="row"><div style="margin: 0 auto;"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm">FAC-14</button></div></div>';
+                boton = '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm">FAC-14</button></div></div>';
                 estatus = "readonly";
             }
 
             //Agregar la nueva fila usando el plugin de Datatables
             tablaInstrumentaciones.row.add([
-                "<input " + estatus + " class='form-control' onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria(this); value='" + grupo + "'>",
+                "<input " + estatus + " class='form-control form-control-sm' onkeyup='this.value = this.value.toUpperCase();' id=letracarrera onchange = buscarMateria(this); value='" + grupo + "'>",
                 "<h6>" + mater + "</h6>",
-                "<input " + estatus + "  class='form-control text-center' max=8 min=1 type='number' value=" + temas + ">",
+                "<input " + estatus + "  class='form-control text-center form-control-sm' max=8 min=1 type='number' value=" + temas + ">",
                 boton,
-                '<div class="row"><div style="margin: 0 auto;"><button onclick="borrar($(this).closest(\'tr\').index(), this)" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div></div>'
+                '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="borrar($(this).closest(\'tr\').index(), this)" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div></div>'
             ]).draw();
 
             //var tabla = document.getElementById("tablaInstrumentaciones");
@@ -584,42 +584,52 @@ require_once("../../valida.php");
                 fila = fila.prev();
             }
 
-            var busMate = fila.find('td:eq(0) input').val();
+            var busMate = fila.find('td:eq(0) input').val().trim();
+            //Verificar que la entrada de los grupos sean en 4 letras y separados por comas
+            //Para esto se usa una expresion regular
+            var regex = /^(?:[^,]{4},)*[^,]{4}$/;
+            if (regex.test(busMate)) {
+                //En caso de buscar la materia cuando se ingresan dos o más grupos separados por comas,
+                //se debe verificar que ambos grupos pertenezcan a la misma materia
+                //Se deben obtener los grupos en caso de que sean varios y verificar que sus tres primeras letras sean iguales
+                var aux = busMate.split(',');
+                if (aux.length == 1) {
+                    //Si al dividir la cadena, solo hay un elemento, quiere decir que se ingreso un solo grupo unicamente
+                    //Entonces la variable del grupo será igual al primer elemento del array resultante al realizar split()
+                    busMate = aux[0].trim();
+                } else if (aux.length > 1) {
+                    //En caso de que al divir la cadena, se encuentren más grupos, verificar que no ingresen los mismos
+                    //y verificar al igual que los grupos tengan las tres primeras letras iguales
+                    if (aux.every(v => v.trim() === aux[0].trim())) {
+                        //Si se detecta que los grupos son iguales, variar los cuadros de texto
+                        fila.find('td:eq(1) h6').text("");
+                        fila.find('td:eq(2) input').val(0);
 
-            //En caso de buscar la materia cuando se ingresan dos o más grupos separados por comas,
-            //se debe verificar que ambos grupos pertenezcan a la misma materia
-            //Se deben obtener los grupos en caso de que sean varios y verificar que sus tres primeras letras sean iguales
-            var aux = busMate.split(',');
-            if (aux.length == 1) {
-                //Si al dividir la cadena, solo hay un elemento, quiere decir que se ingreso un solo grupo unicamente
-                //Entonces la variable del grupo será igual al primer elemento del array resultante al realizar split()
-                busMate = aux[0].trim();
-            } else if (aux.length > 1) {
-                //En caso de que al divir la cadena, se encuentren más grupos, verificar que no ingresen los mismos
-                //y verificar al igual que los grupos tengan las tres primeras letras iguales
-                if (aux.every(v => v.trim() === aux[0].trim())) {
-                    //Si se detecta que los grupos son iguales, variar los cuadros de texto
-                    fila.find('td:eq(1) h6').text("");
-                    fila.find('td:eq(2) input').val(0);
+                        alertify.warning("<h3>Los grupos que ha ingresado son iguales, intente de nuevo.</h3>");
+                        return;
+                    } else {
+                        //Ahora, verificar que los grupos correspondan a la misma materia
+                        for (let i = 0; i < aux.length; i++) {
+                            if ((i + 1) < aux.length) {
+                                //Si el siguiente grupo del array es diferentes al actual, notificar
+                                if (aux[i].trim().substring(0, 3) != aux[i + 1].trim().substring(0, 3)) {
+                                    fila.find('td:eq(1) h6').text("");
+                                    fila.find('td:eq(2) input').val(0);
 
-                    alertify.warning("<h3>Los grupos que ha ingresado son iguales, intente de nuevo.</h3>");
-                    return;
-                } else {
-                    //Ahora, verificar que los grupos correspondan a la misma materia
-                    for (let i = 0; i < aux.length; i++) {
-                        if ((i + 1) < aux.length) {
-                            //Si el siguiente grupo del array es diferentes al actual, notificar
-                            if (aux[i].trim().substring(0, 3) != aux[i + 1].trim().substring(0, 3)) {
-                                fila.find('td:eq(1) h6').text("");
-                                fila.find('td:eq(2) input').val(0);
-
-                                alertify.warning("<h3>Solo se permite ingresar grupos que pertenezcan a la misma materia.</h3>");
-                                return;
+                                    alertify.warning("<h3>Solo se permite ingresar grupos que pertenezcan a la misma materia.</h3>");
+                                    return;
+                                }
                             }
                         }
                     }
                 }
+            } else {
+                fila.find('td:eq(1) h6').text("");
+                fila.find('td:eq(2) input').val(0);
+                alertify.warning("<h3>Ingrese un grupo válido o si son varios grupos separados por comas.</h3>");
+                return;
             }
+
 
             buscarCarrera(busMate);
             buscarClave(busMate);
@@ -645,7 +655,7 @@ require_once("../../valida.php");
                     //Mostrar la cantidad de temas de la materia, si no hay valor es nulo entonces mostrar el número 1 en el input de cantidad de temas
                     var cantTemas = respuesta.split("-")[1] != "" && respuesta.split("-")[1] != null ? parseInt(respuesta.split("-")[1]) : 0;
                     tablaInstrumentaciones.cell(fila, 1).data("<h6>" + mater + "</h6>").draw();
-                    tablaInstrumentaciones.cell(fila, 2).data("<input class='form-control text-center' max=8 min=1 type='number' value=" + cantTemas + ">").draw();
+                    tablaInstrumentaciones.cell(fila, 2).data("<input class='form-control form-control-sm text-center' max=8 min=1 type='number' value=" + cantTemas + ">").draw();
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 $('#estatus' + campo).html("");
