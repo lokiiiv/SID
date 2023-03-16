@@ -230,6 +230,7 @@ require_once("../../valida.php");
         var clavemate = "";
         var datosencabezado = "";
         var creditos = "";
+        var todasMaterias = "";
 
         function crearInstrumentacion(boton) {
 
@@ -336,16 +337,19 @@ require_once("../../valida.php");
                             "clave": clavemate,
                             "encabezado": datosencabezado,
                             "creditos": creditos,
-                            "estatus": "A"
+                            "todasMaterias": todasMaterias
                         };
                         $.ajax({
                             data: parametros,
                             url: 'conexion/consultasNoSQL.php',
                             type: 'post',
                             success: function(resultado) {
-                                grupo.attr('readonly', true);
-                                temas.attr('readonly', true);
-                                tablaInstrumentaciones.cell(fila, 3).data('<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button></div></div>').draw();
+                                //grupo.attr('readonly', true);
+                                //temas.attr('readonly', true);
+                                //tablaInstrumentaciones.cell(fila, 3).data('<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-left:10px">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm" style="margin-left:10px">FAC-14</button></div></div>').draw();
+                                var select = document.getElementById("selectPeriodo");
+                                var periodo = select.options[select.selectedIndex].value;
+                                mostrarIns(periodo);
                             }
                         }).fail(function(jqXHR, textStatus, errorThrown) {
                             $('#estatus' + campo).html("");
@@ -417,9 +421,10 @@ require_once("../../valida.php");
             var cantTemas = fila.find('td:eq(2) input').val();
             var select = document.getElementById("selectPeriodo");
             var periodo = select.options[select.selectedIndex].value;
+            var claveAsignatura = $(boton).attr('data-claveasignatura');
 
 
-            window.location = "contenido.php?grupo=" + encodeURIComponent(grupo) + "&p=" + encodeURIComponent(periodo) + "&temas=" + encodeURIComponent(cantTemas);
+            window.location = "contenido.php?grupo=" + encodeURIComponent(grupo) + "&p=" + encodeURIComponent(periodo) + "&temas=" + encodeURIComponent(cantTemas) + "&claveasignatura=" + encodeURIComponent(claveAsignatura);
 
         }
 
@@ -439,7 +444,7 @@ require_once("../../valida.php");
                 grupo = instrumentacion["Grupo"];
                 mater = instrumentacion["Materia"];
                 temas = parseInt(instrumentacion["totalTemas"]);
-                boton = '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="editarInstrumentacion(this)" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm">FAC-14</button></div></div>';
+                boton = '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="editarInstrumentacion(this)" data-claveasignatura="' + instrumentacion['ClaveAsignatura'] + '" class="btn btn-success btn-sm" style="margin-right: 3px;">Editar</button><button  onclick="abrirFAC14(this)" class="btn btn-primary btn-sm">FAC-14</button></div></div>';
                 estatus = "readonly";
             }
 
@@ -693,6 +698,7 @@ require_once("../../valida.php");
                         clavemate = res.data.clave;
                         datosencabezado = res.data.encabezado;
                         creditos = res.data.creditos;
+                        todasMaterias = res.data.todasMaterias;
 
                         var mater = res.data.materia;
                         var cantTemas = res.data.temas != "" && res.data.temas != null ? parseInt(res.data.temas) : 0;

@@ -111,7 +111,8 @@ require_once("../../valida.php");
       var parametros = {
         "accion": "obtenerCampos",
         "grupo": document.getElementById("campoGrupo").innerHTML,
-        "periodo": document.getElementById("campoPeriodo").innerHTML
+        "periodo": document.getElementById("campoPeriodo").innerHTML,
+        "claveAsignatura": '<?php echo $_GET['claveasignatura']; ?>'
       };
 
       $.ajax({
@@ -124,6 +125,7 @@ require_once("../../valida.php");
         success: function(x) {
           if (x != "") {
             x = JSON.parse(x);
+            console.log(x);
           }
 
           //Verificar el estatus de la instrumentación y habilitar o deshabilitar inputs, botones, etc conforme al estatus
@@ -159,17 +161,17 @@ require_once("../../valida.php");
           document.getElementById("campoFechaEmision").innerHTML = (typeof x['FechaEmision'] != "undefined") ? x['FechaEmision'] : "";
           document.getElementById("campoCodigoDocumento").innerHTML = (typeof x['CodigoDocumento'] != "undefined") ? x['CodigoDocumento'] : "";
 
-          document.getElementById("campoSemestre").innerHTML = (typeof x['Semestre'] != "undefined") ? x['Semestre'] : "";
+          document.getElementById("campoSemestre").innerHTML = (typeof x["TodasMaterias"][0]["Semestre"] != "undefined") ? x["TodasMaterias"][0]["Semestre"] : "";
           document.getElementById("campoCreditos").value = (typeof x['Creditos'] != "undefined") ? x['Creditos'] : "";
           document.getElementById("campoClaveAsignatura").innerHTML = (typeof x['ClaveAsignatura'] != "undefined") ? x['ClaveAsignatura'] : "";
 
 
-          buscarCatalogo("nombrePE", "programae", (typeof x["PE"] != "undefined") ? x['PE'] : "", function(res) {
+          buscarCatalogo("nombrePE", "programae", (typeof x["TodasMaterias"][0]["PE"] != "undefined") ? x["TodasMaterias"][0]["PE"] : "", function(res) {
             document.getElementById("PE").innerHTML = '<select class="form-control editable" Onchange = "buscarPlanEstudios(this.options[this.selectedIndex].innerHTML);" readonly="true" id="campoPE" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
             habilitarDeshabilitarCampos();
           });
 
-          buscarPlanEstudios((typeof x["PE"] != "undefined") ? x['PE'] : "", (typeof x["PlanEstudios"] != "undefined") ? x['PlanEstudios'] : "")
+          buscarPlanEstudios((typeof x["TodasMaterias"][0]["PE"] != "undefined") ? x["TodasMaterias"][0]["PE"] : "", (typeof x["TodasMaterias"][0]["PlanEstudios"] != "undefined") ? x["TodasMaterias"][0]['PlanEstudios'] : "")
 
 
           //Habilitar/mostrar inputs/botones conforme al estatus de la instrumentacion
@@ -221,7 +223,8 @@ require_once("../../valida.php");
         "valor": array,
         "grupo": document.getElementById("campoGrupo").innerHTML,
         "campo": campo,
-        "periodo": document.getElementById("campoPeriodo").innerHTML
+        "periodo": document.getElementById("campoPeriodo").innerHTML,
+        "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
       };
 
       $.ajax({
@@ -279,13 +282,27 @@ require_once("../../valida.php");
       else
         array = document.getElementById("campo" + campo).innerHTML;
 
-      var parametros = {
-        "accion": "guardarCampo",
-        "valor": array,
-        "grupo": document.getElementById("campoGrupo").innerHTML,
-        "campo": campo,
-        "periodo": document.getElementById("campoPeriodo").innerHTML
-      };
+      var parametros;
+      if (campo == "PlanEstudios") {
+        parametros = {
+          "accion": "guardarCampoPlanEstudio",
+          "valor": array,
+          "grupo": document.getElementById("campoGrupo").innerHTML,
+          "campo": campo,
+          "periodo": document.getElementById("campoPeriodo").innerHTML,
+          "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
+        };
+      } else {
+        var parametros = {
+          "accion": "guardarCampo",
+          "valor": array,
+          "grupo": document.getElementById("campoGrupo").innerHTML,
+          "campo": campo,
+          "periodo": document.getElementById("campoPeriodo").innerHTML,
+          "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
+        };
+      }
+
 
       $.ajax({
         data: parametros,
@@ -338,7 +355,8 @@ require_once("../../valida.php");
         "accion": "obtenerTemas",
         "tema": tema,
         "grupo": document.getElementById("campoGrupo").innerHTML,
-        "periodo": document.getElementById("campoPeriodo").innerHTML
+        "periodo": document.getElementById("campoPeriodo").innerHTML,
+        "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
       };
 
       $.ajax({
@@ -626,31 +644,31 @@ require_once("../../valida.php");
                     <script type="text/javascript">
                       function guardarDatosGenerales() {
 
-                        guardarCampoValor("Documento");
-                        guardarCampoValor("Revision");
-                        guardarCampoValor("Responsable");
-                        guardarCampoValor("FechaEmision");
-                        guardarCampoValor("CodigoDocumento");
-                        guardarCampoValor("Documento");
+                        //guardarCampoValor("Documento");
+                        //guardarCampoValor("Revision");
+                        //guardarCampoValor("Responsable");
+                        //guardarCampoValor("FechaEmision");
+                        //guardarCampoValor("CodigoDocumento");
+                        //guardarCampoValor("Documento");
 
                         var select = document.getElementById("campoPE");
                         var pe = select.options[select.selectedIndex].innerHTML;
-                        guardarCampoValor("PE", pe);
+                        //guardarCampoValor("PE", pe);
 
                         var select = document.getElementById("campoPlanEstudios");
                         var pe = select.options[select.selectedIndex].innerHTML;
-                        guardarCampoValor("PlanEstudios", pe);
+                        guardarCampoValor("PlanEstudios", pe, "DetallesGenerales");
 
                         var campo = document.getElementById("campoSemestre").value;
-                        guardarCampoValor("Semestre", campo);
+                        //guardarCampoValor("Semestre", campo);
 
                         var campo = document.getElementById("campoCreditos").value;
-                        guardarCampoValor("Creditos", campo);
+                        guardarCampoValor("Creditos", campo, "DetallesGenerales");
 
                         var campo = document.getElementById("campoClaveAsignatura").value;
-                        guardarCampoValor("ClaveAsignatura", campo);
+                        //guardarCampoValor("ClaveAsignatura", campo);
 
-                        guardarCampoValor("Clausula", undefined, "DetallesGenerales");
+                        //guardarCampoValor("Clausula", undefined, "DetallesGenerales");
                       }
                     </script>
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
@@ -994,7 +1012,8 @@ require_once("../../valida.php");
                         "grupo": document.getElementById("campoGrupo").innerHTML,
                         "campo": campo,
                         "tema": tema,
-                        "periodo": document.getElementById("campoPeriodo").innerHTML
+                        "periodo": document.getElementById("campoPeriodo").innerHTML,
+                        "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
                       };
 
                       $.ajax({
@@ -1226,7 +1245,8 @@ require_once("../../valida.php");
                               "grupo": document.getElementById("campoGrupo").innerHTML,
                               "campo": "Actividades",
                               "tema": tema,
-                              "periodo": document.getElementById("campoPeriodo").innerHTML
+                              "periodo": document.getElementById("campoPeriodo").innerHTML,
+                              "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
                             };
 
                             $.ajax({
@@ -1653,7 +1673,8 @@ require_once("../../valida.php");
                           "grupo": document.getElementById("campoGrupo").innerHTML,
                           "campo": "Practicas",
                           "tema": tema,
-                          "periodo": document.getElementById("campoPeriodo").innerHTML
+                          "periodo": document.getElementById("campoPeriodo").innerHTML,
+                          "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
                         };
 
                         $.ajax({
@@ -1851,7 +1872,8 @@ require_once("../../valida.php");
                                 "grupo": document.getElementById("campoGrupo").innerHTML,
                                 "campo": "ValorIndicadores",
                                 "tema": tema,
-                                "periodo": document.getElementById("campoPeriodo").innerHTML
+                                "periodo": document.getElementById("campoPeriodo").innerHTML,
+                                "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
                               };
 
                               $.ajax({
@@ -2079,7 +2101,7 @@ require_once("../../valida.php");
                             //alert(cadeextra);
                             var catalogoEvidencias = "";
                             buscarCatalogo("evidencia", "evidencias", (typeof filaEvidencia != "undefined") ? filaEvidencia[0] : "", function(res) {
-                              evidencia.innerHTML = '<select ' + cadeextra + ' class="form-control editable" style="width: 90%" id="selectEvidencia" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
+                              evidencia.innerHTML = '<select ' + cadeextra + ' class="form-control editable" style="width: 100%" id="selectEvidencia" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
                               habilitarDeshabilitarCampos();
                             });
 
@@ -2087,7 +2109,7 @@ require_once("../../valida.php");
 
                             buscarCatalogo("instrumento", "instrumentos", (typeof filaEvidencia != "undefined") ? filaEvidencia[8] : "", function(res) {
                               //alert(res);
-                              instrumento.innerHTML = '<select ' + cadeextra + ' class="form-control editable" style="width: 90%' + cadeextra + '" id="selectInstrumento" onchange="cambiainstruH()" name="instrumento"><option>&nbsp;</option>' + res + '</select>';
+                              instrumento.innerHTML = '<select ' + cadeextra + ' class="form-control editable" style="width: 100%' + cadeextra + '" id="selectInstrumento" onchange="cambiainstruH()" name="instrumento"><option>&nbsp;</option>' + res + '</select>';
 
                               //alert(filaEvidencia);
                               if (typeof filaEvidencia == 'undefined') {
@@ -2163,6 +2185,7 @@ require_once("../../valida.php");
                             var periodo = document.getElementById("campoPeriodo").innerHTML;
                             var grupo = document.getElementById("campoGrupo").innerHTML;
                             var tem = document.getElementById("selectTema").value;
+                            var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
                             //alert("ok");
                             //matrizborrado.push("j");
                             for (var i = 0; i < matrizborrado.length; i++) {
@@ -2174,7 +2197,8 @@ require_once("../../valida.php");
                                 "grupo": grupo,
                                 "periodo": periodo,
                                 "tema": tem,
-                                "instru": mb
+                                "instru": mb,
+                                "claveAsignatura": claveAsignatura
                               };
                               //alert(mb);
                               $.post("conexion/consultasNoSQL.php", parametros, function(res) {
@@ -2191,7 +2215,7 @@ require_once("../../valida.php");
                               var select = row.cells[0].getElementsByTagName("select")[0];
 
                               var val = select.options[select.selectedIndex].innerHTML;
-                              if(val == "&nbsp;") {
+                              if (val == "&nbsp;") {
                                 alertify.warning("<h3>Por favor seleccione la evidencia de aprendizaje.</h3>");
                                 return;
                               }
@@ -2213,7 +2237,7 @@ require_once("../../valida.php");
                               r.push((val != "") ? parseInt(val) : "");
                               select = row.cells[8].getElementsByTagName("select")[0];
                               val = select.options[select.selectedIndex].innerHTML;
-                              if(val == "&nbsp;") {
+                              if (val == "&nbsp;") {
                                 alertify.warning("<h3>Por favor, seleccione el instrumento de evaluación.</h3>");
                                 return;
                               }
@@ -2234,7 +2258,7 @@ require_once("../../valida.php");
                                 //var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                                 //var charactersLength = characters.length;
                                 //for (var j = 0; j < 10; j++) {
-                                  //result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                                //result += characters.charAt(Math.floor(Math.random() * charactersLength));
                                 //}
 
                                 //result = result + instru.substring(0, 4) + evi.substring(0, 4);
@@ -3076,13 +3100,15 @@ require_once("../../valida.php");
       function buscarEvidenciaExiste(cualevi) {
         var periodo = document.getElementById("campoPeriodo").innerHTML;
         var grupo = document.getElementById("campoGrupo").innerHTML;
+        var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
         var tema = $('#selectTema').val();
         var parametros = {
           "accion": "buscarEviHec",
           "cualevi": cualevi,
           "periodo": periodo,
           "grupo": grupo,
-          "tema": tema
+          "tema": tema,
+          "claveAsignatura": claveAsignatura
         };
         var ata = false;
         $.ajax({
@@ -3161,7 +3187,8 @@ require_once("../../valida.php");
           "grupo": document.getElementById("campoGrupo").innerHTML,
           "campo": campo,
           "tema": tema,
-          "periodo": document.getElementById("campoPeriodo").innerHTML
+          "periodo": document.getElementById("campoPeriodo").innerHTML,
+          "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
         };
 
         $.ajax({
@@ -3553,7 +3580,7 @@ require_once("../../valida.php");
                           url: 'enviar-correos.php',
                           method: 'post',
                           success: function(response) {
-                            
+
                           }
                         });
 

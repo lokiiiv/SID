@@ -18,7 +18,7 @@
                 $carrera = $_POST['carrera'];
                 $clave = $_POST["clave"];
                 $correo = $_SESSION['correo'];
-                $estatus = $_POST['estatus'];
+                //$estatus = $_POST['estatus'];
                 //Encabezado
                 $encabezado = $_POST['encabezado'];
                 //$revision = substr($encabezado, 36, 1);
@@ -35,6 +35,7 @@
                 $codigodocumento = $encabezado['codigo'];
                 $clausula = $encabezado['clausula'];
                 $creditos = $_POST['creditos'];
+                $todasMaterias = $_POST['todasMaterias'];
 
                 //Después del grupo. //Para guardar en docentes. //Carrera - Periodo - Clave de grupo - Materia.
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
@@ -43,10 +44,12 @@
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Grupo"=>$grupo]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Materia"=>$materia]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".totalTemas"=>$temas]);
+                $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Semestre"=>$semestre]);
+                $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".ClaveAsignatura"=>$clave]);
 
                 //Para guardar dentro de instrumentaciones //Carrera > Periodo > Grupo > Todo lo demás.
                 //$connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Estatus"=>$estatus]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Materia"=>$materia]);
+                /* $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Materia"=>$materia]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".PE"=>$carrera]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Semestre"=>$semestre]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".totalTemas"=>$temas]); 
@@ -58,8 +61,22 @@
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".FechaEmision"=>$fechaemision]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".CodigoDocumento"=>$codigodocumento]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Clausula"=>$clausula]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Creditos"=>$creditos]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Creditos"=>$creditos]); */
 
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Materia"=>$materia]);
+                //$connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".PE"=>$carrera]);
+                //$connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Semestre"=>$semestre]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".totalTemas"=>$temas]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".ClaveAsignatura"=>$clave]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".TodasMaterias"=>$todasMaterias]);
+                //Encabezado dentro de instrumentaciones
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Revision"=>$revision]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Documento"=>$documento]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Responsable"=>$responsable]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".FechaEmision"=>$fechaemision]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".CodigoDocumento"=>$codigodocumento]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Clausula"=>$clausula]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Creditos"=>$creditos]);
             break;
             case 'borrarInstrumentacion':
                 //$instrumentacion = $_POST['ins'];
@@ -129,8 +146,22 @@
                 $grupoins = substr($grupo, 0,3);
                 $periodo = $_POST['periodo'];
                 $correo = $_SESSION['correo'];
-                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".".$campo=>$valor]);
+                $claveAsignatura = $_POST['claveAsignatura'];
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".".$campo=>$valor]);
             break;
+            case 'guardarCampoPlanEstudio':
+                $valor = $_POST['valor'];
+                $campo = $_POST['campo'];
+                $grupo = $_POST['grupo'];
+                $grupoins = substr($grupo, 0, 3);
+                $periodo = $_POST['periodo'];
+                $correo = $_SESSION['correo'];
+                $claveAsignatura = $_POST['claveAsignatura'];
+                
+                $filtro = ["Instrumentos"=>"Carreras", "periodos_Inst.".$periodo.".".$claveAsignatura.".TodasMaterias.Clave" => $grupoins];
+                $nuevo = ["periodos_Inst.".$periodo.".".$claveAsignatura.".TodasMaterias.$.PlanEstudios" => $valor];
+                $connNoSQL->modificar("instrumentaciones", $filtro, $nuevo);
+                break;
             case 'guardarCampoTema': //Cambia, se crea la nueva instrumentación
                 $valor=$_POST['valor'];
                 $campo=$_POST['campo'];
@@ -139,7 +170,8 @@
                 $tema=$_POST['tema'];
                 $periodo=$_POST['periodo'];
                 $correo = $_SESSION['correo'];
-                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Temas.".$tema.".".$campo=>$valor]);
+                $claveAsignatura = $_POST['claveAsignatura'];
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Temas.".$tema.".".$campo=>$valor]);
             break;
             case 'obtenerTemas':
                 $tema=$_POST['tema'];
@@ -147,10 +179,11 @@
                 $grupoins = substr($grupo, 0,3);
                 $periodo=$_POST['periodo'];
                 $correo = $_SESSION['correo'];
-                $projeccion = ["projection" => ["periodos_Inst.".$periodo.".".$grupoins.".Temas.".$tema=>1,"_id"=>0]];
+                $claveAsignatura = $_POST['claveAsignatura'];
+                $projeccion = ["projection" => ["periodos_Inst.".$periodo.".".$claveAsignatura.".Temas.".$tema=>1,"_id"=>0]];
                 $tema = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
-                if(isset($tema[0]->periodos_Inst->{$periodo}->$grupoins->Temas)){
-                    $t = $tema[0]->periodos_Inst->{$periodo}->$grupoins->Temas;
+                if(isset($tema[0]->periodos_Inst->{$periodo}->$claveAsignatura->Temas)){
+                    $t = $tema[0]->periodos_Inst->{$periodo}->$claveAsignatura->Temas;
                     echo json_encode($t);
                     //$tema[0]->periodos_Inst->{'JULIO-DICIEMBRE 2018'}->{'1F11'}->Tema->$tema;
                 }else{
@@ -163,36 +196,76 @@
                 $grupoins = substr($grupo, 0,3);
                 $periodo=$_POST['periodo'];
                 $correo = $_SESSION['correo'];
+                $claveAsignatura = $_POST['claveAsignatura'];
                 $caracterizacion = "";
                 $intencionDidactica = "";
                 $competenciasPrevias = "";
                 $competenciaEA = "";
 
-                $projeccion = ["projection" => 
-                                ["periodos_Inst.".$periodo.".".$grupoins.".Estatus"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Caracterizacion"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".totalTemas"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Materia"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".IntencionDidactica"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".CompetenciasPrevias"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".PE"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".PlanEstudios"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".ClaveAsignatura"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Creditos"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Semestre"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".CompetenciaEA"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Documento"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Clausula"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Revision"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".Responsable"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".FechaEmision"=>1,
-                                 "periodos_Inst.".$periodo.".".$grupoins.".CodigoDocumento"=>1,
+                /* $projeccion = ["projection" => 
+                                ["periodos_Inst.".$periodo.".".$claveAsignatura.".Caracterizacion"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".totalTemas"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".Materia"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".IntencionDidactica"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".CompetenciasPrevias"=>1,
+                                 //"periodos_Inst.".$periodo.".".$grupoins.".PE"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".PlanEstudios"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".ClaveAsignatura"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".Creditos"=>1,
+                                 //"periodos_Inst.".$periodo.".".$grupoins.".Semestre"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".CompetenciaEA"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".Documento"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".Clausula"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".Revision"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".Responsable"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".FechaEmision"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".CodigoDocumento"=>1,
+                                 "periodos_Inst.".$periodo.".".$claveAsignatura.".TodasMaterias"=>1,
 
                                  "_id"=>0]];
+                $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion); */
 
-                $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
-                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupoins)){
-                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupoins;
+                $agregacion = [
+                    [
+                        '$match' => [
+                            'Instrumentos' => 'Carreras'
+                        ]
+                    ], 
+                    [
+                        '$project' => [
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Caracterizacion' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.totalTemas' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Materia' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.IntencionDidactica' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.CompetenciasPrevias' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.PlanEstudios' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.ClaveAsignatura' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Creditos' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.CompetenciaEA' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Documento' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Clausula' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Revision' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Responsable' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.FechaEmision' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.CodigoDocumento' => 1, 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.TodasMaterias' => [
+                                '$filter' => [
+                                    'input' => '$periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.TodasMaterias', 
+                                    'cond' => [
+                                        '$eq' => [
+                                            '$$this.Clave', $grupoins
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            '_id' => 0
+                        ]
+                    ]
+                ];
+                $instrumentacion = $connNoSQL->agregacion("instrumentaciones", $agregacion);
+                
+                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura)){
+                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura;
                     echo json_encode($instrumentacion);
                 }else{
                     echo "";
@@ -226,13 +299,14 @@
                 $grupoins = substr($grupo, 0, 3);
                 $tema=$_POST["tema"];
                 $cualevi=$_POST["cualevi"];
+                $claveAsignatura = $_POST['claveAsignatura'];
                 $projeccion = ["projection" => 
-                    ["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$cualevi=>1,
+                    ["periodos_Inst.".$periodo.".".$claveAsignatura.".InstrumentosMatriz.Temas.".$tema.".".$cualevi=>1,
                      "_id"=>0]];
                 $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
                 //echo $cualevi;
-                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$cualevi)){
-                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$cualevi;
+                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura->InstrumentosMatriz->Temas->$tema->$cualevi)){
+                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura->InstrumentosMatriz->Temas->$tema->$cualevi;
                     echo "si";
                     //return $instrumenta
                 }else{
@@ -300,10 +374,11 @@
                 $tema = $_POST['tema'];
                 $instru = $_POST['instru'];
                 //$instru="UvLDel6Be9ListEnsa";
+                $claveAsignatura = $_POST['claveAsignatura'];
 
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
                 //$campo = ["periodos_Inst.".$periodo.".".$grupo=>1];
-                $campo = ["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$instru=>1];
+                $campo = ["periodos_Inst.".$periodo.".".$claveAsignatura.".InstrumentosMatriz.Temas.".$tema.".".$instru=>1];
                 echo $instru;
                 $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],$campo);
             break;

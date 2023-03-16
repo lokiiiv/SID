@@ -135,7 +135,18 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             if($res) $claveOficial = $res['ret_ClaveOficial'];
 
             //Obtener las claves de asignatura que pertenecen a la clave oficial de asignatura o clave de plan de estudio
-            $sql = "SELECT ce.ret_Clave, pro.nombrePE
+            $sql = "SELECT ce.ret_Clave AS Clave, pro.nombrePE AS PE,
+                    CASE
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '1' THEN 'PRIMERO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '2' THEN 'SEGUNDO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '3' THEN 'TERCERO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '4' THEN 'CUARTO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '5' THEN 'QUINTO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '6' THEN 'SEXTO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '7' THEN 'SEPTIMO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '8' THEN 'OCTAVO'
+                        WHEN SUBSTRING(ce.ret_Clave, 1, 1) = '9' THEN 'NOVENO'
+                    END AS Semestre
                     FROM cereticula ce
                     INNER JOIN programae pro ON SUBSTRING(ce.ret_Clave, 2, 1) = pro.letra
                     WHERE ce.ret_ClaveOficial = :claveOficial
@@ -164,7 +175,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 $creditos = $res['ret_Creditos'];
             }
 
-            echo json_encode(['success' => true, 'data' => ['carrera' => $carrera, 'clave' => $claveOficial, 'encabezado' => $encabezado, 'materia' => $materiaNombre, 'temas' => $temas, 'creditos' => $creditos, 'otrasMaterias' => $claves]]);
+            echo json_encode(['success' => true, 'data' => ['carrera' => $carrera, 'clave' => $claveOficial, 'encabezado' => $encabezado, 'materia' => $materiaNombre, 'temas' => $temas, 'creditos' => $creditos, 'todasMaterias' => $claves]]);
             break;
 
         case 'listarUsuarios':
