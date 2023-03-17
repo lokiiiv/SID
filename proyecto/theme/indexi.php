@@ -454,7 +454,7 @@ require_once("../../valida.php");
                 "<h6>" + mater + "</h6>",
                 "<input " + estatus + "  class='form-control text-center form-control-sm' max=8 min=1 type='number' value=" + temas + ">",
                 boton,
-                '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button onclick="borrar($(this).closest(\'tr\').index(), this)" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div></div>'
+                '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button data-claveasignatura="' + (typeof(instrumentacion) != "undefined" ? instrumentacion['ClaveAsignatura']: "") + '" onclick="borrar($(this).closest(\'tr\').index(), this)" type="button" class="btn btn-danger btn-sm" style="margin-right: 3px;">Eliminar</button></div></div>'
             ]).draw();
 
             //var tabla = document.getElementById("tablaInstrumentaciones");
@@ -479,6 +479,8 @@ require_once("../../valida.php");
                 fila = fila.prev();
             }
 
+            var claveAsignatura = $(boton).attr('data-claveasignatura');
+
             //Al borrar, mostrar el mensaje de alerta de eliminacion solamente cuando la instrumentacion ya esta creada
             if (typeof(fila.find('td:eq(3) .btn-info')[0]) === "undefined") {
                 alertify.confirm("Aviso", "¿Está seguro(a) de eliminar la instrumentación del grupo(s) " + fila.find('td:eq(0) input').val() + " seleccionado?",
@@ -491,7 +493,8 @@ require_once("../../valida.php");
                         var parametros = {
                             "accion": "borrarInstrumentacion",
                             "grupo": grupo,
-                            "periodo": periodo
+                            "periodo": periodo,
+                            "claveAsignatura": claveAsignatura
                         };
                         $.ajax({
                             data: parametros,

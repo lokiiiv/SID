@@ -329,11 +329,13 @@ $INDALC = $INDALC . "</select>";
 			var periodo = document.getElementById("campoPeriodo").innerHTML;
 			var grupo = document.getElementById("campoGrupo").innerHTML;
 			var tem = document.getElementById("selectTema").value;
+			var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
 			//alert(instrumento);
 			var parametros = {
 				"accion": "obtenerCamposListaHec",
 				"grupo": grupo,
 				"periodo": periodo,
+				"claveAsignatura": claveAsignatura,
 				"instrumento": instrumento,
 				"evidencia": evidencia,
 				"numero": cual,

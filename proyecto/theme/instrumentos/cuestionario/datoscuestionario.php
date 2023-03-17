@@ -365,6 +365,7 @@ $num = $num - 2;
 				var periodo = document.getElementById("campoPeriodo").innerHTML;
 				var grupo = document.getElementById("campoGrupo").innerHTML;
 				var tem = document.getElementById("selectTema").value;
+				var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
 
 				/*alert(cual);
 				alert(evidencia);
@@ -376,6 +377,7 @@ $num = $num - 2;
 					"accion": "obtenerCamposListaHec",
 					"grupo": grupo,
 					"periodo": periodo,
+					"claveAsignatura": claveAsignatura,
 					"instrumento": instrumento,
 					"evidencia": evidencia,
 					"numero": cual,

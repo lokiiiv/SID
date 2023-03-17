@@ -371,6 +371,7 @@ require_once("../../valida.php");
           document.getElementById("enviarTema").value = tema;
           document.getElementById("enviarGrupo").value = grupo;
           document.getElementById("enviarPeriodo").value = document.getElementById("campoPeriodo").innerHTML;
+          document.getElementById("enviarClaveAsignatura").value = document.getElementById("campoClaveAsignatura").innerHTML;
           //alert(x);
           x = JSON.parse(x);
 
@@ -3062,6 +3063,7 @@ require_once("../../valida.php");
                             <input type="hidden" id="enviarGrupo" name="grupo" />
                             <input type="hidden" id="enviarPeriodo" name="periodo" />
                             <input type="hidden" id="enviarTema" name="tema" />
+                            <input type="hidden" id="enviarClaveAsignatura" name="claveAsignatura" />
                             <p><input type="submit" class="btn btn-secondary" value="Generar" /></p>
                           </form>
                         </div>
@@ -3300,6 +3302,7 @@ require_once("../../valida.php");
         var periodo = document.getElementById("campoPeriodo").innerHTML;
         var grupo = document.getElementById("campoGrupo").innerHTML;
         var tem = document.getElementById("selectTema").value;
+        var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
 
         if (instrumento == "Guía de observación") {
           //$("#instrumentos").load("listaguia.php",{evi:evidencia, ins:instrumento, num:cual,per:periodo,A:A,B:B,C:C,D:D,E:E,F:F,por:por},function(res){
@@ -3736,7 +3739,7 @@ require_once("../../valida.php");
 
         var instrumento = tabla.rows[cual].cells[8].getElementsByTagName("select")[0].value;
         //alert(instrumento);
-        alertify.confirm("<h4>Si realizó alguna modificación y no guardó, perderá los cambios, desea continuar</h4>",
+        alertify.confirm("Aviso", "<h3>Si realizó alguna modificación y no guardó, perderá los cambios, desea continuar</h3>",
           function() {
             if (instrumento == "Lista de cotejo") {
               VerinstrumentoLista();
@@ -3751,7 +3754,7 @@ require_once("../../valida.php");
             }
           },
           function() {
-            alertify.success("De clic en el botón de guardar", 5);
+            alertify.success("<h3>De clic en el botón de guardar.</h3>", 5);
           });
 
       });
@@ -4170,6 +4173,7 @@ require_once("../../valida.php");
         var periodo = document.getElementById("campoPeriodo").innerHTML;
         var grupo = document.getElementById("campoGrupo").innerHTML;
         var tem = document.getElementById("selectTema").value;
+        var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
         var fa = document.getElementById("fa").value;
         var te = document.getElementById("te").value;
         if (fa == "" || te == "") {
@@ -4249,12 +4253,13 @@ require_once("../../valida.php");
           "grupo": grupo,
           "tema": tem,
           "alcance": matriz,
-          "minimos": matriz
+          "minimos": matriz,
+          "claveAsignatura": claveAsignatura
         };
         //alert("oj");
         $.post("conexion/consultasNoSQL.php", parametros, function(mensaje) {
 
-          alertify.success("Guardado", 5);
+          alertify.success("<h3>Guardado.</h3>", 5);
 
         });
         actualizaCamposTema(document.getElementById("selectTema").value);
@@ -4298,7 +4303,7 @@ require_once("../../valida.php");
         general.push(te);
         var elems = contenedor.querySelectorAll('input,textarea,select');
         if (elems.length == 0) {
-          alertify.error("<h4>Agregue indicadores</h4>");
+          alertify.error("<h3 style='color:white;'>Agregue indicadores</h3>");
         } else {
           for (var i = 0; i < elems.length; i += 12) {
             var vp = new Array();
@@ -4340,6 +4345,7 @@ require_once("../../valida.php");
           var periodo = document.getElementById("campoPeriodo").innerHTML;
           var grupo = document.getElementById("campoGrupo").innerHTML;
           var tem = document.getElementById("selectTema").value;
+          var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
 
           var tabla = document.getElementById("matrizEvaluacion");
           var evidencia = tabla.rows[cual].cells[0].getElementsByTagName("select")[0].value;
@@ -4355,12 +4361,13 @@ require_once("../../valida.php");
             "grupo": grupo,
             "tema": tem,
             "alcance": general,
-            "minimos": general
+            "minimos": general,
+            "claveAsignatura": claveAsignatura
           };
           //alert("oj");
           $.post("conexion/consultasNoSQL.php", parametros, function(mensaje) {
 
-            alertify.success("Guardado", 5);
+            alertify.success("<h3>Guardado.</h3>", 5);
 
           });
           actualizaCamposTema(document.getElementById("selectTema").value);
@@ -4414,6 +4421,7 @@ require_once("../../valida.php");
           var periodo = document.getElementById("campoPeriodo").innerHTML;
           var grupo = document.getElementById("campoGrupo").innerHTML;
           var tem = document.getElementById("selectTema").value;
+          var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
 
           var tabla = document.getElementById("matrizEvaluacion");
           var evidencia = tabla.rows[cual].cells[0].getElementsByTagName("select")[0].value;
@@ -4429,21 +4437,22 @@ require_once("../../valida.php");
             "grupo": grupo,
             "tema": tem,
             "alcance": general,
-            "minimos": general
+            "minimos": general,
+            "claveAsignatura": claveAsignatura
           };
           //alert("oj");
           $.post("conexion/consultasNoSQL.php", parametros, function(mensaje) {
 
-            alertify.success("Guardado", 5);
+            alertify.success("<h3>Guardado.</h3>", 5);
 
           });
           actualizaCamposTema(document.getElementById("selectTema").value);
         } else {
           if (ban1 == false) {
-            alertify.error("<h4>No hay categorías</h4>");
+            alertify.error("<h3 style='color:white;'>No hay categorías.</h3>");
           }
           if (ban2 == false) {
-            alertify.error("<h4>No hay indicadores en alguna categoría</h4>");
+            alertify.error("<h3 style='color:white;'>No hay indicadores en alguna categoría.</h3>");
           }
         }
 
@@ -4456,6 +4465,7 @@ require_once("../../valida.php");
         var periodo = document.getElementById("campoPeriodo").innerHTML;
         var grupo = document.getElementById("campoGrupo").innerHTML;
         var tem = document.getElementById("selectTema").value;
+        var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
         var fa = document.getElementById("fa").value;
         var te = document.getElementById("te").value;
         if (fa == "" || te == "") {
@@ -4486,7 +4496,7 @@ require_once("../../valida.php");
 
         var listaprorg = []; //para almacenar cada sección depreguntas
         if (pregrel2.length == 0) {
-          alertify.error("<h4>Agregue preguntas de relacionar</h4>");
+          alertify.error("<h3 style='color:write;'>Agregue preguntas de relacionar</h3>");
         } else {
           for (var i = 0; i < pregrel2.length; i += 3) {
             var listapr = [];
@@ -4506,7 +4516,7 @@ require_once("../../valida.php");
           //alert("okd"+mps);
           contpr = 0;
           if (pregrel2.length == 0) {
-            alertify.error("<h4>Agregue preguntas de subrayar</h4>");
+            alertify.error("<h3 style='color:white;'>Agregue preguntas de subrayar</h3>");
           } else {
 
             //var j;
@@ -4539,7 +4549,7 @@ require_once("../../valida.php");
             pregrel2 = pregrel1.getElementsByTagName("input");
             pregrel3 = pregrel1.getElementsByTagName("select");
             if (pregrel2.length == 0) {
-              alertify.error("<h4>Agregue preguntas de falso verdadero</h4>");
+              alertify.error("<h3 style='color:white;'>Agregue preguntas de falso verdadero</h3>");
             } else {
               contpr = 0;
               var listapfvorg = [];
@@ -4575,12 +4585,13 @@ require_once("../../valida.php");
                 "grupo": grupo,
                 "tema": tem,
                 "alcance": matriz,
-                "minimos": matriz
+                "minimos": matriz,
+                "claveAsignatura": claveAsignatura
               };
               //alert("oj");
               $.post("conexion/consultasNoSQL.php", parametros, function(mensaje) {
 
-                alertify.success("Guardado", 5);
+                alertify.success("<h3>Guardado.</h3>", 5);
 
               });
               actualizaCamposTema(document.getElementById("selectTema").value);
@@ -4599,6 +4610,7 @@ require_once("../../valida.php");
           //alert("ok");
           var periodo = document.getElementById("campoPeriodo").innerHTML;
           var grupo = document.getElementById("campoGrupo").innerHTML;
+          var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
           var tema = $('#selectTema').val();
           var parametros = {
             "accion": "borrarInstrumentoHec",
@@ -4606,11 +4618,12 @@ require_once("../../valida.php");
             "periodo": periodo,
             "grupo": grupo,
             "tema": tema,
+            "claveAsignatura": claveAsignatura
           };
           //var ata=false;
           $.post('conexion/consultasNoSQL.php', parametros, function() {});
 
-          alertify.success("borrado", 5);
+          alertify.success("<h3>Borrado.</h3>", 5);
           actualizaCamposTema(document.getElementById("selectTema").value);
         });
       }

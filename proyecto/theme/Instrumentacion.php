@@ -335,9 +335,9 @@
 		<tr>
 			<td height="36" align="left" valign=middle><br></td>
 			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Programa Educativo:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=9 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->PE)) echo $instrumentacion->PE; ?><br></i></td>
+			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=9 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PE)) echo $instrumentacion->TodasMaterias[0]->PE; ?><br></i></td>
 			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Plan de estudios:</b></td>
-			<td style="border-right: 2px solid #ffffff" colspan=10 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->PlanEstudios)) echo $instrumentacion->PlanEstudios; ?><br></i></td>
+			<td style="border-right: 2px solid #ffffff" colspan=10 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PlanEstudios)) echo $instrumentacion->TodasMaterias[0]->PlanEstudios; ?><br></i></td>
 			<td align="left" valign=middle><br></td>
 		</tr>
 		<tr>
@@ -355,7 +355,7 @@
 		<tr>
 			<td height="36" align="center" valign=middle><b><br></b></td>
 			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Semestre:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=5 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->Semestre)) echo $instrumentacion->Semestre; ?><br></i></td>
+			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=5 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->TodasMaterias[0]->Semestre)) echo $instrumentacion->TodasMaterias[0]->Semestre; ?><br></i></td>
 			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Clave de grupo:</b></td>
 			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9"><i>
 					<font size=3><?php if (isset($grupo1)) echo $grupo1; ?><br></font>
@@ -1181,11 +1181,9 @@
 
 			$nc = explode(",", $grupo);
 			//echo $grupo;
-
 			//echo count($nc);
 			if (isset($instrumentacion->Temas->$tema->Fechas->$grupo)) {
 				$datos = $instrumentacion->Temas->$tema->Fechas->$grupo;
-
 
 				//echo count($datos);
 				for ($ii = 0; $ii < count($datos); $ii += 3) {

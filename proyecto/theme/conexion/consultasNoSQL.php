@@ -89,6 +89,7 @@
                 $grupoins = substr($grupo, 0,3);
                 $periodo = $_POST['periodo'];
                 $correo = $_SESSION['correo'];
+                $claveAsignatura = $_POST['claveAsignatura'];
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
                 $campo = ["periodos_Inst.".$periodo.".".$grupo=>1];
                 $campoins = ["periodos_Inst.".$periodo.".".$grupoins=>1];
@@ -98,24 +99,24 @@
                 //Una vez que se borra la instrumentacion de la coleccion de docentes, es necesario eliminar
                 //alguna referencia de la misma en la colecciones de instrumentaciones, especificamente
                 //dentro del campo de Temas y asu ves dentro de los campos de Fechas y Semanas
-                $projeccion = ["projection" => ["periodos_Inst." . $periodo . "." . $grupoins . ".Temas" => 1, "_id" => 0]];
+                $projeccion = ["projection" => ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Temas" => 1, "_id" => 0]];
                 $temasInst = $connNoSQL->consultaProjeccion("instrumentaciones", ["Instrumentos" => "Carreras"], $projeccion);
 
                 //Si la consulta arroja datos, iterar los temas que tiene para eliminar los grupos que estan dentro del campo Fecha y Semanas
-                if(isset($temasInst[0]->periodos_Inst->$periodo->$grupoins->Temas)) {
-                    $t = $temasInst[0]->periodos_Inst->$periodo->$grupoins->Temas;
+                if(isset($temasInst[0]->periodos_Inst->$periodo->$claveAsignatura->Temas)) {
+                    $t = $temasInst[0]->periodos_Inst->$periodo->$claveAsignatura->Temas;
                     //echo json_encode($t);
                     foreach($t as $key => $value) {
                         if(isset($value->Fechas->$grupo)) {
                             //Si existe el campo del grupo a eliminar dentro de Fechas, actualizar y eliminarlo de la coleccion
-                            $campoins = ["periodos_Inst." . $periodo . "." . $grupoins . ".Temas." . $key . ".Fechas." . $grupo => 1];
+                            $campoins = ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Temas." . $key . ".Fechas." . $grupo => 1];
                             $connNoSQL->eliminarCampo("instrumentaciones", ["Instrumentos" => "Carreras"], $campoins);
                         }
                     }
                     foreach($t as $key => $value) {
                         if(isset($value->Semanas->$grupo)) {
                             //Si existe el campor del grupo a eliminar dentro de Semanas, actualizar y eliminarlo de la collecion
-                            $campoins = ["periodos_Inst." . $periodo . "." . $grupoins . ".Temas." . $key . ".Semanas." . $grupo => 1];
+                            $campoins = ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Temas." . $key . ".Semanas." . $grupo => 1];
                             $connNoSQL->eliminarCampo("instrumentaciones", ["Instrumentos" => "Carreras"], $campoins);
                         }
                     }
@@ -280,15 +281,16 @@
             case 'obtenerInstrumentacion':
                 $grupo=$_POST['grupo'];
                 $grupoins = substr($grupo, 0,3);
+                $claveAsignatura = $_POST['claveAsignatura'];
                 $periodo=$_POST['periodo']; 
                 $correo = $_SESSION['correo'];
                 $projeccion = ["projection" => 
-                                ["periodos_Inst.".$periodo.".".$grupoins=>1,
+                                ["periodos_Inst.".$periodo.".".$claveAsignatura=>1,
                                 "_id"=>0]];
 
                 $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
-                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupoins)){
-                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupoins;
+                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura)){
+                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura;
                     echo json_encode($instrumentacion);
                 }else{
                     echo "";
@@ -325,19 +327,20 @@
                 $numero=$_POST["numero"];
                 $periodo=$_POST["periodo"];
                 $grupo=$_POST["grupo"];
+                $claveAsignatura = $_POST["claveAsignatura"];
                 $grupoins = substr($grupo, 0, 3);
                 $tema=$_POST["tema"];
                 $numero=$numero-2;
                 $instru=$instrumento;
                 //echo "ok".$grupo;
                 $projeccion = ["projection" => 
-                    ["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$instru=>1,
+                    ["periodos_Inst.".$periodo.".".$claveAsignatura.".InstrumentosMatriz.Temas.".$tema.".".$instru=>1,
                      "_id"=>0]];
                 //echo $projeccion["projection"];
                 $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
 
-                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$instru)){
-                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupoins->InstrumentosMatriz->Temas->$tema->$instru;
+                if(isset($instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura->InstrumentosMatriz->Temas->$tema->$instru)){
+                    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura->InstrumentosMatriz->Temas->$tema->$instru;
                     echo json_encode($instrumentacion);
                     //return $instrumenta
                 }else{
@@ -360,12 +363,13 @@
                 $minimos=$_POST["minimos"];
                 $campo="12";
                 $grupoins = substr($grupo, 0, 3);
+                $claveAsignatura = $_POST["claveAsignatura"];
                 //$numero=$numero-2;
                  //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$campo=>$valor]);
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$instrumento=>$alcances]);              
                 //$connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupo.".Temas.".$tema.".".$instrumento=>$alcances]);
                 
-                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".InstrumentosMatriz.Temas.".$tema.".".$instrumento=>$alcances]);
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".InstrumentosMatriz.Temas.".$tema.".".$instrumento=>$alcances]);
 
             break;
             case 'borrarInstrumentoHec':

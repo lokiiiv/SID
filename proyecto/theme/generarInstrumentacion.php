@@ -7,6 +7,7 @@
  
 
   $grupoins=$_GET['grupo'];
+  $claveAsignatura = $_GET['claveAsignatura'];
   //echo $grupoins;
   //Eliminar espacios en blanco
   $buscar = " ";
@@ -24,14 +25,45 @@
   $nombre = $_SESSION['nombreCompleto'];
   $tema = $_GET['tema'];
   $firma = $_GET['firma'];
-  $projeccion = ["projection" => 
-                  ["periodos_Inst.".$periodo.".".$grupo=>1,
+
+  /* $projeccion = ["projection" => 
+                  ["periodos_Inst.".$periodo.".".$claveAsignatura=>1,
                   "_id"=>0]];
 
   //Aqui se extraen los datos de MongoDB
-  $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion);
-  if(isset($instrumentacion[0]->periodos_Inst->$periodo->$grupo)){
-    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$grupo;
+  $instrumentacion = $connNoSQL->consultaProjeccion("instrumentaciones",["Instrumentos"=>"Carreras"],$projeccion); */
+
+  //Aqui se extraen los datos de MongoDB
+  //De la coleccion, filtar solamente la información de la carrera del array
+  $agregacion = [
+    [
+      '$match' => ['Instrumentos' => 'Carreras']
+    ], 
+    [
+      '$addFields' => [
+        'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.TodasMaterias' => [
+          '$filter' => [
+            'input' => '$periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.TodasMaterias', 
+            'cond' => [
+              '$eq' => [
+                '$$this.Clave', $grupo
+              ]
+            ]
+          ]
+        ]
+      ]
+    ], 
+    [
+      '$project' => [
+        '_id' => 0, 
+        'periodos_Inst.'.$periodo.'.'.$claveAsignatura => 1
+      ]
+    ]
+  ];
+  $instrumentacion = $connNoSQL->agregacion("instrumentaciones", $agregacion);
+
+  if(isset($instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura)){
+    $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura;
     
     //print_r($instrumentacion);
     //$temas = $instrumentacion->totalTemas;
