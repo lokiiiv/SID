@@ -184,6 +184,20 @@
 			}
 		}
 
+		public function agregarAlArray($dbc,$antiguo,$nuevo){
+			try{
+				$bulk = new MongoDB\Driver\BulkWrite;
+				$bulk->update($antiguo,['$push'=>$nuevo]);			
+				$this->connection->executeBulkWrite($this->db.".".$dbc, $bulk);
+			}catch (MongoDB\Driver\Exception\Exception $e){
+				$filename = basename(__FILE__);
+				echo "ERROR en $filename .\n";
+				echo "Exception:", $e->getMessage(), "\n";
+				echo "En archivo:", $e->getFile(), "\n";
+				echo "En la linea:", $e->getLine(), "\n";    
+			}
+		}
+
 		public function eliminar($dbc,$doc){
 			$bulk = new MongoDB\Driver\BulkWrite;
 			$bulk->delete($doc);			

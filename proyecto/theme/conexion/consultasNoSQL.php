@@ -36,6 +36,9 @@
                 $clausula = $encabezado['clausula'];
                 $creditos = $_POST['creditos'];
                 $todasMaterias = $_POST['todasMaterias'];
+                
+                //print_r($todasMaterias);
+                //die();
 
                 //Después del grupo. //Para guardar en docentes. //Carrera - Periodo - Clave de grupo - Materia.
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
@@ -47,28 +50,30 @@
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".Semestre"=>$semestre]);
                 $connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".".$grupo.".ClaveAsignatura"=>$clave]);
 
-                //Para guardar dentro de instrumentaciones //Carrera > Periodo > Grupo > Todo lo demás.
-                //$connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Estatus"=>$estatus]);
-                /* $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Materia"=>$materia]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".PE"=>$carrera]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Semestre"=>$semestre]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".totalTemas"=>$temas]); 
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".ClaveAsignatura"=>$clave]);
-                //Encabezado dentro de instrumentaciones
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Revision"=>$revision]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Documento"=>$documento]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Responsable"=>$responsable]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".FechaEmision"=>$fechaemision]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".CodigoDocumento"=>$codigodocumento]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Clausula"=>$clausula]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".Creditos"=>$creditos]); */
 
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Materia"=>$materia]);
                 //$connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".PE"=>$carrera]);
                 //$connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Semestre"=>$semestre]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".totalTemas"=>$temas]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".ClaveAsignatura"=>$clave]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".TodasMaterias"=>$todasMaterias]);
+
+                /* Verificar todas las materias que puede incluir el plan de estudios,
+                verificar si esa materia ya existe en el array y si no existe agregarla */ 
+                foreach($todasMaterias as $materia) {
+                    $connNoSQL->agregarAlArray(
+                        "instrumentaciones", 
+                        [
+                            "Instrumentos"=>"Carreras", 
+                            "periodos_Inst.".$periodo.".".$clave.".TodasMaterias.Clave" => [
+                                '$ne' => $materia['Clave']
+                            ]
+                        ], 
+                        [
+                            'periodos_Inst.'.$periodo.'.'.$clave.'.TodasMaterias' => $materia
+                        ]
+                    );
+                }
+
                 //Encabezado dentro de instrumentaciones
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Revision"=>$revision]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Documento"=>$documento]);
