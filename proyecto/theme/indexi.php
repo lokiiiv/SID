@@ -230,7 +230,6 @@ require_once("../../valida.php");
         var clavemate = "";
         var datosencabezado = "";
         var creditos = "";
-        var todasMaterias = "";
 
         function crearInstrumentacion(boton) {
 
@@ -336,8 +335,7 @@ require_once("../../valida.php");
                             "semestre": semestreletra,
                             "clave": clavemate,
                             "encabezado": datosencabezado,
-                            "creditos": creditos,
-                            "todasMaterias": todasMaterias
+                            "creditos": creditos
                         };
                         $.ajax({
                             data: parametros,
@@ -701,7 +699,7 @@ require_once("../../valida.php");
                         clavemate = res.data.clave;
                         datosencabezado = res.data.encabezado;
                         creditos = res.data.creditos;
-                        todasMaterias = res.data.todasMaterias;
+                        //todasMaterias = res.data.todasMaterias;
 
                         var mater = res.data.materia;
                         var cantTemas = res.data.temas != "" && res.data.temas != null ? parseInt(res.data.temas) : 0;

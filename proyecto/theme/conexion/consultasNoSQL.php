@@ -35,10 +35,7 @@
                 $codigodocumento = $encabezado['codigo'];
                 $clausula = $encabezado['clausula'];
                 $creditos = $_POST['creditos'];
-                $todasMaterias = $_POST['todasMaterias'];
-                
-                //print_r($todasMaterias);
-                //die();
+            
 
                 //Después del grupo. //Para guardar en docentes. //Carrera - Periodo - Clave de grupo - Materia.
                 //$connNoSQL->modificar("docentes",["correo"=>$correo],["periodos_Inst.".$periodo.".Grupos"=>$grupos]);
@@ -57,22 +54,20 @@
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".totalTemas"=>$temas]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".ClaveAsignatura"=>$clave]);
 
-                /* Verificar todas las materias que puede incluir el plan de estudios,
-                verificar si esa materia ya existe en el array y si no existe agregarla */ 
-                foreach($todasMaterias as $materia) {
-                    $connNoSQL->agregarAlArray(
-                        "instrumentaciones", 
-                        [
-                            "Instrumentos"=>"Carreras", 
-                            "periodos_Inst.".$periodo.".".$clave.".TodasMaterias.Clave" => [
-                                '$ne' => $materia['Clave']
-                            ]
-                        ], 
-                        [
-                            'periodos_Inst.'.$periodo.'.'.$clave.'.TodasMaterias' => $materia
+                /* Agregar al array del grupos que pertenecen a esa clave de asignatura solo si no existe */ 
+                $connNoSQL->agregarAlArray(
+                    "instrumentaciones", 
+                    [
+                        "Instrumentos"=>"Carreras", 
+                        "periodos_Inst.".$periodo.".".$clave.".TodasMaterias.Clave" => [
+                            '$ne' => $grupoins
                         ]
-                    );
-                }
+                    ], 
+                    [
+                        'periodos_Inst.'.$periodo.'.'.$clave.'.TodasMaterias' => ['Clave' => $grupoins, 'PE' => $carrera, 'Semestre' => $semestre]
+                    ]
+                );
+                
 
                 //Encabezado dentro de instrumentaciones
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Revision"=>$revision]);
@@ -82,6 +77,8 @@
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".CodigoDocumento"=>$codigodocumento]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Clausula"=>$clausula]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Creditos"=>$creditos]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".SoloLectura"=>false]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Validacion"=>["Estatus"=>false]]);
             break;
             case 'borrarInstrumentacion':
                 //$instrumentacion = $_POST['ins'];
@@ -264,6 +261,7 @@
                                     ]
                                 ]
                             ], 
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.SoloLectura' => 1,
                             '_id' => 0
                         ]
                     ]
@@ -452,15 +450,18 @@
 
 
             case 'mandarInstrumentacionDocente':
-                //Cambiar el estatus de la instrumentacion y ponerlo en "B"
-                //B = En espera de validación el presidente de grupo academico
-                $valor="B";
-                $campo="Estatus";
+                //Cambiar el estatus de la instrumentacion y ponerlo como Solo lectura
+                //Crear un nuevo campo indicando el id y nombre del presidente de grupo academico responsable de validar
                 $grupo=$_POST['grupo'];
                 $grupoins = substr($grupo, 0,3);
                 $periodo = $_POST['periodo'];
                 $correo = $_SESSION['correo'];
-                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$grupoins.".".$campo=>$valor]);
+                $claveAsignatura = $_POST['claveAsignatura'];
+                $idPresidente = $_POST['idPresidente'];
+                $nombrePresidente = $_POST['nombrePresidente'];
+                $correoPresidente = $_POST['correoPresidente'];
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".SoloLectura"=>true]);
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Responsable"=>["ID" => $idPresidente, "Nombre" => $nombrePresidente, "Correo" => $correoPresidente]]);
                 echo json_encode(['success' => true, 'mensaje' => 'La instrumentación ahora podrá ser vista por el presidente de grupo académico para su respectiva validación.']);
                 break;
         }

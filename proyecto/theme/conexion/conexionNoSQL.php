@@ -216,11 +216,8 @@
 			}catch (MongoDB\Driver\Exception\Exception $e){
 				$filename = basename(__FILE__);
 				echo "ERROR en $filename .\n";
-				echo "<pre>";
 				echo "Exception:", $e->getMessage(), "\n";
-				echo "<pre>";
 				echo "En archivo:", $e->getFile(), "\n";
-				echo "<pre>";
 				echo "En la linea:", $e->getLine(), "\n";    
 			}
 		}

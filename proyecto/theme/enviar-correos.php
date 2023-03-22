@@ -64,58 +64,45 @@ try {
 $connNoSQL = connNoSQL::singleton();
 $pipeline = [
     [
+        '$match' => [
+            'Instrumentos' => 'Carreras'
+        ]
+    ], 
+    [
         '$project' => [
             '_id' => 0, 
-            'Instrumentos' => 1, 
-            'grupoinst' => [
-                '$filter' => [
-                    'input' => [
-                        '$objectToArray' => '$periodos_Inst.ENERO-JUNIO-2023'
-                    ], 
-                    'cond' => [
-                        '$and' => [
-                            [
-                                '$in' => [
-                                    '$$this.k', 
-                                    [
-                                        '1F2', 
-                                        '2F2', 
-                                        '3F2', 
-                                        '4F3', 
-                                        '7F6', 
-                                        '8F6', 
-                                        '7F7'
-                                    ]
-                                ]
-                            ], 
-                            [
-                                '$eq' => [
-                                    '$$this.v.Estatus', 'B'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+            'instrumentaciones' => [
+                '$objectToArray' => '$periodos_Inst.ENERO-JUNIO-2023'
             ]
         ]
     ], 
     [
         '$unwind' => [
-            'path' => '$grupoinst'
+            'path' => '$instrumentaciones'
+        ]
+    ], 
+    [
+        '$match' => [
+            'instrumentaciones.v.Validacion.Responsable.ID' => '96'
+        ]
+    ], 
+    [
+        '$unwind' => [
+            'path' => '$instrumentaciones.v.TodasMaterias'
         ]
     ], 
     [
         '$lookup' => [
             'from' => 'docentes', 
             'let' => [
-                'grupoinst' => '$grupoinst.k'
+                'grupoinst' => '$instrumentaciones.v.TodasMaterias.Clave'
             ], 
             'pipeline' => [
                 [
                     '$project' => [
                         '_id' => 0, 
-                        'correo' => 1, 
                         'nombre' => 1, 
+                        'correo' => 1, 
                         'grupo' => [
                             '$map' => [
                                 'input' => [
@@ -148,16 +135,14 @@ $pipeline = [
                     ]
                 ]
             ], 
-            'as' => 'docentes'
+            'as' => 'instrumentaciones.v.TodasMaterias.Docentes'
         ]
     ], 
     [
-        '$project' => [
-            'Instrumentos' => 1, 
-            'grupoinst' => 1, 
-            'docentes' => [
+        '$addFields' => [
+            'instrumentaciones.v.TodasMaterias.Docentes' => [
                 '$map' => [
-                    'input' => '$docentes', 
+                    'input' => '$instrumentaciones.v.TodasMaterias.Docentes', 
                     'in' => [
                         'correo' => '$$this.correo', 
                         'nombre' => '$$this.nombre', 
@@ -165,6 +150,74 @@ $pipeline = [
                     ]
                 ]
             ]
+        ]
+    ], 
+    [
+        '$group' => [
+            '_id' => '$instrumentaciones.k', 
+            'docentes' => [
+                '$push' => '$instrumentaciones.v.TodasMaterias'
+            ]
+        ]
+    ], 
+    [
+        '$lookup' => [
+            'from' => 'instrumentaciones', 
+            'let' => [
+                'claveinst' => '$_id'
+            ], 
+            'pipeline' => [
+                [
+                    '$project' => [
+                        '_id' => 0, 
+                        'instrumentaciones' => [
+                            '$objectToArray' => '$periodos_Inst.ENERO-JUNIO-2023'
+                        ]
+                    ]
+                ], 
+                [
+                    '$unwind' => [
+                        'path' => '$instrumentaciones'
+                    ]
+                ], 
+                [
+                    '$match' => [
+                        'instrumentaciones.v.Validacion.Responsable.ID' => '96'
+                    ]
+                ], 
+                [
+                    '$match' => [
+                        '$expr' => [
+                            '$eq' => [
+                                '$instrumentaciones.k', '$$claveinst'
+                            ]
+                        ]
+                    ]
+                ]
+            ], 
+        'as' => 'instruDetalle'
+        ]
+    ], 
+    [
+        '$unwind' => [
+            'path' => '$instruDetalle'
+        ]
+    ], 
+    [
+        '$project' => [
+            '_id' => 1, 
+            'docentes' => 1, 
+            'instruDetalle' => '$instruDetalle.instrumentaciones'
+        ]
+    ], 
+    [
+        '$addFields' => [
+            'instruDetalle.v.TodasMaterias' => '$docentes'
+        ]
+    ], 
+    [
+        '$replaceRoot' => [
+            'newRoot' => '$instruDetalle'
         ]
     ]
 ];

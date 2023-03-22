@@ -47,7 +47,7 @@ require_once("../../valida.php");
   <link rel="shortcut icon" href="img/favicon/favicon.png">
 
   <script type="text/javascript">
-    var estatusActual = null;
+    var soloLectura = null;
     window.onload = function() {
       ocultar_mostrar(0);
       actualizarCampos();
@@ -129,20 +129,11 @@ require_once("../../valida.php");
           }
 
           //Verificar el estatus de la instrumentación y habilitar o deshabilitar inputs, botones, etc conforme al estatus
-          estatusActual = (typeof x['Estatus'] != "undefined") ? x['Estatus'] : "";
-          switch (estatusActual) {
-            case "A":
-              $("#mensajeEstatus").addClass("text-success").text("Ahora puede editar o administrar la instrumentación.");
-              break;
-            case "B":
-              $("#mensajeEstatus").addClass("text-danger").text("Ya no puede editar la instrumentación, se encuentra en proceso de validación por parte del presidente de grupo académico de la asignatura.");
-              break;
-            case "C":
-              $("#mensajeEstatus").addClass("text-danger").text("Ya no puede editar la instrumentación, se encuentra en proceso de validación por parte del jefe de división correspondiente.");
-              break;
-            case "D":
-              $("#mensajeEstatus").addClass("text-success").text("La instrumentación ya ha sido validada y ahora puede ser publicada.");
-              break;
+          soloLectura = (typeof x['SoloLectura'] != "undefined") ? x['SoloLectura'] : true;
+          if(soloLectura) {
+            $("#mensajeEstatus").addClass("text-danger").text("Ya no puede editar la instrumentación, se encuentra en proceso de validación por parte del presidente de grupo académico de la asignatura.");
+          } else {
+            $("#mensajeEstatus").addClass("text-success").text("Ahora puede editar o administrar la instrumentación.");
           }
 
           document.getElementById("campoMateria").innerHTML = (typeof x['Materia'] != "undefined") ? x['Materia'] : "-";
@@ -506,27 +497,17 @@ require_once("../../valida.php");
 
     // --------------- METODO PARA HABILITAR O DESHABILITAR LOS CAMPOS CONFORME AL ESTATUS DE LA INSTRUMENTACION -----------------
     function habilitarDeshabilitarCampos() {
-      /* var elementos = document.getElementsByClassName("editable");
-      if (estatusActual != "") {
-        //console.log(elementos);
-        switch (estatusActual) {
-          case "A":
-            for (var i = 0; i < elementos.lenght; i++) {
-              elementos[i].disabled = false;
-            }
-            break;
-          case "B":
-            for (var i = 0; i < elementos.length; i++) {
-              elementos[i].disabled = true;
-              elementos[i].classList.add("disabled");
-            }
-            break;
+      var elementos = document.getElementsByClassName("editable");
+      if (soloLectura) {
+        for (var i = 0; i < elementos.length; i++) {
+          elementos[i].disabled = true;
+          elementos[i].classList.add("disabled");
         }
       } else {
         for (var i = 0; i < elementos.length; i++) {
-          elementos[i].disabled = true;
+          elementos[i].disabled = false;
         }
-      } */
+      } 
     }
   </script>
 
@@ -3540,6 +3521,7 @@ require_once("../../valida.php");
         var presidente = $(this).attr('data-presidente');
         var presidenteCorreo = $(this).attr('data-correopresidente');
         var grupo = $(this).attr('data-grupo');
+        var idPresidente = $(this).attr('data-idpresidente');
 
         var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo académico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
 
@@ -3560,7 +3542,11 @@ require_once("../../valida.php");
                   var parametros = {
                     "accion": "mandarInstrumentacionDocente",
                     "grupo": document.getElementById("campoGrupo").innerHTML,
-                    "periodo": document.getElementById("campoPeriodo").innerHTML
+                    "periodo": document.getElementById("campoPeriodo").innerHTML,
+                    "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML,
+                    "idPresidente": idPresidente,
+                    "nombrePresidente": presidente,
+                    "correoPresidente": presidenteCorreo
                   };
 
                   $.ajax({
