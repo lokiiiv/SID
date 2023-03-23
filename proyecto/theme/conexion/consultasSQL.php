@@ -1142,9 +1142,11 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
         case 'obtenerGruposAcademicosPorPresidente':
             if (isset($_POST["idUsuario"])) {
                 $idUsuario = $_POST["idUsuario"];
-                $sql = "SELECT * 
-                        FROM gruposacademicos
-                        WHERE cat_ID = :idUsuario";
+                $sql = "SELECT gr.*, GROUP_CONCAT(cr.ret_Clave) as materias
+                        FROM gruposacademicos gr
+                        INNER JOIN cereticula cr ON gr.id_grupoacademico = cr.id_grupoacademico
+                        WHERE cat_ID = :idUsuario
+                        GROUP BY gr.id_grupoacademico";
                 $grupos = $connSQL->preparedQuery($sql, ["idUsuario" => $idUsuario]);
                 echo json_encode(['success' => true, 'data' => $grupos]);
             } else {

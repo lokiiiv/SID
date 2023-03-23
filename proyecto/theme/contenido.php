@@ -3543,10 +3543,7 @@ require_once("../../valida.php");
                     "accion": "mandarInstrumentacionDocente",
                     "grupo": document.getElementById("campoGrupo").innerHTML,
                     "periodo": document.getElementById("campoPeriodo").innerHTML,
-                    "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML,
-                    "idPresidente": idPresidente,
-                    "nombrePresidente": presidente,
-                    "correoPresidente": presidenteCorreo
+                    "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
                   };
 
                   $.ajax({
