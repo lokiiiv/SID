@@ -486,6 +486,18 @@
                         '$unwind' => ['path' => '$instrumentaciones']
                     ], 
                     [
+                        '$project' => [
+                            'instrumentaciones.k' => 1, 
+                            'instrumentaciones.v.Materia' => 1, 
+                            'instrumentaciones.v.totalTemas' => 1, 
+                            'instrumentaciones.v.ClaveAsignatura' => 1, 
+                            'instrumentaciones.v.TodasMaterias' => 1, 
+                            'instrumentaciones.v.SoloLectura' => 1, 
+                            'instrumentaciones.v.Validacion' => 1, 
+                            'instrumentaciones.v.Temas' => 1
+                        ]
+                    ],
+                    [
                         '$match' => [
                             'instrumentaciones.v.TodasMaterias.Clave' => [
                                 '$in' => $materiasLista
@@ -569,6 +581,18 @@
                                 [
                                     '$unwind' => ['path' => '$instrumentaciones']
                                 ], 
+                                [
+                                    '$project' => [
+                                        'instrumentaciones.k' => 1, 
+                                        'instrumentaciones.v.Materia' => 1, 
+                                        'instrumentaciones.v.totalTemas' => 1, 
+                                        'instrumentaciones.v.ClaveAsignatura' => 1, 
+                                        'instrumentaciones.v.TodasMaterias' => 1, 
+                                        'instrumentaciones.v.SoloLectura' => 1, 
+                                        'instrumentaciones.v.Validacion' => 1, 
+                                        'instrumentaciones.v.Temas' => 1 
+                                    ],
+                                ],
                                 [
                                     '$match' => [
                                         'instrumentaciones.v.TodasMaterias.Clave' => [
