@@ -31,6 +31,19 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<!-- Font awesome CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+	<style>
+		.modal-dialog {
+			position: relative;
+			display: table;
+			overflow: auto;
+			width: auto;
+			min-width: 300px;
+		}
+		.modal-body { /* Restrict Modal width to 90% */
+			overflow-x: auto !important;
+			max-width: 90vw !important;
+		}
+	</style>
 </head>
 
 <body>
@@ -43,6 +56,25 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			<div class="row mb-4 mt-4">
 				<div class="col-12">
 					<div class="row" id="contenedor">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-instrumento">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="contenedor-instrumento"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 					</div>
 				</div>
 			</div>
@@ -143,7 +175,6 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 				}).done(function(res) {
 					//Obtener la lista de instrumentaciones a validar
 					var instru = typeof(JSON.parse(res).data) != "undefined" ? JSON.parse(res).data: null;
-					console.log('Instrumento: ', instru);
 					if(instru != null) {
 						htmlLista += '<a class="list-group-item list-group-item-action ' + (active ? 'active': '') + '" id="list-' + m.id_grupoacademico + '-list" data-toggle="list" href="#list-' + m.id_grupoacademico + '" role="tab" aria-controls="' + m.id_grupoacademico + '">' + m.nombre + '</a>';
 						
@@ -154,9 +185,9 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 						if(hasInstru) {
 							//Recorrer el array de instrumentaciones
 							instru.forEach(inst => {
-								htmlListaContenenido += '<div class="list-group-item list-group-item-action flex-column align-items-start">' +
-															'<h5>' + (inst.v.Materia != undefined ? inst.v.Materia : '') + '</h5>' +
-															'<h6>Clave de asignatura: ' + (inst.k != undefined ? inst.k: '') +'</h6>' +
+								htmlListaContenenido += '<div class="list-group-item list-group-item-action flex-column align-items-start item-instrumentacion">' +
+															'<h5 class="nombre-asignatura">' + (inst.v.Materia != undefined ? inst.v.Materia : '') + '</h5>' +
+															'<h6 class="clave-asignatura" data-clave="' + (inst.k != undefined ? inst.k: '') +'">Clave de asignatura: ' + (inst.k != undefined ? inst.k: '') +'</h6>' +
 															'<h6>Número de temas: ' + (inst.v.totalTemas != undefined ? inst.v.totalTemas: '') + '</h6>' +
 															'<h6>Los siguientes grupos comparten la presente instrumentación.</h6>' + 
 															'<div class="row mb-2">';
@@ -171,18 +202,17 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 								htmlListaContenenido += 	'</div>';
 								htmlListaContenenido += 	'<div class="row">' +
 																'<div class="col">';
-								if(inst.v.Temas != undefined || inst.v.Temas != null) {
-									Object.entries(inst.v.Temas).forEach(tema => {
-										console.log('Temas: ', Object.entries(inst.v.Temas));
+								if(inst.v.Temas != undefined && inst.v.Temas != null) {
+									inst.v.Temas.forEach(tema => {
 										htmlListaContenenido += 	'<div class="btn-group m-1">' +
-																		'<button type="button" class="btn btn-info btn-sm">Tema ' + tema[0] + '</button>' +
+																		'<button type="button" class="btn btn-info btn-sm abrirInstruTema" data-tema="' + tema.Tema + '">Tema ' + tema.Tema + '</button>' +
 																		'<button type="button" class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
 																			'<span class="sr-only">Toggle Dropdown</span>' +
 																		'</button>';
-										if(tema[1].MatrizEvaluacion != undefined) {
+										if(tema.Matriz != undefined && tema.Matriz != null) {
 											htmlListaContenenido +=		'<div class="dropdown-menu">';
-											tema[1].MatrizEvaluacion.forEach(tem => {
-												htmlListaContenenido +=		'<a class="dropdown-item" href="#" data-evidencia="' + tem[12] + '">' + tem[0] + '</a>';
+											tema.Matriz.forEach(tem => {
+												htmlListaContenenido +=		'<a class="dropdown-item abrirEvidencia" href="#" data-evidencia="' + tem[12] + '">' + tem[0] + '</a>';
 											});
 										} else {
 											htmlListaContenenido += 	'<div class="dropdown-menu">' +
@@ -214,6 +244,35 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 				$("#nav-tabContent").append(htmlListaContenenido);
 			})
 		}
+
+		//Mostar la vista correspondiente a una instrumentacion del tema
+		$(document).on('click', '.abrirInstruTema', function() {
+			//Obtener la clave de asignatura de la actual instrumentacion seleccionada
+			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
+			//Obtener que tema mostrar
+			var tema = $(this).attr('data-tema');
+			//Obtener el primero grupo que comparte esa instrumentacion, solo para mostrarlo como ejemplo
+			var grupo = $(this).closest('.item-instrumentacion').find('h6 span:first').text();
+
+			var asignatura = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+			
+			if(claveAsignatura != undefined && tema != undefined && grupo != undefined && periodo != undefined) {
+				$("#contenedor-instrumento").load("generarinstrumentacion.php?grupo=" + encodeURI(grupo) + "&periodo=" + encodeURI(periodo) + "&tema=" + encodeURI(tema) + "&claveAsignatura=" + encodeURI(claveAsignatura), function(response) {
+					$("#modal-instrumento .modal-title").text("Instrumentación didáctica del Tema No. " + tema + " de la asignatura de " + asignatura + " (" + claveAsignatura + ").");
+					$("#modal-instrumento").modal('show');
+				});
+			}
+		});
+
+		//Mostrar la vista correspondiente a una evidencia de cierto tema
+		$(document).on('click', '.abrirEvidencia', function(e) {
+			e.preventDefault();
+		})
+
+		$('#modal-instrumento').on('show.bs.modal', function() {
+			$(".modal-body").css("padding",'0px');
+			$(".modal-body").css("margin",'0px');
+		});
 	</script>
 
 </body>

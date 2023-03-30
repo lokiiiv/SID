@@ -4,8 +4,6 @@
   require_once 'conexion/conexionNoSQL.php';
   $connNoSQL = connNoSQL::singleton();
 
- 
-
   $grupoins=$_GET['grupo'];
   $claveAsignatura = $_GET['claveAsignatura'];
   //echo $grupoins;
@@ -24,7 +22,7 @@
   $correo = $_SESSION['correo'];
   $nombre = $_SESSION['nombreCompleto'];
   $tema = $_GET['tema'];
-  $firma = $_GET['firma'];
+  $firma = isset($_GET['firma']) ? $_GET['firma'] : '';
 
   /* $projeccion = ["projection" => 
                   ["periodos_Inst.".$periodo.".".$claveAsignatura=>1,
@@ -68,8 +66,9 @@
     //print_r($instrumentacion);
     //$temas = $instrumentacion->totalTemas;
  //   for ($tema=0; $tema < $temas; $tema++) { 
-      require("Instrumentacion.php");
+      //require("Instrumentacion.php");
    // 
+      require("Instrumentacion.php");
     
   }else{
       print_r("No se encontró instrumentación");

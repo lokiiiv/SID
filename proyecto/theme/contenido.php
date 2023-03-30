@@ -46,6 +46,19 @@ require_once("../../valida.php");
   <!-- Favicon -->
   <link rel="shortcut icon" href="img/favicon/favicon.png">
 
+  <style>
+    #modal-instrumento .modal-dialog {
+			position: relative;
+			display: table;
+			overflow: auto;
+			width: auto;
+			min-width: 300px;
+		}
+		#modal-instrumento .modal-body { /* Restrict Modal width to 90% */
+			overflow-x: auto !important;
+			max-width: 90vw !important;
+		}
+  </style>
   <script type="text/javascript">
     var soloLectura = null;
     window.onload = function() {
@@ -3253,6 +3266,26 @@ require_once("../../valida.php");
       </div>
     </div>
 
+   <!--  Modal para la instrumentacion -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-instrumento">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="contenedor-instrumento"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
     <?php
     require 'footer.php';
     ?>
@@ -3424,6 +3457,7 @@ require_once("../../valida.php");
     <script>
       //Antes de generar la instrumentación, verificar si el usuario actual ya subio su firma correspondiente
       $("#formGenerarInstru").on("submit", function(e) {
+        var formulario = $(this);
         e.preventDefault();
         $.ajax({
           data: {
@@ -3437,7 +3471,17 @@ require_once("../../valida.php");
             if (res.success) {
               //formulario.submit();
               $('#formGenerarInstru').append('<input type="hidden" name="firma" value="' + res.data + '" id="enviarFirma"/>');
-              e.currentTarget.submit();
+              //e.currentTarget.submit();
+              
+              var tem = document.getElementById("selectTema").value;
+              var claveAsignatura = document.getElementById("campoClaveAsignatura").innerHTML;
+              var asignatura = document.getElementById("campoMateria").innerHTML;
+              //Abrir el modal con la vista de la instrumentacion
+              $("#contenedor-instrumento").load("generarinstrumentacion.php?" + formulario.serialize(), function(response) {
+                $("#modal-instrumento .modal-title").text("Instrumentación didáctica del Tema No. " + tem + " de la asignatura de " + asignatura + " (" + claveAsignatura + ").");
+                $("#modal-instrumento").modal('show');
+              });
+
             } else {
               alertify.warning('<h3>' + res.mensaje + '</h3>');
             }
@@ -3621,6 +3665,11 @@ require_once("../../valida.php");
             alert('Error: ' + jqXHR.responseText);
           }
         });
+      });
+
+      $('#modal-instrumento').on('show.bs.modal', function() {
+        $("#modal-instrumento .modal-body").css("padding",'0px');
+        $("#modal-instrumento .modal-body").css("margin",'10px');
       });
     </script>
     <script>

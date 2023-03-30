@@ -494,7 +494,17 @@
                             'instrumentaciones.v.TodasMaterias' => 1, 
                             'instrumentaciones.v.SoloLectura' => 1, 
                             'instrumentaciones.v.Validacion' => 1, 
-                            'instrumentaciones.v.Temas' => 1
+                            'instrumentaciones.v.Temas' => [
+                                '$map' => [
+                                    'input' => [
+                                        '$objectToArray' => '$instrumentaciones.v.Temas'
+                                    ],
+                                    'in' => [
+                                        'Tema' => '$$this.k',
+                                        'Matriz' => '$$this.v.MatrizEvaluacion'
+                                    ]
+                                ]
+                            ]
                         ]
                     ],
                     [
@@ -590,7 +600,17 @@
                                         'instrumentaciones.v.TodasMaterias' => 1, 
                                         'instrumentaciones.v.SoloLectura' => 1, 
                                         'instrumentaciones.v.Validacion' => 1, 
-                                        'instrumentaciones.v.Temas' => 1 
+                                        'instrumentaciones.v.Temas' => [
+                                            '$map' => [
+                                                'input' => [
+                                                    '$objectToArray' => '$instrumentaciones.v.Temas'
+                                                ],
+                                                'in' => [
+                                                    'Tema' => '$$this.k',
+                                                    'Matriz' => '$$this.v.MatrizEvaluacion'
+                                                ]
+                                            ]
+                                        ]
                                     ],
                                 ],
                                 [

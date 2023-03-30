@@ -1,1706 +1,811 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<style>
+	#instru .color {
+		background-color: #C6D9F1;
+	}
 
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title></title>
-	<meta name="generator" content="LibreOffice 6.2.8.2 (Linux)" />
-	<meta name="author" content="PC-15" />
-	<meta name="created" content="2009-03-11T16:24:58" />
-	<meta name="changed" content="2020-01-12T23:26:08.063357211" />
-	<meta name="AppVersion" content="15.0300" />
-	<meta name="DocSecurity" content="0" />
-	<meta name="HyperlinksChanged" content="false" />
-	<meta name="LinksUpToDate" content="false" />
-	<meta name="ScaleCrop" content="false" />
-	<meta name="ShareDoc" content="false" />
-	<meta name="WorkbookGuid" content="f12d54b6-09a8-44f6-a7f3-f390cfee3c8d" />
+	#instru .color-claro {
+		background-color: #F1F5F9;
+		border-left: 3px solid white;
+		border-right: 3px solid white;
+		box-sizing: border-box;
+	}
 
-	<style type="text/css">
-		body,
-		div,
-		table,
-		thead,
-		tbody,
-		tfoot,
-		tr,
-		th,
-		td,
-		p {
-			font-family: arial;
-			font-size: 14px;
-		}
+	#instru .text-bold {
+		font-size: 10px;
+		font-weight: bold;
+		text-align: center;
+	}
 
-		a.comment-indicator:hover+comment {
-			background: #ffd;
-			position: absolute;
-			display: block;
-			border: 1px solid black;
-			padding: 0.5em;
-		}
+	#instru .text-general {
+		font-size: 14px;
+		font-family: 'Arial Narrow';
+		line-height: 14px;
+		color: black;
+		text-align: center;
+	}
 
-		a.comment-indicator {
-			background: red;
-			display: inline-block;
-			border: 1px solid black;
-			width: 0.5em;
-			height: 0.5em;
-		}
+	#instru .border-b {
 
-		comment {
-			display: none;
-		}
-	</style>
+		border-bottom: 1px solid #1f497d;
+	}
 
-</head>
+	#instru .border-t {
+		border-top: 1px solid #1f497d;
+	}
 
-<body>
+	#instru .border-r {
+		border-right: 1px solid #1f497d;
+	}
 
+	#instru .border-l {
+		border-left: 1px solid #1f497d;
+	}
+
+	#instru .border-b-b {
+		border-bottom: 1px solid black;
+	}
+
+	#instru .border-t-b {
+		border-top: 1px solid black;
+	}
+
+	#instru .border-r-b {
+		border-right: 1px solid black;
+	}
+
+	#instru .border-l-b {
+		border-left: 1px solid black;
+	}
 
 
-	<table align="center" cellspacing="0" border="0" style="width: 90%;">
-		<colgroup width="11"></colgroup>
-		<colgroup span="5" width="56"></colgroup>
-		<colgroup width="120"></colgroup>
-		<colgroup span="20" width="56"></colgroup>
-		<tr>
-			<td style="border-top: 1px solid #000000; border-left: 1px solid #000000" height="8" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-top: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle><br></td>
 
-		</tr>
-		<tr>
-			<td style="border-left: 1px solid #000000" height="18" align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br><img src="../../images/itesa.png" width=175 height=76></td>
-			<td align="left" valign=middle><br></td>
-			<td colspan=22 align="right" valign=middle>Instituto Tecnológico Superior del Oriente del Estado de Hidalgo</td>
-			<td style="border-right: 1px solid #000000" align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td style="border-left: 1px solid #000000" height="19" align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td colspan=14 align="right" valign=middle bgcolor="#C6D9F1"><b>SISTEMA DE GESTIÓN DE LA CALIDAD</b></td>
-			<td style="border-right: 1px solid #000000" align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td style="border-left: 1px solid #000000" height="23" align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td colspan=14 align="right" valign=middle><b>Instrumentación Didáctica</b></td>
-			<td style="border-right: 1px solid #000000" align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td style="border-bottom: 1px solid #000000; border-left: 1px solid #000000" height="5" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000" align="left" valign=middle><br></td>
-			<td style="border-bottom: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td height="6" align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td height="19" align="left" valign=middle><br></td>
-			<td colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>
-					<font size=1>DOCUMENTO</font>
-				</b></td>
-			<td style="border-bottom: 1px solid #1f497d" colspan=6 align="center" valign=middle><b>
-					<font face="Arial Narrow"><?php if (isset($instrumentacion->Documento)) echo $instrumentacion->Documento; ?><br></font>
-				</b></td>
-			<td colspan=5 align="center" valign=middle bgcolor="#C6D9F1"><b>
-					<font size=1>CLÁUSULA ISO 9001 2008</font>
-				</b></td>
-			<td style="border-bottom: 1px solid #1f497d" colspan=4 align="center" valign=middle><b>
-					<font face="Arial Narrow"><?php if (isset($instrumentacion->Clausula)) echo $instrumentacion->Clausula; ?><br></font>
-				</b></td>
-			<td colspan=4 align="center" valign=middle bgcolor="#C6D9F1"><b>
-					<font size=1>REVISIÓN</font>
-				</b></td>
-			<td style="border-bottom: 1px solid #000000" align="center" valign=middle><b>
-					<font face="Arial Narrow"><?php if (isset($instrumentacion->Revision)) echo $instrumentacion->Revision; ?><br></font>
-				</b></td>
-			<td style="border-bottom: 1px solid #000000" align="center" valign=middle><b>
-					<font face="Arial Narrow"><br></font>
-				</b></td>
-			<td style="border-bottom: 1px solid #000000" align="center" valign=middle><b>
-					<font face="Arial Narrow"><br></font>
-				</b></td>
-			<td align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-		</tr>
-		<tr>
-			<td height="5" align="left" valign=middle><br></td>
-			<td align="left" valign=middle><b>
-					<font size=1><br></font>
-				</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><b>
-					<font size=1><br></font>
-				</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><b>
-					<font face="Arial Narrow"><br></font>
-				</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td height="19" align="left" valign=middle><br></td>
-			<td colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>
-					<font size=1>RESPONSABLE</font>
-				</b></td>
-			<td colspan=6 style="border-bottom: 1px solid #1f497d" align="center" valign=middle><b>
-					<font face="Arial Narrow"><?php if (isset($instrumentacion->Responsable)) echo $instrumentacion->Responsable; ?><br></font>
-				</b></td>
+	#instru .all-border {
+		border: 1px solid #1f497d;
+	}
 
-			<td colspan=5 align="center" valign=middle bgcolor="#C6D9F1"><b>
-					<font size=1>FECHA DE EMISIÓN</font>
-				</b></td>
-			<td style="border-bottom: 1px solid #1f497d" colspan=4 align="center" valign=middle sdnum="2058;0;@"><b>
-					<font face="Arial Narrow"><?php if (isset($instrumentacion->FechaEmision)) echo $instrumentacion->FechaEmision; ?><br></font>
-				</b></td>
-			<td colspan=4 align="center" valign=middle bgcolor="#C6D9F1"><b>
-					<font size=1>CÓDIGO DEL DOCUMENTO</font>
-				</b></td>
-			<td style="border-bottom: 1px solid #000000" colspan=3 align="center" valign=middle><b>
-					<font face="Arial Narrow"><?php if (isset($instrumentacion->CodigoDocumento)) echo $instrumentacion->CodigoDocumento; ?><br></font>
-				</b></td>
-			<td align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-		</tr>
-		<tr>
-			<td height="8" align="left" valign=middle><br></td>
-			<td align="left" valign=middle><b>
-					<font size=1><br></font>
-				</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><b>
-					<font size=1><br></font>
-				</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle>
-				<font face="Arial Narrow"><br></font>
-			</td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-			<td align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td height="36" align="left" valign=middle><br></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Programa Educativo:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=9 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PE)) echo $instrumentacion->TodasMaterias[0]->PE; ?><br></i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Plan de estudios:</b></td>
-			<td style="border-right: 2px solid #ffffff" colspan=10 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PlanEstudios)) echo $instrumentacion->TodasMaterias[0]->PlanEstudios; ?><br></i></td>
-			<td align="left" valign=middle><br></td>
-		</tr>
-		<tr>
-			<td height="36" align="center" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Nombre de la asignatura:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=10 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->Materia)) echo $instrumentacion->Materia; ?><br></i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#C6D9F1"><b>Clave de la asignatura:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->ClaveAsignatura)) echo $instrumentacion->ClaveAsignatura; ?><br></i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#C6D9F1"><b>Créditos:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9" sdnum="2058;0;@"><?php if (isset($instrumentacion->Creditos)) echo $instrumentacion->Creditos; ?><br></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#C6D9F1"><b>Número de Tema:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9" sdnum="2058;0;0"><i><?php echo $tema ?><br></i></td>
-			<td align="left" valign=bottom><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="36" align="center" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Semestre:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=5 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($instrumentacion->TodasMaterias[0]->Semestre)) echo $instrumentacion->TodasMaterias[0]->Semestre; ?><br></i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Clave de grupo:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9"><i>
-					<font size=3><?php if (isset($grupo1)) echo $grupo1; ?><br></font>
-				</i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9"><i>
-					<font size=3><?php if (isset($grupo2)) echo $grupo2; ?><br></font>
-				</i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9"><i>
-					<font size=3><?php if (isset($grupo3)) echo $grupo3; ?><br></font>
-				</i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#F1F5F9"><i>
-					<font size=3><?php if (isset($grupo4)) echo $grupo4; ?><br></font>
-				</i></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=2 align="center" valign=middle bgcolor="#C6D9F1"><b>Periodo:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($periodo)) echo $periodo; ?><br></i></td>
-			<td align="left" valign=bottom><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="36" align="center" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=3 align="center" valign=middle bgcolor="#C6D9F1"><b>Nombre del docente:</b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff" colspan=22 align="center" valign=middle bgcolor="#F1F5F9"><i><?php if (isset($nombre)) echo $nombre ?><br></i></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="34" align="center" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="center" valign=middle bgcolor="#C6D9F1"><b>
-					<font size=4>Instrumentación Didáctica</font>
-				</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="8" align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="34" align="left" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>1.- Caracterización de la asignatura</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="100" align="left" valign=middle><b><br></b></td>
-			<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #254061; border-right: 1px solid #254061;  text-align: justify; white-space: pre-wrap; " colspan=25 align="left" valign=top sdnum="2058;0;@"><?php if (isset($instrumentacion->Caracterizacion)) echo $instrumentacion->Caracterizacion; ?><br><br><br></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="6" align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="34" align="left" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>2.- Intención didáctica</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="100" align="left" valign=middle><b><br></b></td>
-			<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #254061; border-right: 1px solid #254061;  text-align: justify; white-space: pre-wrap; " colspan=25 align="left" valign=top sdnum="2058;0;@"><?php if (isset($instrumentacion->IntencionDidactica)) echo $instrumentacion->IntencionDidactica; ?><br><br><br></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="7" align="left" valign=middle><b><br></b></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="34" align="left" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>3.-Competencias previas</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="50" align="left" valign=middle><b><br></b></td>
-			<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #254061; border-right: 1px solid #254061;  text-align: justify; white-space: pre-wrap; " colspan=25 align="left" valign=top sdnum="2058;0;@"><?php if (isset($instrumentacion->CompetenciasPrevias)) echo $instrumentacion->CompetenciasPrevias; ?><br><br><br></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="7" align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="34" align="center" valign=middle><b><br></b></td>
-			<td style="border-top: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>4.- Competencia específica de la asignatura</b></td>
-			<td align="left" valign=middle><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="50" align="center" valign=middle><b><br></b></td>
-			<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #254061; border-right: 1px solid #254061; text-align: justify; white-space: pre-wrap; " colspan=25 align="left" valign=top sdnum="2058;0;@"><?php if (isset($instrumentacion->CompetenciaEA)) echo $instrumentacion->CompetenciaEA; ?><br><br><br></td>
-			<td align="left" valign=bottom><b><br></b></td>
-		</tr>
-		<tr>
-			<td height="5" align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="center" valign=middle><b><br></b></td>
-			<td align="left" valign=bottom><b><br></b></td>
-		</tr>
+	#instru .all-border-b {
+		border: 1px solid black;
+	}
+
+	#instru b {
+		font-size: 15px;
+	}
+
+	#instru p {
+		font-family: arial;
+		font-size: 14px;
+	}
+
+	#instru i {
+		font-size: 16px;
+	}
+
+	#practicas p,
+	#criterios p,
+	#indicadores p,
+	#matriz p,
+	#calendarizacion p,
+	#fuentes p,
+	#encabezado p {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+</style>
+<div class="container-fluid" style="max-width: 1276px; min-width: 1100px" id="instru">
+	<div class="mt-1 mb-4 ml-3 mr-3">
+		<div id="encabezado">
+			<div class="row" style="border: 1px solid #000000;">
+				<div class="col">
+					<div class="row">
+						<div class="col d-flex justify-content-start align-items-center">
+							<img src="../../images/itesa.png" class="img-fluid" width="175px">
+						</div>
+						<div class="col pt-5 pb-5 d-flex justify-content-end align-items-center">
+							<p style="font-size: 16px;">Instituto Tecnológico Superior del Oriente del Estado de Hidalgo</p>
+						</div>
+					</div>
+					<div class="row d-flex justify-content-end">
+						<div class="col-6 color text-right">
+							<b>SISTEMA DE GESTIÓN DE LA CALIDAD</b>
+						</div>
+					</div>
+					<div class="row  d-flex justify-content-end">
+						<div class="col-6 text-right mb-3">
+							<b>Instrumentación Didáctica</b>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-2 col-xl-2 col-lg-2 col-sm-2 p-0">
+					<div class="color d-flex justify-content-center align-items-center p-1 h-100"><b class="text-bold">DOCUMENTO</b></div>
+				</div>
+				<div class="col-10 col-xl-10 col-lg-10 col-sm-10">
+					<div class="row h-100">
+						<div class="col-3 border-b d-flex justify-content-center align-items-center"><b class="text-general"><?php if (isset($instrumentacion->Documento)) echo $instrumentacion->Documento; ?></b></div>
+						<div class="col-3 color d-flex justify-content-center align-items-center"><b class="text-bold">CLÁUSULA ISO 9001 2008</b></div>
+						<div class="col-3 border-b d-flex justify-content-center align-items-center"><b class="text-general"><?php if (isset($instrumentacion->Clausula)) echo $instrumentacion->Clausula; ?></b></div>
+						<div class="col-2 color d-flex justify-content-center align-items-center"><b class="text-bold">REVISIÓN</b></div>
+						<div class="col-1 border-b d-flex justify-content-center align-items-center"><b class="text-general"><?php if (isset($instrumentacion->Revision)) echo $instrumentacion->Revision; ?></b></div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-2 p-0">
+					<div class="color d-flex justify-content-center align-items-center p-1 h-100"><b class="text-bold">RESPONSABLE</b></div>
+				</div>
+				<div class="col-10">
+					<div class="row h-100">
+						<div class="col-3 border-b d-flex justify-content-center align-items-center"><b class="text-general"><?php if (isset($instrumentacion->Responsable)) echo $instrumentacion->Responsable; ?></b></div>
+						<div class="col-3 color d-flex justify-content-center align-items-center"><b class="text-bold">FECHA DE EMISIÓN</b></div>
+						<div class="col-3 border-b d-flex justify-content-center align-items-center"><b class="text-general"><?php if (isset($instrumentacion->FechaEmision)) echo $instrumentacion->FechaEmision; ?></b></div>
+						<div class="col-2 color d-flex justify-content-center align-items-center"><b class="text-bold">CÓDIGO DEL DOCUMENTO</b></div>
+						<div class="col-1 border-b d-flex justify-content-center align-items-center"><b class="text-general"><?php if (isset($instrumentacion->CodigoDocumento)) echo $instrumentacion->CodigoDocumento; ?></b></div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-2 p-0">
+					<div class="color d-flex justify-content-center align-items-center p-1 h-100"><b class="text-center">Programa educativo:</b></div>
+				</div>
+				<div class="col-10">
+					<div class="row h-100">
+						<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PE)) echo $instrumentacion->TodasMaterias[0]->PE; ?></i></div>
+						<div class="col-2 color d-flex justify-content-center align-items-center"><b class="text-center">Plan de estudios:</b></div>
+						<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PlanEstudios)) echo $instrumentacion->TodasMaterias[0]->PlanEstudios; ?></i></div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-2 p-0">
+					<div class="color d-flex justify-content-center align-items-center p-1 h-100"><b class="text-center">Nombre de la asignatura:</b></div>
+				</div>
+				<div class="col-10">
+					<div class="row">
+						<div class="col-7">
+							<div class="row h-100">
+								<div class="col-10 p-0 h-100 color-claro d-flex justify-content-center align-items-center p-1 text-center"><i><?php if (isset($instrumentacion->Materia)) echo $instrumentacion->Materia; ?></i></div>
+								<div class="col-2 w-100 color d-flex justify-content-center align-items-center"><b class="text-center">Clave de la asignatura:</b></div>
+							</div>
+						</div>
+						<div class="col-5">
+							<div class="row">
+								<div class="col-3 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->ClaveAsignatura)) echo $instrumentacion->ClaveAsignatura; ?></i></div>
+								<div class="col-3 color d-flex justify-content-center align-items-center"><b class="text-center">Créditos:</b></div>
+								<div class="col-2 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->Creditos)) echo $instrumentacion->Creditos; ?></i></div>
+								<div class="col-2 color d-flex justify-content-center align-items-center"><b class="text-center">Número de Tema:</b></div>
+								<div class="col-2 color-claro d-flex justify-content-center align-items-center"><i><?php echo $tema ?></i></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-2 p-0">
+					<div class="color d-flex justify-content-center align-items-center p-1 h-100"><b class="text-center">Semestre:</b></div>
+				</div>
+				<div class="col-10">
+					<div class="row h-100">
+						<div class="col-7">
+							<div class="row h-100">
+								<div class="col p-0">
+									<div class="row ml-0 mr-0 h-100">
+										<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->Semestre)) echo $instrumentacion->TodasMaterias[0]->Semestre; ?></i></div>
+										<div class="col-4 color d-flex justify-content-center align-items-center"><b class="text-center">Clave de grupo:</b></div>
+										<div class="col color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($grupo1)) echo $grupo1; ?></i></div>
+									</div>
+								</div>
+								<div class="col-2 w-100 color-claro d-flex justify-content-center align-items-center" style="border-right: 0px; border-left: 0px;"><i><?php if (isset($grupo2)) echo $grupo2; ?></i></div>
+							</div>
+						</div>
+						<div class="col-5">
+							<div class="row">
+								<div class="col-3 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($grupo3)) echo $grupo3; ?></i></div>
+								<div class="col-3 color-claro d-flex justify-content-center align-items-center" style="border-right: 0px; border-left: 0px;"><i><?php if (isset($grupo4)) echo $grupo4; ?></i></div>
+								<div class="col-2 color d-flex justify-content-center align-items-center" style="border-right: 3px solid white; border-left: 3px solid white; box-sizing: border-box;"><b class="text-center">Periodo:</b></div>
+								<div class="col-4 color-claro d-flex justify-content-center align-items-center" style="border-left: 3px;"><i class="text-center"><?php if (isset($periodo)) echo $periodo; ?></i></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-2 p-0">
+					<div class="color d-flex justify-content-center align-items-center p-1 h-100"><b class="text-center">Nombre del docente:</b></div>
+				</div>
+				<div class="col-10">
+					<div class="row h-100">
+						<div class="col color-claro d-flex justify-content-center align-items-center">
+							<p><?php if (isset($nombre)) echo $nombre ?></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-2">
+				<div class="col color d-flex justify-content-center align-items-center p-1"><b style="font-size: 18px;" class="text-center">Instrumentación Didáctica</b></div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col">
+					<div class="row color p-1 d-flex justify-content-start align-items-center"><b>1.- Caracterización de la asignatura</b></div>
+					<div class="row all-border p-2" style="min-height: 100px;">
+						<p class="text-justify"><?php if (isset($instrumentacion->Caracterizacion)) echo $instrumentacion->Caracterizacion; ?></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row mt-4">
+			<div class="col">
+				<div class="row color p-1 d-flex justify-content-start align-items-center"><b>2.- Intención didáctica</b></div>
+				<div class="row all-border p-2" style="min-height: 100px;">
+					<p class="text-justify"><?php if (isset($instrumentacion->IntencionDidactica)) echo $instrumentacion->IntencionDidactica; ?></p>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col">
+				<div class="row color p-1 d-flex justify-content-start align-items-center"><b>3.-Competencias previas</b></div>
+				<div class="row all-border p-2" style="min-height: 50px;">
+					<p class="text-justify"><?php if (isset($instrumentacion->CompetenciasPrevias)) echo $instrumentacion->CompetenciasPrevias; ?></p>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col">
+				<div class="row color p-1 d-flex justify-content-start align-items-center"><b>4.- Competencia específica de la asignatura</b></div>
+				<div class="row all-border p-2" style="min-height: 50px;">
+					<p class="text-justify"><?php if (isset($instrumentacion->CompetenciaEA)) echo $instrumentacion->CompetenciaEA; ?></p>
+				</div>
+			</div>
+		</div>
 
 		<?php if (isset($instrumentacion->Temas)) : ?>
 
-			<tr>
-				<td height="48" align="center" valign=middle><b><br></b></td>
-				<td style="border-top: 2px solid #ffffff; border-bottom: 2px solid #ffffff; border-left: 2px solid #ffffff; border-right: 2px solid #ffffff" colspan=6 align="center" valign=middle bgcolor="#F1F5F9"><b>Tema:</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 2px solid #ffffff" align="left" valign=top><strong><?php echo $tema ?></strong><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-right: 1px solid #254061" colspan=18 align="left" valign=top><?php if (isset(((array)$instrumentacion->Temas)[$tema]->TituloTema)) echo (((array)$instrumentacion->Temas)[$tema]->TituloTema); ?><br></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="8" align="center" valign=middle>-<b><br></b></td>
+			<div class="row mt-3">
+				<div class="col-4 p-3 d-flex justify-content-center align-items-center" style="border-right: 0px; border-left: 0px; background-color: #F1F5F9;"><b>Tema:</b></div>
+				<div class="col-8 border-t border-b border-r">
+					<div class="row">
+						<div class="col-1 d-flex justify-content-start align-items-start p-1"><b><?php echo $tema ?></b></div>
+						<div class="col-11 d-flex justify-content-start align-items-center p-1">
+							<p class="text-justify"><?php if (isset(((array)$instrumentacion->Temas)[$tema]->TituloTema)) echo (((array)$instrumentacion->Temas)[$tema]->TituloTema); ?></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col">
+					<div class="row p-1 d-flex justify-content-start align-items-center" style="background-color: #B9CDE5;"><b>5.- Competencia específica del tema:</b></div>
+					<div class="row all-border p-2" style="min-height: 50px;">
+						<p class="text-justify"><?php if (isset(((array)$instrumentacion->Temas)[$tema]->CompetenciaET)) print_r(((array)$instrumentacion->Temas)[$tema]->CompetenciaET); ?></p>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col">
+					<div class="row color-claro p-1 d-flex justify-content-center align-items-center" style="border-right: 0px; border-left: 0px;"><b>Competencias genéricas a desarrollar</b></div>
+					<div class="row all-border mt-3 p-2" style="min-height: 50px;">
+						<p class="text-justify"><?php if (isset(((array)$instrumentacion->Temas)[$tema]->CompetenciasGen)) print_r(((array)$instrumentacion->Temas)[$tema]->CompetenciasGen); ?></p>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col">
+					<div class="row color p-1 d-flex justify-content-start align-items-center"><b>6.- Proceso enseñanza aprendizaje</b></div>
+					<div class="row pt-4">
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<div class="row" id="tabla">
+										<div class="col">
+											<div class="row">
+												<div class="col-fluid border-l-b border-t-b border-r-b color-claro p-2 d-flex justify-content-center align-items-center" style="width: 20%;"><b class="text-center">Temas y subtemas</b></div>
+												<div class="col-fluid" style="width: 60%;">
+													<div class="col h-100">
+														<div class="row h-100">
+															<div class="col-6 p-2 d-flex color-claro justify-content-center align-items-center border-t-b border-r-b" style="border-left: none;"><b class="text-center">Actividades de enseñanza (Docente)</b></div>
+															<div class="col-6 p-2 d-flex color-claro justify-content-center align-items-center border-t-b" style="border-left: none; border-right: none;"><b class="text-center">Actividades de aprendizaje (estudiante)</b></div>
+														</div>
+													</div>
+												</div>
+												<div class="col-fluid border-r-b border-t-b border-l-b color-claro p-2 d-flex justify-content-center align-items-center" style="width: 20%;"><b class="text-center">Recursos y apoyos didácticos</b></div>
+											</div>
 
-			</tr>
-			<tr>
-				<td height="30" align="center" valign=middle><b><br></b></td>
-				<td colspan=25 align="left" valign=middle bgcolor="#B9CDE5"><b>5.- Competencia específica del tema:</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="49" align="center" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #254061; border-right: 1px solid #254061; text-align: justify; white-space: pre-wrap; " colspan=25 align="left" valign=top sdnum="2058;0;@"><?php if (isset(((array)$instrumentacion->Temas)[$tema]->CompetenciaET)) print_r(((array)$instrumentacion->Temas)[$tema]->CompetenciaET); ?><br></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="5" align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="24" align="center" valign=middle><b><br></b></td>
-				<td colspan=25 align="center" valign=middle bgcolor="#F1F5F9"><b>Competencias genéricas a desarrollar</b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="7" align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="48" align="center" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #254061; text-align: justify; white-space: pre-wrap;  border-bottom: 1px solid #254061; border-left: 1px solid #254061; border-right: 1px solid #254061" colspan=25 align="left" valign=middle sdnum="2058;0;@"><?php if (isset(((array)$instrumentacion->Temas)[$tema]->CompetenciasGen)) print_r(((array)$instrumentacion->Temas)[$tema]->CompetenciasGen); ?><br></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="8" align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle sdnum="2058;0;0.00"><b><br></b></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="justify" valign=middle sdnum="2058;0;@"><br></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="4" align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<!--Proceso EA -->
-			<tr>
-				<td height="34" align="center" valign=middle><b><br></b></td>
-				<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>6.- Proceso enseñanza aprendizaje</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="4" align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="42" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Temas y subtemas</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=8 align="center" valign=middle bgcolor="#F1F5F9"><b>Actividades de enseñanza (Docente)</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=7 align="center" valign=middle bgcolor="#F1F5F9"><b>Actividades de aprendizaje (estudiante)</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=6 align="center" valign=middle bgcolor="#F1F5F9"><b>Recursos y apoyos didácticos</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
+											<?php if (isset(((array)$instrumentacion->Temas)[$tema]->Actividades)) {
+												$actividades = ((array)$instrumentacion->Temas)[$tema]->Actividades;
+												$htp = (isset(((array)$instrumentacion->Temas)[$tema]->HTP)) ? ((array)$instrumentacion->Temas)[$tema]->HTP : "";
+												$temas       = (isset(((array)$instrumentacion->Temas)[$tema]->TemasSubtemas)) ? ((array)$instrumentacion->Temas)[$tema]->TemasSubtemas : "";
+												$recursos = (isset(((array)$instrumentacion->Temas)[$tema]->Recursos)) ? (((array)$instrumentacion->Temas)[$tema]->Recursos) : "";   ?>
 
-			<?php if (isset(((array)$instrumentacion->Temas)[$tema]->Actividades)) {
-				$actividades = ((array)$instrumentacion->Temas)[$tema]->Actividades;
-				$i = 1;
-				for ($i = 0; $i < sizeof($actividades); $i++) {
-					if ($i == 0) {
-						$htp = (isset(((array)$instrumentacion->Temas)[$tema]->HTP)) ? ((array)$instrumentacion->Temas)[$tema]->HTP : "";
-						$temas 	  = (isset(((array)$instrumentacion->Temas)[$tema]->TemasSubtemas)) ? ((array)$instrumentacion->Temas)[$tema]->TemasSubtemas : "";
-						$recursos = (isset(((array)$instrumentacion->Temas)[$tema]->Recursos)) ? (((array)$instrumentacion->Temas)[$tema]->Recursos) : "";
-						$str = '
-					<tr>
-						<td height="100" align="left" valign=middle><br></td>
-						<td style="border-top: 1px solid #254061; text-align: justify; white-space: pre-wrap; border-bottom: 1px solid #000000; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=4 rowspan=' . sizeof($actividades) . 'align="left" valign=top>' . $temas . '<br></td>
-						<td style="border-top: 1px solid #254061; white-space: pre-wrap; border-bottom: 1px solid #4f6228; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=8 align="left" valign=top>' . $actividades[$i][0] . '<br></td>
-						<td style="border-top: 1px solid #254061; white-space: pre-wrap; border-bottom: 1px solid #4f6228; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=7 align="left" valign=top>' . $actividades[$i][1] . '<br></td>
-						<td style="border-top: 1px solid #254061; text-align: center; white-space: pre-wrap;  border-bottom: 1px solid #4f6228; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=6 rowspan=' . sizeof($actividades) . ' align="center" valign=middle>' . $recursos . '<br></td>
-					</tr>
-					';
-						echo $str;
-					} else {
-						echo '
-					<tr>
-						<td height="100" align="left" valign=middle><br></td>
-						<td style="border-top: 1px solid #254061; white-space: pre-wrap; border-bottom: 1px solid #4f6228; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=8 align="left" valign=top>' . $actividades[$i][0] . '<br></td>
-						<td style="border-top: 1px solid #254061; white-space: pre-wrap; border-bottom: 1px solid #4f6228; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=7 align="left" valign=top>' . $actividades[$i][1] . '<br></td>
-					</tr>
+												<div class="row">
+													<!--  Temas y subtemas  -->
+													<div class="col-fluid border-t-b border-l-b border-r-b p-2 d-flex justify-content-start align-items-center" style="width: 20%; text-align: justify; white-space: pre-wrap;">
+														<p><?php echo $temas; ?></p>
+													</div>
 
-					';
-					}
-				}
-			}
-			?>
-			<!-- Horas teorico practicas -->
-			<tr>
-				<td height="61" align="center" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=19 align="right" valign=middle bgcolor="#F1F5F9"><b>Horas teórico-prácticas</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=6 align="center" valign=middle><b>
-						<font size=2 color="#000000"><br><?php if(isset($htp)) print_r($htp); ?></font>
-					</b></td>
-				<td align="left" valign=top><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="52" align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<!-- Practicas -->
-			<tr>
-				<td height="34" align="center" valign=middle><b><br></b></td>
-				<td style="border-top: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>Prácticas en laboratorios o talleres</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="21" align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="31" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061" align="center" valign=middle bgcolor="#F1F5F9"><b>No.</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=16 align="center" valign=middle bgcolor="#F1F5F9"><b>Título de la práctica</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061" colspan=8 align="center" valign=middle bgcolor="#F1F5F9"><b>Laboratorio</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<?php if (isset(((array)$instrumentacion->Temas)[$tema]->Practicas)) {
-				$practicas = ((array)$instrumentacion->Temas)[$tema]->Practicas;
-				$i = 1;
-				foreach ($practicas as $practica) {
-					echo
-					'<tr>
-					<td height="34" align="left" valign=middle><br></td>
-					<td style="border-top: 1px solid #254061; text-align: center; white-space: pre-wrap; border-bottom: 1px solid #254061; border-right: 1px solid #4f6228" align="right" valign=top>' . $i . '<br></td>
-					<td style="border-top: 1px solid #254061; text-align: justify; white-space: pre-wrap; border-bottom: 1px solid #254061; border-left: 1px solid #4f6228; border-right: 1px solid #4f6228" colspan=16 align="left" valign=top>' . $practica[0] . '<br></td>
-					<td style="border-top: 1px solid #254061; text-align: justify; white-space: pre-wrap; border-bottom: 1px solid #254061; border-left: 1px solid #4f6228" colspan=8 align="left" valign=top>' . $practica[1] . '<br></td>
-					<td align="left" valign=middle><br></td>
-				</tr>';
-					$i++;
-				}
-			}
+													<!-- Actividades de enseñanza -->
+													<div class="col-fluid" style="width: 60%;">
+														<div class="col h-100 d-flex flex-column">
+															<?php for ($i = 0; $i < sizeof($actividades); $i++) { ?>
+																<div class="row" style="flex-grow: 1;">
+																	<div class="col-6 p-2 border-t-b border-r-b d-flex justify-content-start align-items-start" style="white-space: pre-wrap; min-height: 80px;">
+																		<p class="text-justify"><?php echo $actividades[$i][0]; ?></p>
+																	</div>
+																	<div class="col-6 p-2 border-t-b d-flex justify-content-start align-items-start" style="white-space: pre-wrap; min-height: 80px;">
+																		<p class="text-justify"><?php echo $actividades[$i][1]; ?></p>
+																	</div>
+																</div>
+															<?php } ?>
+														</div>
+													</div>
 
-			?>
+													<!-- Recursos y apoyos didacticos -->
+													<div class="col fluid p-2 border-l-b border-t-b border-r-b d-flex justify-content-start align-items-center" style="width: 20%; text-align: justify; white-space: pre-wrap;">
+														<p><?php echo $recursos; ?></p>
+													</div>
+												</div>
 
+											<?php } ?>
 
-			<tr>
-				<td height="7" align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<!-- Estrategia de evaluación -->
-			<tr>
-				<td height="34" align="center" valign=middle><b><br></b></td>
-				<td style="border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>7.- Estrategia de evaluación</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="6" align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="34" align="center" valign=middle><b><br></b></td>
-				<td colspan=25 align="left" valign=middle bgcolor="#F1F5F9"><b>Criterios de evaluación</b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="7" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 1px solid #10243e" align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=bottom><b><br></b></td>
-			</tr>
-			<tr>
-				<td height="35" align="left" valign=middle><br></td>
-				<td style="border-bottom: 1px solid #254061; border-right: 1px solid #000000" colspan=3 align="center" valign=middle bgcolor="#F1F5F9"><b>Indicador</b></td>
-				<td style="border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=15 align="center" valign=middle bgcolor="#F1F5F9"><b>Descripción del índicador</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #254061; border-left: 1px solid #000000" colspan=7 align="center" valign=middle bgcolor="#F1F5F9"><b>Valor del indicador</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
+											<div class="row">
+												<div class="col-fluid color-claro p-3 border-t-b border-l-b border-b-b d-flex justify-content-end align-items-center" style="width: 80%; border-right: none;"><b>Horas teórico-prácticas</b></div>
 
-			<tr>
-				<td height="32" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>A</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=15 align="left" valign=middle>Se adapta a situaciones y contextos complejos</td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000;" colspan=7 align="center" valign=middle><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[1]); ?><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="32" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>B</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=15 align="left" valign=middle>Hace aportaciones a las actividades académicas desarrolladas</td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000" colspan=7 align="center" valign=middle><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[2]); ?><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="32" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>C</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=15 align="left" valign=middle>Propone y/o explica soluciones o procedimientos no vistos en clase (creatividad)</td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000" colspan=7 align="center" valign=middle><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[3]); ?><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="32" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>D</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=15 align="left" valign=middle>Introduce recursos y experiencias que promueven un pensamiento crítico</td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000" colspan=7 align="center" valign=middle><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[4]); ?><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="32" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>E</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=15 align="left" valign=middle>Incorpora conocimientos y actividades interdisciplinarias en su aprendizaje</td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000" colspan=7 align="center" valign=middle><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[5]); ?><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="32" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>F</b></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=15 align="left" valign=middle>Realiza su trabajo de manera autónoma y autorregulada</td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #254061; border-left: 1px solid #000000" colspan=7 align="center" valign=middle><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[6]); ?><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="7" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #254061; border-bottom: 1px solid #10243e" colspan=25 align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="41" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Desempeño</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle bgcolor="#F1F5F9"><b>Nivel de desempeño</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #000000; border-right: 1px solid #000000" colspan=16 align="center" valign=middle bgcolor="#F1F5F9"><b>Índicadores de alcance</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=3 align="center" valign=middle bgcolor="#F1F5F9"><b>Valoración númerica</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="150" align="left" valign=middle><br></td>
-				<td style="border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 rowspan=4 align="center" valign=middle><b>Competencia alcanzada</b></td>
-				<td style="border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b>Excelente</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000; text-align: justify; white-space: pre-wrap; " colspan=16 align="left" valign=top><?php if (isset(((array)$instrumentacion->Temas)[$tema]->Indicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->Indicadores); ?><br></td>
-				<td style="border-bottom: 1px solid #000000; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>95-100</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="34" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b>Notable</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=16 align="left" valign=middle>Cumple cuatro de los indicadores diferidos en desempeño excelente</td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>85-94</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="34" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b>Bueno</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=16 align="left" valign=middle>Cumple tres de los indicadores diferidos en desempeño excelente</td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>75-84</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="34" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b>Suficiente</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=16 align="left" valign=middle>Cumple dos de los indicadores diferidos en desempeño excelente</td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>70-74</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="48" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 align="center" valign=middle><b>Compentencia no alcanzada</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b>Insuficiente</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000" colspan=15 align="left" valign=middle>No se cumple con el 100% de evidencias conceptuales, procedimentales y actitudinales de los indicadores diferidos en el desempeño excelente.</td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-right: 1px solid #000000" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>N/A (no alcanzada)</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="6" align="left" valign=middle><br></td>
-				<td colspan=7 align="center" valign=middle><b><br></b></td>
-				<td colspan=7 align="center" valign=middle><b><br></b></td>
-				<td colspan=6 align="center" valign=middle><b><br></b></td>
-				<td colspan=5 align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<!-- Matriz de evaluación -->
-			<tr>
-				<td height="34" align="left" valign=middle><br></td>
-				<td colspan=25 align="left" valign=middle bgcolor="#F1F5F9"><b>Matríz de evaluación</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="6" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="29" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #000000" colspan=7 rowspan=2 align="center" valign=middle bgcolor="#F1F5F9"><b>Evidencia de aprendizaje</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #10243e" colspan=2 rowspan=2 align="center" valign=middle bgcolor="#F1F5F9"><b>%</b></td>
-				<td style="border-top: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=6 align="center" valign=middle bgcolor="#F1F5F9"><b>Indicador de alcance</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=10 align="center" valign=middle bgcolor="#F1F5F9"><b>Método de evaluación </b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="29" align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle bgcolor="#F1F5F9"><b>A</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #10243e; border-right: 1px solid #000000" align="center" valign=middle bgcolor="#F1F5F9"><b>B</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle bgcolor="#F1F5F9"><b>C</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle bgcolor="#F1F5F9"><b>D</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle bgcolor="#F1F5F9"><b>E</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle bgcolor="#F1F5F9"><b>F</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=7 align="center" valign=middle bgcolor="#F1F5F9"><b>Instrumento</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle bgcolor="#F1F5F9"><b>P</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle bgcolor="#F1F5F9"><b>C</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle bgcolor="#F1F5F9"><b>A</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<?php if (isset(((array)$instrumentacion->Temas)[$tema]->MatrizEvaluacion)) {
-				$evaluaciones = ((array)$instrumentacion->Temas)[$tema]->MatrizEvaluacion;
-				$i = 1;
-				foreach ($evaluaciones as $evaluacion) {
-					$evaluacion[9]  = ($evaluacion[9] == "1")  ? "X" : " ";
-					$evaluacion[10] = ($evaluacion[10] == "1") ? "X" : " ";
-					$evaluacion[11] = ($evaluacion[11] == "1") ? "X" : " ";
-					echo '
-	<tr>
-		<td height="34" align="left" valign=middle><br></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=7 align="left" valign=top><b>' . $evaluacion[0] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=2 align="center" valign=middle><b>' . $evaluacion[1] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[2] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[3] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[4] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[5] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[6] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[7] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=7 align="left" valign=top><b>' . $evaluacion[8] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[9] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[10] . '<br></b></td>
-		<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><b>' . $evaluacion[11] . '<br></b></td>
-		<td align="left" valign=middle><br></td>
-	</tr>';
-				}
-			}
-			?>
+												<!-- Horas teorico practicas -->
+												<div class="col-fluid all-border-b d-flex justify-content-center align-items-center" style="width: 20%;"><b><?php echo isset(((array)$instrumentacion->Temas)[$tema]->Actividades) ? $htp : ''; ?></b></div>
+											</div>
 
-			<!-- TOTAL MATRIZ -->
-			<tr>
-				<td height="34" align="center" valign=middle><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=7 align="center" valign=middle><b>Total</b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=2 align="center" valign=middle><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[0]); ?><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[1]); ?><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[2]); ?><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[3]); ?><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[4]); ?><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[5]); ?><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="center" valign=middle><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[6]); ?><br></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-right: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="8" align="left" valign=middle><br></td>
-				<td colspan=25 align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<!-- Calendarizacion -->
-			<tr>
-				<td height="34" align="left" valign=middle><br></td>
-				<td colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>8.- Calendarización de evaluación en semanas</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="8" align="left" valign=middle><br></td>
-			</tr>
-			<!-- Primer grupo calendarizacion -->
+										</div>
 
-			<?php
-			//echo $instrumentacion;
-			$grupo = $grupoins; //$instrumentacion->Grupo;
+									</div>
+								</div>
+							</div>
+							<div class="row mt-5">
+								<div class="col">
+									<div class="row">
+										<div class="col color d-flex justify-content-start align-items-center p-1 ml-1 mr-1"><b>Prácticas en laboratorios o talleres</b></div>
+									</div>
+									<div class="row mt-3" id="practicas">
+										<div class="col">
+											<div class="row">
+												<div class="col-fluid color-claro p-2 border-l-b border-t-b border-b-b d-flex justify-content-center align-items-center" style="width: 4%; border-right: none;"><b class="text-center">No.</b></div>
+												<div class="col-fluid color-claro p-2 border-t-b border-l-b border-r-b border-b-b d-flex justify-content-center align-items-center" style="width: 66%;"><b class="text-center">Título de la práctica</b></div>
+												<div class="col-fluid color-claro p-2 border-r-b border-t-b border-b-b" style="width: 30%; border-left: none;"><b class="text-center">Laboratorio</b></div>
+											</div>
+											<?php if (isset(((array)$instrumentacion->Temas)[$tema]->Practicas)) {
+												$practicas = ((array)$instrumentacion->Temas)[$tema]->Practicas;
+												$i = 1;
+												foreach ($practicas as $practica) { ?>
+													<div class="row">
+														<div class="col-fluid border-b-b border-l-b p-1 d-flex justify-content-center align-items-center" style="width: 4%;">
+															<p><?php echo $i; ?></p>
+														</div>
+														<div class="col-fluid border-b-b border-l-b border-r-b p-1 d-flex justify-content-start align-items-center" style="width: 66%;">
+															<p><?php echo $practica[0]; ?></p>
+														</div>
+														<div class="col-fluid border-b-b border-r-b p-1 d-flex justify-content-start align-items-center" style="width: 30%;">
+															<p><?php echo $practica[1]; ?></p>
+														</div>
+													</div>
+												<?php $i++;
+												} ?>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col">
+					<div class="row color p-1 d-flex justify-content-start align-items-center"><b>7.- Estrategia de evaluación</b></div>
+					<div class="row mt-3 color-claro p-1" style="border-left: none; border-right: none;"><b>Criterios de evaluación</b></div>
+					<div class="row mt-3" id="criterios">
+						<div class="col">
+							<div class="row">
+								<div class="col-fluid color-claro p-2 d-flex justify-content-center align-items-center border-b-b border-t-b border-l-b" style="width: 20%; border-right: none;"><b class="text-center">Indicador</b></div>
+								<div class="col-fluid color-claro p-2 d-flex justify-content-center align-items-center border-b-b border-t-b border-l-b" style="width: 55%; border-right: none;"><b class="text-center">Descripción del índicador</b></div>
+								<div class="col-fluid color-claro p-2 d-flex justify-content-center align-items-center border-b-b border-t-b border-r-b border-l-b" style="width: 25%;"><b class="text-center">Valor del indicador</b></div>
+							</div>
+							<div class="row">
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b" style="width: 20%;"><b>A</b></div>
+								<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-b-b border-l-b" style="width: 55%;">
+									<p>Se adapta a situaciones y contextos complejos.</p>
+								</div>
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-r-b" style="width: 25%;"><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[1]); ?></b></div>
+							</div>
+							<div class="row">
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b" style="width: 20%;"><b>B</b></div>
+								<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-b-b border-l-b" style="width: 55%;">
+									<p>Hace aportaciones a las actividades académicas desarrolladas.</p>
+								</div>
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-r-b" style="width: 25%;"><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[2]); ?></b></div>
+							</div>
+							<div class="row">
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b" style="width: 20%;"><b>C</b></div>
+								<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-b-b border-l-b" style="width: 55%;">
+									<p>Propone y/o explica soluciones o procedimientos no vistos en clase (creatividad).</p>
+								</div>
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-r-b" style="width: 25%;"><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[3]); ?></b></div>
+							</div>
+							<div class="row">
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b" style="width: 20%;"><b>D</b></div>
+								<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-b-b border-l-b" style="width: 55%;">
+									<p>Introduce recursos y experiencias que promueven un pensamiento crítico.</p>
+								</div>
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-r-b" style="width: 25%;"><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[4]); ?></b></div>
+							</div>
+							<div class="row">
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b" style="width: 20%;"><b>E</b></div>
+								<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-b-b border-l-b" style="width: 55%;">
+									<p>Incorpora conocimientos y actividades interdisciplinarias en su aprendizaje.</p>
+								</div>
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-r-b" style="width: 25%;"><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[5]); ?></b></div>
+							</div>
+							<div class="row">
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b" style="width: 20%;"><b>F</b></div>
+								<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-b-b border-l-b" style="width: 55%;">
+									<p>Realiza su trabajo de manera autónoma y autorregulada.</p>
+								</div>
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-r-b" style="width: 25%;"><b><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[6]); ?></b></div>
+							</div>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col">
+							<div class="row" id="indicadores">
+								<div class="col">
+									<div class="row">
+										<div class="col-fluid color-claro p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-t-b" style="width: 20%; border-right: none;"><b class="text-center">Nivel de desempeño</b></div>
+										<div class="col">
+											<div class="row">
+												<div class="col-fluid color-claro p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-t-b" style="border-right: none; width: 11%;"><b class="text-center">Nivel de desempeño</b></div>
+												<div class="col-fluid color-claro p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-t-b" style="border-right: none; width: 78%;"><b class="text-center">Índicadores de alcance</b></div>
+												<div class="col-fluid color-claro p-1 d-flex justify-content-center align-items-center border-b-b border-l-b border-r-b border-t-b" style="width: 11%;"><b class="text-center">Valoración númerica</b></div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-fluid d-flex justify-content-center align-items-center border-l-b border-b-b" style="width: 20%;"><b>Competencia alcanzada</b></div>
+										<div class="col-fluid" style="width: 80%;">
+											<div class="col h-100 d-flex flex-column">
+												<div class="row" style="flex-grow: 1;">
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b" style="width: 11%;"><b class="text-center">Excelente</b></div>
+													<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-l-b border-b-b" style="min-height: 120px; width: 78%">
+														<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->Indicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->Indicadores); ?></p>
+													</div>
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b border-r-b" style="width: 11%;"><b class="text-center">95-100</b></div>
+												</div>
+												<div class="row">
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b" style="width: 11%;"><b class="text-center">Notable</b></div>
+													<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-l-b border-b-b" style="width: 78%""><p>Cumple cuatro de los indicadores diferidos en desempeño excelente.</p></div>
+                                                    <div class=" col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b border-r-b" style="width: 11%;"><b class="text-center">85-94</b></div>
+												</div>
+												<div class="row">
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b" style="width: 11%;"><b class="text-center">Bueno</b></div>
+													<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-l-b border-b-b" style="width: 78%""><p>Cumple tres de los indicadores diferidos en desempeño excelente.</p></div>
+                                                    <div class=" col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b border-r-b" style="width: 11%;"><b class="text-center">75-84</b></div>
+												</div>
+												<div class="row">
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b" style="width: 11%;"><b class="text-center">Suficiente</b></div>
+													<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-l-b border-b-b" style="width: 78%""><p>Cumple dos de los indicadores diferidos en desempeño excelente.</p></div>
+                                                    <div class=" col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b border-r-b" style="width: 11%;"><b class="text-center">70-74</b></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b" style="width: 20%;"><b>Compentencia no alcanzada</b></div>
+										<div class="col-fluid" style="width: 80%;">
+											<div class="col h-100 d-flex flex-column">
+												<div class="row" style="flex-grow: 1;">
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b" style="width: 11%;"><b class="text-center">Insuficiente </b></div>
+													<div class="col-fluid p-1 d-flex justify-content-start align-items-center border-l-b border-b-b" style="width: 78%;">
+														<p>No se cumple con el 100% de evidencias conceptuales, procedimentales y actitudinales de los indicadores diferidos en el desempeño excelente.</p>
+													</div>
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center border-l-b border-b-b border-r-b" style="width: 11%;"><b class="text-center">N/A (no alcanzada)</b></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row mt-3 color-claro p-1" style="border-left: none; border-right: none;"><b>Matríz de evaluación</b></div>
+					<div class="row mt-3">
+						<div class="col" id="matriz">
+							<div class="row">
+								<div class="col-fluid color-claro border-b-b border-l-b border-t-b d-flex justify-content-center align-items-center" style="width: 32%; border-right: none;"><b>Evidencia de aprendizaje</b></div>
+								<div class="col-fluid color-claro border-b-b border-l-b border-t-b d-flex justify-content-center align-items-center" style="width: 10%; border-right: none;"><b>%</b></div>
+								<div class="col-fluid" style="width: 25%;">
+									<div class="col">
+										<div class="row color-claro p-1 border-t-b border-b-b border-l-b d-flex justify-content-center align-items-center" style="border-right: none;"><b>Indicador de alcance</b></div>
+										<div class="row color-claro border-l-b border-b-b" style="border-right: none;">
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b>A</b></div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b>B</b></div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b>C</b></div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b>D</b></div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b>E</b></div>
+											<div class="col p-1 d-flex justify-content-center align-items-center"><b>F</b></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-fluid" style="width: 33%;">
+									<div class="col">
+										<div class="row color-claro p-1 border-t-b border-b-b border-l-b border-r-b d-flex justify-content-center align-items-center"><b>Método de evaluación</b></div>
+										<div class="row color-claro border-l-b border-r-b border-b-b">
+											<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 76%;"><b>Instrumento</b></div>
+											<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 8%;"><b>P</b></div>
+											<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 8%"><b>C</b></div>
+											<div class="col-fluid p-1 d-flex justify-content-center align-items-center" style="width: 8%;"><b>A</b></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php if (isset(((array)$instrumentacion->Temas)[$tema]->MatrizEvaluacion)) {
+								$evaluaciones = ((array)$instrumentacion->Temas)[$tema]->MatrizEvaluacion;
+								foreach ($evaluaciones as $evaluacion) {
+									$evaluacion[9]  = ($evaluacion[9] == "1")  ? "X" : " ";
+									$evaluacion[10] = ($evaluacion[10] == "1") ? "X" : " ";
+									$evaluacion[11] = ($evaluacion[11] == "1") ? "X" : " ";  ?>
 
-			$nc = explode(",", $grupo);
-			//echo $grupo;
-			//echo count($nc);
-			if (isset($instrumentacion->Temas->$tema->Fechas->$grupo)) {
-				$datos = $instrumentacion->Temas->$tema->Fechas->$grupo;
-
-				//echo count($datos);
-				for ($ii = 0; $ii < count($datos); $ii += 3) {
-			?>
-
-					<tr>
-						<td height="40" align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><br></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Grupo</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000" colspan=4 align="center" valign=middle sdnum="2058;0;@">
-							<?php print_r($datos[$ii]);
-							?>
-							<br>
-						</td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Fecha de inicio programado</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=3 align="center" valign=middle sdnum="2058;2058;DD/MM/AAAA"><?php print_r($datos[$ii + 1]);
-																																																											?> <br></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-right: 1px solid #10243e" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Fecha de Término</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #000000" colspan=3 align="center" valign=middle sdnum="2058;2058;DD/MM/AAAA"><?php print_r($datos[$ii + 2]);
-																																																											?> <br></td>
-						<td align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><br></td>
-					</tr>
-
-				<?php
-				}
-				$total = count($datos) / 3;
-				for ($i = $total; $i < 4; $i++) {
-				?>
-					<tr>
-						<td height="40" align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><br></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Grupo</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000" colspan=4 align="center" valign=middle sdnum="2058;0;@">xxxxx<br></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Fecha de inicio programado</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=3 align="center" valign=middle sdnum="2058;2058;DD/MM/AAAA">xxxxx<br></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-right: 1px solid #10243e" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Fecha de Término</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #000000" colspan=3 align="center" valign=middle sdnum="2058;2058;DD/MM/AAAA">xxxxx<br></td>
-						<td align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><br></td>
-					</tr>
-
-				<?php }
-			} //llave del isset 
-			else {
-				for ($i = 0; $i < 4; $i++) {
-					// code...
-
-				?>
-
-
-					<tr>
-						<td height="40" align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><br></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Grupo</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #000000" colspan=4 align="center" valign=middle sdnum="2058;0;@">
-
-							<br>
-						</td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Fecha de inicio programado</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #10243e" colspan=3 align="center" valign=middle sdnum="2058;2058;DD/MM/AAAA"> <br></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-right: 1px solid #10243e" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Fecha de Término</b></td>
-						<td style="border-top: 1px solid #10243e; border-bottom: 1px solid #10243e; border-left: 1px solid #10243e; border-right: 1px solid #000000" colspan=3 align="center" valign=middle sdnum="2058;2058;DD/MM/AAAA"><br></td>
-						<td align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><b><br></b></td>
-						<td align="left" valign=middle><br></td>
-					</tr>
-
-			<?php
-
-				}
-			}
-			?>
-
-
-
-
-
-			<tr>
-				<td height="11" align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="34" align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Semana</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="1" sdnum="2058;"><b>1</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="2" sdnum="2058;"><b>2</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="3" sdnum="2058;"><b>3</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="4" sdnum="2058;"><b>4</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="5" sdnum="2058;"><b>5</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="6" sdnum="2058;"><b>6</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="7" sdnum="2058;"><b>7</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="8" sdnum="2058;"><b>8</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="9" sdnum="2058;"><b>9</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="10" sdnum="2058;"><b>10</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="11" sdnum="2058;"><b>11</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="12" sdnum="2058;"><b>12</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="13" sdnum="2058;"><b>13</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="14" sdnum="2058;"><b>14</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="15" sdnum="2058;"><b>15</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="16" sdnum="2058;"><b>16</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="17" sdnum="2058;"><b>17</b></td>
-				<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="right" valign=middle bgcolor="#F1F5F9" sdval="18" sdnum="2058;"><b>18</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-
-
-
-
-
-			<tr>
-				<td height="35" align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-				<td style="border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=4 align="center" valign=middle bgcolor="#F1F5F9"><b>Tiempo planeado</b></td>
-
-				<?php
-
-				$grupo = $grupoins;
-				//$nc=explode(",",$grupo);
-				//echo count($nc);
-				//echo $grupo;
-				//$instrumentacion->Temas->$tema->Semanas->$grupo;
-				if (isset($instrumentacion->Temas->$tema->Semanas->$grupo)) {
-					//echo "ok";
-					$datos = $instrumentacion->Temas->$tema->Semanas->$grupo;
-					//echo count($datos);
-					for ($ii = 0; $ii < count($datos); $ii++) {
-
-						$texto = str_replace(" ", "<br>", $datos[$ii]);
-						//echo $texto;
-				?>
-
-						<td style="width: 4%; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle><b><?php echo $texto; ?><br></b></td>
-
+									<div class="row">
+										<div class="col-fluid p-1 border-l-b border-b-b d-flex justify-content-start align-items-center" style="width: 32%;"><b><?php echo $evaluacion[0]; ?></b></div>
+										<div class="col-fluid p-1 border-l-b border-b-b d-flex justify-content-center align-items-center" style="width: 10%"><b><?php echo $evaluacion[1]; ?></b></div>
+										<div class="col-fluid" style="width: 25%;">
+											<div class="col h-100 d-flex flex-column">
+												<div class="row border-l-b border-b-b" style="flex-grow: 1;">
+													<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b><?php echo $evaluacion[2]; ?></b></div>
+													<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b><?php echo $evaluacion[3]; ?></b></div>
+													<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b><?php echo $evaluacion[4]; ?></b></div>
+													<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b><?php echo $evaluacion[5]; ?></b></div>
+													<div class="col p-1 border-r-b d-flex justify-content-center align-items-center"><b><?php echo $evaluacion[6]; ?></b></div>
+													<div class="col p-1 d-flex justify-content-center align-items-center"><b><?php echo $evaluacion[7]; ?></b></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-fluid" style="width: 33%;">
+											<div class="col h-100 d-flex flex-column">
+												<div class="row border-l-b border-b-b border-r-b" style="flex-grow: 1;">
+													<div class="col-fluid p-1 border-r-b d-flex justify-content-start align-items-center" style="width: 76%;"><b><?php echo $evaluacion[8]; ?></b></div>
+													<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 8%;"><b><?php echo $evaluacion[9]; ?></b></div>
+													<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 8%"><b><?php echo $evaluacion[10]; ?></b></div>
+													<div class="col-fluid p-1 d-flex justify-content-center align-items-center" style="width: 8%;"><b><?php echo $evaluacion[11]; ?></b></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								<?php } ?>
+							<?php } ?>
+							<div class="row">
+								<div class="col-fluid p-1 border-b-b border-l-b d-flex justify-content-center align-items-center" style="width: 32%;"><b>Total</b></div>
+								<div class="col-fluid p-1 border-b-b border-l-b d-flex justify-content-center align-items-center" style="width: 10%; border-right: none;">
+									<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[0]); ?></p>
+								</div>
+								<div class="col-fluid" style="width: 25%;">
+									<div class="col h-100 d-flex flex-column">
+										<div class="row border-l-b border-b-b" style="flex-grow: 1;">
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center">
+												<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[1]); ?></p>
+											</div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center">
+												<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[2]); ?></p>
+											</div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center">
+												<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[3]); ?></p>
+											</div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center">
+												<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[4]); ?></p>
+											</div>
+											<div class="col p-1 border-r-b d-flex justify-content-center align-items-center">
+												<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[5]); ?></p>
+											</div>
+											<div class="col p-1 d-flex justify-content-center align-items-center">
+												<p><?php if (isset(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores)) print_r(((array)$instrumentacion->Temas)[$tema]->ValorIndicadores[6]); ?></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-fluid" style="width: 33%;">
+									<div class="col h-100 d-flex flex-column">
+										<div class="row border-l-b border-r-b border-b-b" style="flex-grow: 1;">
+											<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 76%;"><b></b></div>
+											<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 8%;"><b></b></div>
+											<div class="col-fluid p-1 border-r-b d-flex justify-content-center align-items-center" style="width: 8%"><b></b></div>
+											<div class="col-fluid p-1 d-flex justify-content-center align-items-center" style="width: 8%;"><b></b></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col" id="calendarizacion">
+					<div class="row color p-1 d-flex justify-content-start align-items-center"><b>8.- Calendarización de evaluación en semanas</b></div>
 					<?php
-					}
-				} else {
-					//echo "okno";
-					for ($ii = 0; $ii < 18; $ii++) {
+					$grupo = $grupoins; //$instrumentacion->Grupo;
+
+					$nc = explode(",", $grupo);
+					//echo $grupo;
+					//echo count($nc);
+					if (isset($instrumentacion->Temas->$tema->Fechas->$grupo)) {
+						$datos = $instrumentacion->Temas->$tema->Fechas->$grupo;
+						//print_r($datos);
+						//echo count($datos); 
 					?>
-						<td style="width: 4%;border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle><b><br></b></td>
-				<?php
-					}
-				}
-				?>
 
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
+						<div class="row mt-3">
+							<div class="col">
+								<?php for ($ii = 0; $ii < count($datos); $ii += 3) { ?>
+									<div class="row">
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b d-flex justify-content-center align-items-center" style="border-right: 0; width: 20%"><b class="text-center">Grupo</b></div>
+										<div class="col-fluid p-1 border-l-b border-t-b d-flex justify-content-center align-items-center" style="width: 18%;">
+											<p><?php print_r($datos[$ii]); ?></p>
+										</div>
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b d-flex justify-content-center align-items-center" style="border-right: 0; width: 18%;"><b class="text-center">Fecha de inicio programado</b></div>
+										<div class="col p-1 border-l-b border-t-b d-flex justify-content-center align-items-center">
+											<p><?php print_r($datos[$ii + 1]); ?></p>
+										</div>
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b d-flex justify-content-center align-items-center" style="border-right: 0; width: 18%"><b class="text-center">Fecha de Término</b></div>
+										<div class="col border-l-b p-1 border-t-b border-r-b d-flex justify-content-center align-items-center">
+											<p><?php print_r($datos[$ii + 2]); ?></p>
+										</div>
+									</div>
+								<?php }
+								$total = count($datos) / 3;
+								for ($i = $total; $i < 4; $i++) { ?>
+									<div class="row">
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="border-right: 0; width: 20%"><b class="text-center">Grupo</b></div>
+										<div class="col-fluid p-1 border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="width: 18%;">
+											<p>xxxxx</p>
+										</div>
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="border-right: 0; width: 18%;"><b class="text-center">Fecha de inicio programado</b></div>
+										<div class="col p-1 border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center">
+											<p>xxxxx</p>
+										</div>
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="border-right: 0; width: 18%"><b class="text-center">Fecha de Término</b></div>
+										<div class="col border-l-b p-1 border-t-b border-r-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center">
+											<p>xxxxx</p>
+										</div>
+									</div>
+								<?php }
+								?>
+							</div>
+						</div>
+					<?php
+					} else { ?>
+						<div class="row mt-3">
+							<div class="col">
 
+								<?php for ($i = 0; $i < 4; $i++) { ?>
+									<div class="row">
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="border-right: 0; width: 20%"><b class="text-center">Grupo</b></div>
+										<div class="col-fluid p-1 border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="width: 18%;"></div>
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="border-right: 0; width: 18%;"><b class="text-center">Fecha de inicio programado</b></div>
+										<div class="col p-1 border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center"></div>
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center" style="border-right: 0; width: 18%"><b class="text-center">Fecha de Término</b></div>
+										<div class="col border-l-b p-1 border-t-b border-r-b <?php echo $i == 3 ? 'border-b-b' : '' ?> d-flex justify-content-center align-items-center"></div>
+									</div>
+								<?php } ?>
+							</div>
+						</div>
 
+					<?php } ?>
+					<div class="row mt-3">
+						<div class="col">
+							<div class="row">
+								<div class="col-fluid p-1 color-claro border-t-b border-l-b d-flex justify-content-center align-items-center" style="width: 20%; border-right: 0;"><b>Semana</b></div>
+								<div class="col color-claro border-t-b border-r-b border-l-b">
+									<div class="row h-100">
+										<?php for ($i = 1; $i <= 18; $i++) { ?>
+											<div class="col p-1 <?php echo $i == 18 ? '' : 'border-r-b' ?> d-flex justify-content-center align-items-center"><b><?php echo $i ?></b></div>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="row">
+										<div class="col-fluid p-1 color-claro border-l-b border-t-b border-b-b d-flex justify-content-center align-items-center" style="width: 20%; border-right: 0;"><b>Tiempo planeado</b></div>
+										<div class="col border-t-b border-r-b border-l-b border-b-b">
+											<div class="row h-100">
+												<?php
+												$grupo = $grupoins;
+												if (isset($instrumentacion->Temas->$tema->Semanas->$grupo)) {
+													$datos = $instrumentacion->Temas->$tema->Semanas->$grupo;
+													//print_r($datos);  
+													for ($ii = 0; $ii < count($datos); $ii++) { ?>
+														<div class="col p-1 <?php echo $ii == count($datos) - 1 ? '' : 'border-r-b' ?> d-flex justify-content-center align-items-center" style="white-space: pre-wrap;">
+															<p class="text-center"><?php echo $datos[$ii]; ?></p>
+														</div>
+													<?php } ?>
 
+													<?php
+												} else {
+													for ($i = 1; $i <= 18; $i++) { ?>
+														<div class="col p-1 <?php echo $i == 18 ? '' : 'border-r-b' ?> d-flex justify-content-center align-items-center" style="white-space: pre-wrap;"><b class="text-center"></b></div>
+													<?php } ?>
+												<?php
+												}
+												?>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row d-flex justify-content-start align-items-center mt-3">
+						<div class="col-fluid" style="width: 12%;"></div>
+						<div class="col">
+							<div class="row"><b>SD Seguimiento departamental</b></div>
+							<div class="row"><b>ED Evaluación diagnóstica</b></div>
+							<div class="row"><b>Efn Evaluación formativa (competencia especifica)</b></div>
+							<div class="row"><b>ES Evaluación sumativa</b></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col" id="fuentes">
+					<div class="row mb-2 color p-1 d-flex justify-content-start align-items-center"><b>9- Fuentes de Información</b></div>
+					<?php if (isset(((array)$instrumentacion->Temas)[$tema]->Fuentes)) {
+						$fuentes = ((array)$instrumentacion->Temas)[$tema]->Fuentes;
+						$fuentes = explode("\n", $fuentes);
+						$i = 1;
+						foreach ($fuentes as $fuente) {  ?>
 
+							<div class="row border-b-b">
+								<div class="col-fluid p-1 d-flex justify-content-center align-items-center" style="width: 5%;"><b><?php echo $i; ?></b></div>
+								<div class="col-fluid p-1 d-flex justify-content-start align-items-center" style="width: 95%">
+									<p><?php echo $fuente; ?></p>
+								</div>
+							</div>
 
-			<tr>
-				<td height="4" align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="22" align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b>SD</b></td>
-				<td colspan=20 align="left" valign=middle><b>Seguimiento departamental</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="22" align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b>ED</b></td>
-				<td colspan=20 align="left" valign=middle><b>Evaluación diagnóstica</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="22" align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b>Efn</b></td>
-				<td colspan=20 align="left" valign=middle><b>Evaluación formativa (competencia especifica)</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="22" align="left" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b>ES</b></td>
-				<td colspan=20 align="left" valign=middle><b>Evaluación sumativa</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="5" align="left" valign=middle><br></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="center" valign=middle sdnum="2058;2058;D&quot; de &quot;MMMM&quot; de &quot;AAAA;@"><br></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<!-- Fuentes de informacion -->
-			<tr>
-				<td height="34" align="center" valign=middle><b><br></b></td>
-				<td style="border-bottom: 3px solid #ffffff; border-left: 3px solid #ffffff; border-right: 3px solid #ffffff" colspan=25 align="left" valign=middle bgcolor="#C6D9F1"><b>9- Fuentes de Información</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-			</tr>
-
-			<?php
-			if (isset(((array)$instrumentacion->Temas)[$tema]->Fuentes)) {
-				$fuentes = ((array)$instrumentacion->Temas)[$tema]->Fuentes;
-				$fuentes = explode("\n", $fuentes);
-				$i = 1;
-				foreach ($fuentes as $fuente) {
-					echo '
-
-	<tr>
-		<td height="47" align="center" valign=middle><b></b></td>
-		<td style="border-bottom: 1px solid #254061" align="center" valign=middle><b>' . $i . '<br></b></td>
-		<td style="border-bottom: 1px solid #254061" colspan=24 align="left" valign=middle>' . $fuente . '<br></td>
-		<td align="left" valign=bottom><b><br></b></td>
-	</tr>';
-					$i++;
-				}
-			} ?>
-
-			<tr>
-				<td height="25" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="25" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<!-- Firmas  finales-->
-
-			<tr>
-				<td height="31" align="left" colspan="6" valign=middle><br></td>
-				<td colspan=12 align="center" valign=middle bgcolor="#C6D9F1"><b>Docente que imparte asignatura</b></td>
-				<td align="left" valign=middle colspan="8"><br></td>
-			</tr>
-			<!-- Firma docente -->
-			<tr>
-				<td height="31" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td colspan=12 rowspan=2 align="center" valign=middle bgcolor="#F1F5F9"><img src="firmasimagenes/<?php echo isset($firma) ? $firma :  ''; ?>" alt="" class="img-fluid" width="80"><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="31" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			
-			<!--Nombre docente -->
-			<tr>
-				<td height="31" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td colspan=12 align="center" valign=middle bgcolor="#F1F5F9"><i><?php echo $nombre ?><br></i></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="31" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><b><br></b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="30" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td colspan=8 align="center" valign=middle bgcolor="#C6D9F1"><b>Validó</b></td>
-				<td align="left" valign=middle><b><br></b></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td colspan=10 align="center" valign=middle bgcolor="#C6D9F1"><b>Autorizó</b></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="24" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td colspan=8 rowspan=2 align="center" valign=middle bgcolor="#F1F5F9"><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td colspan=10 rowspan=2 align="center" valign=middle bgcolor="#F1F5F9"><br></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<tr>
-				<td height="24" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<!-- firmas Validó y Autorizo -->
-			<tr>
-				<td height="46" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td colspan=8 align="center" valign=top bgcolor="#F1F5F9"><i>Firma<br></i></td>
-				<td align="left" valign=top><br></td>
-				<td align="center" valign=top><br></td>
-				<td align="center" valign=top><br></td>
-				<td align="center" valign=top><br></td>
-				<td colspan=10 align="center" valign=top bgcolor="#F1F5F9"><i>Firma<br></i></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
-			<!-- Nombres Validó y Autorizó -->
-			<tr>
-				<td height="24" align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td colspan=8 align="center" valign=middle bgcolor="#F1F5F9"><i>Nombre<font color="#000000"><br></font></i></td>
-				<td align="left" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td align="center" valign=middle><br></td>
-				<td colspan=10 align="center" valign=middle bgcolor="#F1F5F9"><i>Nombre<br></i></td>
-				<td align="left" valign=middle><br></td>
-			</tr>
+						<?php $i++;
+						} ?>
+					<?php } ?>
+				</div>
+			</div>
+			<div class="row mt-5 mb-2">
+				<div class="col">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-4">
+							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Docente que imparte asignatura</b></div>
+							<div class="row color-claro d-flex justify-content-center align-items-center" style="border: 0; min-height: 110px;">
+								<img src="firmasimagenes/<?php echo isset($firma) ? $firma :  ''; ?>" alt="" class="img-fluid" style="height: 90px;">
+							</div>
+							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo $nombre ?></i></div>
+						</div>
+					</div>
+					<div class="row mt-4 d-flex justify-content-around">
+						<div class="col-4">
+							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Validó</b></div>
+							<div class="row color-claro d-flex justify-content-center align-items-center" style="border: 0; min-height: 110px;">
+								<i>Firma</i>
+							</div>
+							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i>Nombre</i></div>
+						</div>
+						<div class="col-4">
+							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Autorizó</b></div>
+							<div class="row color-claro d-flex justify-content-center align-items-center" style="border: 0; min-height: 110px;">
+								<i>Firma</i>
+							</div>
+							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i>Nombre</i></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		<?php
 		else :
-			echo "No existen campos llenados en el tema";
+			echo "<div class='row mt-3'><p class='text-warning'>¡No existen campos llenados en el tema!</p></div>";
 		endif; ?>
-	</table>
+	</div>
 
-	<br clear=left>
-	<!-- ************************************************************************** -->
-</body>
 
-</html>
+</div>
