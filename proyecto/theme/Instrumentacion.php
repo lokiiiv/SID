@@ -91,7 +91,7 @@
 		margin-bottom: 0;
 	}
 </style>
-<div class="container-fluid" style="max-width: 1276px; min-width: 1100px" id="instru">
+<div class="container-fluid" style="max-width: 1276px; min-width: 1000px" id="instru">
 	<div class="mt-1 mb-4 ml-3 mr-3">
 		<div id="encabezado">
 			<div class="row" style="border: 1px solid #000000;">

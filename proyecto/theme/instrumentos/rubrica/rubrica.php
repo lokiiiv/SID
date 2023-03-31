@@ -326,8 +326,8 @@
  	<div class="container" id="imprimir" style="margin-top: 50px;">
  <!–– primer encabezado ––>
  		<div class="row">
- 			<div 	 class="box col-md-2 col-xs-2 col-sm-2 col-lg-2">
- 				<img style="" src="img/logoitesa.png" alt="">
+ 			<div class="box col-md-2 col-xs-2 col-sm-2 col-lg-2">
+ 				<img src="img/logoitesa.png" alt="">
  			</div>
 			<div class="col-md-10 col-xs-10 col-sm-10 col-lg-10">
  				<div class="row">

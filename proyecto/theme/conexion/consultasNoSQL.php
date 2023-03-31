@@ -460,7 +460,7 @@
                 $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".SoloLectura"=>true]);
                 //$connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Responsable"=>["ID" => $idPresidente, "Nombre" => $nombrePresidente, "Correo" => $correoPresidente]]);
                 echo json_encode(['success' => true, 'mensaje' => 'La instrumentación ahora podrá ser vista por el presidente de grupo académico para su respectiva validación.']);
-                break;
+            break;
 
             case 'obtenerInstrumentacionesPorPresidente':
                 $periodo = $_POST['periodo'];
@@ -653,6 +653,47 @@
                 $instrumentaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
                 echo json_encode(['success' => true, 'data' => $instrumentaciones]);
 
-                break;
+            break;
+            
+            case 'mostrarVistaEvidenciaAprendizaje': 
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['claveAsignatura'];
+                $tema = $_POST['tema'];
+                $evidencia = $_POST['evidencia'];
+                //Obtener la información de una evidencia de aprendizaje de algun tema para mostrarlo en las vistas correspondientes
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'Materia' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
+                            'CompetenciaET' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Temas.' . $tema. '.CompetenciaET', 
+                            'DatosEvidencia' => [
+                                '$filter' => [
+                                    'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Temas.' . $tema .'.MatrizEvaluacion', 
+                                    'as' => 'evidencia', 
+                                    'cond' => [
+                                        '$eq' => [
+                                            [
+                                                '$arrayElemAt' => ['$$evidencia', 12]
+                                            ], 
+                                            $evidencia
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            'ContenidoInstrumento' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.InstrumentosMatriz.Temas.' . $tema . '.' . $evidencia
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$DatosEvidencia']
+                    ]
+                ];
+
+                $instrumento = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                echo json_encode(['success' => true, 'data' => $instrumento]);
+            break;
         }
     }

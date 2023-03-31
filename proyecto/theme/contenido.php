@@ -3243,7 +3243,7 @@ require_once("../../valida.php");
 
 
 
-    <!-- Modal -->
+    <!-- Modal para evidencia de aprendizaje -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -3254,9 +3254,7 @@ require_once("../../valida.php");
             </button>
           </div>
           <div class="modal-body">
-            <div id="instrumentos" class="modal-body" style="height: auto;">
-
-            </div>
+            <div id="instrumentos"></div>
           </div>
           <div class="modal-footer">
             <button id="ginstind" type="button" class="btn btn-success editable">Guardar</button>
@@ -3975,8 +3973,7 @@ require_once("../../valida.php");
         //alert("ok2");
         if (ban1 && ban2) {
           var PE = document.getElementById("campoPE").value;
-          var CS = document.getElementById("campoSemestre").value;
-
+          var CS = document.getElementById("campoSemestre").innerHTML;
 
           $("#instrumentos").load("instrumentos/guiaobservacion/guia.php", {
             CS: CS,
@@ -4003,7 +4000,14 @@ require_once("../../valida.php");
             CTTDNL: actitudinal,
             general: general
           }, function() {
-
+            //Aplicar css al modal cuando se muestre la vista de instrumento
+            $("#exampleModal .modal-dialog").css('position', 'relative');
+            $("#exampleModal .modal-dialog").css('overflow', 'auto');
+            $("#exampleModal .modal-dialog").css('display', 'table');
+            $("#exampleModal .modal-dialog").css('width', 'auto');
+            $("#exampleModal .modal-dialog").css('min-width', '300px');
+            $("#exampleModal .modal-content .modal-body").css('overflow-x', 'auto');
+            $("#exampleModal .modal-content .modal-body").css('max-width', '90vw');
           });
         }
       }
@@ -4107,7 +4111,7 @@ require_once("../../valida.php");
           alertify.error('<h3 style="color:white;">Aún no se ha creado todos los indicadores </h3>', 5);
         } else {
           var PE = document.getElementById("campoPE").value;
-          var CS = document.getElementById("campoSemestre").value;
+          var CS = document.getElementById("campoSemestre").innerHTML;
 
 
           $("#instrumentos").load("instrumentos/cuestionario/cuestionario.php", {
@@ -4137,7 +4141,14 @@ require_once("../../valida.php");
             listasb2: listasb2,
             listapvf: listapvf
           }, function() {
-
+            //Aplicar css al modal cuando se muestre la vista de instrumento
+            $("#exampleModal .modal-dialog").css('position', 'relative');
+            $("#exampleModal .modal-dialog").css('overflow', 'auto');
+            $("#exampleModal .modal-dialog").css('display', 'table');
+            $("#exampleModal .modal-dialog").css('width', 'auto');
+            $("#exampleModal .modal-dialog").css('min-width', '300px');
+            $("#exampleModal .modal-content .modal-body").css('overflow-x', 'auto');
+            $("#exampleModal .modal-content .modal-body").css('max-width', '90vw');
           });
         }
         //alert(listapvf.length);
