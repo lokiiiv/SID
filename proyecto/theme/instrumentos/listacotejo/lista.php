@@ -63,7 +63,7 @@
  	$mat=$_POST["mat"];//materia nombre
  	$gru=$_POST["gru"];//grupo
 	$tem=$_POST["tem"]; 
-	$CoT=$_POST["CoT"]; 	
+	$CoT= isset($_POST["CoT"]) ? $_POST["CoT"] : ""; 	
 	$_SESSION["A"]=$A;
 	$_SESSION["B"]=$B;
 	$_SESSION["C"]=$C;
@@ -174,7 +174,6 @@
  <head>
  	<meta charset="UTF-8">
  	<title>Document</title>
- 	<link href="bootstrap.min.css" rel="stylesheet">
  	
  	<style>
  		.rotar {
@@ -223,10 +222,6 @@
 		.aiz{
 			text-align: left;
 		}	
-		.voltea{
-			-webkit-transform: rotate(-90deg); 
-			-moz-transform: rotate(-90deg);
-		}
  	</style>
  	
  </head>
@@ -237,7 +232,7 @@
  <!–– primer encabezado ––>
  		<div class="row">
  			<div 	 class="box col-md-2 col-xs-2 col-sm-2 col-lg-2">
- 				<img style="" src="img/logoitesa.png" alt="">
+ 				<img src="img/logoitesa.png" alt="">
  			</div>
 			<div class="col-md-10 col-xs-10 col-sm-10 col-lg-10">
  				<div class="row">
@@ -415,7 +410,7 @@
 					$continstru=1;
 
 					for ($i=0; $i <count($indalc) ; $i++) { 
-						$vecalc=explode("!#$%&/()=",$indalc[$i]);
+						$vecalc = $indalc[$i];
 					
 				 ?>
 				<div class="row" style="display: flex; text-align: left;">
@@ -449,7 +444,7 @@
 				<?php 
 
 					for ($i=0; $i <count($indmin) ; $i++) { 
-						$vecmin=explode("!#$%&/()=",$indmin[$i]);
+						$vecmin = $indmin[$i];
 					
 				 ?>
 				<div class="row" style="display: flex; text-align: left;">
@@ -460,10 +455,10 @@
 						<?php echo $vecmin[0]; ?>
 					</div>
 					<div class="colcon bordewhite  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
-						 <?php echo $vecmin[1]; ?>
+						 <?php echo $vecmin[2]; ?>
 					</div>
 					<div class=" bordewhite colcon	 col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
-						M			
+						<?php echo $vecmin[1]; ?>		
 					</div>
 					<div class=" bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
 						

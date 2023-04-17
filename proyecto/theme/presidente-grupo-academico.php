@@ -215,8 +215,8 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 								inst.v.TodasMaterias.forEach(carreras => {
 									carreras.Docentes.forEach(doce => {
 										htmlListaContenenido += '<div class="col-md-4 col-sm-6 col-12 mb-1">' +
-																	'<h6 style="font-size: 13px;" class="nombre-programa-edu"><span class="badge badge-pill badge-info font-weight-normal" style="font-size: 14px;" data-semestre="' + (carreras.Semestre != undefined ? carreras.Semestre : '') + '">' + (doce.grupo != undefined ? doce.grupo : '') + '</span> - ' + (carreras.PE != undefined ? carreras.PE : '') + '</h6>' +
-																	'<h6 style="font-size: 12px;">Docente: ' + (doce.nombre != undefined ? doce.nombre : '') + '</h6>' +
+																	'<h6 style="font-size: 13px;" class="nombre-programa-edu"><span class="badge badge-pill badge-info font-weight-normal" style="font-size: 14px;" data-semestre="' + (carreras.Semestre != undefined ? carreras.Semestre : '') + '" data-grupo="' + (doce.grupo != undefined ? doce.grupo : '') + '">' + (doce.grupo != undefined ? doce.grupo : '') + '</span> - ' + (carreras.PE != undefined ? carreras.PE : '') + '</h6>' +
+																	'<h6 style="font-size: 12px;" class="nombre-docente" data-nombre-docente="' + (doce.nombre != undefined ? doce.nombre : '') + '">Docente: ' + (doce.nombre != undefined ? doce.nombre : '') + '</h6>' +
 																'</div>';
 									});
 								});
@@ -272,13 +272,14 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
 			//Obtener que tema mostrar
 			var tema = $(this).attr('data-tema');
-			//Obtener el primero grupo que comparte esa instrumentacion, solo para mostrarlo como ejemplo
-			var grupo = $(this).closest('.item-instrumentacion').find('h6 span:first').text();
 
+			//Obtener el primer grupo que comparte esa instrumentacion, solo para mostrarlo como ejemplo
+			var grupoEjemplo = $(this).closest('.item-instrumentacion').find('.nombre-programa-edu span').first().attr('data-grupo');
 			var asignatura = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+			var nombreDocenteEjemplo = $(this).closest('.item-instrumentacion').find('.nombre-docente').first().attr('data-nombre-docente');
 			
-			if(claveAsignatura != undefined && tema != undefined && grupo != undefined && periodo != undefined) {
-				$("#contenedor-instrumento").load("generarinstrumentacion.php?grupo=" + encodeURI(grupo) + "&periodo=" + encodeURI(periodo) + "&tema=" + encodeURI(tema) + "&claveAsignatura=" + encodeURI(claveAsignatura), function(response) {
+			if(claveAsignatura != undefined && tema != undefined && grupoEjemplo != undefined && periodo != undefined && nombreDocenteEjemplo != undefined) {
+				$("#contenedor-instrumento").load("generarinstrumentacion.php?grupo=" + encodeURI(grupoEjemplo) + "&periodo=" + encodeURI(periodo) + "&tema=" + encodeURI(tema) + "&claveAsignatura=" + encodeURI(claveAsignatura) + "&docenteEjemplo=" + encodeURI(nombreDocenteEjemplo), function(response) {
 					$("#modal-instrumento .modal-title").text("Instrumentación didáctica del Tema No. " + tema + " de la asignatura de " + asignatura + " (" + claveAsignatura + ").");
 					$("#modal-instrumento").modal('show');
 				});
@@ -314,7 +315,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 						} else {
 							//Obtener que evidencia es (rubrica, lista de cotejo, cuestionario, guia de observacion)
 							var cual = infoEvidencia.DatosEvidencia[8];
-							var CS = botonActual.closest('.item-instrumentacion').find('h6 span:first').attr('data-semestre');
+							var CS = botonActual.closest('.item-instrumentacion').find('.nombre-programa-edu span').first().attr('data-semestre');
 							var PE = botonActual.closest('.item-instrumentacion').find('.nombre-programa-edu:first').text().split('-')[1].trim();
 							var evidencia = infoEvidencia.DatosEvidencia[0];
 							var instrumento = infoEvidencia.DatosEvidencia[8];
@@ -326,18 +327,142 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							var E = infoEvidencia.DatosEvidencia[6];
 							var F = infoEvidencia.DatosEvidencia[7];
 							var materia = infoEvidencia.Materia;
-							var grupo = botonActual.closest('.item-instrumentacion').find('h6 span:first').text();
+							var grupo = botonActual.closest('.item-instrumentacion').find('.nombre-programa-edu span').first().attr('data-grupo');
 							var tem = botonActual.closest('.btn-group').find('.abrirInstruTema').attr('data-tema');
-							var fa = infoEvidencia.ContenidoInstrumento[0];
-							var te = infoEvidencia.ContenidoInstrumento[1];
+							//var fa = infoEvidencia.ContenidoInstrumento[0];
+							//var te = infoEvidencia.ContenidoInstrumento[1];
 							var ComT = infoEvidencia.CompetenciaET;
 							var procedimental = infoEvidencia.DatosEvidencia[9] == "1" ? 'X' : '';
 							var conceptual = infoEvidencia.DatosEvidencia[10] == "1" ? 'X' : '';
 							var actitudinal = infoEvidencia.DatosEvidencia[11] == "1" ? 'X' : '';
-							var general = infoEvidencia.ContenidoInstrumento;
+							var nomDocenteEjemplo =botonActual.closest('.item-instrumentacion').find('.nombre-docente').first().attr('data-nombre-docente');
 
 							if(cual == "Guía de observación") {
+								var general = infoEvidencia.ContenidoInstrumento;
 								$("#contenedor-evidencia").load("instrumentos/guiaobservacion/guia.php", {
+									CS: CS,
+									PE: PE,
+									evi: evidencia,
+									ins: instrumento,
+									num: cual,
+									per: periodo,
+									A: A,
+									B: B,
+									C: C,
+									D: D,
+									E: E,
+									F: F,
+									por: por,
+									mat: materia,
+									gru: grupo,
+									tem: tem,
+									fa: general[0],
+									te: general[1],
+									CoT: ComT,
+									PRCDMTL: procedimental,
+									CNCPTL: conceptual,
+									CTTDNL: actitudinal,
+									general: general,
+									nomDocenteEjemplo: nomDocenteEjemplo
+								}, function(){
+									$("#modal-evidencia").modal('show');
+								});
+							} else if (cual == "Lista de cotejo") {
+								var taa = infoEvidencia.ContenidoInstrumento[2];
+								var tma = infoEvidencia.ContenidoInstrumento[3];
+								var fa = infoEvidencia.ContenidoInstrumento[0];
+								var te = infoEvidencia.ContenidoInstrumento[1];
+								$("#contenedor-evidencia").load("instrumentos/listacotejo/lista.php", {
+									CS: CS,
+									PE: PE,
+									evi: evidencia,
+									ins: instrumento,
+									num: cual,
+									per: periodo,
+									A: A,
+									B: B,
+									C: C,
+									D: D,
+									E: E,
+									F: F,
+									por: por,
+									mat: materia,
+									gru: grupo,
+									tem: tem,
+									fa: fa,
+									te: te,
+									CoT: ComT,
+									taa: taa,
+									tma: tma,
+									PRCDMTL: procedimental,
+									CNCPTL: conceptual,
+									CTTDNL: actitudinal
+								}, function() {
+									$("#modal-evidencia").modal('show');
+								});
+							} else if (cual == "Cuestionario") {
+								var fa = infoEvidencia.ContenidoInstrumento[0][0];
+								var te = infoEvidencia.ContenidoInstrumento[0][1];
+
+								//Aqui es necesario modificar el array que contiene las preguntas de relacionar, subrayar y verdadero o falso
+								//Esto con la finalidad de adaptar los datos tal como estan establecidos en instrumentos/cuestionario/cuestionario.php, para que se incluyan sin problema al cargar la vista de la instrumentacion
+								//Ya que al obtener la información tal como esta en Mongo no se podrá adaptar al cargar la vista, mostrando errores debido a que esta estructurado un poco diferente
+								var listapr = [];
+								infoEvidencia.ContenidoInstrumento[0][2].forEach(preguntaRela => {
+									listapr.push(preguntaRela[0]);
+									listapr.push(preguntaRela[1]);
+									listapr.push(preguntaRela[2]);
+									listapr.push(preguntaRela[3]);
+								});
+								var listasb2 = [];
+								infoEvidencia.ContenidoInstrumento[0][3].forEach(preguntaSubra => {
+									listasb2.push(preguntaSubra[0]);
+								});
+								var listapvf = [];
+								infoEvidencia.ContenidoInstrumento[0][4].forEach(preguntasFalsoVer => {
+									listapvf.push(preguntasFalsoVer[0]);
+									listapvf.push(preguntasFalsoVer[1]);
+									listapvf.push(preguntasFalsoVer[2]);
+									listapvf.push(preguntasFalsoVer[3]);
+								});
+								$("#contenedor-evidencia").load("instrumentos/cuestionario/cuestionario.php", {
+									CS: CS,
+									PE: PE,
+									evi: evidencia,
+									ins: instrumento,
+									num: cual,
+									per: periodo,
+									A: A,
+									B: B,
+									C: C,
+									D: D,
+									E: E,
+									F: F,
+									por: por,
+									mat: materia,
+									gru: grupo,
+									tem: tem,
+									fa: fa,
+									te: te,
+									CoT: ComT,
+									PRCDMTL: procedimental,
+									CNCPTL: conceptual,
+									CTTDNL: actitudinal,
+									listapr: listapr,
+									listasb2: listasb2,
+									listapvf: listapvf,
+									nomDocenteEjemplo: nomDocenteEjemplo
+								}, function() {
+									$("#modal-evidencia").modal('show');
+								});
+							} else if (cual = "Rúbrica") {
+								var fa = infoEvidencia.ContenidoInstrumento[0];
+								var te = infoEvidencia.ContenidoInstrumento[1];
+								var general = infoEvidencia.ContenidoInstrumento;
+								console.log(general);
+								var CTema = infoEvidencia.NombreTema;
+								$("#contenedor-evidencia").load("instrumentos/rubrica/rubrica.php", {
+									CTema: CTema,
 									CS: CS,
 									PE: PE,
 									evi: evidencia,
@@ -361,7 +486,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									CNCPTL: conceptual,
 									CTTDNL: actitudinal,
 									general: general
-								}, function(){
+								}, function() {
 									$("#modal-evidencia").modal('show');
 								});
 							}

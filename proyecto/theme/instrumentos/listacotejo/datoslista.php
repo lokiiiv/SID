@@ -262,53 +262,48 @@ $num = $num - 2;
 				//alert(instrumento+(cual-2));
 				var cadA = "";
 				var cadM = "";
-				var fa = v[0][0]; //fecha aplicación
+				var fa = v[0]; //fecha aplicación
 
-				var te = v[0][1]; //tiempo de evaluación
+				var te = v[0]; //tiempo de evaluación
 				//alert(te);
 				document.getElementById("fa").value = fa;
 				document.getElementById("te").value = te;
 				var contMin = 0;
 				//alert("ok");
-				for (var i = 2; i < v[0].length; i = i + 3) {
-					if (v[0][i + 1] != "M") {
-						cadA = cadA + 'Ingrese indicador ' + v[0][i + 1] + ' <textarea rows="4" class="form-control editable" id="' + v[0][i + 1] + '" placeholder="">' + v[0][i] + '</textarea>';
-					} else {
-						//cadM = cadM + '<div id="d' + contMin + '"><textarea id="M' + contMin + '" rows="4" class="col-lg-9 col-sm-9 col-md-9" class="M">' + v[0][i] + '</textarea><textarea id="M' + contMin + '" rows="4" class="col-lg-2 col-sm-2 col-md-2" class="PM">' + v[0][i + 2] + '</textarea><button type="button" class="btn btn-danger col-lg-1 col-sm-1 col-md-1" onclick="bot(' + contMin + ')">X</button></div>';
-
-
-						cadM = cadM + '<div class="col-md-12 col-xs-12 col-ms-12 col-lg-12 conte-indic-min" id="d' + contMin + '">' +
-							'<div class="row">' +
-							'<div class="col-lg-11 col-sm-12 col-md-11 col-xs-11">' +
-							'<div class="row" style="text-align: start;">' +
-							'<div class="col">' +
-							'<label style="width: 70%;">Ingrese indicador</label>' +
-							'<label style="width: 30%;">Puntaje</label>' +
-							'</div>' +
-							'</div>' +
-							'<div class="input-group mb-3">' +
-							'<textarea class="form-control M editable" rows="4" id="M' + contMin + '">' + v[0][i] + '</textarea>' +
-							'<div class="input-group-append" style="max-width: 30%;">' +
-							'<textarea class="form-control PM editable" id="M' + contMin + '">' + v[0][i + 2] + '</textarea>' +
-							'</div>' +
-							'</div>' +
-							'</div>' +
-							'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-12 d-flex justify-content-end align-items-center">' +
-							'<div class="form-group">' +
-							'<button type="button" class="btn btn-danger btn-sm editable" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
-							'</div>' +
-							'</div>' +
-							'</div>' +
-							'</div>';
-
-						contMin++;
-					}
-				}
-				cont = contMin;
-				//alert(cadA);
-				//var divminimo=document.getElementById("minimos");
-				$("#minimos")[0].innerHTML = cadM;
+				//Mostrar información guardada de indicadores de alcance
+				v[2].forEach(alcance => {
+					cadA = cadA + 'Ingrese indicador ' + alcance[1] + ' <textarea rows="4" class="form-control editable" id="' + alcance[1] + '" placeholder="">' + alcance[0] + '</textarea>';
+				});
 				$("#alcance")[0].innerHTML = cadA;
+
+				//Mostrar información guardada de indicadores minimos
+				v[3].forEach(minimo => {
+					cadM = cadM + '<div class="col-md-12 col-xs-12 col-ms-12 col-lg-12 conte-indic-min" id="d' + contMin + '">' +
+						'<div class="row">' +
+						'<div class="col-lg-11 col-sm-12 col-md-11 col-xs-11">' +
+						'<div class="row" style="text-align: start;">' +
+						'<div class="col">' +
+						'<label style="width: 70%;">Ingrese indicador</label>' +
+						'<label style="width: 30%;">Puntaje</label>' +
+						'</div>' +
+						'</div>' +
+						'<div class="input-group mb-3">' +
+						'<textarea class="form-control M editable" rows="4" id="M' + contMin + '">' + minimo[0] + '</textarea>' +
+						'<div class="input-group-append" style="max-width: 30%;">' +
+						'<textarea class="form-control PM editable" id="M' + contMin + '">' + minimo[2] + '</textarea>' +
+						'</div>' +
+						'</div>' +
+						'</div>' +
+						'<div class="col-lg-1 col-sm-12 col-md-1 col-xs-12 d-flex justify-content-end align-items-center">' +
+						'<div class="form-group">' +
+						'<button type="button" class="btn btn-danger btn-sm editable" onclick="bot(this)"><i class="fa-solid fa-trash"></i></button>' +
+						'</div>' +
+						'</div>' +
+						'</div>' +
+						'</div>';
+					contMin++;
+				});
+				$("#minimos")[0].innerHTML = cadM;
 
 			}
 

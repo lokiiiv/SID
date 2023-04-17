@@ -20,7 +20,7 @@
   $grupo = substr($grupoins, 0,3);
   $periodo=$_GET['periodo'];
   $correo = $_SESSION['correo'];
-  $nombre = $_SESSION['nombreCompleto'];
+  $nombre = isset($_GET['docenteEjemplo']) ? $_GET['docenteEjemplo'] : $_SESSION['nombreCompleto'];
   $tema = $_GET['tema'];
   $firma = isset($_GET['firma']) ? $_GET['firma'] : '';
 

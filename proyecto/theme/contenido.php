@@ -3679,10 +3679,35 @@ require_once("../../valida.php");
         var ComT = document.getElementById("CompetenciaET").innerHTML;
         var divalcance = document.getElementById("alcance");
         var ta = divalcance.getElementsByTagName("textarea");
-        var taa = new Array(ta.length);
-        for (var i = 0; i < ta.length; i++) {
-          taa[i] = ta[i].value + "!#$%&/()=" + ta[i].id;
-        }
+
+        //var taa = new Array(ta.length);
+        var matriz = [];
+
+        var taa = [];
+        for(var i = 0; i < ta.length; i++){
+          var aux = [];
+          aux.push(ta[i].value);
+          aux.push(ta[i].id);
+          if (ta[i].id == "A") {
+            aux.push(tabla.rows[cual].cells[2].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "B") {
+            aux.push(tabla.rows[cual].cells[3].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "C") {
+            aux.push(tabla.rows[cual].cells[4].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "D") {
+            aux.push(tabla.rows[cual].cells[5].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "E") {
+            aux.push(tabla.rows[cual].cells[6].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "F") {
+            aux.push(tabla.rows[cual].cells[7].getElementsByTagName("input")[0].value);
+          }
+          taa.push(aux);
+        };
 
 
         var divminimo = document.getElementById("minimos");
@@ -3690,11 +3715,14 @@ require_once("../../valida.php");
         if (tm.length == 0) {
           alertify.error('<h3 style="color:white;">Aún no se ha creado indicadores mínimos</h3>', 5);
         } else {
-          var tma = new Array(tm.length);
-          var contminimos = 0;
+          var tma = [];
           for (var i = 0; i < tm.length; i += 2) {
-            tma[contminimos] = tm[i].value + "!#$%&/()=" + tm[i + 1].value;
-            contminimos++;
+            var aux = [];
+            aux.push(tm[i].value);
+            aux.push("M");
+            aux.push(tm[i + 1].value);
+
+            tma.push(aux);
           }
 
           //alert(taa[0]);
@@ -3732,7 +3760,7 @@ require_once("../../valida.php");
           var fa = document.getElementById("fa").value;
           var te = document.getElementById("te").value;
           var PE = document.getElementById("campoPE").value;
-          var CS = document.getElementById("campoSemestre").value;
+          var CS = document.getElementById("campoSemestre").innerHTML;
           $("#instrumentos").load("instrumentos/listacotejo/lista.php", {
             CS: CS,
             PE: PE,
@@ -3865,9 +3893,10 @@ require_once("../../valida.php");
         }
         //alert("ok");
         var PE = document.getElementById("campoPE").value;
-        var CS = document.getElementById("campoSemestre").value;
+        var CS = document.getElementById("campoSemestre").innerHTML;
         var CTema = document.getElementById("TituloTema").value;
 
+        console.log(general);
         //alert(CTema);
         $("#instrumentos").load("instrumentos/rubrica/rubrica.php", {
           CTema: CTema,
@@ -3974,7 +4003,6 @@ require_once("../../valida.php");
         if (ban1 && ban2) {
           var PE = document.getElementById("campoPE").value;
           var CS = document.getElementById("campoSemestre").innerHTML;
-
           $("#instrumentos").load("instrumentos/guiaobservacion/guia.php", {
             CS: CS,
             PE: PE,
@@ -4113,7 +4141,6 @@ require_once("../../valida.php");
           var PE = document.getElementById("campoPE").value;
           var CS = document.getElementById("campoSemestre").innerHTML;
 
-
           $("#instrumentos").load("instrumentos/cuestionario/cuestionario.php", {
             CS: CS,
             PE: PE,
@@ -4230,7 +4257,38 @@ require_once("../../valida.php");
         var divalcance = document.getElementById("alcance");
         var ta = divalcance.getElementsByTagName("textarea");
 
-        var taa = new Array();
+        var matriz = [];
+        matriz.push(fa);
+        matriz.push(te);
+
+        var alcances = [];
+        for(var i = 0; i < ta.length; i++){
+          var aux = [];
+          aux.push(ta[i].value);
+          aux.push(ta[i].id);
+          if (ta[i].id == "A") {
+            aux.push(tabla.rows[cual].cells[2].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "B") {
+            aux.push(tabla.rows[cual].cells[3].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "C") {
+            aux.push(tabla.rows[cual].cells[4].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "D") {
+            aux.push(tabla.rows[cual].cells[5].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "E") {
+            aux.push(tabla.rows[cual].cells[6].getElementsByTagName("input")[0].value);
+          }
+          if (ta[i].id == "F") {
+            aux.push(tabla.rows[cual].cells[7].getElementsByTagName("input")[0].value);
+          }
+          alcances.push(aux);
+        };
+        matriz.push(alcances);
+
+        /* var taa = new Array();
         var contin = 0;
 
         taa[contin] = fa;
@@ -4262,26 +4320,35 @@ require_once("../../valida.php");
           }
           contin++;
         }
+        console.log(taa); */
 
         //alert(cual);
 
         var divminimo = document.getElementById("minimos");
         var tm = divminimo.getElementsByTagName("textarea");
-        //var tma = new Array(tm.length);
-        var contminimos = 0;
+
+        var minimos = [];
         for (var i = 0; i < tm.length; i += 2) {
-          taa[contin] = tm[i].value;
+          var aux = [];
+          aux.push(tm[i].value);
+          aux.push("M");
+          aux.push(tm[i + 1].value);
+          
+          /* taa[contin] = tm[i].value;
           contin++;
           taa[contin] = "M";
           contin++;
           taa[contin] = tm[i + 1].value;
-          contin++;
+          contin++; */
+
+          minimos.push(aux);
         }
-        var matriz = [];
-        matriz.push(taa);
+
+        matriz.push(minimos);
+        //var matriz = [];
+        //matriz.push(taa);
         //alert(taa.length);
         //PORCENTAJE 30% DE 100
-
 
         //alert("ok-");
 

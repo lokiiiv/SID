@@ -95,14 +95,14 @@
  	$mat=$_POST["mat"];//materia nombre
  	$gru=$_POST["gru"];//grupo
 	$tem=$_POST["tem"]; 
-	$CoT=$_POST["CoT"]; 	
+	$CoT= isset($_POST["CoT"]) ? $_POST["CoT"] : ""; 	
 	$_SESSION["A"]=$A;
 	$_SESSION["B"]=$B;
 	$_SESSION["C"]=$C;
 	$_SESSION["D"]=$D;
 	$_SESSION["E"]=$E;
 	$_SESSION["F"]=$F;
-	$nomdoc=$_SESSION["nombreCompleto"];
+	$nomdoc= isset($_POST['nomDocenteEjemplo']) ? $_POST['nomDocenteEjemplo'] : $_SESSION["nombreCompleto"];
 
 	$Materia=$mat." (TEMA ".$tem.")";//yo lo hice
 	

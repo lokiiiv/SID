@@ -63,17 +63,18 @@
  	$mat=$_POST["mat"];//materia nombre
  	$gru=$_POST["gru"];//grupo
 	$tem=$_POST["tem"]; 
-	$CoT=$_POST["CoT"]; 	
+	$CoT= isset($_POST["CoT"]) ? $_POST["CoT"] : ""; 	
 	$_SESSION["A"]=$A;
 	$_SESSION["B"]=$B;
 	$_SESSION["C"]=$C;
 	$_SESSION["D"]=$D;
 	$_SESSION["E"]=$E;
 	$_SESSION["F"]=$F;
-	$nomdoc=$_SESSION["nombreCompleto"];
+	$nomdoc= isset($_POST['nomDocenteEjemplo']) ? $_POST['nomDocenteEjemplo'] : $_SESSION["nombreCompleto"];
 	$listapr=$_POST["listapr"];
 	$listasb2=$_POST["listasb2"];
 	$listapvf=$_POST["listapvf"];
+
 	//echo count($listapr);
 	$contpr=0;
 	for ($i=0; $i <count($listapr) ; $i+=4) { 
@@ -207,10 +208,6 @@ $Materia=$mat." (TEMA ".$tem.")";
 		.aiz{
 			text-align: left;
 		}	
-		.voltea{
-			-webkit-transform: rotate(-90deg); 
-			-moz-transform: rotate(-90deg);
-		}
  	</style>
  </head>
 
@@ -352,21 +349,21 @@ $Materia=$mat." (TEMA ".$tem.")";
 				if ($listasb2[$i][count($listasb2[$i])-1]!="") {
 					$texttoo="(Indicador ".$listasb2[$i][count($listasb2[$i])-1].")";
 				}
-		echo '<div class="row" style="display: flex;"><div class="box col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12" style="text-align:left;">'.$listasb2[$i][0].' ('.$listasb2[$i][1].' puntos)'.$texttoo.'</div></div><div class="row" style="display: flex;">';
-		$colum=12/((count($listasb2[$i])-3)/2);
+				echo '<div class="row" style="display: flex;"><div class="box col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12" style="text-align:left;">'.$listasb2[$i][0].' ('.$listasb2[$i][1].' puntos)'.$texttoo.'</div></div><div class="row" style="display: flex;">';
+				$colum=12/((count($listasb2[$i])-3)/2);
 
-		for ($j=2; $j <count($listasb2[$i])-1 ; $j+=2) { 
-			$textolinea="";
-			$textoclase="";
-			if ($listasb2[$i][$j+1]=="true") {
-				$textoclase='ocultarrr2';
-				$textolinea='style="text-decoration-line: underline;"';
-			}
+				for ($j=2; $j <count($listasb2[$i])-1 ; $j+=2) { 
+					$textolinea="";
+					$textoclase="";
+					if ($listasb2[$i][$j]=="true") {
+						$textoclase='ocultarrr2';
+						$textolinea='style="text-decoration-line: underline;"';
+					}
 
-			echo '<div class="'.$textoclase.' box col-md-'.$colum.' col-xs-'.$colum.' col-sm-'.$colum.' col-lg-'.$colum.'" '.$textolinea.'>'.$listasb2[$i][$j].'</div>';
-		}
-	echo "</div>";
-	}
+					echo '<div class="'.$textoclase.' box col-md-'.$colum.' col-xs-'.$colum.' col-sm-'.$colum.' col-lg-'.$colum.'" '.$textolinea.'>'.$listasb2[$i][$j + 1].'</div>';
+				}
+				echo "</div>";
+			}	
 		?>
 		<div class="row" style="display: flex; text-align: left;">
  			<div class="box col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">

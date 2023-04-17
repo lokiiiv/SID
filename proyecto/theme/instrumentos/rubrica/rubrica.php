@@ -43,7 +43,7 @@
  		$cadeindi=$cadeindi."F,";
  		
  	} 
- 	$Ctema=$_POST["CTema"]; 
+ 	$Ctema= isset($_POST["CTema"]) ? $_POST["CTema"] : ""; 
  	//$indalc=$_POST["taa"];//indicadores de alcance
  	$CNCPTL=$_POST["CNCPTL"];
  	$CTTDNL=$_POST["CTTDNL"];
@@ -97,7 +97,7 @@
  	$mat=$_POST["mat"];//materia nombre
  	$gru=$_POST["gru"];//grupo
 	$tem=$_POST["tem"]; 
-	$CoT=$_POST["CoT"]; 
+	$CoT= isset($_POST["CoT"]) ? $_POST["CoT"] : ""; 
 	$CS=$_POST["CS"]; 	
 	$_SESSION["A"]=$A;
 	$_SESSION["B"]=$B;
@@ -314,10 +314,6 @@
 		.aiz{
 			text-align: left;
 		}	
-		.voltea{
-			-webkit-transform: rotate(-90deg); 
-			-moz-transform: rotate(-90deg);
-		}
  	</style>
  </head>
 
@@ -494,7 +490,7 @@
 
 
 				<?php 
-					for($i=0;$i<count($general);$i++){
+					for($i=2;$i<count($general);$i++){
 						$v=$general[$i];
 						$cate=$v[0];
 						$indi=$v[1];

@@ -670,6 +670,7 @@
                             '_id' => 0, 
                             'Materia' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
                             'CompetenciaET' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Temas.' . $tema. '.CompetenciaET', 
+                            'NombreTema' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Temas.' . $tema . '.TituloTema',
                             'DatosEvidencia' => [
                                 '$filter' => [
                                     'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Temas.' . $tema .'.MatrizEvaluacion', 
