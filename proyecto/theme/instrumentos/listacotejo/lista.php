@@ -17,7 +17,7 @@
  	$PRCDMNTL=$_POST["PRCDMTL"];
  	$cadeindi="";
 
- 	$indmin=$_POST["tma"];
+ 	$indmin= isset($_POST["tma"]) ? $_POST["tma"] : [];
 
 
  	$contAF=0;
@@ -70,7 +70,7 @@
 	$_SESSION["D"]=$D;
 	$_SESSION["E"]=$E;
 	$_SESSION["F"]=$F;
-	$nomdoc=$_SESSION["nombreCompleto"];
+	$nomdoc = isset($_POST['nomDocenteEjemplo']) ? $_POST['nomDocenteEjemplo'] : $_SESSION["nombreCompleto"];
 
 	$Materia=$mat." (TEMA ".$tem.")";//yo lo hice
 	$Instrumento=$ins;//yo lo pase

@@ -55,7 +55,21 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 		<div class="container">
 			<div class="row mb-4 mt-4">
 				<div class="col-12">
+					<div class="row pb-3"> 
+						<div class="col d-flex justify-content-end">
+							<button type="button" class="btn btn-outline-danger btn-sm mr-2" id="cancelarCheck" style="display: none;"><i class="fa-solid fa-xmark pr-2"></i>Cancelar</button>
+							<ul class="list-group" style="width:150px">
+								<li class="list-group-item">
+									<div class="form-check checkbox ml-2">
+  										<input class="form-check-input" type="checkbox" value="" id="checkAll">
+  										<label class="form-check-label" for="checkAll">Seleccionar todo</label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
 					<div class="row" id="contenedor">
+						
 					</div>
 				</div>
 			</div>
@@ -124,6 +138,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 
 	<script>
 		var periodo;
+		var banEvento = false;
 		$(document).ready(function() {
 			//Obtener cual es el periodo actual conforme a la fecha actual
 			var mesActual = new Date().getMonth();
@@ -172,11 +187,11 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			var htmlLista = '';
 			var htmlListaContenenido = '';
 
-			var html = '<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">' +
+			var html = '<div class="col-12 col-sm-12 col-md-3 col-lg-3 mb-3">' +
 							'<div class="list-group" id="list-tab" role="tablist">' +
 							'</div>' +
 						'</div>' + 
-						'<div class="col-12 col-sm-12 col-md-8 col-lg-8">' + 
+						'<div class="col-12 col-sm-12 col-md-9 col-lg-9">' + 
 							'<div class="tab-content" id="nav-tabContent">' +
 							'</div>' +
 						'</div>';
@@ -207,46 +222,65 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							//Recorrer el array de instrumentaciones
 							instru.forEach(inst => {
 								htmlListaContenenido += '<div class="list-group-item list-group-item-action flex-column align-items-start item-instrumentacion">' +
-															'<h5 class="nombre-asignatura">' + (inst.v.Materia != undefined ? inst.v.Materia : '') + '</h5>' +
-															'<h6 class="clave-asignatura" data-clave="' + (inst.k != undefined ? inst.k: '') +'">Clave de asignatura: ' + (inst.k != undefined ? inst.k: '') +'</h6>' +
-															'<h6>Número de temas: ' + (inst.v.totalTemas != undefined ? inst.v.totalTemas: '') + '</h6>' +
-															'<h6>Los siguientes grupos comparten la presente instrumentación.</h6>' + 
-															'<div class="row mb-2">';
+															'<div class="row">' +
+																'<div class="col-lg-10 informacion">' +
+																	'<h5 class="nombre-asignatura">' + (inst.v.Materia != undefined ? inst.v.Materia : '') + '</h5>' +
+																	'<h6 class="clave-asignatura" data-clave="' + (inst.k != undefined ? inst.k: '') +'">Clave de asignatura: ' + (inst.k != undefined ? inst.k: '') +'</h6>' +
+																	'<h6>Número de temas: ' + (inst.v.totalTemas != undefined ? inst.v.totalTemas: '') + '</h6>' +
+																	'<h6>Los siguientes grupos comparten la presente instrumentación.</h6>' + 
+																	'<div class="row mb-2">';
 								inst.v.TodasMaterias.forEach(carreras => {
 									carreras.Docentes.forEach(doce => {
-										htmlListaContenenido += '<div class="col-md-4 col-sm-6 col-12 mb-1">' +
-																	'<h6 style="font-size: 13px;" class="nombre-programa-edu"><span class="badge badge-pill badge-info font-weight-normal" style="font-size: 14px;" data-semestre="' + (carreras.Semestre != undefined ? carreras.Semestre : '') + '" data-grupo="' + (doce.grupo != undefined ? doce.grupo : '') + '">' + (doce.grupo != undefined ? doce.grupo : '') + '</span> - ' + (carreras.PE != undefined ? carreras.PE : '') + '</h6>' +
-																	'<h6 style="font-size: 12px;" class="nombre-docente" data-nombre-docente="' + (doce.nombre != undefined ? doce.nombre : '') + '">Docente: ' + (doce.nombre != undefined ? doce.nombre : '') + '</h6>' +
-																'</div>';
+										htmlListaContenenido += 		'<div class="col-md-4 col-sm-6 col-12 mb-1">' +
+																			'<h6 style="font-size: 13px;" class="nombre-programa-edu"><span class="badge badge-pill badge-info font-weight-normal" style="font-size: 14px;" data-semestre="' + (carreras.Semestre != undefined ? carreras.Semestre : '') + '" data-grupo="' + (doce.grupo != undefined ? doce.grupo : '') + '">' + (doce.grupo != undefined ? doce.grupo : '') + '</span> - ' + (carreras.PE != undefined ? carreras.PE : '') + '</h6>' +
+																			'<h6 style="font-size: 12px;" class="nombre-docente" data-nombre-docente="' + (doce.nombre != undefined ? doce.nombre : '') + '">Docente: ' + (doce.nombre != undefined ? doce.nombre : '') + '</h6>' +
+																		'</div>';
 									});
 								});
-								htmlListaContenenido += 	'</div>';
-								htmlListaContenenido += 	'<div class="row">' +
-																'<div class="col">';
+								htmlListaContenenido += 			'</div>';
+								htmlListaContenenido += 			'<div class="row">' +
+																		'<div class="col">';
 								if(inst.v.Temas != undefined && inst.v.Temas != null) {
 									inst.v.Temas.forEach(tema => {
-										htmlListaContenenido += 	'<div class="btn-group m-1">' +
-																		'<button type="button" class="btn btn-info btn-sm abrirInstruTema" data-tema="' + tema.Tema + '">Tema ' + tema.Tema + '</button>' +
-																		'<button type="button" class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-																			'<span class="sr-only">Toggle Dropdown</span>' +
-																		'</button>';
+										htmlListaContenenido += 			'<div class="btn-group m-1">' +
+																				'<button type="button" class="btn btn-info btn-sm abrirInstruTema" data-tema="' + tema.Tema + '">Tema ' + tema.Tema + '</button>' +
+																				'<button type="button" class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+																					'<span class="sr-only">Toggle Dropdown</span>' +
+																				'</button>';
 										if(tema.Matriz != undefined && tema.Matriz != null) {
-											htmlListaContenenido +=		'<div class="dropdown-menu">';
+											htmlListaContenenido +=				'<div class="dropdown-menu">';
 											tema.Matriz.forEach(tem => {
-												htmlListaContenenido +=		'<a class="dropdown-item abrirEvidencia" href="#" data-evidencia="' + tem[12] + '">' + tem[0] + '</a>';
+												htmlListaContenenido +=				'<a class="dropdown-item abrirEvidencia" href="#" data-evidencia="' + tem[12] + '">' + tem[0] + '</a>';
 											});
 										} else {
-											htmlListaContenenido += 	'<div class="dropdown-menu">' +
-																			'<a class="dropdown-item" href="#">¡No se generaron evidencias!</a>' +	
-																		'</div>';
+											htmlListaContenenido += 			'<div class="dropdown-menu">' +
+																					'<a class="dropdown-item" href="#">¡No se generaron evidencias!</a>';
 										}
-										htmlListaContenenido += '</div></div>';
+										htmlListaContenenido += 				'</div>' + 
+																			'</div>';
+															
+																	
 									});
 								} else {
 									htmlListaContenenido += '<h6>¡No se llenaron temas en la instrumentación!</h6>'
 								}
-								
-								htmlListaContenenido +=	'</div></div></div>';
+
+								htmlListaContenenido +=					'</div>' +
+																	'</div>' +
+																'</div>' +
+																'<div class="col-lg-2 d-flex justify-content-lg-center align-items-lg-center justify-content-md-start align-items-md-center justify-content-start align-items-center mt-sm-3 mt-md-3 mt-0 acciones">' +
+																	'<div class="btn-group-vertical botones">' +
+																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center"><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
+																		'<button type="button" class="btn btn-danger btn-sm d-flex justify-content-start align-items-center"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</button>' +
+																	'</div>' +
+																	'<div class="checks" style="display:none;">' +
+																	 	'<div class="form-check">' +
+  																			'<input class="form-check-input position-static check-item" type="checkbox" style="width:20px; height:20px;">' +
+																		'</div>' +
+																	'</div>' +
+																'</div>' +
+															'</div>' +
+														'</div>';
 							});
 						} else {
 							htmlListaContenenido += '<div class="list-group-item list-group-item-action flex-column align-items-start">' +
@@ -263,6 +297,60 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			Promise.all(allAJAX).then(function(response) {
 				$("#list-tab").append(htmlLista);
 				$("#nav-tabContent").append(htmlListaContenenido);
+
+				//Acciones al presionar el boton de seleccionar todo que esta en la parte superior
+				$("#checkAll").change(function(e) {
+					$("#nav-tabContent").find(".tab-pane.active").find(".item-instrumentacion").each(function() {
+						//Ocultar los botones de acciones de autorizar y denegar
+						$(this).find('.acciones .botones').hide();
+						//Mostrar los checkbox
+						$(this).find('.acciones .checks').show();
+
+						//Mostrar el boton de cancelar la seleccion
+						$("#cancelarCheck").show();
+
+						//Si el check esta seleccionado seleccionar cada check de los items, en caso contrario deseleccionar todos
+						$(this).find('.acciones .checks .check-item').prop('checked', e.target.checked);
+
+						//Ahora, configurar las acciones al presionar un checkbox en cada item correspondiente a una instrumentacion
+						if(!banEvento) {
+							$(".tab-pane.active .check-item").each(function() {
+								$(this).change(function(e) {
+									//Obtener la cantidad de checbox que se incluyen en cada item de instrumentacion
+									var cantCheckBox = $(".tab-pane.active .check-item").length;
+
+									//Obtener la cantidad de checkbox que estan seleccionados
+									var cantSelecCheckBox = $(".tab-pane.active .check-item:checked").length;
+
+									//Si la cantidad total de checkbox es igual a la cantidad de check seleccionados
+									//Mostrar el check de la parte superior como seleccionado y poner en falso que esta indeterminado
+									if(cantCheckBox == cantSelecCheckBox) {
+										//Todos estan seleccionados
+										$("#checkAll").prop("indeterminate", false);
+										$("#checkAll").prop("checked", true);
+									}
+									if(cantCheckBox > cantSelecCheckBox && cantSelecCheckBox >= 1) {
+										//Algunos seleccionados
+										$("#checkAll").prop("indeterminate", true);
+									}
+									if(cantSelecCheckBox == 0) {
+										//Ninguno seleccionado
+										$("#checkAll").prop("indeterminate", false);
+										$("#checkAll").prop("checked", false);
+									}
+									
+								})
+							});
+							banEvento = true;
+						}
+					});
+				});
+
+
+				//Cada que se cambie la pestaña, restablecer los checkbox
+				$('a[data-toggle="list"]').on('shown.bs.tab', function (e) {
+					resetSeleccionar();
+				});
 			})
 		}
 
@@ -365,6 +453,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									general: general,
 									nomDocenteEjemplo: nomDocenteEjemplo
 								}, function(){
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
 									$("#modal-evidencia").modal('show');
 								});
 							} else if (cual == "Lista de cotejo") {
@@ -396,8 +485,10 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									tma: tma,
 									PRCDMTL: procedimental,
 									CNCPTL: conceptual,
-									CTTDNL: actitudinal
+									CTTDNL: actitudinal,
+									nomDocenteEjemplo: nomDocenteEjemplo
 								}, function() {
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
 									$("#modal-evidencia").modal('show');
 								});
 							} else if (cual == "Cuestionario") {
@@ -453,6 +544,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									listapvf: listapvf,
 									nomDocenteEjemplo: nomDocenteEjemplo
 								}, function() {
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
 									$("#modal-evidencia").modal('show');
 								});
 							} else if (cual = "Rúbrica") {
@@ -485,8 +577,10 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									PRCDMTL: procedimental,
 									CNCPTL: conceptual,
 									CTTDNL: actitudinal,
-									general: general
+									general: general,
+									nomDocenteEjemplo: nomDocenteEjemplo
 								}, function() {
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
 									$("#modal-evidencia").modal('show');
 								});
 							}
@@ -500,6 +594,21 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			$(".modal-body").css("padding",'0px');
 			$(".modal-body").css("margin",'0px');
 		});
+
+		$("#cancelarCheck").click(function() {
+			resetSeleccionar();
+		});
+
+		function resetSeleccionar() {
+			$("#checkAll").prop("checked", false);
+			$("#checkAll").prop("indeterminate", false);
+			//Mostrar los botones de acciones de autorizar y denegar
+			$('.acciones .botones').show();
+			//Ocultar los checkbox
+			$('.acciones .checks').hide();
+			$("#cancelarCheck").hide();
+			banEvento = false;
+		}
 	</script>
 
 </body>

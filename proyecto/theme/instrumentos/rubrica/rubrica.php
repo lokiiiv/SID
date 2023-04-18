@@ -105,7 +105,7 @@
 	$_SESSION["D"]=$D;
 	$_SESSION["E"]=$E;
 	$_SESSION["F"]=$F;
-	$nomdoc=$_SESSION["nombreCompleto"];
+	$nomdoc = isset($_POST['nomDocenteEjemplo']) ? $_POST['nomDocenteEjemplo'] : $_SESSION["nombreCompleto"];
 
 	$Materia=$mat." (TEMA ".$tem.")";//yo lo hice
 	
