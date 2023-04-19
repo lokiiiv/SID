@@ -696,5 +696,12 @@
                 $instrumento = $connNoSQL->agregacion("instrumentaciones", $pipeline);
                 echo json_encode(['success' => true, 'data' => $instrumento]);
             break;
+
+            case 'denegarInstruPresidente': 
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['clave-asignatura'];
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".SoloLectura" => false]);
+                echo json_encode(['success' => true, 'mensaje' => 'Ahora los docentes podrán modificar la instrumentación, recibirán las observaciones o retroalimentación ingresada.']);
+            break;
         }
     }

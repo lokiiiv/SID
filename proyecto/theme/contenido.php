@@ -565,6 +565,11 @@ require_once("../../valida.php");
 
       <br>
       <div class="row">
+        <div class="col d-flex justify-content-end align-items-center">
+          <button type="button" class="btn btn-success editable" id="enviarInstru"><i class="fa-solid fa-share-from-square pr-2"></i>Enviar instrumentación</button>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-12">
 
           <!-- Events starts -->
@@ -3063,23 +3068,6 @@ require_once("../../valida.php");
                         </div>
                       </div>
                     </div>
-
-                    <div class="panel">
-                      <div class="panel-heading" id="headingSave">
-                        <a data-toggle="collapse" data-target="#collapseSave" aria-expanded="false" aria-controls="collapseSave">
-                          <h5 class="panel-title" id="miColor9">Guardar instrumentación</h5>
-                        </a>
-                      </div>
-                      <div id="collapseSave" class="collapse" aria-labelledby="headingSave" data-parent="#accordion">
-                        <div class="panel-body">
-                          <div class="form-group">
-                            <p class="text-danger" id="textGuardar"></p>
-                            <button type="button" class="btn btn-secondary editable" value="Guardar" id="btnGuardarInstru">Guardar</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
               </div>
@@ -3503,11 +3491,11 @@ require_once("../../valida.php");
         });
       });
 
-      $("#collapseSave").on("show.bs.collapse", function() {
+      $("#enviarInstru").on("click", function() {
         //Cuando se abra el ultimo panel de guardar, verificar si la materia de la instrumentacion
         //ya tiene asignado un grupo academico y por ende un presidente de grupo academico
         //habilitar/deshabilitar el boton dependiendo al resultado
-        var boton = $(this).find('button');
+        var boton = $(this);
         boton.prop('disabled', true);
 
         var grupo = document.getElementById("campoGrupo").innerHTML;
@@ -3522,127 +3510,117 @@ require_once("../../valida.php");
             var res = JSON.parse(resultado);
             if (res.success) {
               boton.prop('disabled', false);
-              $("#textGuardar").css("display", "none");
-              $("#textGuardar").text("");
 
-              boton.attr("data-materia", res.data.ret_NomCompleto);
-              boton.attr("data-grupo", grupo);
-              boton.attr("data-presidente", res.data.nombre);
-              boton.attr("data-idpresidente", res.data.cat_ID);
-              boton.attr("data-correopresidente", res.data.cat_CorreoE);
-              habilitarDeshabilitarCampos();
+              //Proceder a mandar la instrumentación al respectivo presidente de grupo academico
+              var materia = res.data.ret_NomCompleto;
+              var presidente = res.data.nombre;
+              var presidenteCorreo = res.data.cat_CorreoE;
+              var idPresidente = res.data.cat_ID;
 
-            } else {
-              $("#textGuardar").css("display", "block");
-              $("#textGuardar").text(res.mensaje);
-            }
-          }
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-          if (jqXHR.status === 0) {
-            alert('No conectado, verifique su red.');
-          } else if (jqXHR.status == 404) {
-            alert('Pagina no encontrada [404]');
-          } else if (jqXHR.status == 500) {
-            alert('Internal Server Error [500].');
-          } else if (textStatus === 'parsererror') {
-            alert('Falló la respuesta.');
-          } else if (textStatus === 'timeout') {
-            alert('Se acabó el tiempo de espera.');
-          } else if (textStatus === 'abort') {
-            alert('Conexión abortada.');
-          } else {
-            alert('Error: ' + jqXHR.responseText);
-          }
-        });
+              var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo académico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
 
-      });
+              //Ahora verificar que el docente tenga su firma
+              $.ajax({
+                data: {
+                  'idUsuario': '<?php echo $_SESSION['idUsuario']; ?>',
+                  'accion': 'verificarFirmaUsuario'
+                },
+                url: 'conexion/consultasSQL.php',
+                type: 'post',
+                success: function(resultado) {
+                  var res = JSON.parse(resultado);
+                  if (res.success) {
+                    //Mostrar un mensaje de confirmación indicando que no se pueden deshacer cambios.
+                    alertify.confirm("Aviso", textoMensaje,
+                      function() {
+                        var parametros = {
+                          "accion": "mandarInstrumentacionDocente",
+                          "grupo": document.getElementById("campoGrupo").innerHTML,
+                          "periodo": document.getElementById("campoPeriodo").innerHTML,
+                          "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
+                        };
 
-      $("#btnGuardarInstru").on("click", function() {
-
-        var materia = $(this).attr("data-materia");
-        var presidente = $(this).attr('data-presidente');
-        var presidenteCorreo = $(this).attr('data-correopresidente');
-        var grupo = $(this).attr('data-grupo');
-        var idPresidente = $(this).attr('data-idpresidente');
-
-        var textoMensaje = "La presente instrumentación deberá ser validada por el presidente de grupo académico de la asignatura de " + materia.toUpperCase() + ".\nEl/la presidente " + presidente.toUpperCase() + " podrá revisar la instrumentación y autorizar la misma, o en caso contrario, invalidarla para su posterior corrección o retroalimentación si es necesario.\n¿Esta seguro(a) de guardar la información ingresada?"
-
-
-        $.ajax({
-          data: {
-            'idUsuario': '<?php echo $_SESSION['idUsuario']; ?>',
-            'accion': 'verificarFirmaUsuario'
-          },
-          url: 'conexion/consultasSQL.php',
-          type: 'post',
-          success: function(resultado) {
-            var res = JSON.parse(resultado);
-            if (res.success) {
-              //Mostrar un mensaje de confirmación indicando que no se pueden deshacer cambios.
-              alertify.confirm("Aviso", textoMensaje,
-                function() {
-                  var parametros = {
-                    "accion": "mandarInstrumentacionDocente",
-                    "grupo": document.getElementById("campoGrupo").innerHTML,
-                    "periodo": document.getElementById("campoPeriodo").innerHTML,
-                    "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
-                  };
-
-                  $.ajax({
-                    data: parametros,
-                    url: 'conexion/consultasNoSQL.php',
-                    type: 'post',
-                    success: function(response) {
-                      var resp = JSON.parse(response);
-                      if (resp.success) {
-                        //Mandar el correo electronico al presidente de academica
                         $.ajax({
-                          data: {
-                            'accionCorreo': 'validaPresidente',
-                            'presidenteCorreo': presidenteCorreo,
-                            'presidenteNombre': presidente,
-                            'asignatura': materia,
-                            'grupo': grupo,
-                            'docente': '<?php echo $_SESSION['nombreCompleto']; ?>'
-                          },
-                          url: 'enviar-correos.php',
-                          method: 'post',
+                          data: parametros,
+                          url: 'conexion/consultasNoSQL.php',
+                          type: 'post',
                           success: function(response) {
+                            var resp = JSON.parse(response);
+                            if (resp.success) {
+                              //Mandar el correo electronico al presidente de academica
+                              $.ajax({
+                                data: {
+                                  'accionCorreo': 'validaPresidente',
+                                  'presidenteCorreo': presidenteCorreo,
+                                  'presidenteNombre': presidente,
+                                  'asignatura': materia,
+                                  'claveAsignatura': document.getElementById("campoClaveAsignatura").innerHTML,
+                                  'grupo': grupo,
+                                  'docente': '<?php echo $_SESSION['nombreCompleto']; ?>'
+                                },
+                                url: 'enviar-correos.php',
+                                method: 'post',
+                                success: function(response) {
 
+                                }
+                              });
+
+                              alertify.success('<h3>' + resp.mensaje + '</h3>', 2, function() {
+                                window.location.reload();
+                              });
+                            } else {
+                              alertify.warning('<h3>' + resp.mensaje + '</h3>');
+                            }
+                          }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                          if (jqXHR.status === 0) {
+                            alert('No conectado, verifique su red.');
+                          } else if (jqXHR.status == 404) {
+                            alert('Pagina no encontrada [404]');
+                          } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                          } else if (textStatus === 'parsererror') {
+                            alert('Falló la respuesta.');
+                          } else if (textStatus === 'timeout') {
+                            alert('Se acabó el tiempo de espera.');
+                          } else if (textStatus === 'abort') {
+                            alert('Conexión abortada.');
+                          } else {
+                            alert('Error: ' + jqXHR.responseText);
                           }
                         });
-
-                        alertify.success('<h3>' + resp.mensaje + '</h3>', 2, function() {
-                          window.location.reload();
-                        });
-                      } else {
-                        alertify.warning('<h3>' + resp.mensaje + '</h3>');
-                      }
-                    }
-                  }).fail(function(jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 0) {
-                      alert('No conectado, verifique su red.');
-                    } else if (jqXHR.status == 404) {
-                      alert('Pagina no encontrada [404]');
-                    } else if (jqXHR.status == 500) {
-                      alert('Internal Server Error [500].');
-                    } else if (textStatus === 'parsererror') {
-                      alert('Falló la respuesta.');
-                    } else if (textStatus === 'timeout') {
-                      alert('Se acabó el tiempo de espera.');
-                    } else if (textStatus === 'abort') {
-                      alert('Conexión abortada.');
-                    } else {
-                      alert('Error: ' + jqXHR.responseText);
-                    }
-                  });
-                },
-                function() {}
-              ).set('labels', {
-                ok: 'Aceptar',
-                cancel: 'Cancelar'
+                      },
+                      function() {}
+                    ).set('labels', {
+                      ok: 'Aceptar',
+                      cancel: 'Cancelar'
+                    });
+                  } else {
+                    alertify.warning('<h3>' + res.mensaje + '</h3>');
+                  }
+                }
+              }).fail(function(jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 0) {
+                  alert('No conectado, verifique su red.');
+                } else if (jqXHR.status == 404) {
+                  alert('Pagina no encontrada [404]');
+                } else if (jqXHR.status == 500) {
+                  alert('Internal Server Error [500].');
+                } else if (textStatus === 'parsererror') {
+                  alert('Falló la respuesta.');
+                } else if (textStatus === 'timeout') {
+                  alert('Se acabó el tiempo de espera.');
+                } else if (textStatus === 'abort') {
+                  alert('Conexión abortada.');
+                } else {
+                  alert('Error: ' + jqXHR.responseText);
+                }
               });
+
             } else {
+              //$("#textGuardar").css("display", "block");
+              //$("#textGuardar").text(res.mensaje);
+              boton.prop('disabled', false);
               alertify.warning('<h3>' + res.mensaje + '</h3>');
             }
           }
@@ -3662,7 +3640,10 @@ require_once("../../valida.php");
           } else {
             alert('Error: ' + jqXHR.responseText);
           }
+
+          boton.prop('disabled', false);
         });
+
       });
 
       $('#modal-instrumento').on('show.bs.modal', function() {

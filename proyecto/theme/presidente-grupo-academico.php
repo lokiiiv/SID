@@ -114,6 +114,28 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 				</div>
 			</div>
 		</div>
+
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalObservaciones">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form>
+						<div class="modal-header">
+							<h5 class="modal-title"></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary" id="btnDenegarInstru">Aceptar</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 	<br>
 
@@ -140,6 +162,11 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 		var periodo;
 		var banEvento = false;
 		$(document).ready(function() {
+			iniciar();
+		});
+
+		function iniciar() {
+			$("#contenedor").html("");
 			//Obtener cual es el periodo actual conforme a la fecha actual
 			var mesActual = new Date().getMonth();
 			var añoActual = new Date().getFullYear();
@@ -180,7 +207,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 					alert('Error: ' + jqXHR.responseText);
 				}
 			});
-		});
+		}
 
 		function mostrarInstrumentaciones(gruposAcademicos) {
 			var active = true;
@@ -270,8 +297,8 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 																'</div>' +
 																'<div class="col-lg-2 d-flex justify-content-lg-center align-items-lg-center justify-content-md-start align-items-md-center justify-content-start align-items-center mt-sm-3 mt-md-3 mt-0 acciones">' +
 																	'<div class="btn-group-vertical botones">' +
-																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center"><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
-																		'<button type="button" class="btn btn-danger btn-sm d-flex justify-content-start align-items-center"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</button>' +
+																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center autorizar-instru"><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
+																		'<button type="button" class="btn btn-danger btn-sm d-flex justify-content-start align-items-center denegar-instru"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</button>' +
 																	'</div>' +
 																	'<div class="checks" style="display:none;">' +
 																	 	'<div class="form-check">' +
@@ -297,60 +324,6 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			Promise.all(allAJAX).then(function(response) {
 				$("#list-tab").append(htmlLista);
 				$("#nav-tabContent").append(htmlListaContenenido);
-
-				//Acciones al presionar el boton de seleccionar todo que esta en la parte superior
-				$("#checkAll").change(function(e) {
-					$("#nav-tabContent").find(".tab-pane.active").find(".item-instrumentacion").each(function() {
-						//Ocultar los botones de acciones de autorizar y denegar
-						$(this).find('.acciones .botones').hide();
-						//Mostrar los checkbox
-						$(this).find('.acciones .checks').show();
-
-						//Mostrar el boton de cancelar la seleccion
-						$("#cancelarCheck").show();
-
-						//Si el check esta seleccionado seleccionar cada check de los items, en caso contrario deseleccionar todos
-						$(this).find('.acciones .checks .check-item').prop('checked', e.target.checked);
-
-						//Ahora, configurar las acciones al presionar un checkbox en cada item correspondiente a una instrumentacion
-						if(!banEvento) {
-							$(".tab-pane.active .check-item").each(function() {
-								$(this).change(function(e) {
-									//Obtener la cantidad de checbox que se incluyen en cada item de instrumentacion
-									var cantCheckBox = $(".tab-pane.active .check-item").length;
-
-									//Obtener la cantidad de checkbox que estan seleccionados
-									var cantSelecCheckBox = $(".tab-pane.active .check-item:checked").length;
-
-									//Si la cantidad total de checkbox es igual a la cantidad de check seleccionados
-									//Mostrar el check de la parte superior como seleccionado y poner en falso que esta indeterminado
-									if(cantCheckBox == cantSelecCheckBox) {
-										//Todos estan seleccionados
-										$("#checkAll").prop("indeterminate", false);
-										$("#checkAll").prop("checked", true);
-									}
-									if(cantCheckBox > cantSelecCheckBox && cantSelecCheckBox >= 1) {
-										//Algunos seleccionados
-										$("#checkAll").prop("indeterminate", true);
-									}
-									if(cantSelecCheckBox == 0) {
-										//Ninguno seleccionado
-										$("#checkAll").prop("indeterminate", false);
-										$("#checkAll").prop("checked", false);
-									}
-									
-								})
-							});
-							banEvento = true;
-						}
-					});
-				});
-
-
-				//Cada que se cambie la pestaña, restablecer los checkbox
-				$('a[data-toggle="list"]').on('shown.bs.tab', function (e) {
-					resetSeleccionar();
-				});
 			})
 		}
 
@@ -595,6 +568,58 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			$(".modal-body").css("margin",'0px');
 		});
 
+		//Acciones al presionar el boton de seleccionar todo que esta en la parte superior
+		$(document).on('change', '#checkAll', function(e) {
+			$("#nav-tabContent").find(".tab-pane.active").find(".item-instrumentacion").each(function() {
+				//Ocultar los botones de acciones de autorizar y denegar
+				$(this).find('.acciones .botones').hide();
+				//Mostrar los checkbox
+				$(this).find('.acciones .checks').show();
+				//Mostrar el boton de cancelar la seleccion
+				$("#cancelarCheck").show();
+
+				//Si el check esta seleccionado seleccionar cada check de los items, en caso contrario deseleccionar todos
+				$(this).find('.acciones .checks .check-item').prop('checked', e.target.checked);
+
+				//Ahora, configurar las acciones al presionar un checkbox en cada item correspondiente a una instrumentacion
+				if(!banEvento) {
+					$(".tab-pane.active .check-item").each(function() {
+						$(this).change(function(e) {
+							//Obtener la cantidad de checbox que se incluyen en cada item de instrumentacion
+							var cantCheckBox = $(".tab-pane.active .check-item").length;
+
+							//Obtener la cantidad de checkbox que estan seleccionados
+							var cantSelecCheckBox = $(".tab-pane.active .check-item:checked").length;
+
+							//Si la cantidad total de checkbox es igual a la cantidad de check seleccionados
+							//Mostrar el check de la parte superior como seleccionado y poner en falso que esta indeterminado
+							if(cantCheckBox == cantSelecCheckBox) {
+								//Todos estan seleccionados
+								$("#checkAll").prop("indeterminate", false);
+								$("#checkAll").prop("checked", true);
+							}
+							if(cantCheckBox > cantSelecCheckBox && cantSelecCheckBox >= 1) {
+								//Algunos seleccionados
+								$("#checkAll").prop("indeterminate", true);
+							}
+							if(cantSelecCheckBox == 0) {
+								//Ninguno seleccionado
+								$("#checkAll").prop("indeterminate", false);
+								$("#checkAll").prop("checked", false);
+							}
+									
+						})
+					});
+					banEvento = true;
+				}
+			});
+		});
+
+		$(document).on('show.bs.tab', 'a[data-toggle="list"]', function(e){
+			resetSeleccionar();
+		});
+		
+
 		$("#cancelarCheck").click(function() {
 			resetSeleccionar();
 		});
@@ -609,6 +634,65 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			$("#cancelarCheck").hide();
 			banEvento = false;
 		}
+
+		//Accion para comenzar el proceso de denegar una instrumentacion
+		$(document).on('click', '.denegar-instru', function(e) {
+			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
+			var materia = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+			
+			//Verificar que el usuario tenga su firma
+			$.ajax({
+                data: {
+                  'idUsuario': '<?php echo $_SESSION['idUsuario']; ?>',
+                  'accion': 'verificarFirmaUsuario'
+                },
+                url: 'conexion/consultasSQL.php',
+                type: 'post',
+                success: function(resultado) {
+                  var res = JSON.parse(resultado);
+                  if (res.success) {
+                    //El presidente de grupo academico debera agregar las observaciones o retroalimentación
+					$("#modalObservaciones .modal-title").text("Observaciones / retroalimentación para la instrumentación de la asignatura de " + materia + " (" + claveAsignatura + ")");
+					$("#modalObservaciones .modal-body").html(
+						'<div class="form-group">' +
+							'<label for="exampleFormControlTextarea1">Ingrese sus comentarios acerca de la instrumentación.</label>' +
+							'<textarea class="form-control" id="txtObservaciones" rows="4" name="observaciones" required></textarea>' +
+						'</div>' +
+						'<input type="hidden" name="clave-asignatura" value="' + claveAsignatura + '" id="clave-asignatura"/>' +
+						'<input type="hidden" name="periodo" value="' + periodo + '" id="periodo-actual"/>'
+					);
+					$("#modalObservaciones").modal("show");
+                  } else {
+                    alertify.warning('<h3>' + res.mensaje + '</h3>');
+                  }
+                }
+            });
+		})
+
+		//Una vez ingresadas las observaciones al momento de no autorizar una instrumentación, proceder a guardar
+		$(document).on('submit', '#modalObservaciones form', function(e) {
+			//Actualizar el campo ReadOnly de la instrumentación 
+			e.preventDefault();
+			var formulario = $(this);
+			$.ajax({
+				data: formulario.serialize() + '&accion=denegarInstruPresidente',
+				url: "conexion/consultasNoSQL.php",
+				type: "post",
+				success: function(response) {
+					var resp = JSON.parse(response);
+					if(resp.success) {
+						alertify.success('<h3>' + resp.mensaje + '</h3>');
+					} else {
+						alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>')
+					}
+					$("#modalObservaciones").modal("hide");
+					$("#modalObservaciones").find("form")[0].reset();
+
+					//Volver a cargar la información inicial
+					iniciar();
+				}
+			});
+		});
 	</script>
 
 </body>
