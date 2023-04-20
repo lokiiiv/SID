@@ -166,7 +166,8 @@
 				echo "ERROR en $filename .\n";
 				echo "Exception:", $e->getMessage(), "\n";
 				echo "En archivo:", $e->getFile(), "\n";
-				echo "En la linea:", $e->getLine(), "\n";    
+				echo "En la linea:", $e->getLine(), "\n"; 
+				die();   
 			}
 		}
 		

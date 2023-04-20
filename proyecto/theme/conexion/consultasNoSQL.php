@@ -697,11 +697,40 @@
                 echo json_encode(['success' => true, 'data' => $instrumento]);
             break;
 
+            //Denegar una instrumentacion por parte del presidente de grupo academico
             case 'denegarInstruPresidente': 
                 $periodo = $_POST['periodo'];
                 $claveAsignatura = $_POST['clave-asignatura'];
+                $observaciones = $_POST['observaciones'];
+                $idPresidente = $_POST['idPresi'];
+                $nombrePresidente = $_POST['nombrePresi'];
+                $correoPresidente = $_POST['correo'];
+
+                //Actualizar la instrumentacion de ReadOnly a false para que se puede editar nuevamente
                 $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".SoloLectura" => false]);
+                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Estatus" => false]);
+                $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.InfoPresidente" => 1]);
+
+                //Guardar los mensajes u observaciones en Mongo para que los docentes puedan verlos en su sección correspondiente
+                date_default_timezone_set('America/Mexico_City');
+                $connNoSQL->agregarAlArray("instrumentaciones", ["Instrumentos" => "Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Observaciones" => ['IdObservacion' => new MongoDB\BSON\ObjectId(),'IdPresidente' => $idPresidente, 'CorreoPresidente' => $correoPresidente, 'NombrePresidente' => $nombrePresidente, 'InfoMensaje' => ['Mensaje' => $observaciones, 'FechaHora' => date('I') ? date('Y-m-d H:i:s', strtotime('-1 hour')) : date('Y-m-d H:i:s'), 'Leido' => false]]]);
+
                 echo json_encode(['success' => true, 'mensaje' => 'Ahora los docentes podrán modificar la instrumentación, recibirán las observaciones o retroalimentación ingresada.']);
+            break;
+
+            //Autorizar una instrumentación por parte del presidente de grupo academico
+            case 'autorizarInstruPresidente':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['clave-asignatura'];
+                $idPresidente = $_POST['idPresi'];
+                $nombrePresidente = $_POST['nombrePresi'];
+                $correoPresidente = $_POST['correo'];
+                
+                //Actualizar el valor de estatus validacion (Presidente) a true y poner los datos del presidente que valido la misma
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Estatus" => true]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.InfoPresidente" => ['IdPresidente' => $idPresidente, 'NombrePresidente' => $nombrePresidente, 'CorreoPresidente' => $correoPresidente]]);
+
+                echo json_encode(['success' => true, 'mensaje' => 'Has autorizado la instrumentación, ahora puede ser vista por los respectivos jefes de división para su revisión.']);
             break;
         }
     }

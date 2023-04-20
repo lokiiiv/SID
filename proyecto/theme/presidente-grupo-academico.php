@@ -295,12 +295,12 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 								htmlListaContenenido +=					'</div>' +
 																	'</div>' +
 																'</div>' +
-																'<div class="col-lg-2 d-flex justify-content-lg-center align-items-lg-center justify-content-md-start align-items-md-center justify-content-start align-items-center mt-sm-3 mt-md-3 mt-0 acciones">' +
+																'<div class="col-lg-2 d-flex justify-content-lg-center align-items-lg-center justify-content-md-start align-items-md-center justify-content-start align-items-center mt-sm-3 mt-md-2 mt-3 mt-lg-0 acciones">' +
 																	'<div class="btn-group-vertical botones">' +
-																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center autorizar-instru"><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
+																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center autorizar-instru" ' + (inst.v.Validacion.Estatus ? 'disabled' : '') + '><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
 																		'<button type="button" class="btn btn-danger btn-sm d-flex justify-content-start align-items-center denegar-instru"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</button>' +
 																	'</div>' +
-																	'<div class="checks" style="display:none;">' +
+																	'<div class="mt-sm-3 mt-3 mt-md-2 mt-lg-0 checks" style="display:none;">' +
 																	 	'<div class="form-check">' +
   																			'<input class="form-check-input position-static check-item" type="checkbox" style="width:20px; height:20px;">' +
 																		'</div>' +
@@ -640,6 +640,24 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
 			var materia = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
 			
+			//Mostrar modal para ingresar observaciones
+			$("#modalObservaciones .modal-title").text("Observaciones / retroalimentación para la instrumentación de la asignatura de " + materia + " (" + claveAsignatura + ")");
+			$("#modalObservaciones .modal-body").html(
+				'<div class="form-group">' +
+					'<label for="exampleFormControlTextarea1">Ingrese sus comentarios acerca de la instrumentación.</label>' +
+					'<textarea class="form-control" id="txtObservaciones" rows="4" name="observaciones" required></textarea>' +
+				'</div>' +
+				'<input type="hidden" name="clave-asignatura" value="' + claveAsignatura + '" id="clave-asignatura"/>' +
+				'<input type="hidden" name="periodo" value="' + periodo + '" id="periodo-actual"/>'
+			);
+			$("#modalObservaciones").modal("show");
+		});
+
+		//Acciones para autorizar una instrumentación de manera individual
+		$(document).on('click', '.autorizar-instru', function(e) {
+			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
+			var materia = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+
 			//Verificar que el usuario tenga su firma
 			$.ajax({
                 data: {
@@ -651,37 +669,82 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                 success: function(resultado) {
                   var res = JSON.parse(resultado);
                   if (res.success) {
-                    //El presidente de grupo academico debera agregar las observaciones o retroalimentación
-					$("#modalObservaciones .modal-title").text("Observaciones / retroalimentación para la instrumentación de la asignatura de " + materia + " (" + claveAsignatura + ")");
-					$("#modalObservaciones .modal-body").html(
-						'<div class="form-group">' +
-							'<label for="exampleFormControlTextarea1">Ingrese sus comentarios acerca de la instrumentación.</label>' +
-							'<textarea class="form-control" id="txtObservaciones" rows="4" name="observaciones" required></textarea>' +
-						'</div>' +
-						'<input type="hidden" name="clave-asignatura" value="' + claveAsignatura + '" id="clave-asignatura"/>' +
-						'<input type="hidden" name="periodo" value="' + periodo + '" id="periodo-actual"/>'
-					);
-					$("#modalObservaciones").modal("show");
+                    //Mostrar advertencia de estar seguro de autorizar la instrumentacion
+					alertify.confirm("Aviso", "¿Está seguro de validar la instrumentación didáctica de la asignatura de " + materia + " (" + claveAsignatura + ")? Una vez validada, podrá ser vista por los jefes de división de los programas educativos que tomen la presente asignatura.",
+						function(){
+							$.ajax({
+								data: {
+									'accion': 'autorizarInstruPresidente',
+									'periodo': periodo,
+									'clave-asignatura': claveAsignatura,
+									'idPresi': '<?php echo $_SESSION['idUsuario']; ?>',
+									'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
+									'correo': '<?php echo $_SESSION['correo']; ?>'
+								},
+								url: "conexion/consultasNoSQL.php",
+								type: "post",
+								success: function(response) {
+									var resp = JSON.parse(response);
+									if(resp.success) {
+										alertify.success('<h3>' + resp.mensaje + '</h3>');
+										//Mandar correo a los docentes para notificar la autorización de las instrumentaciones
+										$.ajax({
+											data: {
+												'periodo': periodo,
+												'clave-asignatura': claveAsignatura,
+												'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
+												'accionCorreo': 'autorizarInstruPresidente'
+											},
+											url: "enviar-correos.php",
+											type: "post",
+											success: function(response) {
+											}
+										});
+									} else {
+										alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>')
+									}
+									
+									iniciar();
+								}
+							});
+						},
+						function(){}
+					).set('labels', {
+                      ok: 'Aceptar',
+                      cancel: 'Cancelar'
+                    });
                   } else {
                     alertify.warning('<h3>' + res.mensaje + '</h3>');
                   }
                 }
             });
-		})
+		});
 
 		//Una vez ingresadas las observaciones al momento de no autorizar una instrumentación, proceder a guardar
 		$(document).on('submit', '#modalObservaciones form', function(e) {
 			//Actualizar el campo ReadOnly de la instrumentación 
 			e.preventDefault();
 			var formulario = $(this);
+			var correoPresidente = '<?php echo $_SESSION['correo']; ?>';
+			var idPresidente = '<?php echo $_SESSION['idUsuario']; ?>';
+			var nombrePresidente = '<?php echo $_SESSION['nombreCompleto']; ?>';
 			$.ajax({
-				data: formulario.serialize() + '&accion=denegarInstruPresidente',
+				data: formulario.serialize() + '&accion=denegarInstruPresidente&correo=' + correoPresidente + '&idPresi=' + idPresidente + '&nombrePresi=' + nombrePresidente,
 				url: "conexion/consultasNoSQL.php",
 				type: "post",
 				success: function(response) {
 					var resp = JSON.parse(response);
 					if(resp.success) {
 						alertify.success('<h3>' + resp.mensaje + '</h3>');
+
+						//Mandar correos a los docentes que imparten la asignatura de la instrumentación denegada
+						$.ajax({
+							data: formulario.serialize() + '&accionCorreo=denegarInstruPresidente&nombrePresi=' + nombrePresidente,
+							url: "enviar-correos.php",
+							type: "post",
+							success: function(response) {
+							}
+						});
 					} else {
 						alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>')
 					}
