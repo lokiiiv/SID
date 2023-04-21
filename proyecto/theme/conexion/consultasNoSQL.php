@@ -262,6 +262,7 @@
                                 ]
                             ], 
                             'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.SoloLectura' => 1,
+                            'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Validacion.Estatus' => 1,
                             '_id' => 0
                         ]
                     ]
@@ -710,6 +711,7 @@
                 $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".SoloLectura" => false]);
                 $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Estatus" => false]);
                 $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.InfoPresidente" => 1]);
+                $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Firma" => 1]);
 
                 //Guardar los mensajes u observaciones en Mongo para que los docentes puedan verlos en su sección correspondiente
                 date_default_timezone_set('America/Mexico_City');
@@ -725,12 +727,32 @@
                 $idPresidente = $_POST['idPresi'];
                 $nombrePresidente = $_POST['nombrePresi'];
                 $correoPresidente = $_POST['correo'];
+                $firmaPresidente = $_POST['firmaPresidente'];
                 
                 //Actualizar el valor de estatus validacion (Presidente) a true y poner los datos del presidente que valido la misma
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Estatus" => true]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Firma" => $firmaPresidente]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.InfoPresidente" => ['IdPresidente' => $idPresidente, 'NombrePresidente' => $nombrePresidente, 'CorreoPresidente' => $correoPresidente]]);
 
-                echo json_encode(['success' => true, 'mensaje' => 'Has autorizado la instrumentación, ahora puede ser vista por los respectivos jefes de división para su revisión.']);
+                echo json_encode(['success' => true, 'mensaje' => 'Has autorizado la instrumentación, ahora puede ser vista por los respectivos jefes de división para su revisión y autorización.']);
+            break;
+
+            //Autorizar multiples instrumentaciones al mismo tiempo por parte del presidente de grupo academico
+            case 'autorizarMultipleInstruPresidente': 
+                $periodo = $_POST['periodo'];
+                $idPresidente = $_POST['idPresi'];
+                $nombrePresidente = $_POST['nombrePresi'];
+                $correoPresidente = $_POST['correo'];
+                $listaInstrumentos = $_POST['listaInstrumentos'];
+                $firmaPresidente = $_POST['firmaPresidente'];
+
+                foreach($listaInstrumentos as $instru) {
+                    $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $instru[0] . ".Validacion.Estatus" => true]);
+                    $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $instru[0] . ".Validacion.Firma" => $firmaPresidente]);
+                    $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $instru[0] . ".Validacion.InfoPresidente" => ["IdPresidente" => $idPresidente, "NombrePresidente" => $nombrePresidente, "CorreoPresidente" => $correoPresidente]]);
+                }
+
+                echo json_encode(["success" => true, "mensaje" => "Has autorizado las instrumentaciones, ahora podrán ser vistas por los respectivos jefes de división para su revisión y autorización."]);
             break;
         }
     }

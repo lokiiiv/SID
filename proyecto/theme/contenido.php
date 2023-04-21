@@ -144,7 +144,12 @@ require_once("../../valida.php");
           //Verificar el estatus de la instrumentación y habilitar o deshabilitar inputs, botones, etc conforme al estatus
           soloLectura = (typeof x['SoloLectura'] != "undefined") ? x['SoloLectura'] : true;
           if(soloLectura) {
-            $("#mensajeEstatus").addClass("text-danger").text("Ya no puede editar la instrumentación, se encuentra en proceso de validación por parte del presidente de grupo académico de la asignatura.");
+            var validoPresidente = (typeof x['Validacion']['Estatus'] != "undefined" ? x['Validacion']['Estatus'] : false);
+            if(validoPresidente) {
+              $("#mensajeEstatus").addClass("text-warning").text("No puede editar la instrumentación, sin embargo, ya ha sigo validada por parte del presidente de grupo académico de la asignatura.");
+            } else {
+              $("#mensajeEstatus").addClass("text-danger").text("No puede editar la instrumentación, se encuentra en proceso de validación por parte del presidente de grupo académico de la asignatura.");
+            }
           } else {
             $("#mensajeEstatus").addClass("text-success").text("Ahora puede editar o administrar la instrumentación.");
           }

@@ -62,7 +62,6 @@
 
   if(isset($instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura)){
     $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura;
-    
     //print_r($instrumentacion);
     //$temas = $instrumentacion->totalTemas;
  //   for ($tema=0; $tema < $temas; $tema++) { 

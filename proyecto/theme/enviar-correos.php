@@ -143,8 +143,8 @@ try {
                     $mail->CharSet = 'UTF-8';
                     $mail->Body = $contenido;
 
-                    if(!$mail->send())
-                        throw new Exception($mail->ErrorInfo);
+                    //if(!$mail->send())
+                      //  throw new Exception($mail->ErrorInfo);
                         
                     $mail->clearAddresses();
                 }
@@ -237,10 +237,106 @@ try {
                     $mail->CharSet = 'UTF-8';
                     $mail->Body = $contenido;
 
-                    if(!$mail->send())
-                        throw new Exception($mail->ErrorInfo);
+                    //if(!$mail->send())
+                      //  throw new Exception($mail->ErrorInfo);
                         
                     $mail->clearAddresses();
+                }
+
+                break;
+
+            case 'autorizarMultiInstruPresidente':
+                //Notificar a los docentes de la autorización de la instrumentación cuando el presidente deicde autorizar varias al mismo tiempo
+                $periodo = $_POST['periodo'];
+                $listaInstrumentos = $_POST['listaInstrumentos'];
+
+                foreach($listaInstrumentos as $instru) {
+                    $pipeline = [
+                        [
+                            '$match' => ['Instrumentos' => 'Carreras']
+                        ], 
+                        [
+                            '$project' => [
+                                '_id' => 0, 
+                                'Materia' => '$periodos_Inst.' . $periodo . '.' . $instru[0] . '.Materia',
+                                'TodasMaterias' => '$periodos_Inst.' . $periodo . '.' . $instru[0] . '.TodasMaterias'
+                            ]
+                        ], 
+                        [
+                            '$unwind' => ['path' => '$TodasMaterias']
+                        ], 
+                        [
+                            '$lookup' => [
+                                'from' => 'docentes', 
+                                'let' => ['grupoinst' => '$TodasMaterias.Clave'], 
+                                'pipeline' => [
+                                    [
+                                        '$project' => [
+                                            '_id' => 0, 
+                                            'correo' => 1, 
+                                            'nombre' => 1, 
+                                            'grupo' => [
+                                                '$map' => [
+                                                    'input' => ['$objectToArray' => '$periodos_Inst.' . $periodo], 
+                                                    'in' => [
+                                                        'k' => ['$substr' => ['$$this.k', 0, 3]], 
+                                                        'v' => '$$this.v'
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ], 
+                                    [
+                                        '$unwind' => ['path' => '$grupo']
+                                    ], 
+                                    [
+                                        '$match' => [
+                                            '$expr' => [
+                                                '$eq' => ['$grupo.k', '$$grupoinst']
+                                            ]
+                                        ]
+                                    ]
+                                ], 
+                                'as' => 'TodasMaterias.docentes'
+                            ]
+                        ], 
+                        [
+                            '$unwind' => ['path' => '$TodasMaterias.docentes']
+                        ], 
+                        [
+                            '$project' => [
+                                'materia' => '$Materia',
+                                'correo' => '$TodasMaterias.docentes.correo', 
+                                'nombre' => '$TodasMaterias.docentes.nombre', 
+                                'grupo' => '$TodasMaterias.docentes.grupo.v.Grupo'
+                            ]
+                        ], 
+                        [
+                            '$group' => [
+                                '_id' => '$correo', 
+                                'materia' => ['$first' => '$materia'],
+                                'nombre' => ['$first' => '$nombre'], 
+                                'grupos' => ['$push' => '$grupo']
+                            ]
+                        ]
+                    ];
+                    $correos = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                    foreach($correos as $correo) {
+                        $mail->addAddress($correo->_id, $correo->nombre);
+
+                        $asunto = "Autorización de instrumentación didáctica";
+                        $contenido = "<div style='text-align: justify; text-justify: inter-word;'><h3>La instrumentación didáctica de la asignatura de <b>" . $correo->materia . " (" . $instru[0] . ")" . "</b>  que imparte al grupo/grupos <b>" . implode(', ', $correo->grupos) . "</b> se ha considerado apropiada, por lo que ha sido autorizada por parte del/la presidente de grupo academico <b>" . $_POST['nombrePresi'] . ".</b></h3></div>";
+
+                        $mail->Subject = $asunto;
+                        $mail->isHTML(true);
+                        $mail->CharSet = 'UTF-8';
+                        $mail->Body = $contenido;
+
+                        if(!$mail->send())
+                            throw new Exception($mail->ErrorInfo);
+                            
+                        $mail->clearAddresses();
+                    }
                 }
 
                 break;

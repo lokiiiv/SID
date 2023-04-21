@@ -57,7 +57,16 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 				<div class="col-12">
 					<div class="row pb-3"> 
 						<div class="col d-flex justify-content-end">
-							<button type="button" class="btn btn-outline-danger btn-sm mr-2" id="cancelarCheck" style="display: none;"><i class="fa-solid fa-xmark pr-2"></i>Cancelar</button>
+							<button type="button" class="btn btn-outline-danger btn-sm mr-2 btn-sm" id="cancelarCheck" style="display: none;"><i class="fa-solid fa-xmark pr-2"></i>Cancelar</button>
+							<div class="btn-group">
+								<button type="button" class="btn btn-outline-info dropdown-toggle btn-sm mr-2" id="accionesMulti" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
+									Seleccione acción
+								</button>
+								<div class="dropdown-menu">
+									<a class="dropdown-item autorizar-instru-multi" href="#"><i class="fa-solid fa-circle-check pr-2"></i>Validar</a>
+									<a class="dropdown-item denegar-instru-multi" href="#"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</a>
+								</div>
+							</div>
 							<ul class="list-group" style="width:150px">
 								<li class="list-group-item">
 									<div class="form-check checkbox ml-2">
@@ -577,6 +586,8 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 				$(this).find('.acciones .checks').show();
 				//Mostrar el boton de cancelar la seleccion
 				$("#cancelarCheck").show();
+				//Mostrar el boton de acciones
+				$("#accionesMulti").show();
 
 				//Si el check esta seleccionado seleccionar cada check de los items, en caso contrario deseleccionar todos
 				$(this).find('.acciones .checks .check-item').prop('checked', e.target.checked);
@@ -632,6 +643,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			//Ocultar los checkbox
 			$('.acciones .checks').hide();
 			$("#cancelarCheck").hide();
+			$("#accionesMulti").hide();
 			banEvento = false;
 		}
 
@@ -677,6 +689,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									'accion': 'autorizarInstruPresidente',
 									'periodo': periodo,
 									'clave-asignatura': claveAsignatura,
+									'firmaPresidente': res.data,
 									'idPresi': '<?php echo $_SESSION['idUsuario']; ?>',
 									'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
 									'correo': '<?php echo $_SESSION['correo']; ?>'
@@ -755,6 +768,106 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 					iniciar();
 				}
 			});
+		});
+
+		//Accion para autorizar multiples instrumentaciones al mismo tiempo
+		$(document).on('click', '.autorizar-instru-multi', function(e){
+			e.preventDefault();
+
+			//Verificar que al menos tenga seleccionada una instrumentacion
+			if($("#nav-tabContent .tab-pane.active input[type='checkbox']:checked").length == 0) {
+				alertify.warning('<h3>No ha seleccionado ninguna instrumentación.</h3>')
+				return;
+			}
+
+			//Verificar que el usuario tenga su firma
+			 $.ajax({
+                data: {
+                  'idUsuario': '<?php echo $_SESSION['idUsuario']; ?>',
+                  'accion': 'verificarFirmaUsuario'
+                },
+                url: 'conexion/consultasSQL.php',
+                type: 'post',
+                success: function(resultado) {
+                  var res = JSON.parse(resultado);
+                  if (res.success) {
+
+					//Guardar las instrumentaciones el presidente selecciono con los checkbox
+					var instrumentos = [];
+					$("#nav-tabContent").find('.tab-pane.active .item-instrumentacion').each(function(){
+						if($(this).find('input[type="checkbox"]').prop('checked') == true) {
+							if($(this).find('.autorizar-instru').prop('disabled') == false) {
+								var aux = [];
+								aux.push($(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave'));
+								aux.push($(this).closest('.item-instrumentacion').find('.nombre-asignatura').text());
+								instrumentos.push(aux);
+							}
+						}
+					});
+
+					if(instrumentos.length > 0){
+						var array = [];
+						instrumentos.forEach(inst => {
+							var aux = inst[1] + " (" + inst[0] + ")";
+							array.push(aux);
+						});
+						var asignaturasAValidar = array.join(', ');
+
+						//Mostrar advertencia de estar seguro de autorizar la instrumentacion
+						alertify.confirm("Aviso", "¿Está seguro de validar las instrumentaciones didácticas de las siguientes asignaturas: " + asignaturasAValidar + "? Una vez validadas, podrán ser vistas por los jefes de división de los programas educativos correspondientes.",
+							function(){
+								$.ajax({
+									data: {
+										'accion': 'autorizarMultipleInstruPresidente',
+										'periodo': periodo,
+										'listaInstrumentos': instrumentos,
+										'firmaPresidente': res.data,
+										'idPresi': '<?php echo $_SESSION['idUsuario']; ?>',
+										'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
+										'correo': '<?php echo $_SESSION['correo']; ?>'
+									},
+									url: "conexion/consultasNoSQL.php",
+									type: "post",
+									success: function(response) {
+										var resp = JSON.parse(response);
+										if(resp.success) {
+											alertify.success('<h3>' + resp.mensaje + '</h3>');
+
+											//Notificar a los docentes
+											$.ajax({
+												data: {
+													'periodo': periodo,
+													'listaInstrumentos': instrumentos,
+													'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
+													'accionCorreo': 'autorizarMultiInstruPresidente'
+												},
+												url: 'enviar-correos.php',
+												type: 'post',
+												success: function(response) {
+
+												}
+											});
+										} else {
+											alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>')
+										}
+										
+										iniciar();
+									}
+								});
+							},
+							function(){}
+						).set('labels', {
+						ok: 'Aceptar',
+						cancel: 'Cancelar'
+						});
+					} else {
+						alertify.warning('<h3>No hay instrumentaciones pendientes de validar.</h3>')
+					}
+                  } else {
+                    alertify.warning('<h3>' + res.mensaje + '</h3>');
+                  }
+                }
+            }); 
 		});
 	</script>
 

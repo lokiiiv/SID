@@ -787,9 +787,9 @@
 						<div class="col-4">
 							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Validó</b></div>
 							<div class="row color-claro d-flex justify-content-center align-items-center" style="border: 0; min-height: 110px;">
-								<i>Firma</i>
+								<?php echo isset($instrumentacion->Validacion->Firma) ? '<img src="firmasimagenes/' . $instrumentacion->Validacion->Firma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Firma</i>' ?>
 							</div>
-							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i>Nombre</i></div>
+							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo isset($instrumentacion->Validacion->InfoPresidente->NombrePresidente) ? $instrumentacion->Validacion->InfoPresidente->NombrePresidente : '<i>Nombre</i>'  ?></i></div>
 						</div>
 						<div class="col-4">
 							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Autorizó</b></div>
