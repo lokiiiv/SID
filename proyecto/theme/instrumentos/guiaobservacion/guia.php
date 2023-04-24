@@ -281,7 +281,7 @@
  	</style>
 
 
-<div class="container mt-3" style="max-width: 1276px; min-width: 880px;">
+<div class="container mt-3" style="max-width: 1276px; min-width: 950px;">
 	<div class="col">
  <!–– primer encabezado ––>
  		<div class="row">
@@ -306,13 +306,13 @@
 <!–– segundo encabezado ––>
  		<div class="row aiz">
  			<!–– linea 1 ––>
- 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite">
+ 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite d-flex justify-content-start align-items-center">
  				Programa Educativo
  			</div>
 			<div class="col-md-5 col-xs-5 col-sm-5 col-lg-5 col-5 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
 				<?php echo $ProgEducativo; ?>
  			</div>
- 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite">
+ 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite d-flex justify-content-start align-items-center">
  				Semestre
  			</div>
  			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 colcon bordewhite" style="text-align: center">
@@ -321,13 +321,13 @@
  		</div>
 		<div class="row aiz" style="display: flex;">
  			<!–– linea 2 ––>
- 			<div class=" col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite">
+ 			<div class=" col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite d-flex justify-content-start align-items-center">
  				Nombre del docente
  			</div>
 			<div class="col-md-5 col-xs-5 col-sm-5 col-lg-5 col-5 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $NomDocente; ?>
  			</div>
- 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite">
+ 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite d-flex justify-content-start align-items-center">
  				Clave de Grupo
  			</div>
  			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">

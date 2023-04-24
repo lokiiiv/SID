@@ -332,8 +332,8 @@ try {
                         $mail->CharSet = 'UTF-8';
                         $mail->Body = $contenido;
 
-                        if(!$mail->send())
-                            throw new Exception($mail->ErrorInfo);
+                        //if(!$mail->send())
+                          //  throw new Exception($mail->ErrorInfo);
                             
                         $mail->clearAddresses();
                     }
