@@ -231,17 +231,17 @@
  	<div class="container mt-3" id="imprimir" style="max-width: 1276px; min-width: 950px;">
  <!–– primer encabezado ––>
  		<div class="row">
- 			<div 	 class="box col-md-2 col-xs-2 col-sm-2 col-lg-2">
+ 			<div 	 class="box col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2">
  				<img src="img/logoitesa.png" alt="">
  			</div>
-			<div class="col-md-10 col-xs-10 col-sm-10 col-lg-10">
+			<div class="col-md-10 col-xs-10 col-sm-10 col-lg-10 col-10">
  				<div class="row">
- 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 coltit" style="text-align: center; font-size: 16px;" >
+ 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 coltit" style="text-align: center; font-size: 16px;" >
  						<?php echo $Materia; ?>
  					</div>
  				</div>
  				<div class="row">
- 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 colwhitef" style="text-align: center; font-size: 16px;" >
+ 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 colwhitef" style="text-align: center; font-size: 16px;" >
  						<?php echo $Instrumento; ?>
  					</div>
  				</div>
@@ -252,70 +252,70 @@
 <!–– segundo encabezado ––>
  		<div class="row aiz">
  			<!–– linea 1 ––>
- 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 coltit bordewhite">
+ 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite d-flex justify-content-start align-items-center">
  				Programa Educativo
  			</div>
-			<div class="col-md-5 col-xs-5 col-sm-5 col-lg-5 colcon bordewhite" style="text-align: center">
+			<div class="col-md-5 col-xs-5 col-sm-5 col-lg-5 col-5 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
 				<?php echo $ProgEducativo; ?>
  			</div>
- 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 coltit bordewhite">
+ 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite d-flex justify-content-start align-items-center">
  				Semestre
  			</div>
- 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 colcon bordewhite" style="text-align: center">
+ 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $Semestre; ?>
  			</div>
  		</div>
 		<div class="row aiz" style="display: flex;">
  			<!–– linea 2 ––>
- 			<div class=" col-md-2 col-xs-2 col-sm-2 col-lg-2 coltit bordewhite">
+ 			<div class=" col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite d-flex justify-content-start align-items-center">
  				Nombre del docente
  			</div>
-			<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6 colcon bordewhite" style="text-align: center">
+			<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6 col-6 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $NomDocente; ?>
  			</div>
- 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 coltit bordewhite">
+ 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite d-flex justify-content-start align-items-center">
  				Clave de Grupo
  			</div>
- 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 colcon bordewhite" style="text-align: center">
+ 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $ClaveGrupo; ?>
  			</div>
 		</div>
 		<div class="row aiz" style="display: flex;">
  			<!–– linea 3 ––>
- 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 coltit bordewhite">
+ 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite d-flex justify-content-start align-items-center">
  				Nombre del (la) Estudiante o integrantes de equipo
  			</div>
-			<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 colcon bordewhite" style="text-align: center">
+			<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 col-4 colcon bordewhite d-flex justify-content-start align-items-center" style="text-align: center">
  				 <?php echo $NomEstudiantes; ?>
  			</div>
- 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 coltit bordewhite">
+ 			<div class="col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 coltit bordewhite d-flex justify-content-start align-items-center">
  				Fecha de aplicación
  			</div>
- 			<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center">
+ 			<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $FechaAplicacion; ?>
  			</div>
- 			<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 coltit bordewhite">
+ 			<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 coltit bordewhite d-flex justify-content-center align-items-center">
  				Tiempo de evaluación
  			</div>
- 			<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center">
+ 			<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $TiempoEvaluacion; ?>
  			</div>
  		</div> 	
  		<div class="row aiz" style="display: flex;">
  			<!–– linea 4 ––>
- 			<div class="box col-md-3 col-xs-3 col-sm-3 col-lg-3 coltit bordewhite">
+ 			<div class="box col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite d-flex justify-content-start align-items-center">
  				Evidencia
  			</div>
- 			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9 colcon bordewhite" style="text-align: center">
+ 			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9 col-9 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
 				<?php echo $Evidencia; ?>
  			</div>	
  		</div>
  		<div class="row aiz" style="display: flex;">
  			<!–– linea 5 ––>
- 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 coltit bordewhite">
+ 			<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 coltit bordewhite d-flex justify-content-start align-items-center">
  				Competencia
  			</div>
-			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9 colcon bordewhite" style="text-align: center">
+			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9 col-9 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center">
 				<?php echo $Competencia; ?>
  			</div>	
  		</div>
@@ -323,25 +323,25 @@
 
 <!–– Tercer encabezado ––>
  		<div class="row aiz">
- 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12" style="border-bottom:1px; border-color: black; border-bottom-style: solid; ">
+ 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12" style="border-bottom:1px; border-color: black; border-bottom-style: solid; ">
  				Instrucciones
  			</div>
- 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 colcon" >
+ 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 colcon" >
  				1.- El docente llenará la lista de cotejo en función de la calidad del producto entregado por el(los) estudiante (es).
  			</div>
- 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 colcon" >
+ 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 colcon" >
  				2.- Se marca con una "X" si cumple o no con el criterio.
  			</div>
- 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 colcon" >
+ 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 colcon" >
  				3.- Se llenará el apartado "puntos totales", con los puntos que considere corresponden con la calidad del producto.
  			</div>
- 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 colcon" >
+ 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 colcon" >
  				4.- El puntaje máximo de la evaluación es de <?php echo $por;?> puntos.
  			</div>
- 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 colcon" >
+ 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 colcon" >
  				5.- Para que el estudiante sea evaluado en los indicadores <?php echo $cadeindi;?> deberá cumplir con los indicadores marcados con M (mínimos).
  			</div>
- 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 colcon" >
+ 			<div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 colcon" >
  				6.- Realizar la sumatoria.
  			</div>
 		</div>
@@ -350,49 +350,49 @@
 <!–– Cuarto encabezado ––>
 		<div class="row" style="display: flex;">
 			<!--línea 7 -->
-			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9">
+			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9 col-9">
 				<!--nuevamente 12 lineas -->
 				<div class="row" style="display: flex;">
-					<div class=" coltit col-md-1 col-xs-1 col-sm-1 col-lg-1">
+					<div class=" coltit col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1">
 						<div class="row">
-							<div class="bordewhite col-md-12 col-xs-12 col-sm-12 col-lg-12" style="text-align: center">
+							<div class="bordewhite col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 d-flex justify-content-center align-items-center" style="text-align: center">
 								No.
 							</div>
-							<div class="bordewhite col-md-12 col-xs-12 col-sm-12 col-lg-12 bo">
+							<div class="bordewhite col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 bo d-flex justify-content-center align-items-center">
 								<label for=""></label>					
 							</div>
 						</div>
 					</div>
 				
-					<div class=" col-md-6 col-xs-6 col-sm-6 col-lg-6">
+					<div class=" col-md-6 col-xs-6 col-sm-6 col-lg-6 col-6">
 						<div class="row">
-							<div class="bordewhite coltit col-md-12 col-xs-12 col-sm-12 col-lg-12" style="text-align: center">
+							<div class="bordewhite coltit col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 d-flex justify-content-center align-items-center" style="text-align: center">
 								Aspecto a evaluar
 							</div>
-							<div class="bordewhite colwhitef col-md-12 col-xs-12 col-sm-12 col-lg-12" style="text-align: center">
+							<div class="bordewhite colwhitef col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 d-flex justify-content-center align-items-center" style="text-align: center">
 								<?php echo $ObjetoEvaluar; ?>
 							</div>
 						</div>
 					</div>
 					
-					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-" style="text-align: center;">
+					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center;">
 						VALOR
 					</div>
-					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center;">
+					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center;">
 						IND.				
 					</div>
-					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						SI
 					</div>
-					<div class="bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class="bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						NO
 					</div>
-					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordewhite coltit col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						PUNTOS
 					</div>
 				</div>
 			</div>
-			<div class="bordewhite coltit col-md-3 col-xs-3 col-sm-3 col-lg-3" style="text-align: center">
+			<div class="bordewhite coltit col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-center align-items-center" style="text-align: center">
 				Retroalimentación
 			</div>
 		</div>
@@ -401,7 +401,7 @@
 <!–– Quinto encabezado (ITEMS)––>
 		<div class="row bordewhite" style="display: flex;">
 			<!--línea 7 -->
-			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9">
+			<div class="col-md-9 col-xs-9 col-sm-9 col-lg-9 col-9">
 				<!--Nuevamente 12 lineas -->
 				<!--Punto 1-->
 
@@ -414,25 +414,25 @@
 					
 				 ?>
 				<div class="row" style="display: flex; text-align: left;">
-					<div class=" coltit bordewhite col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" coltit bordewhite col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						<?php echo ($continstru);$continstru++;?>
 					</div>
-					<div class="colcon col-md-6 col-xs-6 col-sm-6 col-lg-6">
+					<div class="colcon col-md-6 col-xs-6 col-sm-6 col-lg-6 col-6 d-flex justify-content-start align-items-center">
 						<?php echo $vecalc[0]; ?>
 					</div>
-					<div class="colcon bordewhite  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class="colcon bordewhite  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						 <?php echo $vecAF[$i]; ?>
 					</div>
-					<div class=" bordewhite colcon	 col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordewhite colcon	 col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						<?php echo $vecalc[1];	?>			
 					</div>
-					<div class=" bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						
 					</div>
-					<div class="bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class="bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						
 					</div>
-					<div class=" bordeblack col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordeblack col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						
 					</div>
 				</div>
@@ -448,25 +448,25 @@
 					
 				 ?>
 				<div class="row" style="display: flex; text-align: left;">
-					<div class=" coltit bordewhite col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" coltit bordewhite col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						<?php echo $continstru; $continstru++;?>
 					</div>
-					<div class="colcon col-md-6 col-xs-6 col-sm-6 col-lg-6">
+					<div class="colcon col-md-6 col-xs-6 col-sm-6 col-lg-6 col-6 d-flex justify-content-start align-items-center">
 						<?php echo $vecmin[0]; ?>
 					</div>
-					<div class="colcon bordewhite  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class="colcon bordewhite  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						 <?php echo $vecmin[2]; ?>
 					</div>
-					<div class=" bordewhite colcon	 col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordewhite colcon	 col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						<?php echo $vecmin[1]; ?>		
 					</div>
-					<div class=" bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						
 					</div>
-					<div class="bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class="bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						
 					</div>
-					<div class=" bordeblack col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+					<div class=" bordeblack col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
 						
 					</div>
 				</div>
@@ -475,21 +475,21 @@
 
 
 			</div>
-			<div class="bordeblack  col-md-3 col-xs-3 col-sm-3 col-lg-3" style="text-align: center">
+			<div class="bordeblack  col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-center align-items-center" style="text-align: center">
 				<?php echo $Retroalimentación; ?>
 			</div>
 		</div>
 		<div class="row" style="display: flex;">
-			<div class="coltit bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3" style="text-align: center">
+			<div class="coltit bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-center align-items-center" style="text-align: center">
 				Puntaje Maximo
 			</div>
-			<div class="colcon bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3" style="text-align: center">
+			<div class="colcon bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-center align-items-center" style="text-align: center">
 				<?php echo $por; ?>
 			</div>
-			<div class="coltit bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3" style="text-align: center">
+			<div class="coltit bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-center align-items-center" style="text-align: center">
 				Puntaje Obtenido
 			</div>
-			<div class="colcon bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3" style="text-align: center">
+			<div class="colcon bordewhite  col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-center align-items-center" style="text-align: center">
 				<?php echo $PuntosObtenidos; ?>
 			</div>
 
@@ -498,98 +498,98 @@
 
 <!–– Sexto encabezado ––>
 		<div class="row aiz">
- 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				ㅤ
  			</div>
 		</div>
 
 		<div class=" bordeblack row aiz" style="display: flex;">
- 			<div class="colcon bordewhite  col-md-2 col-xs-2 col-sm-2 col-lg-2" style="text-align: center; font-weight: bold;">
+ 			<div class="colcon bordewhite  col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  				Evidencia de Aprendizaje
  			</div>
- 			<div class="colcon bordewhite  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center; font-weight: bold;">
+ 			<div class="colcon bordewhite  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  				%
  			</div>
- 			<div class="col-md-9col-xs-9 col-sm-9 col-lg-9">
+ 			<div class="col-md-9col-xs-9 col-sm-9 col-lg-9 col-9">
  				<div class="row" style="display: flex;">
- 					<div class=" colcon bordewhite col-md-6 col-xs-6 col-sm-6 col-lg-6" style="text-align: center; font-weight: bold;">
+ 					<div class=" colcon bordewhite col-md-6 col-xs-6 col-sm-6 col-lg-6 col-6 d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
 						Indicadores de Alcance
 					</div>
-					<div class="colcon bordewhite col-md-6 col-xs-6 col-sm-6 col-lg-6" style="text-align: center; font-weight: bold;">
+					<div class="colcon bordewhite col-md-6 col-xs-6 col-sm-6 col-lg-6 col-6 d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
 						Metodo de Evaluacion
 					</div>
 				</div>
 				<div class="row" style="display: flex;">
-					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
 						A
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  						B
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
 						C
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  						D
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
 						E
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  						F
  					</div>
- 					<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  						Instrumento
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  						P
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  						C
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 colcon bordewhite" style="text-align: center; font-weight: bold;">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 colcon bordewhite d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  						A
  					</div>
  				</div>
  			</div>
 		</div>
 		<div class="row aiz">
- 			<div class="bordeblack  col-md-2 col-xs-2 col-sm-2 col-lg-2" style="text-align: center">
+ 			<div class="bordeblack  col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $Evidencia; ?>
  			</div>
- 			<div class="bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1" style="text-align: center">
+ 			<div class="bordeblack  col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center" style="text-align: center">
  				<?php echo $Porcentaje; ?>
  			</div>
- 			<div class="col-md-9col-xs-9 col-sm-9 col-lg-9">
+ 			<div class="col-md-9col-xs-9 col-sm-9 col-lg-9 col-9">
 				<div class="row" style="display: flex;">
-					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
 						<?php echo $PuntosIndA; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
  						<?php echo $PuntosIndB; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
 						<?php echo $PuntosIndC; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
  						<?php echo $PuntosIndD; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
 						<?php echo $PuntosIndE; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
  						<?php echo $PuntosIndF; ?>
  					</div>
- 					<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 bordeblack" style="text-align: center">
+ 					<div class="col-md-3 col-xs-3 col-sm-3 col-lg-3 col-3 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
  						<?php echo $Instrumento; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
  						<?php echo $MarcaMetodoP; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
  						<?php echo $MarcaMetodoC; ?>
  					</div>
- 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 bordeblack" style="text-align: center">
+ 					<div class="col-md-1 col-xs-1 col-sm-1 col-lg-1 col-1 d-flex justify-content-center align-items-center bordeblack" style="text-align: center">
  						<?php echo $MarcaMetodoA; ?>
  					</div>
 
@@ -600,40 +600,40 @@
 
 <!–– Septimo encabezado ––>
 		<div class="row aiz">
- 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				ㅤ
  			</div>
 		</div>
 		<div class="row bordeblack">
- 			<div class="bordewhite colcon col-md-12 col-xs-12 col-sm-12 col-lg-12" style="text-align: center; font-weight: bold;">
+ 			<div class="bordewhite colcon col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  				Entrega Instrumento
  			</div>
- 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				<div class="row aiz">
- 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4" style="font-weight: bold;">
+ 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4 col-4 d-flex justify-content-start align-items-center" style="font-weight: bold;">
  						Nombre y Firma del Docente
  					</div>
- 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
+ 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8 col-8 d-flex justify-content-start align-items-center" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
  						<?php echo $NomDocente; ?>
  					</div>
  				</div>
  			</div>
- 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				<div class="row aiz">
- 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4" style="font-weight: bold;">
+ 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4 col-4 d-flex justify-content-start align-items-center" style="font-weight: bold;">
  						Nombre y Firma del Estudiante
  					</div>
- 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
+ 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8 col-8 d-flex justify-content-start align-items-center" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
  						<?php echo $NomEstudiantes; ?>
  					</div>
  				</div>
  			</div>
- 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				<div class="row aiz">
- 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4" style="font-weight: bold;">
+ 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4 col-4 d-flex justify-content-start align-items-center" style="font-weight: bold;">
  						Fecha de Entrega
  					</div>
- 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8">
+ 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8 col-8 d-flex justify-content-start align-items-center">
  						<?php echo $FechaEntrega; ?>
  					</div>
  				</div>
@@ -643,50 +643,46 @@
 
 <!–– Octavo encabezado ––>
 		<div class="row aiz">
- 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="colwhitef box col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				ㅤ
  			</div>
 		</div>
 		<div class="row bordeblack">
- 			<div class="bordewhite colcon col-md-12 col-xs-12 col-sm-12 col-lg-12" style="text-align: center; font-weight: bold;">
+ 			<div class="bordewhite colcon col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 d-flex justify-content-center align-items-center" style="text-align: center; font-weight: bold;">
  				Retroalimentación
  			</div>
- 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 bordeblack">
+ 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12 bordeblack">
  				<div class="row aiz">
- 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4" style="font-weight: bold;">
+ 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4 col-4 d-flex justify-content-start align-items-center" style="font-weight: bold;">
  						Nombre y Firma del Docente
  					</div>
- 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
+ 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8 col-8 d-flex justify-content-start align-items-center" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
  						<?php echo $NomDocente; ?>
  					</div>
  				</div>
  			</div>
- 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				<div class="row aiz">
- 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4" style="font-weight: bold;">
+ 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4 col-4 d-flex justify-content-start align-items-center" style="font-weight: bold;">
  						Nombre y Firma del Estudiante
  					</div>
- 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
+ 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8 col-8 d-flex justify-content-start align-items-center" style="border-bottom:1px; border-color: black; border-bottom-style: solid;">
  						<?php echo $NomEstudiantes; ?>
  					</div>
  				</div>
  			</div>
- 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+ 			<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 col-12">
  				<div class="row aiz">
- 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4" style="font-weight: bold;">
+ 					<div class= "bordewhite colcon col-md-4 col-xs-4 col-sm-4 col-lg-4 col-4 d-flex justify-content-start align-items-center" style="font-weight: bold;">
  						Fecha de Entrega
  					</div>
- 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8" >
+ 					<div class= "col-md-8 col-xs-8 col-sm-8 col-lg-8 col-8 d-flex justify-content-start align-items-center" >
  						<?php echo $FechaRetroalimentacion; ?>
  					</div>
  				</div>
  			</div>
 		</div>
-
-
 	</div>
-
-	
  </body>
 
  </html>

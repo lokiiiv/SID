@@ -1153,5 +1153,74 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
             }
             break;
+
+        case 'listarProgramasEducativos':
+            $sql = "SELECT pro.* , CONCAT(doce.cat_Nombre, ' ', doce.cat_ApePat, ' ', doce.cat_ApeMat) as JefeDivision 
+                    FROM programae pro 
+                    LEFT JOIN docentes doce ON pro.id_jefe_division = doce.cat_ID";
+            $programas = $connSQL->preparedQuery($sql);
+
+            $final_data = [];
+            foreach ($programas as $programa) {
+                $htmlEditar = '<a class="dropdown-item editar" href="" data-id="' . $programa['id_programaE'] . '">Editar</a>';
+                $htmlBorrar = '<a class="dropdown-item eliminar" href="" data-id="' . $programa['id_programaE'] . '">Eliminar</a>';
+                $acciones = '<div class="row">' .
+                    '<div class="btn-group" style="margin: 0 auto;">' .
+                    '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+                    'Acciones' .
+                    '</button>' .
+                    '<div class="dropdown-menu">' .
+                    $htmlEditar .
+                    $htmlBorrar .
+                    '</div>' .
+                    '</div>' .
+                    '</div>';
+
+                $final_data[] = [
+                    'id_programaE' => $programa['id_programaE'],
+                    'nombrePE' => $programa['nombrePE'],
+                    'planEstudio' => $programa['planEstudio'],
+                    'letra' => $programa['letra'],
+                    'iniciales' => $programa['iniciales'],
+                    'JefeDivision' => $programa['JefeDivision'] == null ? 'Aún no se asigna.' : $programa['JefeDivision'],
+                    'acciones' => $acciones
+                ];
+            }
+
+            echo json_encode($final_data, JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'obtenerJefesDivision':
+             //Consultar a todos los usuarios cuyo rol sea jefe de division
+             $sql = "SELECT d.cat_ID, 
+                            d.cat_Clave, 
+                            CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre, 
+                            d.cat_CorreoE as correo
+                    FROM docentes d 
+                    INNER JOIN docente_rol dr ON d.cat_ID = dr.cat_ID
+                    WHERE dr.id_rol = 5";
+            $jefesDivision = $connSQL->preparedQuery($sql);
+
+            echo json_encode(['success' => true, 'data' => ['jefesDivision' => $jefesDivision]]);
+            break;
+
+        case 'obtenerProgramaEducativoById':
+            if (isset($_POST['idPrograma'])) {
+
+                $sql = "SELECT pro.* , CONCAT(doce.cat_Nombre, ' ', doce.cat_ApePat, ' ', doce.cat_ApeMat) as JefeDivision 
+                        FROM programae pro 
+                        LEFT JOIN docentes doce ON pro.id_jefe_division = doce.cat_ID
+                        WHERE pro.id_programaE = :idPrograma";
+
+                $programa = $connSQL->preparedQuery($sql, ['idPrograma' => $_POST['idPrograma']]);
+                if (count($programa) > 0) {
+                    echo json_encode(['success' => true, 'data' => $programa]);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Grupo académico no encontrado.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
+            break;
     }
 }

@@ -61,6 +61,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							<?php if ($u->hasModulo("administrar_grupos_academicos")) { ?>
 								<a class="dropdown-item" href="grupos-academicos.php"><i class="fas fa-chalkboard-teacher pr-2"></i>Leer/editar grupos académicos</a>
 							<?php } ?>
+							<a class="dropdown-item" href="programas-educativos.php"><i class="fa-solid fa-book pr-2"></i>Leer/editar programas educativos</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
