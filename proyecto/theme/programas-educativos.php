@@ -175,7 +175,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
         var idPrograma;
 
         $(document).ready(function() {
-            var tablaProgramas = $("#tablaProgramas").DataTable({
+            tablaProgramas = $("#tablaProgramas").DataTable({
                 "responsive": true,
                 "autoWidth": false,
                 "language": {
@@ -278,6 +278,31 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
             },
             submitHandler: function(form, event) {
                 event.preventDefault();
+
+                //Agregar o actualizar programa educativo
+                var formData = new FormData(form);
+                formData.append('accion', 'crearActualizarProgramaEducativo');
+                formData.append('idPrograma', idPrograma);
+
+                $.ajax({
+                    data: formData,
+                    url: 'conexion/consultasSQL.php',
+                    method: 'post',
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        var res = JSON.parse(response);
+                        if(res.success) {
+                            alertify.success('<h3>' + res.mensaje + '</h3>');
+                            $("#formAddEdit").trigger('reset');
+                            $("#modalAddEdit").modal('hide');
+                            //Recargar la tabla nuevamente
+                            tablaProgramas.ajax.reload();
+                        } else {
+                            alertify.warning('<h3>' + res.mensaje + '</h3>');
+                        }
+                    }
+                });
             }
         });
 
@@ -361,8 +386,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                                     var jefesDivision = res.data.jefesDivision;
 
                                     var optionsJefes = '';
-                                    console.log(resp.id_jefe_division);
-                                    //Ponser los select como seleccionados conforme a los datos
+                                    //Poner los select como seleccionados conforme a los datos
                                     optionsJefes = resp.id_jefe_division == null ? '<option value="" disable selected>Seleccione jefe de división</option>' : '<option value="" disable>Seleccione jefe de división</option>';
                                     jefesDivision.forEach(p => {
                                         var isSelected = resp.id_jefe_division == p.cat_ID ? 'selected' : '';
@@ -376,9 +400,48 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                         alertify.warning('<h3>' + resp.mensaje + '</h3>')
                     }
                 }
-
             });
-        })
+        });
+
+        $(document).on('click', '.eliminar', function(e){
+            e.preventDefault();
+
+            var fila = $(this).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+
+            idPrograma = $(this).data('id');
+
+            alertify.confirm("Aviso", "¿Está seguro(a) de eliminar el programa educativo de " + fila.find('td:eq(0)').text() + "?",
+                function() {
+                    //Eliminar el programa educativo
+                    $.ajax({
+                        data: {
+                            "accion": "eliminarProgramaEducativo",
+                            "idPrograma": idPrograma
+                        },
+                        url: 'conexion/consultasSQL.php',
+                        type: 'post',
+                        success: function(response) {
+                            var res = JSON.parse(response);
+                            if (res.success) {
+                                alertify.success('<h3>' + res.mensaje + '</h3>');
+                                tablaProgramas.ajax.reload();
+                            } else {
+                                alertify.warning('<h3>' + res.mensaje + '</h3>');
+                            }
+                        }
+                    });
+                },
+                function() {
+
+                }
+            ).set('labels', {
+                ok: 'Aceptar',
+                cancel: 'Cancelar'
+            });
+        });
 	</script>
 
 </body>

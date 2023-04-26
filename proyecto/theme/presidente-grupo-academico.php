@@ -64,7 +64,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 								</button>
 								<div class="dropdown-menu">
 									<a class="dropdown-item autorizar-instru-multi" href="#"><i class="fa-solid fa-circle-check pr-2"></i>Validar</a>
-									<a class="dropdown-item denegar-instru-multi" href="#"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</a>
+									<!-- <a class="dropdown-item denegar-instru-multi" href="#"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</a> -->
 								</div>
 							</div>
 							<ul class="list-group" style="width:150px">

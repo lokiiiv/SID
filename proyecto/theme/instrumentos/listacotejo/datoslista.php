@@ -264,7 +264,7 @@ $num = $num - 2;
 				var cadM = "";
 				var fa = v[0]; //fecha aplicación
 
-				var te = v[0]; //tiempo de evaluación
+				var te = v[1]; //tiempo de evaluación
 				//alert(te);
 				document.getElementById("fa").value = fa;
 				document.getElementById("te").value = te;

@@ -1077,6 +1077,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
         case 'actualizarFirmaUsuario':
+            //Verificar si un usuario ya subio su firma
             if (isset($_FILES['nuevaFirma']) && $_FILES['nuevaFirma']['name']) {
                 $extension = explode('.', $_FILES["nuevaFirma"]["name"]);
                 $imagen = rand() . '_' . $_POST["correo"] . '.' . end($extension);
@@ -1100,7 +1101,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             }
             break;
 
-        //Verificar si un usuario ya subio su firma
+        
         case 'verificarFirmaUsuario':
             if(isset($_POST["idUsuario"])) {
                 $sql = "SELECT firma FROM docentes WHERE cat_ID = :idUsuario";
@@ -1120,6 +1121,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
         case 'obtenerPresidenteDeGrupoAcademico':
+            //Obtener los grupos academicos de un usuario o presidente de academica
             if (isset($_POST["grupo"])) {
                 $grupoins = substr($_POST["grupo"], 0, 3);
                 $sql = "SELECT cr.ret_ID, cr.ret_Clave, cr.ret_NomCompleto, ga.id_grupoacademico, ga.nombre, d.cat_ID, CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre, d.cat_CorreoE
@@ -1138,7 +1140,7 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             }
             break;
 
-        //Obtener los grupos academicos de un usuario o presidente de academica
+        
         case 'obtenerGruposAcademicosPorPresidente':
             if (isset($_POST["idUsuario"])) {
                 $idUsuario = $_POST["idUsuario"];
@@ -1222,5 +1224,51 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
             break;
-    }
+        case 'crearActualizarProgramaEducativo':
+            //Verificar que operacion es, si crear o actualizar
+            if (isset($_POST['operacion']) && isset($_POST['inputNombrePrograma']) && isset($_POST['inputClavePlan']) && isset($_POST['inputLetra']) && isset($_POST['inputIniciales']) && isset($_POST['inputJefe']) && isset($_POST['idPrograma'])) {
+                if ($_POST["operacion"] === "Crear") {
+
+                    $nombrePrograma = $_POST['inputNombrePrograma'];
+                    $clavePlan = $_POST['inputClavePlan'];
+                    $letra = $_POST['inputLetra'];
+                    $iniciales = $_POST['inputIniciales'];
+                    $idJefe = $_POST['inputJefe'];
+
+                    //Insertar el nuevo programa educativo
+                    $sql = "INSERT INTO programae (nombrePE, planEstudio, letra, iniciales, id_jefe_division) VALUES(:nombre, :plan, :letra, :iniciales, :idJefe)";
+                    $connSQL->preparedInsert($sql, ['nombre' => $nombrePrograma, 'plan' => $clavePlan, 'letra' => $letra, 'iniciales' => $iniciales, 'idJefe' => $idJefe]);
+                    echo json_encode(['success' => true, 'mensaje' => 'Programa educativo registrado correctamente.']);
+                } else if ($_POST["operacion"] === "Actualizar") {
+                    $nombrePrograma = $_POST['inputNombrePrograma'];
+                    $clavePlan = $_POST['inputClavePlan'];
+                    $letra = $_POST['inputLetra'];
+                    $iniciales = $_POST['inputIniciales'];
+                    $idJefe = $_POST['inputJefe'];
+                    $idPrograma = $_POST['idPrograma'];
+
+                    //Actualizar el programa educativo seleccionado
+                    $sql = "UPDATE programae SET nombrePE = :nombre, planEstudio = :plan, letra = :letraPro, iniciales = :iniciales, id_jefe_division = :idJefe WHERE id_programaE = :idPrograma";
+                    $connSQL->preparedUpdate($sql, ['nombre' => $nombrePrograma, 'plan' => $clavePlan, 'letraPro' => $letra, 'iniciales' => $iniciales, 'idJefe' => $idJefe, 'idPrograma' => $idPrograma]);
+                    echo json_encode(['success' => true, 'mensaje' => 'Programa educativo actualizado correctamente.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
+            }
+            break;
+        case 'eliminarProgramaEducativo':
+            if (isset($_POST['idPrograma'])) {
+                $sql = "DELETE FROM programae WHERE id_programaE = :idPrograma";
+                $res = $connSQL->preparedDelete($sql, ['idPrograma' => $_POST['idPrograma']]);
+                if ($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Programa educativo eliminado correctamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar programa educativo.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+            }
+            break;
+        }
+        
 }
