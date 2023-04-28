@@ -75,8 +75,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							<!-- <a class="dropdown-item" href="#">Consultar instrumentaciones (Alumno)</a>
 							-->
 							<a class="dropdown-item" href="presidente-grupo-academico.php">Validar instrumentaciones (Presidente de grupo académico)</a>
-							<!--
-							<a class="dropdown-item" href="cordi.php">Validar instrumentaciones (Jefe de división)</a> -->
+							<a class="dropdown-item" href="jefe-de-division.php">Autorizar instrumentaciones (Jefe de división)</a>
 						</div>
 					</li>
 

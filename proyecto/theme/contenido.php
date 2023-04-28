@@ -3461,7 +3461,7 @@ require_once("../../valida.php");
             var res = JSON.parse(resultado);
             if (res.success) {
               //formulario.submit();
-              $('#formGenerarInstru').append('<input type="hidden" name="firma" value="' + res.data + '" id="enviarFirma"/>');
+              $('#formGenerarInstru').append('<input type="hidden" name="correoDocente" value="' + '<?php echo $_SESSION['correo']; ?>' + '" id="enviarCorreoDocente"/>');
               //e.currentTarget.submit();
               
               var tem = document.getElementById("selectTema").value;
@@ -3542,7 +3542,8 @@ require_once("../../valida.php");
                           "accion": "mandarInstrumentacionDocente",
                           "grupo": document.getElementById("campoGrupo").innerHTML,
                           "periodo": document.getElementById("campoPeriodo").innerHTML,
-                          "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML
+                          "claveAsignatura": document.getElementById("campoClaveAsignatura").innerHTML,
+                          "firma": res.data 
                         };
 
                         $.ajax({

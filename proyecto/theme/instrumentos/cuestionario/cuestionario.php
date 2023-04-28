@@ -154,9 +154,6 @@ $Materia=$mat." (TEMA ".$tem.")";
  <!DOCTYPE html>
  <html lang="en">
  <head>
- 	<meta charset="UTF-8">
- 	<title>Document</title>
- 	<link href="bootstrap.min.css" rel="stylesheet">
  	<style>
  		.rotar {
 		    -webkit-transform: rotate(-90deg);
@@ -212,9 +209,13 @@ $Materia=$mat." (TEMA ".$tem.")";
  </head>
 
  <body>
- 	<button id="descargarPDF" type="button" class="btn btn-info" onclick="descargaPDF()">descargar PDF</button>
+	<div class="col">
+	<button id="descargarPDF" type="button" class="btn btn-info" onclick="descargaPDF()">descargar PDF</button>
 	<button id="verocultarprr" type="button" class="btn btn-info">Ver|ocultar respuestas</button>
+	</div>
+ 	
  	<div class="container mt-3" id="imprimir" style="max-width: 1276px; min-width: 950px;">
+		<div class="col">
  <!–– Primer encabezado ––>
  		<div class="row">
  			<div class="box col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-center align-items-center">
@@ -590,6 +591,7 @@ $Materia=$mat." (TEMA ".$tem.")";
  			</div>
 		</div>
  	</div>
+	</div>
  	<script>
  		$("#verocultarprr").click(function(){
  			//alert("oko");

@@ -778,7 +778,13 @@
 						<div class="col-4">
 							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Docente que imparte asignatura</b></div>
 							<div class="row color-claro d-flex justify-content-center align-items-center" style="border: 0; min-height: 110px;">
-								<img src="firmasimagenes/<?php echo isset($firma) ? $firma :  ''; ?>" alt="" class="img-fluid" style="height: 90px;">
+								<?php 
+								//Obtener la firma del docente desde la base de datos a partir del ID enviado
+								if($correoDocente != "") {
+									$firma = $connSQL->singlePreparedQuery("SELECT firma FROM docentes WHERE cat_CorreoE = :correoDocente", ['correoDocente' => $correoDocente]);
+								}
+								?>
+								<?php echo $firma['firma'] && $firma['firma'] != '' ? '<img src="firmasimagenes/' . $firma['firma'] . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Firma</i>' ?>
 							</div>
 							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo $nombre ?></i></div>
 						</div>
@@ -787,7 +793,17 @@
 						<div class="col-4">
 							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Validó</b></div>
 							<div class="row color-claro d-flex justify-content-center align-items-center" style="border: 0; min-height: 110px;">
-								<?php echo isset($instrumentacion->Validacion->Firma) ? '<img src="firmasimagenes/' . $instrumentacion->Validacion->Firma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Firma</i>' ?>
+								<?php  
+								//Verificar que el presidente ya haya validado la instrumentacion, si es asi, mostrar la firma
+								$imgFirma = "";
+								if(isset($instrumentacion->Validacion->Estatus) && isset($instrumentacion->Validacion->InfoPresidente)) {
+									if($instrumentacion->Validacion->Estatus) {
+										$firma = $connSQL->singlePreparedQuery("SELECT firma FROM docentes WHERE cat_CorreoE = :correoPresidente", ['correoPresidente' => $instrumentacion->Validacion->InfoPresidente->CorreoPresidente]);
+										$imgFirma = $firma['firma'];
+									}
+								}
+								?>
+								<?php echo $imgFirma != '' ? '<img src="firmasimagenes/' . $imgFirma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Firma</i>'; ?>
 							</div>
 							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo isset($instrumentacion->Validacion->InfoPresidente->NombrePresidente) ? $instrumentacion->Validacion->InfoPresidente->NombrePresidente : '<i>Nombre</i>'  ?></i></div>
 						</div>

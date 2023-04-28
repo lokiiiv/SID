@@ -3,6 +3,7 @@
 
   require_once 'conexion/conexionNoSQL.php';
   $connNoSQL = connNoSQL::singleton();
+  $connSQL = connSQL::singleton();
 
   $grupoins=$_GET['grupo'];
   $claveAsignatura = $_GET['claveAsignatura'];
@@ -22,7 +23,8 @@
   $correo = $_SESSION['correo'];
   $nombre = isset($_GET['docenteEjemplo']) ? $_GET['docenteEjemplo'] : $_SESSION['nombreCompleto'];
   $tema = $_GET['tema'];
-  $firma = isset($_GET['firma']) ? $_GET['firma'] : '';
+
+  $correoDocente = isset($_GET['correoDocente']) ? $_GET['correoDocente'] : '';
 
   /* $projeccion = ["projection" => 
                   ["periodos_Inst.".$periodo.".".$claveAsignatura=>1,
@@ -62,7 +64,6 @@
 
   if(isset($instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura)){
     $instrumentacion = $instrumentacion[0]->periodos_Inst->$periodo->$claveAsignatura;
-    //print_r($instrumentacion);
     //$temas = $instrumentacion->totalTemas;
  //   for ($tema=0; $tema < $temas; $tema++) { 
       //require("Instrumentacion.php");

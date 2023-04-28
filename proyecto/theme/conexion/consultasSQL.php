@@ -1269,6 +1269,19 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
             }
             break;
+        
+        case 'obtenerProgramasPorJefeDivision':
+            if (isset($_POST["idUsuario"])) {
+                $idUsuario = $_POST["idUsuario"];
+                $sql = "SELECT DISTINCT letra 
+                        FROM programae 
+                        WHERE id_jefe_division = :idUsuario";
+                $grupos = $connSQL->preparedQuery($sql, ["idUsuario" => $idUsuario]);
+                echo json_encode(['success' => true, 'data' => $grupos]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
+            }
+            break;
         }
         
 }

@@ -452,7 +452,7 @@
 
             case 'mandarInstrumentacionDocente':
                 //Cambiar el estatus de la instrumentacion y ponerlo como Solo lectura
-                //Crear un nuevo campo indicando el id y nombre del presidente de grupo academico responsable de validar
+                //Almacenar la firma en el documento de la coleccion de docentes
                 $grupo=$_POST['grupo'];
                 $grupoins = substr($grupo, 0,3);
                 $periodo = $_POST['periodo'];
@@ -711,7 +711,6 @@
                 $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".SoloLectura" => false]);
                 $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Estatus" => false]);
                 $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.InfoPresidente" => 1]);
-                $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Firma" => 1]);
 
                 //Guardar los mensajes u observaciones en Mongo para que los docentes puedan verlos en su sección correspondiente
                 date_default_timezone_set('America/Mexico_City');
@@ -727,11 +726,9 @@
                 $idPresidente = $_POST['idPresi'];
                 $nombrePresidente = $_POST['nombrePresi'];
                 $correoPresidente = $_POST['correo'];
-                $firmaPresidente = $_POST['firmaPresidente'];
                 
                 //Actualizar el valor de estatus validacion (Presidente) a true y poner los datos del presidente que valido la misma
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Estatus" => true]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Firma" => $firmaPresidente]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.InfoPresidente" => ['IdPresidente' => $idPresidente, 'NombrePresidente' => $nombrePresidente, 'CorreoPresidente' => $correoPresidente]]);
 
                 echo json_encode(['success' => true, 'mensaje' => 'Has autorizado la instrumentación, ahora puede ser vista por los respectivos jefes de división para su revisión y autorización.']);
@@ -744,15 +741,160 @@
                 $nombrePresidente = $_POST['nombrePresi'];
                 $correoPresidente = $_POST['correo'];
                 $listaInstrumentos = $_POST['listaInstrumentos'];
-                $firmaPresidente = $_POST['firmaPresidente'];
 
                 foreach($listaInstrumentos as $instru) {
                     $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $instru[0] . ".Validacion.Estatus" => true]);
-                    $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $instru[0] . ".Validacion.Firma" => $firmaPresidente]);
                     $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $instru[0] . ".Validacion.InfoPresidente" => ["IdPresidente" => $idPresidente, "NombrePresidente" => $nombrePresidente, "CorreoPresidente" => $correoPresidente]]);
                 }
 
                 echo json_encode(["success" => true, "mensaje" => "Has autorizado las instrumentaciones, ahora podrán ser vistas por los respectivos jefes de división para su revisión y autorización."]);
+            break;
+
+            case 'obtenerInstrumentacionesPorJefeDivision':
+                $periodo = $_POST['periodo'];
+                $listaCarreras = $_POST['carrerasLista'];
+
+                //Consulta para obtener información general de las instrumentaciones que puede autorizar los jefes de division
+                $pipeline = [
+                    [
+                        '$match' => [
+                            'Instrumentos' => 'Carreras'
+                        ]
+                    ], 
+                    [
+                        //Solo obtener las instrumentaciones del periodo elegido en forma de array key value
+                        '$project' => [
+                            '_id' => 0, 
+                            'instrumentaciones' => [
+                                '$objectToArray' => '$periodos_Inst.' . $periodo
+                            ]
+                        ]
+                    ], 
+                    [
+                        //Pasar cada elemento del array en nuevos documentos
+                        '$unwind' => ['path' => '$instrumentaciones']
+                    ], 
+                    [
+                        //Mostrar solo los campos deseados
+                        '$project' => [
+                            'instrumentaciones.k' => 1, 
+                            'instrumentaciones.v.Materia' => 1, 
+                            'instrumentaciones.v.totalTemas' => 1, 
+                            'instrumentaciones.v.ClaveAsignatura' => 1, 
+                            'instrumentaciones.v.TodasMaterias' => [
+                                //En el array de todoas las materias que pertenecen a la instrumentacion
+                                //a cada una agregarle un nuevo campo que incluye la letra de carrera conforme al la clave de materia
+                                '$map' => [
+                                    'input' => '$instrumentaciones.v.TodasMaterias', 
+                                    'as' => 'materias', 
+                                    'in' => [
+                                        '$mergeObjects' => [
+                                            '$$materias', 
+                                            [
+                                                'LetraCarrera' => [
+                                                    '$substr' => ['$$materias.Clave', 1, 1]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            'instrumentaciones.v.SoloLectura' => 1, 
+                            'instrumentaciones.v.Validacion' => 1, 
+                            'instrumentaciones.v.Temas' => [
+                                //En la parte de temas, a cada tema solo mostrar el numero de tema y la matriz de evaluacion del mismo
+                                '$map' => [
+                                    'input' => [
+                                        '$objectToArray' => '$instrumentaciones.v.Temas'
+                                    ], 
+                                    'in' => [
+                                        'Tema' => '$$this.k', 
+                                        'Matriz' => '$$this.v.MatrizEvaluacion'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        //solo mostrar las instrumentaciones donde en la lista de TodasMaterias, la letra se encuentre dentro de las letras de carrera que los jefes de division tienen a cargo
+                        //Por lo general cada jefe de division esta a carga de una carrera o porgrama educativo, pero esto permite que se muestren en caso de que el jefe este cargo de mas de 1 una carrera
+                        '$match' => [
+                            'instrumentaciones.v.TodasMaterias.LetraCarrera' => [
+                                '$in' => $listaCarreras
+                            ],
+                            //Solo mostrar las instrumentaciones que ya han sido validas por su presidente de grupo academico
+                            'instrumentaciones.v.Validacion.Estatus' => true
+                        ]
+                    ], 
+                    [
+                        //Del campo "TodasMaterias", solo filtrar los elementos que corresponden a la letra de las carreras del respectivo jefe de division
+                        '$addFields' => [
+                            'instrumentaciones.v.TodasMaterias' => [
+                                '$filter' => [
+                                    'input' => '$instrumentaciones.v.TodasMaterias', 
+                                    'cond' => [
+                                        '$in' => [
+                                            '$$this.LetraCarrera', $listaCarreras
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$instrumentaciones.v.TodasMaterias']
+                    ], 
+                    [
+                        //Hacer una relacion con la coleccion de docentes para mostrar que grupos se imparten en la respectiva instrumentacion
+                        '$lookup' => [
+                            'from' => 'docentes', 
+                            'let' => ['grupoinst' => '$instrumentaciones.v.TodasMaterias.Clave'], 
+                            'pipeline' => [
+                                [
+                                    '$project' => [
+                                        '_id' => 0, 
+                                        'nombre' => 1, 
+                                        'correo' => 1, 
+                                        'grupo' => [
+                                            '$map' => [
+                                                'input' => ['$objectToArray' => '$periodos_Inst.' . $periodo], 
+                                                'in' => [
+                                                    'k' => ['$substr' => ['$$this.k', 0, 3]], 
+                                                    'v' => '$$this.v'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$unwind' => ['path' => '$grupo']
+                                ], 
+                                [
+                                    '$match' => [
+                                        '$expr' => [
+                                            '$eq' => ['$grupo.k', '$$grupoinst']
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$addFields' => ['grupo' => '$grupo.v.Grupo']
+                                ]
+                            ], 
+                            'as' => 'instrumentaciones.v.TodasMaterias.Grupos'
+                        ]
+                    ], 
+                    [
+                        //Solo mostrar instrumentaciones que tengan grupos relacionados de la instrumentacion de docentes despues de hacer el lookup
+                        '$match' => [
+                            'instrumentaciones.v.TodasMaterias.Grupos' => [
+                                '$exists' => true, '$ne' => []
+                            ]
+                        ]
+                    ]
+                ];
+
+                $instrumentaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                echo json_encode(['success' => true, 'data' => $instrumentaciones]);
             break;
         }
     }

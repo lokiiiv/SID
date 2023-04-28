@@ -255,7 +255,6 @@
  <head>
  	<meta charset="UTF-8">
  	<title>Document</title>
- 	<link href="bootstrap.min.css" rel="stylesheet">
  	<style>
  		.rotar {
 		    -webkit-transform: rotate(-90deg);
@@ -318,8 +317,12 @@
  </head>
 
  <body>
- 	<button id="descargarPDF" type="button" class="btn btn-info" onclick="descargaPDF()">descargar PDF</button>
+	<div class="col">
+	<button id="descargarPDF" type="button" class="btn btn-info" onclick="descargaPDF()">descargar PDF</button>
+	</div>
+ 	
  	<div class="container mt-3" id="imprimir" style="max-width: 1276px; min-width: 950px;">
+	<div class="col">
  <!–– primer encabezado ––>
  		<div class="row">
  			<div class="box col-md-2 col-xs-2 col-sm-2 col-lg-2 col-2 d-flex justify-content-center align-items-center">
@@ -774,5 +777,6 @@
  			</div>
 		</div>
  	</div>
+	</div>
  </body>
  </html>

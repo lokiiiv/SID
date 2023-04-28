@@ -32,14 +32,14 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<style>
-		.modal-dialog {
+		#modal-instrumento .modal-dialog, #modal-evidencia .modal-dialog {
 			position: relative;
 			display: table;
 			overflow: auto;
 			width: auto;
 			min-width: 300px;
 		}
-		.modal-body { /* Restrict Modal width to 90% */
+		#modal-instrumento .modal-body, #modal-evidencia .modal-body { /* Restrict Modal width to 90% */
 			overflow-x: auto !important;
 			max-width: 90vw !important;
 		}
@@ -269,7 +269,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									carreras.Docentes.forEach(doce => {
 										htmlListaContenenido += 		'<div class="col-md-4 col-sm-6 col-12 mb-1">' +
 																			'<h6 style="font-size: 13px;" class="nombre-programa-edu"><span class="badge badge-pill badge-info font-weight-normal" style="font-size: 14px;" data-semestre="' + (carreras.Semestre != undefined ? carreras.Semestre : '') + '" data-grupo="' + (doce.grupo != undefined ? doce.grupo : '') + '">' + (doce.grupo != undefined ? doce.grupo : '') + '</span> - ' + (carreras.PE != undefined ? carreras.PE : '') + '</h6>' +
-																			'<h6 style="font-size: 12px;" class="nombre-docente" data-nombre-docente="' + (doce.nombre != undefined ? doce.nombre : '') + '">Docente: ' + (doce.nombre != undefined ? doce.nombre : '') + '</h6>' +
+																			'<h6 style="font-size: 12px;" class="nombre-docente" data-nombre-docente="' + (doce.nombre != undefined ? doce.nombre : '') + '" data-correo-docente="' + (doce.correo != undefined ? doce.correo : '') + '">Docente: ' + (doce.nombre != undefined ? doce.nombre : '') + '</h6>' +
 																		'</div>';
 									});
 								});
@@ -347,9 +347,10 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 			var grupoEjemplo = $(this).closest('.item-instrumentacion').find('.nombre-programa-edu span').first().attr('data-grupo');
 			var asignatura = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
 			var nombreDocenteEjemplo = $(this).closest('.item-instrumentacion').find('.nombre-docente').first().attr('data-nombre-docente');
+			var correoDocenteEjemplo = $(this).closest('.item-instrumentacion').find('.nombre-docente').first().attr('data-correo-docente');
 			
 			if(claveAsignatura != undefined && tema != undefined && grupoEjemplo != undefined && periodo != undefined && nombreDocenteEjemplo != undefined) {
-				$("#contenedor-instrumento").load("generarinstrumentacion.php?grupo=" + encodeURI(grupoEjemplo) + "&periodo=" + encodeURI(periodo) + "&tema=" + encodeURI(tema) + "&claveAsignatura=" + encodeURI(claveAsignatura) + "&docenteEjemplo=" + encodeURI(nombreDocenteEjemplo), function(response) {
+				$("#contenedor-instrumento").load("generarinstrumentacion.php?grupo=" + encodeURI(grupoEjemplo) + "&periodo=" + encodeURI(periodo) + "&tema=" + encodeURI(tema) + "&claveAsignatura=" + encodeURI(claveAsignatura) + "&docenteEjemplo=" + encodeURI(nombreDocenteEjemplo) + "&correoDocente=" + encodeURIComponent(correoDocenteEjemplo), function(response) {
 					$("#modal-instrumento .modal-title").text("Instrumentación didáctica del Tema No. " + tema + " de la asignatura de " + asignatura + " (" + claveAsignatura + ").");
 					$("#modal-instrumento").modal('show');
 				});
@@ -574,7 +575,15 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 
 		$('#modal-instrumento').on('show.bs.modal', function() {
 			$(".modal-body").css("padding",'0px');
-			$(".modal-body").css("margin",'0px');
+		});
+		$('#modal-instrumento').on('hidden.bs.modal', function() {
+			$(".modal-body").removeAttr('style');
+		});
+		$('#modal-evidencia').on('show.bs.modal', function() {
+			$(".modal-body").css("padding",'0px');
+		});
+		$('#modal-evidencia').on('hidden.bs.modal', function() {
+			$(".modal-body").removeAttr('style');
 		});
 
 		//Acciones al presionar el boton de seleccionar todo que esta en la parte superior
@@ -689,7 +698,6 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									'accion': 'autorizarInstruPresidente',
 									'periodo': periodo,
 									'clave-asignatura': claveAsignatura,
-									'firmaPresidente': res.data,
 									'idPresi': '<?php echo $_SESSION['idUsuario']; ?>',
 									'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
 									'correo': '<?php echo $_SESSION['correo']; ?>'
@@ -821,7 +829,6 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 										'accion': 'autorizarMultipleInstruPresidente',
 										'periodo': periodo,
 										'listaInstrumentos': instrumentos,
-										'firmaPresidente': res.data,
 										'idPresi': '<?php echo $_SESSION['idUsuario']; ?>',
 										'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
 										'correo': '<?php echo $_SESSION['correo']; ?>'
