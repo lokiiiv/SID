@@ -151,7 +151,7 @@
 				</div>
 				<div class="col-10">
 					<div class="row h-100">
-						<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PE)) echo $instrumentacion->TodasMaterias[0]->PE; ?></i></div>
+						<div class="col-5 color-claro d-flex justify-content-center align-items-center text-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PE)) echo $instrumentacion->TodasMaterias[0]->PE; ?></i></div>
 						<div class="col-2 color d-flex justify-content-center align-items-center"><b class="text-center">Plan de estudios:</b></div>
 						<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PlanEstudios)) echo $instrumentacion->TodasMaterias[0]->PlanEstudios; ?></i></div>
 					</div>
