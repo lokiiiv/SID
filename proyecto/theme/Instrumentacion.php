@@ -151,9 +151,9 @@
 				</div>
 				<div class="col-10">
 					<div class="row h-100">
-						<div class="col-5 color-claro d-flex justify-content-center align-items-center text-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PE)) echo $instrumentacion->TodasMaterias[0]->PE; ?></i></div>
+						<div class="col-5 color-claro d-flex justify-content-center align-items-center text-center"><i><?php if (isset($instrumentacion->TodasMaterias->PE)) echo $instrumentacion->TodasMaterias->PE; ?></i></div>
 						<div class="col-2 color d-flex justify-content-center align-items-center"><b class="text-center">Plan de estudios:</b></div>
-						<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->PlanEstudios)) echo $instrumentacion->TodasMaterias[0]->PlanEstudios; ?></i></div>
+						<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias->PlanEstudios)) echo $instrumentacion->TodasMaterias->PlanEstudios; ?></i></div>
 					</div>
 				</div>
 			</div>
@@ -191,7 +191,7 @@
 							<div class="row h-100">
 								<div class="col p-0">
 									<div class="row ml-0 mr-0 h-100">
-										<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias[0]->Semestre)) echo $instrumentacion->TodasMaterias[0]->Semestre; ?></i></div>
+										<div class="col-5 color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($instrumentacion->TodasMaterias->Semestre)) echo $instrumentacion->TodasMaterias->Semestre; ?></i></div>
 										<div class="col-4 color d-flex justify-content-center align-items-center"><b class="text-center">Clave de grupo:</b></div>
 										<div class="col color-claro d-flex justify-content-center align-items-center"><i><?php if (isset($grupo1)) echo $grupo1; ?></i></div>
 									</div>
@@ -799,7 +799,7 @@
 								if(isset($instrumentacion->Validacion->Estatus) && isset($instrumentacion->Validacion->InfoPresidente)) {
 									if($instrumentacion->Validacion->Estatus) {
 										$firma = $connSQL->singlePreparedQuery("SELECT firma FROM docentes WHERE cat_CorreoE = :correoPresidente", ['correoPresidente' => $instrumentacion->Validacion->InfoPresidente->CorreoPresidente]);
-										$imgFirma = $firma['firma'];
+										$imgFirma = $firma ? $firma['firma'] : '';
 									}
 								}
 								?>
@@ -810,9 +810,19 @@
 						<div class="col-4">
 							<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Autorizó</b></div>
 							<div class="row color-claro d-flex justify-content-center align-items-center" style="border: 0; min-height: 110px;">
-								<i>Firma</i>
+							<?php
+							//Verificar que el jefe de division ya haya validado la instrumentacion
+							$imgFirma = "";
+							if(isset($instrumentacion->TodasMaterias->Validacion->Estatus) && isset($instrumentacion->TodasMaterias->Validacion->InfoJefeDivision)) {
+								if($instrumentacion->TodasMaterias->Validacion->Estatus) {
+									$firma = $connSQL->singlePreparedQuery("SELECT firma FROM docentes WHERE cat_CorreoE = :correoJefeDivision", ['correoJefeDivision' => $instrumentacion->TodasMaterias->Validacion->InfoJefeDivision->CorreoJefeDivision]);
+									$imgFirma = $firma ? $firma['firma'] : '';
+								}
+							}
+							?>
+							<?php echo $imgFirma != '' ? '<img src="firmasimagenes/' . $imgFirma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Fima</i>'; ?>
 							</div>
-							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i>Nombre</i></div>
+							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo isset($instrumentacion->TodasMaterias->Validacion->InfoJefeDivision->NombreJefeDivision) ? $instrumentacion->TodasMaterias->Validacion->InfoJefeDivision->NombreJefeDivision : '<i>Nombre</i>' ?></i></div>
 						</div>
 					</div>
 				</div>

@@ -146,10 +146,16 @@ require_once("../../valida.php");
           if(soloLectura) {
             var validoPresidente = (typeof x['Validacion']['Estatus'] != "undefined" ? x['Validacion']['Estatus'] : false);
             if(validoPresidente) {
-              $("#mensajeEstatus").addClass("text-warning").text("No puede editar la instrumentación, sin embargo, ya ha sigo validada por parte del presidente de grupo académico de la asignatura.");
+              $("#mensajeEstatus").addClass("text-warning").text("No puede editar la instrumentación, sin embargo, ya ha sido validada por parte del presidente de grupo académico de la asignatura, en espera de autorización por el jefe de división.");
+
+              var validoJefeDivision = (typeof x['TodasMaterias']['Validacion'] != 'undefined' ? x['TodasMaterias']['Validacion']['Estatus'] : false);
+              if(validoJefeDivision) {
+                $("#mensajeEstatus").removeClass("text-warning").addClass("text-success").text("No puede editar la instrumentaciòn, sin embargo, ya ha sido validada por parte del presidente de grupo académico y el jefe de divisiòn.");
+              }
             } else {
               $("#mensajeEstatus").addClass("text-danger").text("No puede editar la instrumentación, se encuentra en proceso de validación por parte del presidente de grupo académico de la asignatura.");
             }
+            
           } else {
             $("#mensajeEstatus").addClass("text-success").text("Ahora puede editar o administrar la instrumentación.");
           }
@@ -170,17 +176,17 @@ require_once("../../valida.php");
           document.getElementById("campoFechaEmision").innerHTML = (typeof x['FechaEmision'] != "undefined") ? x['FechaEmision'] : "";
           document.getElementById("campoCodigoDocumento").innerHTML = (typeof x['CodigoDocumento'] != "undefined") ? x['CodigoDocumento'] : "";
 
-          document.getElementById("campoSemestre").innerHTML = (typeof x["TodasMaterias"][0]["Semestre"] != "undefined") ? x["TodasMaterias"][0]["Semestre"] : "";
+          document.getElementById("campoSemestre").innerHTML = (typeof x["TodasMaterias"]["Semestre"] != "undefined") ? x["TodasMaterias"]["Semestre"] : "";
           document.getElementById("campoCreditos").value = (typeof x['Creditos'] != "undefined") ? x['Creditos'] : "";
           document.getElementById("campoClaveAsignatura").innerHTML = (typeof x['ClaveAsignatura'] != "undefined") ? x['ClaveAsignatura'] : "";
 
 
-          buscarCatalogo("nombrePE", "programae", (typeof x["TodasMaterias"][0]["PE"] != "undefined") ? x["TodasMaterias"][0]["PE"] : "", function(res) {
+          buscarCatalogo("nombrePE", "programae", (typeof x["TodasMaterias"]["PE"] != "undefined") ? x["TodasMaterias"]["PE"] : "", function(res) {
             document.getElementById("PE").innerHTML = '<select class="form-control editable" Onchange = "buscarPlanEstudios(this.options[this.selectedIndex].innerHTML);" readonly="true" id="campoPE" name="evidencia"><option>&nbsp;</option>' + res + '</select>';
             habilitarDeshabilitarCampos();
           });
 
-          buscarPlanEstudios((typeof x["TodasMaterias"][0]["PE"] != "undefined") ? x["TodasMaterias"][0]["PE"] : "", (typeof x["TodasMaterias"][0]["PlanEstudios"] != "undefined") ? x["TodasMaterias"][0]['PlanEstudios'] : "")
+          buscarPlanEstudios((typeof x["TodasMaterias"]["PE"] != "undefined") ? x["TodasMaterias"]["PE"] : "", (typeof x["TodasMaterias"]["PlanEstudios"] != "undefined") ? x["TodasMaterias"]['PlanEstudios'] : "")
 
 
           //Habilitar/mostrar inputs/botones conforme al estatus de la instrumentacion

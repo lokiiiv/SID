@@ -54,8 +54,34 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 
 	<div class="content">
 		<div class="container">
-			<div class="list-group mt-4">
+			<div class="row mt-4">
+				<div class="col d-flex justify-content-end">
+					<button type="button" class="btn btn-outline-danger btn-sm mr-2 btn-sm" id="cancelarCheck" style="display: none;"><i class="fa-solid fa-xmark pr-2"></i>Cancelar</button>
+					<div class="btn-group">
+						<button type="button" class="btn btn-outline-info dropdown-toggle btn-sm mr-2" id="accionesMulti" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
+							Seleccione acción
+						</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item autorizar-instru-multi" href="#"><i class="fa-solid fa-circle-check pr-2"></i>Validar</a>
+							<!-- <a class="dropdown-item denegar-instru-multi" href="#"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</a> -->
+						</div>
+					</div>
+					<ul class="list-group" style="width:150px">
+						<li class="list-group-item">
+							<div class="form-check checkbox ml-2">
+  								<input class="form-check-input" type="checkbox" value="" id="checkAll">
+  								<label class="form-check-label" for="checkAll">Seleccionar todo</label>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="list-group mt-3" id="contenedor">
 
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -134,6 +160,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 		});
 
 		var periodo = "";
+		var banEvento = false;
 		$(document).ready(function() {
 			iniciar();
 		});
@@ -255,6 +282,15 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 																	'</div>' +
 																'</div>' +
 																'<div class="col-lg-2 d-flex justify-content-lg-center align-items-lg-center justify-content-md-start align-items-md-center justify-content-start align-items-center mt-sm-3 mt-md-2 mt-3 mt-lg-0 acciones">' + 
+																	'<div class="btn-group-vertical botones">' +
+																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center autorizar-instru" data-clave-materia="' + (inst.instrumentaciones.v.TodasMaterias.Clave) + '"' + (inst.instrumentaciones.v.TodasMaterias.Validacion != undefined && inst.instrumentaciones.v.TodasMaterias.Validacion ? 'disabled' : '') + '><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
+																		'<button type="button" class="btn btn-danger btn-sm d-flex justify-content-start align-items-center denegar-instru"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</button>' +
+																	'</div>' +
+																	'<div class="mt-sm-3 mt-3 mt-md-2 mt-lg-0 checks" style="display:none;">' +
+																	 	'<div class="form-check">' +
+  																			'<input class="form-check-input position-static check-item" type="checkbox" style="width:20px; height:20px;">' +
+																		'</div>' +
+																	'</div>' +
 																'</div>' +
 															'</div>' + 
 														'</div>';
@@ -265,7 +301,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 													'</div>';
 						}
 
-						$(".list-group").html(htmlListaContenido);
+						$("#contenedor").html(htmlListaContenido);
 					} else {
 						alertify.warning('<h3>Un un problema al obtener la información, intente nuevamente.</h3>')
 					}
@@ -501,6 +537,141 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							}
 						}
 					}
+				}
+			});
+		});
+
+		//Acciones al presionar el boton de seleccionar todo que esta en la parte superior
+		$(document).on('change', '#checkAll', function(e) {
+			$("#contenedor").find(".item-instrumentacion").each(function() {
+				//Ocultar los botones de acciones de autorizar y denegar
+				$(this).find('.acciones .botones').hide();
+				//Mostrar los checkbox
+				$(this).find('.acciones .checks').show();
+				//Mostrar el boton de cancelar la seleccion
+				$("#cancelarCheck").show();
+				//Mostrar el boton de acciones
+				$("#accionesMulti").show();
+
+				//Si el check esta seleccionado seleccionar cada check de los items, en caso contrario deseleccionar todos
+				$(this).find('.acciones .checks .check-item').prop('checked', e.target.checked);
+
+				//Ahora, configurar las acciones al presionar un checkbox en cada item correspondiente a una instrumentacion
+				if(!banEvento) {
+					$("#contenedor .check-item").each(function() {
+						$(this).change(function(e) {
+							//Obtener la cantidad de checbox que se incluyen en cada item de instrumentacion
+							var cantCheckBox = $("#contenedor .check-item").length;
+
+							//Obtener la cantidad de checkbox que estan seleccionados
+							var cantSelecCheckBox = $("#contenedor .check-item:checked").length;
+
+							//Si la cantidad total de checkbox es igual a la cantidad de check seleccionados
+							//Mostrar el check de la parte superior como seleccionado y poner en falso que esta indeterminado
+							if(cantCheckBox == cantSelecCheckBox) {
+								//Todos estan seleccionados
+								$("#checkAll").prop("indeterminate", false);
+								$("#checkAll").prop("checked", true);
+							}
+							if(cantCheckBox > cantSelecCheckBox && cantSelecCheckBox >= 1) {
+								//Algunos seleccionados
+								$("#checkAll").prop("indeterminate", true);
+							}
+							if(cantSelecCheckBox == 0) {
+								//Ninguno seleccionado
+								$("#checkAll").prop("indeterminate", false);
+								$("#checkAll").prop("checked", false);
+							}
+									
+						})
+					});
+					banEvento = true;
+				}
+			});
+		});
+		$("#cancelarCheck").click(function() {
+			resetSeleccionar();
+		});
+
+		function resetSeleccionar() {
+			$("#checkAll").prop("checked", false);
+			$("#checkAll").prop("indeterminate", false);
+			//Mostrar los botones de acciones de autorizar y denegar
+			$('.acciones .botones').show();
+			//Ocultar los checkbox
+			$('.acciones .checks').hide();
+			$("#cancelarCheck").hide();
+			$("#accionesMulti").hide();
+			banEvento = false;
+		}
+
+		//Acciones para autorizar una instrumentacion por parte del jefe de division
+		$(document).on('click', '.autorizar-instru', function(e) {
+			var claveMateria = $(this).attr('data-clave-materia');
+			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
+			var materia = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+			
+			//Verificar que tenga la firma
+			$.ajax({
+				data: {
+					'idUsuario': '<?php echo $_SESSION['idUsuario']; ?>',
+					'accion': 'verificarFirmaUsuario'
+				},
+				url: 'conexion/consultasSQL.php',
+				method: 'post',
+				success: function(response) {
+					var res = JSON.parse(response);
+					if (res.success) {
+                    //Mostrar advertencia de estar seguro de autorizar la instrumentacion
+					alertify.confirm("Aviso", "¿Está seguro de autorizar la instrumentación didáctica de la asignatura de " + materia + " (" + claveAsignatura + ")?.",
+						function(){
+							$.ajax({
+								data: {
+									'accion': 'autorizarInstruJefeDivision',
+									'periodo': periodo,
+									'clave-asignatura': claveAsignatura,
+									'idJefe': '<?php echo $_SESSION['idUsuario']; ?>',
+									'nombreJefe': '<?php echo $_SESSION['nombreCompleto']; ?>',
+									'correo': '<?php echo $_SESSION['correo']; ?>',
+									'clave-materia': claveMateria
+								},
+								url: "conexion/consultasNoSQL.php",
+								type: "post",
+								success: function(response) {
+									var resp = JSON.parse(response);
+									if(resp.success) {
+										alertify.success('<h3>' + resp.mensaje + '</h3>');
+										/* //Mandar correo a los docentes para notificar la autorización de las instrumentaciones
+										$.ajax({
+											data: {
+												'periodo': periodo,
+												'clave-asignatura': claveAsignatura,
+												'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
+												'accionCorreo': 'autorizarInstruPresidente'
+											},
+											url: "enviar-correos.php",
+											type: "post",
+											success: function(response) {
+											}
+										}); */
+
+										iniciar();
+									} else {
+										alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>')
+									}
+									
+									iniciar();
+								}
+							});
+						},
+						function(){}
+					).set('labels', {
+                      ok: 'Aceptar',
+                      cancel: 'Cancelar'
+                    });
+                  } else {
+                    alertify.warning('<h3>' + res.mensaje + '</h3>');
+                  }
 				}
 			});
 		});

@@ -265,6 +265,11 @@
                             'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.Validacion.Estatus' => 1,
                             '_id' => 0
                         ]
+                    ],
+                    [
+                        '$unwind' => [
+                            'path' => '$periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.TodasMaterias'
+                        ]
                     ]
                 ];
                 $instrumentacion = $connNoSQL->agregacion("instrumentaciones", $agregacion);
@@ -731,7 +736,7 @@
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Estatus" => true]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.InfoPresidente" => ['IdPresidente' => $idPresidente, 'NombrePresidente' => $nombrePresidente, 'CorreoPresidente' => $correoPresidente]]);
 
-                echo json_encode(['success' => true, 'mensaje' => 'Has autorizado la instrumentación, ahora puede ser vista por los respectivos jefes de división para su revisión y autorización.']);
+                echo json_encode(['success' => true, 'mensaje' => 'Has validado la instrumentación, ahora puede ser vista por los respectivos jefes de división para su revisión y autorización.']);
             break;
 
             //Autorizar multiples instrumentaciones al mismo tiempo por parte del presidente de grupo academico
@@ -895,6 +900,19 @@
 
                 $instrumentaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
                 echo json_encode(['success' => true, 'data' => $instrumentaciones]);
+            break;
+
+            case 'autorizarInstruJefeDivision':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['clave-asignatura'];
+                $claveMateria = $_POST['clave-materia'];
+                $idJefe = $_POST['idJefe'];
+                $nombreJefe = $_POST['nombreJefe'];
+                $correoJefe = $_POST['correo'];
+
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.Clave" => $claveMateria], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.$.Validacion.Estatus" => true]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.Clave" => $claveMateria], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.$.Validacion.InfoJefeDivision" => ['IdJefeDivision' => $idJefe, 'NombreJefeDivision' => $nombreJefe, 'CorreoJefeDivision' => $correoJefe]]);
+                echo json_encode(['success' => true, 'mensaje' => 'Has autorizado la instrumentación, ahora puede ser vista por todos.']);
             break;
         }
     }

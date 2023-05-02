@@ -58,6 +58,11 @@
         '_id' => 0, 
         'periodos_Inst.'.$periodo.'.'.$claveAsignatura => 1
       ]
+    ],
+    [
+      '$unwind' => [
+        'path' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.TodasMaterias'
+      ]
     ]
   ];
   $instrumentacion = $connNoSQL->agregacion("instrumentaciones", $agregacion);
