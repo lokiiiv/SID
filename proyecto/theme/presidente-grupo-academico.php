@@ -306,8 +306,8 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 																'</div>' +
 																'<div class="col-lg-2 d-flex justify-content-lg-center align-items-lg-center justify-content-md-start align-items-md-center justify-content-start align-items-center mt-sm-3 mt-md-2 mt-3 mt-lg-0 acciones">' +
 																	'<div class="btn-group-vertical botones">' +
-																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center autorizar-instru" ' + (inst.v.Validacion.Estatus ? 'disabled' : '') + '><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
-																		'<button type="button" class="btn btn-danger btn-sm d-flex justify-content-start align-items-center denegar-instru"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</button>' +
+																		'<button type="button" class="btn btn-success btn-sm d-flex justify-content-start align-items-center autorizar-instru"' + (inst.v.Validacion != undefined && inst.v.Validacion.Estatus ? 'disabled' : '') + '><i class="fa-solid fa-circle-check pr-2"></i>Validar</button>' +
+																		'<button type="button" class="btn btn-danger btn-sm d-flex justify-content-start align-items-center denegar-instru"' + ( inst.v.Validacion != undefined && inst.v.Validacion.Estatus ? 'disabled': '') + '><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</button>' +
 																	'</div>' +
 																	'<div class="mt-sm-3 mt-3 mt-md-2 mt-lg-0 checks" style="display:none;">' +
 																	 	'<div class="form-check">' +
@@ -571,7 +571,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 					}
 				}
 			})
-		})
+		});
 
 		$('#modal-instrumento').on('show.bs.modal', function() {
 			$(".modal-body").css("padding",'0px');
@@ -705,6 +705,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 								url: "conexion/consultasNoSQL.php",
 								type: "post",
 								success: function(response) {
+									iniciar();
 									var resp = JSON.parse(response);
 									if(resp.success) {
 										alertify.success('<h3>' + resp.mensaje + '</h3>');
@@ -723,9 +724,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 										});
 									} else {
 										alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>')
-									}
-									
-									iniciar();
+									}	
 								}
 							});
 						},
@@ -754,6 +753,9 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 				url: "conexion/consultasNoSQL.php",
 				type: "post",
 				success: function(response) {
+					//Volver a cargar la información inicial
+					iniciar();
+
 					var resp = JSON.parse(response);
 					if(resp.success) {
 						alertify.success('<h3>' + resp.mensaje + '</h3>');
@@ -772,8 +774,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 					$("#modalObservaciones").modal("hide");
 					$("#modalObservaciones").find("form")[0].reset();
 
-					//Volver a cargar la información inicial
-					iniciar();
+					
 				}
 			});
 		});
@@ -839,6 +840,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 										var resp = JSON.parse(response);
 										if(resp.success) {
 											alertify.success('<h3>' + resp.mensaje + '</h3>');
+											resetSeleccionar();
 
 											//Notificar a los docentes
 											$.ajax({

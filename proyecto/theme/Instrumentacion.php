@@ -820,7 +820,7 @@
 								}
 							}
 							?>
-							<?php echo $imgFirma != '' ? '<img src="firmasimagenes/' . $imgFirma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Fima</i>'; ?>
+							<?php echo $imgFirma != '' ? '<img src="firmasimagenes/' . $imgFirma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Firma</i>'; ?>
 							</div>
 							<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo isset($instrumentacion->TodasMaterias->Validacion->InfoJefeDivision->NombreJefeDivision) ? $instrumentacion->TodasMaterias->Validacion->InfoJefeDivision->NombreJefeDivision : '<i>Nombre</i>' ?></i></div>
 						</div>

@@ -714,8 +714,8 @@
 
                 //Actualizar la instrumentacion de ReadOnly a false para que se puede editar nuevamente
                 $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".SoloLectura" => false]);
-                $connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Estatus" => false]);
-                $connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.InfoPresidente" => 1]);
+                //$connNoSQL->modificar("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.Estatus" => false]);
+                //$connNoSQL->eliminarCampo("instrumentaciones",["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$claveAsignatura.".Validacion.InfoPresidente" => 1]);
 
                 //Guardar los mensajes u observaciones en Mongo para que los docentes puedan verlos en su sección correspondiente
                 date_default_timezone_set('America/Mexico_City');
@@ -913,6 +913,47 @@
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.Clave" => $claveMateria], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.$.Validacion.Estatus" => true]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.Clave" => $claveMateria], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.$.Validacion.InfoJefeDivision" => ['IdJefeDivision' => $idJefe, 'NombreJefeDivision' => $nombreJefe, 'CorreoJefeDivision' => $correoJefe]]);
                 echo json_encode(['success' => true, 'mensaje' => 'Has autorizado la instrumentación, ahora puede ser vista por todos.']);
+            break;
+
+            case 'denegarInstruJefeDivision':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['clave-asignatura'];
+                $observaciones = $_POST['observaciones'];
+                $idJefeDivision = $_POST['idJefe'];
+                $nombreJefeDivision = $_POST['nombreJefe'];
+                $correoJefeDivision = $_POST['correo'];
+                $claveMateria = $_POST['clave-materia'];
+
+                //Poner la instrumentacion como solo lectura a false, para permitir la edición.
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".SoloLectura" => false]);
+
+                //Revertir la validacion por parte del presidente de grupo academico
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Estatus" => false]);
+                $connNoSQL->eliminarCampo("instrumentaciones", ["Instrumentos" => "Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.InfoPresidente" => 1]);
+
+                //Revertir la autorización de los otros jefes de division que compartan la asignatura, en caso de que aplique
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.$[].Validacion.Estatus" => false]);
+                $connNoSQL->eliminarCampo("instrumentaciones", ["Instrumentos" => "Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.$[].Validacion.InfoJefeDivision" => 1]);
+
+                //Guardar los mensajes u observaciones en Mongo para que los docentes puedan verlos en su sección correspondiente
+                date_default_timezone_set('America/Mexico_City');
+                $connNoSQL->agregarAlArray("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.Clave" => $claveMateria], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".TodasMaterias.$.Validacion.Observaciones" => ['IdObservacion' => new MongoDB\BSON\ObjectId(),'IdJefeDivision' => $idJefeDivision, 'CorreoJefeDivision' => $correoJefeDivision, 'NombreJefeDivision' => $nombreJefeDivision, 'InfoMensaje' => ['Mensaje' => $observaciones, 'FechaHora' => date('I') ? date('Y-m-d H:i:s', strtotime('-1 hour')) : date('Y-m-d H:i:s'), 'Leido' => false]]]);
+                
+                echo json_encode(['success' => true, 'mensaje' => 'Ahora los docentes podrán modificar la instrumentación, recibirán las observaciones o retroalimentación ingresada.']);
+            break;
+
+            case 'autorizarMultipleInstruJefeDivision':
+                $periodo = $_POST['periodo'];
+                $idJefeDivision = $_POST['idJefe'];
+                $nombreJefeDivision = $_POST['nombreJefe'];
+                $correoJefeDivision = $_POST['correoJefe'];
+                $listaInstrumentos = $_POST['listaInstrumentos'];
+
+                foreach($listaInstrumentos as $instru) {
+                    $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $instru[0] . ".TodasMaterias.Clave" => $instru[2]], ["periodos_Inst." . $periodo . "." . $instru[0] . ".TodasMaterias.$.Validacion.Estatus" => true]);
+                    $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $instru[0] . ".TodasMaterias.Clave" => $instru[2]], ["periodos_Inst." . $periodo . "." . $instru[0] . ".TodasMaterias.$.Validacion.InfoJefeDivision" => ['IdJefeDivision' => $idJefeDivision, 'NombreJefeDivision' => $nombreJefeDivision, 'CorreoJefeDivision' => $correoJefeDivision]]);
+                }
+                echo json_encode(['success' => true, 'mensaje' => 'Has autorizado las instrumentaciones, ahora pueden ser vistas por todos.']);
             break;
         }
     }

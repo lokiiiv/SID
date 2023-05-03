@@ -26,7 +26,7 @@ try {
         //Credenciales de la cuenta origen
         $email = 'programador_isc@itesa.edu.mx';
         $mail->Username = $email;
-        $mail->Password = '9641GDH2023';
+        $mail->Password = '9641GDH2021a';
         $mail->setFrom($email, 'Instrumentaciones didácticas ITESA.');
 
         //Generar el asunto y contenido del correo conforme a la accion requerida
@@ -54,7 +54,7 @@ try {
                   //  throw new Exception($mail->ErrorInfo);
                 //echo json_encode(['success' => true, 'mensaje' => 'El presidente de grupo academico de la asignatura ha sido notificado.']);
                 
-                break;
+            break;
 
             case 'denegarInstruPresidente':
                 //A partir de una instrumentación, obtener los correos de los docentes que imparten la asignatura de la misma y notificar
@@ -149,7 +149,7 @@ try {
                     $mail->clearAddresses();
                 }
 
-                break;
+            break;
             
             case 'autorizarInstruPresidente':
                 //A partir de una instrumentación, obtener los correos de los docentes que imparten la asignatura de la misma y notificar
@@ -229,8 +229,8 @@ try {
                 foreach($correos as $correo) {
                     $mail->addAddress($correo->_id, $correo->nombre);
 
-                    $asunto = "Autorización de instrumentación didáctica";
-                    $contenido = "<div style='text-align: justify; text-justify: inter-word;'><h3>La instrumentación didáctica de la asignatura de <b>" . $correo->materia . " (" . $claveAsignatura . ")" . "</b>  que imparte al grupo/grupos <b>" . implode(', ', $correo->grupos) . "</b> se ha considerado apropiada, por lo que ha sido autorizada por parte del/la presidente de grupo academico <b>" . $_POST['nombrePresi'] . ".</b></h3></div>";
+                    $asunto = "Autorización de instrumentación didáctica por el presidente de grupo académico";
+                    $contenido = "<div style='text-align: justify; text-justify: inter-word;'><h3>La instrumentación didáctica de la asignatura de <b>" . $correo->materia . " (" . $claveAsignatura . ")" . "</b>  que imparte al grupo/grupos <b>" . implode(', ', $correo->grupos) . "</b> se ha considerado apropiada, por lo que ha sido autorizada por parte del/la presidente de grupo academico <b>" . $_POST['nombrePresi'] . ".</b> Ahora deberá ser autorizada por el jefe de divisiòn del programa educativo correspondiente.</h3></div>";
 
                     $mail->Subject = $asunto;
                     $mail->isHTML(true);
@@ -243,7 +243,7 @@ try {
                     $mail->clearAddresses();
                 }
 
-                break;
+            break;
 
             case 'autorizarMultiInstruPresidente':
                 //Notificar a los docentes de la autorización de la instrumentación cuando el presidente deicde autorizar varias al mismo tiempo
@@ -325,7 +325,7 @@ try {
                         $mail->addAddress($correo->_id, $correo->nombre);
 
                         $asunto = "Autorización de instrumentación didáctica";
-                        $contenido = "<div style='text-align: justify; text-justify: inter-word;'><h3>La instrumentación didáctica de la asignatura de <b>" . $correo->materia . " (" . $instru[0] . ")" . "</b>  que imparte al grupo/grupos <b>" . implode(', ', $correo->grupos) . "</b> se ha considerado apropiada, por lo que ha sido autorizada por parte del/la presidente de grupo academico <b>" . $_POST['nombrePresi'] . ".</b></h3></div>";
+                        $contenido = "<div style='text-align: justify; text-justify: inter-word;'><h3>La instrumentación didáctica de la asignatura de <b>" . $correo->materia . " (" . $instru[0] . ")" . "</b>  que imparte al grupo/grupos <b>" . implode(', ', $correo->grupos) . "</b> se ha considerado apropiada, por lo que ha sido autorizada por parte del/la presidente de grupo academico. <b>" . $_POST['nombrePresi'] . ".</b></h3></div>";
 
                         $mail->Subject = $asunto;
                         $mail->isHTML(true);
@@ -339,7 +339,127 @@ try {
                     }
                 }
 
-                break;
+            break;
+            
+
+
+            case 'autorizarInstruJefeDivision':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['clave-asignatura'];
+                $claveMateria = $_POST['clave-materia'];
+                $nombreJefeDivision = $_POST['nombreJefe'];
+
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'Materia' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
+                            'ClaveMateria' => [
+                                '$filter' => [
+                                    'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.TodasMaterias', 
+                                    'cond' => [
+                                        '$eq' => ['$$this.Clave', $claveMateria]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$ClaveMateria']
+                    ], 
+                    [
+                        '$project' => [
+                            'Materia' => 1, 
+                            'ClaveMateria' => '$ClaveMateria.Clave',
+                            'PE' => '$ClaveMateria.PE'
+                        ]
+                    ], 
+                    [
+                        '$lookup' => [
+                            'from' => 'docentes', 
+                            'let' => ['grupoinst' => '$ClaveMateria'], 
+                            'pipeline' => [
+                                [
+                                    '$project' => [
+                                        '_id' => 0, 
+                                        'nombre' => 1, 
+                                        'correo' => 1, 
+                                        'grupo' => [
+                                            '$map' => [
+                                                'input' => ['$objectToArray' => '$periodos_Inst.' . $periodo], 
+                                                'in' => [
+                                                    'k' => ['$substr' => ['$$this.k', 0, 3]], 
+                                                    'v' => '$$this.v'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$unwind' => ['path' => '$grupo']
+                                ], 
+                                [
+                                    '$match' => [
+                                        '$expr' => [
+                                            '$eq' => ['$grupo.k', '$$grupoinst']
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            'as' => 'Docentes'
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$Docentes']
+                    ], 
+                    [
+                        '$project' => [
+                            'Materia' => 1, 
+                            'ClaveMateria' => 1, 
+                            'PE' => 1,
+                            'Correo' => '$Docentes.correo', 
+                            'Nombre' => '$Docentes.nombre', 
+                            'Grupo' => '$Docentes.grupo.v.Grupo'
+                        ]
+                    ], 
+                    [
+                        '$group' => [
+                            '_id' => '$Correo', 
+                            'PE' => ['$first' => '$PE'],
+                            'materia' => ['$first' => '$Materia'], 
+                            'nombre' => ['$first' => '$Nombre'], 
+                            'grupos' => ['$push' => '$Grupo']
+                        ]
+                    ]
+                ];
+
+                $correos = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                foreach($correos as $correo) {
+                    $mail->addAddress($correo->_id, $correo->nombre);
+
+                    $asunto = "Autorización de instrumentación didáctica por el jefe de división.";
+                    $contenido = "<div style='text-align: justify; text-justify: inter-word;'><h3>La instrumentación didáctica de la asignatura de <b>" . $correo->materia . " (" . $claveAsignatura . ")" . "</b>  que imparte al grupo/grupos <b>" . implode(', ', $correo->grupos) . "</b> se ha considerado apropiada, por lo que ha sido autorizada por parte del/la jefe de división del programa educativo de <b>" . $correo->PE . ": </b>" . $nombreJefeDivision . ". Ahora esta instrumentación es válida de forma oficial.</h3></div>";
+
+                    $mail->Subject = $asunto;
+                    $mail->isHTML(true);
+                    $mail->CharSet = 'UTF-8';
+                    $mail->Body = $contenido;
+
+                    //if(!$mail->send())
+                      //  throw new Exception($mail->ErrorInfo);
+                        
+                    $mail->clearAddresses();
+                }
+            break;
+
+            case 'denegarInstruJefeDivision':
+            break;
+
+            case 'autorizarMultiInstruJefeDivision':
+            break;
         }
     }
 
