@@ -737,6 +737,13 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 						alertify.success('<h3>' + res.mensaje + '</h3>');
 
 						//Notificar
+						$.ajax({
+							data: formulario.serialize() + '&accionCorreo=denegarInstruJefeDivision&nombreJefe=' + nombreJefeDivision,
+							url: "enviar-correos.php",
+							type: "post",
+							success: function(response) {
+							}
+						});
 					} else {
 						alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>')
 					}

@@ -456,6 +456,116 @@ try {
             break;
 
             case 'denegarInstruJefeDivision':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['clave-asignatura'];
+                $claveMateria = $_POST['clave-materia'];
+                $nombreJefeDivision = $_POST['nombreJefe'];
+
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'Materia' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
+                            'ClaveMateria' => [
+                                '$filter' => [
+                                    'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.TodasMaterias', 
+                                    'cond' => [
+                                        '$eq' => ['$$this.Clave', $claveMateria]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$ClaveMateria']
+                    ], 
+                    [
+                        '$project' => [
+                            'Materia' => 1, 
+                            'ClaveMateria' => '$ClaveMateria.Clave',
+                            'PE' => '$ClaveMateria.PE'
+                        ]
+                    ], 
+                    [
+                        '$lookup' => [
+                            'from' => 'docentes', 
+                            'let' => ['grupoinst' => '$ClaveMateria'], 
+                            'pipeline' => [
+                                [
+                                    '$project' => [
+                                        '_id' => 0, 
+                                        'nombre' => 1, 
+                                        'correo' => 1, 
+                                        'grupo' => [
+                                            '$map' => [
+                                                'input' => ['$objectToArray' => '$periodos_Inst.' . $periodo], 
+                                                'in' => [
+                                                    'k' => ['$substr' => ['$$this.k', 0, 3]], 
+                                                    'v' => '$$this.v'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$unwind' => ['path' => '$grupo']
+                                ], 
+                                [
+                                    '$match' => [
+                                        '$expr' => [
+                                            '$eq' => ['$grupo.k', '$$grupoinst']
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            'as' => 'Docentes'
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$Docentes']
+                    ], 
+                    [
+                        '$project' => [
+                            'Materia' => 1, 
+                            'ClaveMateria' => 1, 
+                            'PE' => 1,
+                            'Correo' => '$Docentes.correo', 
+                            'Nombre' => '$Docentes.nombre', 
+                            'Grupo' => '$Docentes.grupo.v.Grupo'
+                        ]
+                    ], 
+                    [
+                        '$group' => [
+                            '_id' => '$Correo', 
+                            'PE' => ['$first' => '$PE'],
+                            'materia' => ['$first' => '$Materia'], 
+                            'nombre' => ['$first' => '$Nombre'], 
+                            'grupos' => ['$push' => '$Grupo']
+                        ]
+                    ]
+                ];
+
+                $correos = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                foreach($correos as $correo) {
+                    $mail->addAddress($correo->_id, $correo->nombre);
+
+                    $asunto = "Corrección de instrumentación didáctica";
+                    $contenido = "<div style='text-align: justify; text-justify: inter-word;'><h3>La instrumentación didáctica de la asignatura de <b>" . $correo->materia . " (" . $claveAsignatura . ")" . "</b>  que imparte al grupo/grupos <b>" . implode(', ', $correo->grupos) . "</b> no ha sido autorizada por parte del/la jefe de división del programa educativo de <b>" . $correo->PE . "</b>: " . $nombreJefeDivision . ". A continuación se muestra las observaciones o retroalimentación ingresada por el jefe de división:<br><br>" . $_POST['observaciones'] . "</h3></div>";
+
+                    $mail->Subject = $asunto;
+                    $mail->isHTML(true);
+                    $mail->CharSet = 'UTF-8';
+                    $mail->Body = $contenido;
+
+                    //if(!$mail->send())
+                      //  throw new Exception($mail->ErrorInfo);
+                        
+                    $mail->clearAddresses();
+                }
+
             break;
 
             case 'autorizarMultiInstruJefeDivision':
