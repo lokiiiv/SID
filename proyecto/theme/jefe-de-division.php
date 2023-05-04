@@ -796,7 +796,6 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							array.push(aux);
 						});
 						var asignaturasAValidar = array.join(', ');
-						console.log(instrumentos);
 
 						alertify.confirm("Aviso", "¿Está seguro de autorizar las instrumentaciones didácticas de las siguientes asignaturas: " + asignaturasAValidar + "? Una vez autorizadas, podrán ser vistas por quienes tengan permiso.",
 							function() {

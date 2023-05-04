@@ -1,4 +1,7 @@
 <?php
+
+use Google\Service\ShoppingContent\Resource\Pos;
+
     if(!isset($_SESSION)) { 
         session_start();
     }
@@ -954,6 +957,93 @@
                     $connNoSQL->modificar("instrumentaciones", ["Instrumentos" => "Carreras", "periodos_Inst." . $periodo . "." . $instru[0] . ".TodasMaterias.Clave" => $instru[2]], ["periodos_Inst." . $periodo . "." . $instru[0] . ".TodasMaterias.$.Validacion.InfoJefeDivision" => ['IdJefeDivision' => $idJefeDivision, 'NombreJefeDivision' => $nombreJefeDivision, 'CorreoJefeDivision' => $correoJefeDivision]]);
                 }
                 echo json_encode(['success' => true, 'mensaje' => 'Has autorizado las instrumentaciones, ahora pueden ser vistas por todos.']);
+            break;
+
+            case 'obtenerGruposAlumnos':
+                //Mostrar los grupos disponibles conforme el alumno los vaya buscando
+                //Se aplica una consulta equivalente al LIKE en SQL.
+                $periodo = $_POST['periodo'];
+                $texto = $_POST['texto'];
+
+                $pipeline = [
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'correo' => 1, 
+                            'nombre' => 1, 
+                            'grupos' => [
+                                '$objectToArray' => '$periodos_Inst.' . $periodo
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => [
+                            'path' => '$grupos'
+                        ]
+                    ], 
+                    [
+                        '$match' => [
+                            'grupos.k' => new MongoDB\BSON\Regex($texto)
+                        ]
+                    ]
+                ];
+
+                $grupos = $connNoSQL->agregacion("docentes", $pipeline);
+                $final_data = "";
+                if(count($grupos) > 0) {
+                    foreach($grupos as $grupo) {
+                        $final_data .= '<a href="#" class="list-group-item list-group-item-action border-1" data-id="' . $grupo->grupos->k . '" data-docente="' . $grupo->nombre . '" data-correo-docente="' . $grupo->correo . '" data-carrera="' . $grupo->grupos->v->Carrera . '" data-periodo="' . $grupo->grupos->v->Periodo . '" data-materia="' . $grupo->grupos->v->Materia . '" data-total-temas="' . $grupo->grupos->v->totalTemas . '" data-semestre="' . $grupo->grupos->v->Semestre . '" data-clave-asignatura="' . $grupo->grupos->v->ClaveAsignatura . '">' . $grupo->grupos->k . ' - ' . $grupo->grupos->v->Materia . '</a>';
+                    }
+                } else {
+                    $final_data .= '<p class="list-group-item border-1">No se encontraron resultados.</p>';
+                }
+                echo json_encode(['success' => true, 'data' => $final_data]);
+            break;
+
+            case 'obtenerInstrumentacionAlumno':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['clave-asignatura'];
+                $claveGrupo = substr($_POST['grupo'], 0, 3);
+
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'Materia' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
+                            'TotalTemas' => '$periodos_Inst. ' . $periodo . '.' . $claveAsignatura . '.totalTemas', 
+                            'ClaveAsignatura' => '$periodos_Inst. ' . $periodo . '.' . $claveAsignatura . '.ClaveAsignatura', 
+                            'TodasMaterias' => [
+                                '$filter' => [
+                                    'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura. '.TodasMaterias', 
+                                    'cond' => [
+                                        '$eq' => ['$$this.Clave', $claveGrupo]
+                                    ]
+                                ]
+                            ], 
+                            'Validacion' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Validacion', 
+                            'Temas' => [
+                                '$map' => [
+                                    'input' => [
+                                        '$objectToArray' => '$periodos_Inst.' .$periodo . '.' . $claveAsignatura .'.Temas'
+                                    ], 
+                                    'in' => [
+                                        'Tema' => '$$this.k', 
+                                        'Matriz' => '$$this.v.MatrizEvaluacion'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$TodasMaterias']
+                    ]
+                ];
+
+                $instrumentacion = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                print_r($instrumentacion);
             break;
         }
     }

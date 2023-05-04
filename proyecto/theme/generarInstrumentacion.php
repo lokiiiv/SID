@@ -60,6 +60,11 @@
       ]
     ],
     [
+      '$project' => [
+        'periodos_Inst.'.$periodo.'.'.$claveAsignatura.'.InstrumentosMatriz' => 0
+      ]
+    ],
+    [
       '$unwind' => [
         'path' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.TodasMaterias'
       ]
@@ -73,6 +78,7 @@
  //   for ($tema=0; $tema < $temas; $tema++) { 
       //require("Instrumentacion.php");
    // 
+   print_r($instrumentacion);
       require("Instrumentacion.php");
     
   }else{
