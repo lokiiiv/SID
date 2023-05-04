@@ -796,6 +796,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 							array.push(aux);
 						});
 						var asignaturasAValidar = array.join(', ');
+						console.log(instrumentos);
 
 						alertify.confirm("Aviso", "¿Está seguro de autorizar las instrumentaciones didácticas de las siguientes asignaturas: " + asignaturasAValidar + "? Una vez autorizadas, podrán ser vistas por quienes tengan permiso.",
 							function() {
@@ -819,6 +820,19 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 
 											resetSeleccionar();
 											//Notificar
+											$.ajax({
+												data: {
+													'periodo': periodo,
+													'listaInstrumentos': instrumentos,
+													'nombreJefe': '<?php echo $_SESSION['nombreCompleto']; ?>',
+													'accionCorreo': 'autorizarMultiInstruJefeDivision'
+												},
+												url: 'enviar-correos.php',
+												type: 'post',
+												success: function(response) {
+
+												}
+											});
 										} else {
 											alertify.warning('<h3>Hubo un problema, intente nuevamente.</h3>');
 										}
