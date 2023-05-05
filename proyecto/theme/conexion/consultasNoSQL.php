@@ -1013,21 +1013,32 @@ use Google\Service\ShoppingContent\Resource\Pos;
                         '$project' => [
                             '_id' => 0, 
                             'Materia' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
-                            'TotalTemas' => '$periodos_Inst. ' . $periodo . '.' . $claveAsignatura . '.totalTemas', 
-                            'ClaveAsignatura' => '$periodos_Inst. ' . $periodo . '.' . $claveAsignatura . '.ClaveAsignatura', 
+                            'TotalTemas' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.totalTemas', 
+                            'ClaveAsignatura' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.ClaveAsignatura', 
                             'TodasMaterias' => [
-                                '$filter' => [
-                                    'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura. '.TodasMaterias', 
-                                    'cond' => [
-                                        '$eq' => ['$$this.Clave', $claveGrupo]
+                                '$map' => [
+                                    'input' => [
+                                        '$filter' => [
+                                            'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.TodasMaterias', 
+                                            'cond' => [
+                                                '$eq' => ['$$this.Clave', $claveGrupo]
+                                            ]
+                                        ]
+                                    ], 
+                                    'in' => [
+                                        'Clave' => '$$this.Clave', 
+                                        'PE' => '$$this.PE', 
+                                        'Semestre' => '$$this.Semestre', 
+                                        'PlanEstudios' => '$$this.PlanEstudios', 
+                                        'ValidacionEstatus' => '$$this.Validacion.Estatus'
                                     ]
                                 ]
                             ], 
-                            'Validacion' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Validacion', 
+                            'ValidacionEstatus' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Validacion.Estatus', 
                             'Temas' => [
                                 '$map' => [
                                     'input' => [
-                                        '$objectToArray' => '$periodos_Inst.' .$periodo . '.' . $claveAsignatura .'.Temas'
+                                        '$objectToArray' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Temas'
                                     ], 
                                     'in' => [
                                         'Tema' => '$$this.k', 
@@ -1038,12 +1049,19 @@ use Google\Service\ShoppingContent\Resource\Pos;
                         ]
                     ], 
                     [
-                        '$unwind' => ['path' => '$TodasMaterias']
+                        '$unwind' => [
+                            'path' => '$TodasMaterias'
+                        ]
                     ]
                 ];
 
                 $instrumentacion = $connNoSQL->agregacion("instrumentaciones", $pipeline);
-                print_r($instrumentacion);
+                if((isset($instrumentacion[0]->ValidacionEstatus) && $instrumentacion[0]->ValidacionEstatus) && (isset($instrumentacion[0]->TodasMaterias->ValidacionEstatus) && $instrumentacion[0]->TodasMaterias->ValidacionEstatus)) {
+                    echo json_encode(['success' => true, 'data' => $instrumentacion[0]]);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Instrumentación didáctica no disponible.']);
+                }
+                
             break;
         }
     }

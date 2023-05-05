@@ -78,7 +78,6 @@
  //   for ($tema=0; $tema < $temas; $tema++) { 
       //require("Instrumentacion.php");
    // 
-   print_r($instrumentacion);
       require("Instrumentacion.php");
     
   }else{

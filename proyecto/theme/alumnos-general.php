@@ -31,6 +31,19 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<!-- Font awesome CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <style>
+        #modal-instrumento .modal-dialog {
+			position: relative;
+			display: table;
+			overflow: auto;
+			width: auto;
+			min-width: 300px;
+		}
+		#modal-instrumento .modal-body { /* Restrict Modal width to 90% */
+			overflow-x: auto !important;
+			max-width: 90vw !important;
+		}
+    </style>
 </head>
 
 <body>
@@ -77,6 +90,33 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <div id="contenedor-instru">
+
+                    </div>
+                </div>
+            </div>
+		</div>
+
+        <!-- Modal para mostrar la instrumentacion de cada tema seleccionado -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-instrumento">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="contenedor-instrumento"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<br>
@@ -101,11 +141,13 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<script src="js/jquery.validate.min.js"></script>
 
     <script>
+        var periodo = "";
         function seleccionarPeriodo(periodo) {
             if(periodo != "&nbsp;") {
                 //Mostrar el input para ingresar el grupo a buscar
                 $("#conte-buscar-grupo").css("display", "block");
                 $("#search-input-grupo").val("");
+                $("#show-list-grupos").html("");
             } else {
                 $("#conte-buscar-grupo").css("display", "none");
                 $("#search-input-grupo").val("");
@@ -142,7 +184,102 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
         });
         $("#show-list-grupos").on('click', 'a', function(e){
             e.preventDefault();
+
+            periodo = $("#selectPeriodo").val();
+            var claveAsignatura = $(this).attr('data-clave-asignatura');
+            var grupo = $(this).attr('data-id');
+            var nombreDocente = $(this).attr('data-docente');
+            var correoDocente = $(this).attr('data-correo-docente');
+
+            $("#search-input-grupo").val();
+            $("#selectPeriodo").prop("selectedIndex", 0);
+            $("#conte-buscar-grupo").css("display", "none");
+            $("#show-list-grupos").html("");
+            
+            $.ajax({
+                data: {
+                    'accion': 'obtenerInstrumentacionAlumno',
+                    'clave-asignatura': claveAsignatura,
+                    'grupo': grupo,
+                    'periodo': periodo
+                },
+                url: 'conexion/consultasNoSQL.php',
+                method: 'post',
+                success: function(response) {
+                    var res = JSON.parse(response);
+                    if(res.success) {
+                       var instrumentacion = res.data;
+                        var htmlContenido = '';
+                        htmlContenido += '<div class="list-group-item list-group-item-action flex-column align-items-start item-instrumentacion">' + 
+                                            '<div class="row">' + 
+                                                '<div class="col-12">' +
+                                                    '<h5 class="grupo" data-grupo="' + grupo + '">' + grupo + '</h5>' +
+                                                    '<h5 class="nombre-asignatura">' + (instrumentacion.Materia != undefined ? instrumentacion.Materia : '') + '</h5>' + 
+                                                    '<h6 class="nombre-docente" data-docente="' + nombreDocente + '" data-correo-docente="' + correoDocente + '">' + nombreDocente + '</h6>' +
+                                                    '<h6 class="clave-asignatura" data-clave="' + (instrumentacion.ClaveAsignatura != undefined ? instrumentacion.ClaveAsignatura : '') + '">Clave de asignatura: ' + (instrumentacion.ClaveAsignatura != undefined ? instrumentacion.ClaveAsignatura : '') + '</h6>' +
+                                                    '<h6>Número de temas: ' + (instrumentacion.TotalTemas != undefined ? instrumentacion.TotalTemas: '') + '</h6>' +
+                                                    '<h6 class="programa-educativo" data-clave="' + (instrumentacion.TodasMaterias.PE != undefined ? instrumentacion.TodasMaterias.PE : '') + '">Programa educativo: ' + (instrumentacion.TodasMaterias.PE != undefined ? instrumentacion.TodasMaterias.PE : '') + '</h6>' +
+                                                    '<div class="row mt-3">' + 
+                                                        '<div class="col">';
+                        if(instrumentacion.Temas != undefined && instrumentacion.Temas != null) {
+                            instrumentacion.Temas.forEach(tema => {
+                                htmlContenido +=            '<div class="btn-group m-1">' + 
+                                                                '<button type="button" class="btn btn-info btn-sm abrirInstruTema" data-tema="' + tema.Tema + '">Tema ' + tema.Tema + '</button>' +
+                                                                '<button type="button" class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+																	'<span class="sr-only">Toggle Dropdown</span>' +
+																'</button>';
+                                if(tema.Matriz != undefined && tema.Matriz != null) {
+                                    htmlContenido +=		'<div class="dropdown-menu">';
+                                    tema.Matriz.forEach(tem => {
+                                        htmlContenido +=	    '<a class="dropdown-item abrirEvidencia" href="#" data-evidencia="' + tem[12] + '">' + tem[0] + '</a>';
+                                    });
+                                } else {
+                                    htmlContenido += 		'<div class="dropdown-menu">' +
+																	'<a class="dropdown-item" href="#">¡No se generaron evidencias!</a>';
+                                }
+                                htmlContenido +=                '</div>'+
+                                                            '</div>';
+                            });
+                        } else {
+                            htmlContenido += '<h6>¡No se llenaron temas en la instrumentación!</h6>';
+                        }
+                        htmlContenido +=                '</div>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>';
+
+                        $("#contenedor-instru").html(htmlContenido);
+                    } else {
+                        alertify.warning('<h3>' + res.mensaje + '</h3>');
+                        $("#contenedor-instru").html("");
+                    }
+                }
+            });
         });
+
+        $(document).on('click', '.abrirEvidencia', function(e) {
+            e.preventDefault();
+        });
+        $(document).on('click', '.abrirInstruTema', function(e) {
+            var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
+			var tema = $(this).attr('data-tema');
+            var grupo = $(this).closest('.item-instrumentacion').find('.grupo').text();
+            var asignatura = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+            var nombreDocente = $(this).closest('.item-instrumentacion').find('.nombre-docente').attr('data-docente');
+            var correoDocente = $(this).closest('.item-instrumentacion').find('.nombre-docente').attr('data-correo-docente');
+
+            $("#contenedor-instrumento").load("generarInstrumentacion.php?grupo=" + encodeURI(grupo) + "&periodo=" + encodeURI(periodo) + "&tema=" + encodeURI(tema) + "&docenteEjemplo=" + encodeURI(nombreDocente) + "&claveAsignatura=" + encodeURI(claveAsignatura) + "&correoDocente=" + encodeURI(correoDocente), function(response) {
+                $("#modal-instrumento .modal-title").text("Instrumentación didáctica del Tema No. " + tema + " de la asignatura de " + asignatura + " (" + claveAsignatura + ").");
+				$("#modal-instrumento").modal('show');
+            });
+        });
+        $('#modal-instrumento').on('show.bs.modal', function() {
+			$(".modal-body").css("padding",'0px');
+		});
+		$('#modal-instrumento').on('hidden.bs.modal', function() {
+			$(".modal-body").removeAttr('style');
+		});
     </script>
 </body>
 </html>
