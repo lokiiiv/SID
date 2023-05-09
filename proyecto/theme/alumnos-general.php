@@ -165,7 +165,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
         $(document).on('keyup', '#search-input-grupo', function() {
             var searchText = $(this).val().trim();
             var periodo = $("#selectPeriodo").val();
-            if(searchText != "") {
+            if(searchText != "" && searchText.length >= 4) {
                 $.ajax({
                     data: {
                         'accion': 'obtenerGruposAlumnos',
@@ -215,6 +215,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                                                 '<div class="col-12">' +
                                                     '<h5 class="grupo" data-grupo="' + grupo + '">' + grupo + '</h5>' +
                                                     '<h5 class="nombre-asignatura">' + (instrumentacion.Materia != undefined ? instrumentacion.Materia : '') + '</h5>' + 
+                                                    '<h5 class="instru-periodo">' + periodo + '</h5>' +
                                                     '<h6 class="nombre-docente" data-docente="' + nombreDocente + '" data-correo-docente="' + correoDocente + '">' + nombreDocente + '</h6>' +
                                                     '<h6 class="clave-asignatura" data-clave="' + (instrumentacion.ClaveAsignatura != undefined ? instrumentacion.ClaveAsignatura : '') + '">Clave de asignatura: ' + (instrumentacion.ClaveAsignatura != undefined ? instrumentacion.ClaveAsignatura : '') + '</h6>' +
                                                     '<h6>Número de temas: ' + (instrumentacion.TotalTemas != undefined ? instrumentacion.TotalTemas: '') + '</h6>' +

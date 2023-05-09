@@ -1,4 +1,7 @@
 <?php
+
+use GuzzleHttp\Promise\Is;
+
 require_once 'conexionSQL.php';
 require_once './../manejo-usuarios/UsuarioPrivilegiado.php';
 require_once './../../../valida.php';
@@ -1282,6 +1285,47 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
             }
             break;
-        }
+    
+        case 'searchAlumnosCorreo':
+            if(isset($_POST['search'])) {
+                $search = $_POST['search'];
+                //Mostrar solo los usuarios que tengan como rol alumno o jefe de grupo
+                $sql = "SELECT DISTINCT d.cat_ID, d.cat_Clave, CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre, d.cat_CorreoE
+                        FROM docentes d
+                        INNER JOIN docente_rol dr ON d.cat_ID = dr.cat_ID
+                        WHERE d.cat_CorreoE LIKE :correoSearch
+                        AND (dr.id_rol = 4 OR dr.id_rol = 11)";
+                $alumnos = $connSQL->preparedQuery($sql, ['correoSearch' => '%' . $search . '%']);
+
+                $final_data = "";
+                if(count($alumnos) > 0) {
+                    foreach($alumnos as $alumno) {
+                        $final_data .= '<a href="#" class="list-group-item list-group-item-action border-1" data-id="' . $alumno['cat_ID'] . '" data-clave="' . $alumno['cat_Clave'] . '" data-correo="' . $alumno['cat_CorreoE'] . '" data-nombre="' . $alumno['nombre'] . '">' . $alumno['cat_CorreoE'] . ' - ' . $alumno['nombre'] . '</a>';
+                    }
+                } else {
+                    $final_data .= '<p class="list-group-item border-1">No se encontraron resultados.</p>';
+                }
+                echo json_encode(['success' => true, 'data' => $final_data]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
+            }
+            break;
+        case 'obtenerFAC14Alumno':
+            if(isset($_POST['idAlumno']) && isset($_POST['idPeriodo'])) {
+                $idAlumno = $_POST['idAlumno'];
+                $idPeriodo = $_POST['idPeriodo'];
+
+                $sql = "SELECT al.*, CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombre, per.periodo 
+                        FROM alumnos_fac14 al 
+                        INNER JOIN docentes d ON d.cat_ID = al.id_alumno 
+                        INNER JOIN periodos per ON per.id_periodo = al.id_periodo 
+                        WHERE al.id_alumno = :idAlumno AND al.id_periodo = :idPeriodo";
+                $facs_14 = $connSQL->preparedQuery($sql, ['idAlumno' => $idAlumno, 'idPeriodo' => $idPeriodo]);
+                echo json_encode(['success' => true, 'data' => $facs_14]);
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
+            }
+            break;
+    }
         
 }

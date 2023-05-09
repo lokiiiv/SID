@@ -62,6 +62,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 								<a class="dropdown-item" href="grupos-academicos.php"><i class="fas fa-chalkboard-teacher pr-2"></i>Leer/editar grupos académicos</a>
 							<?php } ?>
 							<a class="dropdown-item" href="programas-educativos.php"><i class="fa-solid fa-book pr-2"></i>Leer/editar programas educativos</a>
+							<a class="dropdown-item" href="administracion-fac14.php"><i class="fa-solid fa-user-slash pr-2"></i>Permitir acceso a alumnos al FAC-14</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
