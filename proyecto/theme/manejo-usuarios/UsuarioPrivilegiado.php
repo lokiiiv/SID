@@ -165,6 +165,5 @@ class UsuarioPrivilegiado extends Usuario{
         //Mandar a generar el html para el menu conforme a los filtros anteriores
         return self::createMenu(0, $menus);
     }
-    
 }
 ?>
