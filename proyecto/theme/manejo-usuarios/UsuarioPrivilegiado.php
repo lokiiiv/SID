@@ -112,10 +112,11 @@ class UsuarioPrivilegiado extends Usuario{
         if(isset($menu['parents'][$parent])) {
             foreach($menu['parents'][$parent] as $itemId) {
                 if(!isset($menu['parents'][$itemId])) {
-                    if(self::hasPagina($itemId))
+                    if(self::hasPagina($itemId)) {
                         $html .= "<li class='nav-item'>
                                     <a class='nav-link' href='" . "http://" . $_SERVER['SERVER_NAME'] . "/" . $menu['items'][$itemId]['pagina'] . "'>" . $menu['items'][$itemId]['titulo'] . "</a>
                                 </li>";
+                    }
                 }
                 if(isset($menu['parents'][$itemId])) {
                     $html .= "<li class='nav-item dropdown'>";
