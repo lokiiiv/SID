@@ -161,7 +161,7 @@ a:link {
 }
 
 /* Navbar */
-#contenedor-navbar .navbar {
+/* #contenedor-navbar .navbar {
   background: #30add1 !important;
   border-top: 1px solid #29a1c4 !important;
   border-bottom: 1px solid #29a1c4 !important;
@@ -215,7 +215,7 @@ a:link {
 #contenedor-navbar .navbar-light .navbar-nav .show .dropdown-item:hover {
   background: #29a1c4 !important;
   transition: background 1s ease;
-}
+} */
 
 #formAddEdit .error {
   font-size: 14px;

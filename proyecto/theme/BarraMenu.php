@@ -4,6 +4,8 @@ require_once("manejo-usuarios/UsuarioPrivilegiado.php");
 //Obtener objeto con información de roles y permisos del usuario para mostrar/ocultar paginas dinamicamento conforme al rol
 $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 ?>
+
+
 <header class="header">
 	<!-- Header Main -->
 	<div class="header_main">
@@ -33,65 +35,22 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 		</div>
 	</div>
 	<div id="contenedor-navbar">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" href="#"></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
 
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="index.php">Inicio <span class="sr-only">(current)</span></a>
-					</li>
+		<nav class="sina-nav" data-top="0">
+			<div class="container">
+				<div class="sina-nav-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+						<i class="fa fa-bars"></i>
+					</button>
+				</div><!-- .sina-nav-header -->
 
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-							Administración
-						</a>
-						<div class="dropdown-menu">
-							<?php if ($u->hasModulo("administrar_usuarios")) { ?>
-								<a class="dropdown-item" href="usuarios.php"><i class="fas fa-users pr-2"></i>Leer/editar usuarios</a>
-							<?php } ?>
-
-							<?php if ($u->hasModulo("administrar_roles")) { ?>
-								<a class="dropdown-item" href="roles.php"><i class="fas fa-user-tag pr-2"></i>Leer/editar roles</a>
-							<?php } ?>
-
-							<?php if ($u->hasModulo("administrar_grupos_academicos")) { ?>
-								<a class="dropdown-item" href="grupos-academicos.php"><i class="fas fa-chalkboard-teacher pr-2"></i>Leer/editar grupos académicos</a>
-							<?php } ?>
-							<a class="dropdown-item" href="programas-educativos.php"><i class="fa-solid fa-book pr-2"></i>Leer/editar programas educativos</a>
-							<a class="dropdown-item" href="administracion-fac14.php"><i class="fa-solid fa-user-slash pr-2"></i>Permitir acceso a alumnos al FAC-14</a>
-						</div>
-					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-							Instrumentaciones
-						</a>
-						<div class="dropdown-menu">
-							<?php if ($u->hasModulo("administrar_instrumentaciones")) { ?>
-								<a class="dropdown-item" href="indexi.php">Administrar instrumentaciones (Docente)</a>
-							<?php } ?>
-							<!-- <a class="dropdown-item" href="#">Consultar instrumentaciones (Alumno)</a>
-							-->
-							<a class="dropdown-item" href="presidente-grupo-academico.php">Validar instrumentaciones (Presidente de grupo académico)</a>
-							<a class="dropdown-item" href="jefe-de-division.php">Autorizar instrumentaciones (Jefe de división)</a>
-							<a class="dropdown-item" href="alumnos-general.php">Consultar instrumentaciones (Alumno)</a>
-						</div>
-					</li>
-
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-							Cuenta
-						</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="cuenta.php"><i class="fas fa-user-circle pr-2"></i>Información de cuenta</a>
-							<a class="dropdown-item" href="destruyesesion.php"><i class="fas fa-sign-out-alt pr-2"></i>Cerrar sesion</a>
-						</div>
-					</li>
-				</ul>
-			</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="navbar-menu">
+					<ul class="sina-menu sina-menu-left" data-in="fadeInLeft" data-out="fadeInOut">
+						<?php echo $u->generarMenu(); ?>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- .container -->
 		</nav>
 	</div>
 </header>

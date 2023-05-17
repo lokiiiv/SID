@@ -46,6 +46,10 @@ require_once("../../valida.php");
   <!-- Favicon -->
   <link rel="shortcut icon" href="img/favicon/favicon.png">
 
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/sina-nav.min.css">
+  
+
   <style>
     #modal-instrumento .modal-dialog {
 			position: relative;
@@ -3450,6 +3454,17 @@ require_once("../../valida.php");
     <script src="js/html5shiv.js"></script>
     <!-- Custom JS -->
     <script src="js/custom.js"></script>
+
+    <script src="js/wow.min.js"></script>
+    <script src="js/sina-nav.js"></script>
+
+    <!-- For All Plug-in Activation & Others -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // WOW animation initialize
+            new WOW().init();
+        });
+    </script>
 
     <script>
       //Antes de generar la instrumentación, verificar si el usuario actual ya subio su firma correspondiente

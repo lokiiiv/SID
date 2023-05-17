@@ -83,7 +83,7 @@ class connSQL
 					} elseif (is_bool($value)) {
 						$param = PDO::PARAM_BOOL;
 					} elseif (is_null($value)) {
-						$param = PDO::PARAM_NULL;
+						$param = PDO::PARAM_STR;
 					} elseif (is_string($value)) {
 						$param = PDO::PARAM_STR;
 					} else {

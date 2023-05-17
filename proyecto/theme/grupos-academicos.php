@@ -32,6 +32,9 @@ require_once '../../valida.php';
     <link rel="stylesheet" href="datatables/datatables.min.css">
     <link rel="stylesheet" href="datatables/DataTables-1.13.1/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="datatables/Responsive-2.4.0/css/responsive.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/sina-nav.min.css">
 </head>
 
 <body>
@@ -182,6 +185,17 @@ require_once '../../valida.php';
     <script src="datatables/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
     <script src="datatables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
     <script src="datatables/Responsive-2.4.0/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="js/wow.min.js"></script>
+    <script src="js/sina-nav.js"></script>
+
+    <!-- For All Plug-in Activation & Others -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // WOW animation initialize
+            new WOW().init();
+        });
+    </script>
 
     <script>
         var tablaGrupos;

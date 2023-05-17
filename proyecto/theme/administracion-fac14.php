@@ -35,6 +35,9 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
     <link rel="stylesheet" href="datatables/datatables.min.css">
     <link rel="stylesheet" href="datatables/DataTables-1.13.1/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="datatables/Responsive-2.4.0/css/responsive.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/sina-nav.min.css">
 </head>
 
 <body>
@@ -89,6 +92,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                 <div class="row">
                     <div class="col">
                         <h5 id="nombre-alumno" style="display: none;"></h5>
+                        <h5 id="info-periodo" style="display: none;"></h5>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -112,8 +116,34 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                     </div>
                 </div>
             </div>
-            
 		</div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="modalGruposFAC14">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Elegir grupo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" name="search" id="search-input-grupo" class="form-control rounded-1 border-info" placeholder="Ingrese el grupo" autocomplete="off" required onkeyup="this.value = this.value.toUpperCase();">
+                        <div class="input-group-append">
+                            <input type="button" name="search" value="Limpiar" class="btn btn-danger cancelar-search-grupo rounded-1">
+                        </div>
+                    </div>
+                    <div class="list-group" id="show-list-grupos" style="position: absolute; z-index: 999;">
+                        <!-- Aqui se mostraran los grupos que se vayan buscando -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+                </div>
+            </div>
+        </div>
 	</div>
 	<br>
 
@@ -141,8 +171,20 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
     <script src="datatables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
     <script src="datatables/Responsive-2.4.0/js/responsive.bootstrap4.min.js"></script>
 
+    <script src="js/wow.min.js"></script>
+    <script src="js/sina-nav.js"></script>
+
+    <!-- For All Plug-in Activation & Others -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // WOW animation initialize
+            new WOW().init();
+        });
+    </script>
+
     <script>
         var idPeriodo;
+        var periodo;
         var idAlumno;
 
         var tablaFac14 = null;
@@ -157,9 +199,9 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
         });
 
         function seleccionarPeriodo(option) {
-            var periodo = option.options[option.selectedIndex].innerHTML;
+            periodo = option.options[option.selectedIndex].innerHTML;
             idPeriodo = option.options[option.selectedIndex].dataset.idperiodo;
-
+            $("#main-contenedor").css("display", "none");
             if(periodo != "&nbsp;") {
                 //Mostrar el input para ingresar el grupo a buscar
                 $("#conte-buscar-alumno").css("display", "block");
@@ -183,7 +225,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
             var searchText = $(this).val().trim();
             var periodo = $("#selectPeriodo").val();
 
-            if(searchText != "" && searchText.length >= 6) {
+            if(searchText != "" && searchText.length >= 4) {
                 $.ajax({
                     data: {
                         'accion': 'searchAlumnosCorreo',
@@ -207,6 +249,9 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
             $("#nombre-alumno").css("display", "block");
             $("#nombre-alumno").text("Alumno: " + $(this).text());
             $("#nombre-alumno").attr("data-correo", $(this).attr("data-correo"));
+            $("#nombre-alumno").attr("data-nombre", $(this).attr("data-nombre"));
+            $("#info-periodo").css("display", "block");
+            $("#info-periodo").text(periodo);
 
             $("#search-input-alumno").val();
             $("#selectPeriodo").prop("selectedIndex", 0);
@@ -214,6 +259,12 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
             $("#show-list-alumnos").html("");
             tablaFac14.clear().draw();
 
+            llenarTabla();
+           
+        });
+
+        function llenarTabla() {
+            tablaFac14.clear().draw();
             //Obtener la lista de FAC14 permitido que tiene el alumno para firmar
             $.ajax({
                 data: {
@@ -235,13 +286,112 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                                 '<h6 class="text-center">' + grupoFac.grupos_fac14 + '</h6>',
                                 '<h6 class="text-center">' + grupoFac.nombre + '</h6>',
                                 '<h6 class="text-center">' + grupoFac.periodo + '</h6>',
-                                '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button data-id="' + grupoFac.id + '" type="button" class="btn btn-danger btn-sm">Eliminar</button></div></div>'
+                                '<div class="row"><div class="col d-flex justify-content-center align-items-center"><button data-id="' + grupoFac.id + '" type="button" class="btn btn-danger btn-sm eliminarGrupoFAC">Eliminar</button></div></div>'
                             ]).draw();
                          });
                     } else {
                         alertify.warning('<h3>' + res.mensaje + '</h3>')
                     }
                 }
+            });
+        }
+
+        function agregarGrupoFAC14() {
+            //Mostrar los grupos que los docentes ya han agregado para generar su instrumentacion
+            $("#modalGruposFAC14").modal('show');
+        }
+
+        $(document).on('click', '.cancelar-search-grupo', function() {
+            $("#search-input-grupo").val("");
+            $("#show-list-grupos").html("");
+        });
+        $(document).on('keyup', '#search-input-grupo', function(e) {
+            var searchText = $(this).val().trim();
+            if(searchText != "" && searchText.length >= 3) {
+                $.ajax({
+                    data: {
+                        'accion': 'obtenerGruposFAC14',
+                        'periodo': periodo,
+                        'texto': searchText
+                    },
+                    url: 'conexion/consultasNoSQL.php',
+                    method: 'post',
+                    success: function(response) {
+                        $("#show-list-grupos").html(JSON.parse(response).data);
+                    }
+                });
+            } else {
+                $("#show-list-grupos").html("");
+            }
+        });
+        $('#show-list-grupos').on('click', 'a', function(e) {
+            e.preventDefault();
+            var grupo = $(this).attr('data-id');
+            alertify.confirm('Aviso', '¿Está seguro(a) de permitir que el/la alumno(a) ' + $('#nombre-alumno').attr('data-nombre') + ' pueda acceder al seguimiento FAC-14 del grupo ' + grupo + '?',
+                function() {
+                    $.ajax({
+                        data: {
+                            'idAlumno': idAlumno,
+                            'idPeriodo': idPeriodo,
+                            'grupo': grupo,
+                            'accion': 'agregarFAC14Alumno'
+                        },
+                        method: 'post',
+                        url: 'conexion/consultasSQL.php',
+                        success: function(response) {
+                            var resp = JSON.parse(response);
+                            if(resp.success) {
+                                llenarTabla();
+                                $("#show-list-grupos").html("");
+                                $("#search-input-grupo").val("");
+                                $("#modalGruposFAC14").modal('hide');
+                                alertify.success('<h3>' + resp.mensaje + '</h3>');
+                            } else {
+                                $("#search-input-grupo").val("");
+                                $("#show-list-grupos").html("");
+                                alertify.warning('<h3>' + resp.mensaje + '</h3>')
+                            }
+                        }
+                    });
+                },
+                function() {}
+            ).set('labels', {
+                ok: 'Aceptar',
+                cancel: 'Cancelar'
+            });
+        });
+
+        $(document).on('click', '.eliminarGrupoFAC', function() {
+            var fila = $(this).closest('tr');
+            if(fila.hasClass('child')) {
+                fila = fila.prev();
+            }
+            var grupo = fila.find('td:eq(0)').text();
+            var idFAC = $(this).attr('data-id');
+            alertify.confirm("Aviso", "¿Está seguro de eliminar el grupo " + grupo + "?",
+                function() {
+                    $.ajax({
+                        data: {
+                            'accion': 'eliminarFAC14Alumno',
+                            'idFAC': idFAC
+                        },
+                        method: 'post',
+                        url: 'conexion/consultasSQL.php',
+                        success: function(response) {
+                            var resp = JSON.parse(response);
+                            if(resp.success) {
+                                llenarTabla();
+                                alertify.success('<h3>' + resp.mensaje + '</h3>')
+                            } else {
+                                alertify.warning('<h3>' + resp.mensaje + '</h3>')
+                            }
+                        }
+                    });
+                },
+                function() {}
+            ).set('labels', {
+                ok: 'Aceptar',
+                cancel: 'Cancelar'
             });
         });
     </script>

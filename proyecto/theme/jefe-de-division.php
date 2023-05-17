@@ -28,6 +28,9 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<link rel="shortcut icon" href="img/favicon/favicon.png">
 	<link href="css/blue.css" rel="stylesheet">
 
+	<link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/sina-nav.min.css">
+
 	<!-- Font awesome CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -168,6 +171,17 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<script src="alertify/alertify.min.js"></script>
 
 	<script src="js/jquery.validate.min.js"></script>
+
+	<script src="js/wow.min.js"></script>
+    <script src="js/sina-nav.js"></script>
+
+    <!-- For All Plug-in Activation & Others -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // WOW animation initialize
+            new WOW().init();
+        });
+    </script>
 	<script>
 		$('#modal-instrumento').on('show.bs.modal', function() {
 			$(".modal-body").css("padding",'0px');

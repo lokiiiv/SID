@@ -3,10 +3,10 @@
 require_once realpath(dirname(__DIR__) . '/conexion/conexionSQL.php');
 class Rol
 {
-    protected $permisos;
-    private static $connSQL;
+    public $permisos;
+    public static $connSQL;
 
-    protected function __construct()
+    public function __construct()
     {
         //Permisos es un array que contiene los nombre de los permisos de este rol
         $this->permisos = [];
@@ -19,17 +19,18 @@ class Rol
         $rol = new Rol();
 
         //Generar la consulta para obtener los permisos que tiene un rol
-        $sql = "SELECT p.*, m.nombre_modulo
+        $sql = "SELECT p.*, pag.pagina
                 FROM rol_permisos as rp
                 JOIN permisos as p ON rp.id_permiso = p.id_permiso
-                JOIN modulos m ON p.id_modulo = m.id_modulo
+                JOIN paginas pag ON p.id_pagina = pag.id_pagina
                 WHERE rp.id_rol = :id_rol";
 
         $permisos = self::$connSQL->preparedQuery($sql, ['id_rol' => $rol_id]);
         foreach($permisos as $row) {
             //Ir añadiendo el nombre de los permisos como clave y un true como valor
             $rol->permisos[$row["nombre_permiso"]]["has"] = true;
-            $rol->permisos[$row["nombre_permiso"]]["modulo"] = $row["nombre_modulo"];
+            $rol->permisos[$row["nombre_permiso"]]["pagina"] = $row["pagina"];
+            $rol->permisos[$row["nombre_permiso"]]['id_pagina'] = $row["id_pagina"];
         }
         return $rol;
     }
@@ -40,10 +41,10 @@ class Rol
         return isset($this->permisos[$permiso]);
     }
 
-    //Verificar si existe un modulo conforme a los permisos del usuario
-    public function hasModulo($modulo) {
+    //Verificar si existe una pagina conforme a los permisos del usuario
+    public function hasPagina($pagina) {
         foreach($this->permisos as $permiso) {
-            if($permiso["modulo"] == $modulo) {
+            if($permiso["id_pagina"] == $pagina) {
                 return true;
             }
         }

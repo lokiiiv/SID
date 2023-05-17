@@ -1063,5 +1063,54 @@ use Google\Service\ShoppingContent\Resource\Pos;
                 }
                 
             break;
+
+            case 'obtenerGruposFAC14':
+                $periodo = $_POST['periodo'];
+                $texto = $_POST['texto'];
+
+                $pipeline = [
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'grupo' => [
+                                '$objectToArray' => '$periodos_Inst.' . $periodo
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$grupo']
+                    ], 
+                    [
+                        '$match' => [
+                            'grupo.k' => new MongoDB\BSON\Regex($texto)
+                        ]
+                    ],
+                    [
+                        '$replaceRoot' => ['newRoot' => '$grupo']
+                    ], 
+                    [
+                        '$project' => [
+                            'k' => 1, 
+                            'v.Carrera' => 1, 
+                            'v.Periodo' => 1, 
+                            'v.Materia' => 1, 
+                            'v.totalTemas' => 1, 
+                            'v.Semestre' => 1, 
+                            'v.ClaveAsignatura' => 1
+                        ]
+                    ]
+                ];
+
+                $grupos = $connNoSQL->agregacion("docentes", $pipeline);
+                $final_data = "";
+                if(count($grupos) > 0) {
+                    foreach($grupos as $grupo) {
+                        $final_data .= '<a href="#" class="list-group-item list-group-item-action border-1" data-id="' . $grupo->k . '" data-carrera="' . $grupo->v->Carrera . '" data-periodo="' . $grupo->v->Periodo . '" data-materia="' . $grupo->v->Materia . '" data-total-temas="' . $grupo->v->totalTemas . '" data-semestre="' . $grupo->v->Semestre . '" data-clave-asignatura="' . $grupo->v->ClaveAsignatura . '">' . $grupo->k . ' - ' . $grupo->v->Materia . '</a>';
+                    }
+                } else {
+                    $final_data .= '<p class="list-group-item border-1">No se encontraron resultados.</p>';
+                }
+                echo json_encode(['success' => true, 'data' => $final_data]);
+            break;
         }
     }

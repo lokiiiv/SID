@@ -1326,6 +1326,49 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
             }
             break;
+
+        case 'agregarFAC14Alumno':
+            if(isset($_POST['idAlumno']) && isset($_POST['idPeriodo']) && isset($_POST['grupo'])) {
+                $idAlumno = $_POST['idAlumno'];
+                $idPeriodo = $_POST['idPeriodo'];
+                $grupo = $_POST['grupo'];
+                
+                //Verificar que el grupo no se repitan para el mismo alumno en el mismo periodo
+                $sql = "SELECT *
+                        FROM alumnos_fac14
+                        WHERE id_periodo = :idPeriodo AND id_alumno = :idAlumno AND grupos_fac14 = :grupo";
+                $grupos = $connSQL->preparedQuery($sql, ['idPeriodo' => $idPeriodo, 'idAlumno' => $idAlumno, 'grupo' => $grupo]);
+                if(is_array($grupos) && count($grupos) > 0) {
+                    echo json_encode(['success' => false, 'mensaje' => 'Ya se ha añadido el grupo, intente con otro grupo.']);
+                } else {
+                    //Insertar el grupo en la tabla
+                    $sql = "INSERT INTO alumnos_fac14 (id_alumno, id_periodo, grupos_fac14) VALUES (:idAlumno, :idPeriodo, :grupo)";
+                    $res = $connSQL->preparedInsert($sql, ['idAlumno' => $idAlumno, 'idPeriodo' => $idPeriodo, 'grupo' => $grupo]);
+                    if($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Grupo agregado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al guardar información, intente nuevamente.']);
+                    }
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
+            }
+            break;
+        
+        case 'eliminarFAC14Alumno':
+            if(isset($_POST['idFAC'])) {
+                $id = $_POST['idFAC'];
+                $sql = "DELETE FROM alumnos_fac14 WHERE id = :id";
+                $res = $connSQL->preparedDelete($sql, ['id' => $id]);
+                if($res) {
+                    echo json_encode(['success' => true, 'mensaje' => 'Grupo eliminado correctamente.']);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar grupo, intente nuevamente.']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos.']);
+            }
+            break;
     }
         
 }
