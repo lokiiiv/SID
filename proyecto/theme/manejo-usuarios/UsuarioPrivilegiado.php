@@ -108,6 +108,7 @@ class UsuarioPrivilegiado extends Usuario{
     }
 
     public function createMenu($parent, $menu) {
+        //Generar el html para monstrarla en la vista del navbar o menu, esto de manera recursiva, permitiendo multiniveles
         $html = "";
         if(isset($menu['parents'][$parent])) {
             foreach($menu['parents'][$parent] as $itemId) {

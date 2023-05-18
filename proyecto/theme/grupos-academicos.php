@@ -47,11 +47,13 @@ require_once '../../valida.php';
             <div class="row" style="margin-top: 25px;">
                 <h4 style="padding-left:15px;">Grupos académicos</h4>
             </div>
-            <div class="row">
-                <div class="col-md-12 mt-2">
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit" id="botonCrear">Crear <i class="fa-solid fa-plus"></i></button>
+            <?php if($u->hasPrivilegio("agregar_grupo_academico")) { ?>
+                <div class="row">
+                    <div class="col-md-12 mt-2">
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit" id="botonCrear">Crear <i class="fa-solid fa-plus"></i></button>
+                    </div>
                 </div>
-            </div>
+            <?php } ?>
             <div class="row" style="margin-top: 25px;">
                 <div class="col-md-12">
                     <table id="tablaGrupos" class="table table-hover" style="margin-top: 30px;">

@@ -809,40 +809,48 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
 
             //Metodos para la administración de grupos academicos
         case 'mostrarGruposAcademicos': {
-                //Consultar los grupos academicos del sistema
-                $sql = "SELECT ga.id_grupoacademico, 
-                           ga.nombre, 
-                           pro.*, 
-                           d.cat_ID, 
-                           CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombreDoc, 
-                           d.cat_CorreoE as correo
-                    FROM gruposacademicos ga
-                    LEFT OUTER JOIN programae pro ON pro.id_programaE = ga.id_programaE
-                    LEFT JOIN docentes d ON d.cat_ID = ga.cat_ID";
-                $grupos = $connSQL->preparedQuery($sql);
+                if($u->hasPrivilegio("consultar_grupos_academico")) {
+                    //Consultar los grupos academicos del sistema
+                    $sql = "SELECT ga.id_grupoacademico, 
+                            ga.nombre, 
+                            pro.*, 
+                            d.cat_ID, 
+                            CONCAT(d.cat_Nombre, ' ', d.cat_ApePat, ' ', d.cat_ApeMat) as nombreDoc, 
+                            d.cat_CorreoE as correo
+                        FROM gruposacademicos ga
+                        LEFT OUTER JOIN programae pro ON pro.id_programaE = ga.id_programaE
+                        LEFT JOIN docentes d ON d.cat_ID = ga.cat_ID";
+                    $grupos = $connSQL->preparedQuery($sql);
 
-                $final_data = [];
-                foreach ($grupos as $grupo) {
-                    $acciones = '<div class="row"><div class="btn-group" style="margin: 0 auto;">' .
-                        '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                        'Acciones' .
-                        '</button>' .
-                        '<div class="dropdown-menu">' .
-                        '<a class="dropdown-item editar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-pen-to-square mr-2"></i>Editar</a>' .
-                        '<a class="dropdown-item eliminar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-trash mr-2"></i>Eliminar</a>' .
-                        '</div>' .
-                        '</div></div>';
+                    $final_data = [];
+                    foreach ($grupos as $grupo) {
+                        $htmlEditar = $u->hasPrivilegio("actualizar_grupo_academico") ? '<a class="dropdown-item editar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-pen-to-square mr-2"></i>Editar</a>' :  '';
+                        $htmlBorrar = $u->hasPrivilegio("eliminar_grupo_academico") ? '<a class="dropdown-item eliminar" href="" data-id="' . $grupo['id_grupoacademico'] . '"><i class="fa-solid fa-trash mr-2"></i>Eliminar</a>' : '';
+                        $htmlDefault = !$u->hasPrivilegio("actualizar_grupo_academico") && !$u->hasPrivilegio("eliminar_grupo_academico") ? '<button class="dropdown-item disabled">Ninguna acción disponible</button>' : '';
+                        $acciones = '<div class="row"><div class="btn-group" style="margin: 0 auto;">' .
+                            '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+                            'Acciones' .
+                            '</button>' .
+                            '<div class="dropdown-menu">' .
+                            $htmlEditar . 
+                            $htmlBorrar .
+                            $htmlDefault . 
+                            '</div>' .
+                            '</div></div>';
 
-                    $final_data[] = [
-                        'ID' => $grupo['id_grupoacademico'],
-                        'nombre' => $grupo['nombre'],
-                        'nombrePrograma' => $grupo['id_programaE'] != null ? $grupo['planEstudio'] . ' / ' . $grupo['nombrePE'] : 'NO APLICA',
-                        'presidente' => $grupo['cat_ID'] != null ? $grupo['nombreDoc'] : 'SIN PRESIDENTE',
-                        'acciones' => $acciones
-                    ];
+                        $final_data[] = [
+                            'ID' => $grupo['id_grupoacademico'],
+                            'nombre' => $grupo['nombre'],
+                            'nombrePrograma' => $grupo['id_programaE'] != null ? $grupo['planEstudio'] . ' / ' . $grupo['nombrePE'] : 'NO APLICA',
+                            'presidente' => $grupo['cat_ID'] != null ? $grupo['nombreDoc'] : 'SIN PRESIDENTE',
+                            'acciones' => $acciones
+                        ];
+                    }
+
+                    echo json_encode(['success' => true, 'data' => $final_data]);
+                } else {
+                    echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para ver la información de los grupos académicos.']);
                 }
-
-                echo json_encode(['success' => true, 'data' => $final_data]);
                 break;
             }
 
@@ -896,27 +904,34 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             //Verificar que operacion es, si crear o actualizar
             if (isset($_POST['operacion']) && isset($_POST['inputNombre']) && isset($_POST['selectPrograma']) && isset($_POST['selectPresidente'])) {
                 if ($_POST["operacion"] === "Crear") {
+                    if($u->hasPrivilegio("agregar_grupo_academico")) {
+                        $nombre = $_POST['inputNombre'];
+                        $idPrograma = $_POST['selectPrograma'] != '' ? $_POST['selectPrograma'] : null;
+                        $idPresidente = $_POST['selectPresidente'];
 
-                    $nombre = $_POST['inputNombre'];
-                    $idPrograma = $_POST['selectPrograma'] != '' ? $_POST['selectPrograma'] : null;
-                    $idPresidente = $_POST['selectPresidente'];
+                        //Insertar el nuevo grupo academico
+                        $sql = "INSERT INTO gruposacademicos (nombre, id_programaE, cat_ID) VALUES(:nombre, :idPrograma, :idUser)";
+                        $params = [':nombre' => $nombre, ':idPrograma' => $idPrograma, ':idUser' => $idPresidente];
 
-                    //Insertar el nuevo grupo academico
-                    $sql = "INSERT INTO gruposacademicos (nombre, id_programaE, cat_ID) VALUES(:nombre, :idPrograma, :idUser)";
-                    $params = [':nombre' => $nombre, ':idPrograma' => $idPrograma, ':idUser' => $idPresidente];
-
-                    $connSQL->addGrupoAcaMaterias($sql, $params, json_decode($_POST['idMaterias']));
-                    echo json_encode(['success' => true, 'mensaje' => 'Grupo académico registrado correctamente.']);
+                        $connSQL->addGrupoAcaMaterias($sql, $params, json_decode($_POST['idMaterias']));
+                        echo json_encode(['success' => true, 'mensaje' => 'Grupo académico registrado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para agregar grupos académicos.']);
+                    }
                 } else if ($_POST["operacion"] === "Actualizar") {
-                    $nombre = $_POST['inputNombre'];
-                    $idPrograma = $_POST['selectPrograma'] != '' ? $_POST['selectPrograma'] : null;
-                    $idPresidente = $_POST['selectPresidente'];
+                    if($u->hasPrivilegio("actualizar_grupo_academico")) {
+                        $nombre = $_POST['inputNombre'];
+                        $idPrograma = $_POST['selectPrograma'] != '' ? $_POST['selectPrograma'] : null;
+                        $idPresidente = $_POST['selectPresidente'];
 
-                    $sql = "UPDATE gruposacademicos SET nombre = :nombre, id_programaE = :idPrograma, cat_ID = :idPresidente WHERE id_grupoacademico = :idGrupo";
-                    $params = [':nombre' => $nombre, ':idPrograma' => $idPrograma, ':idPresidente' => $idPresidente, ':idGrupo' => $_POST['idGrupo']];
+                        $sql = "UPDATE gruposacademicos SET nombre = :nombre, id_programaE = :idPrograma, cat_ID = :idPresidente WHERE id_grupoacademico = :idGrupo";
+                        $params = [':nombre' => $nombre, ':idPrograma' => $idPrograma, ':idPresidente' => $idPresidente, ':idGrupo' => $_POST['idGrupo']];
 
-                    $connSQL->updateGrupoAcaMaterias($sql, $params, $_POST['idGrupo'], json_decode($_POST['idMaterias']));
-                    echo json_encode(['success' => true, 'mensaje' => 'Grupo académico actualizado correctamente.']);
+                        $connSQL->updateGrupoAcaMaterias($sql, $params, $_POST['idGrupo'], json_decode($_POST['idMaterias']));
+                        echo json_encode(['success' => true, 'mensaje' => 'Grupo académico actualizado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para actualizar grupos académicos.']);
+                    }
                 }
             } else {
                 echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos']);
@@ -1010,16 +1025,20 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             break;
 
         case 'eliminarGrupoAcademico':
-            if (isset($_POST['idGrupo'])) {
-                $sql = "DELETE FROM gruposacademicos WHERE id_grupoacademico = :idGrupo";
-                $res = $connSQL->preparedDelete($sql, ['idGrupo' => $_POST['idGrupo']]);
-                if ($res) {
-                    echo json_encode(['success' => true, 'mensaje' => 'Grupo académico eliminado correctamente.']);
+            if($u->hasPrivilegio("eliminar_grupo_academico")) {
+                if (isset($_POST['idGrupo'])) {
+                    $sql = "DELETE FROM gruposacademicos WHERE id_grupoacademico = :idGrupo";
+                    $res = $connSQL->preparedDelete($sql, ['idGrupo' => $_POST['idGrupo']]);
+                    if ($res) {
+                        echo json_encode(['success' => true, 'mensaje' => 'Grupo académico eliminado correctamente.']);
+                    } else {
+                        echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el grupo académico.']);
+                    }
                 } else {
-                    echo json_encode(['success' => false, 'mensaje' => 'Error al eliminar el grupo académico.']);
+                    echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
                 }
             } else {
-                echo json_encode(['success' => false, 'mensaje' => 'Ingrese todos los datos requeridos.']);
+                echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para eliminar grupos académicos.']);
             }
             break;
 
