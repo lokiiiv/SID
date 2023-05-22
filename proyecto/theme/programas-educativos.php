@@ -51,11 +51,13 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                 <h4 style="padding-left:15px;">Programas educativos registrados en el sistema</h4>
             </div>
 
-            <div class="row">
-                <div class="col-md-12 mt-2">
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit" id="botonCrear">Crear <i class="fa-solid fa-plus"></i></button>
+            <?php if($u->hasPrivilegio("agregar_programa_educativo")) { ?>
+                <div class="row">
+                    <div class="col-md-12 mt-2">
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit" id="botonCrear">Crear <i class="fa-solid fa-plus"></i></button>
+                    </div>
                 </div>
-            </div>
+            <?php } ?>
 
             <div class="row" style="margin-top: 25px;">
                 <div class="col-md-12">
@@ -218,7 +220,13 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                             alert('Error: ' + jqXHR.responseText);
                         }
                     },
-                    "dataSrc": "",
+                    "dataSrc": function(json) {
+                        if (json.success) {
+                            return json.data;
+                        } else {
+                            alertify.warning('<h3>' + json.mensaje + '</h3>');
+                        }
+                    },
                 },
                 "order": [],
                 "columns": [

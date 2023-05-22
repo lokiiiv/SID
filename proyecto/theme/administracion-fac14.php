@@ -46,77 +46,79 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	?>
 
 	<div class="content">
-		<div class="container">
-            <div class="row mt-3">
-                <div class="col">
-                    <h6>En esta sección debe elegir el periodo y alumno al cual le puede asignar el grupo/grupos para permitir firmar los seguimientos FAC-14.</h6>
+        <?php if($u->hasPrivilegio("acceso_alumnos_al_fac14")) { ?>
+            <div class="container">
+                <div class="row mt-3">
+                    <div class="col">
+                        <h6>En esta sección debe elegir el periodo y alumno al cual le puede asignar el grupo/grupos para permitir firmar los seguimientos FAC-14.</h6>
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12 d-flex flex-wrap">
-                    <div id="conte-periodo">
-                        <form action="" method="POST">
-                            <div class="form-group">
-                                <label class="control-label" for="select"><h4>Periodo</h4></label>
-                                <select class="form-control" id="selectPeriodo" name="periodo" Onchange="seleccionarPeriodo(this);">
-                                    <option>&nbsp;</option>
-                                    <?php
-                                    require_once 'conexion/conexionSQL.php';
-                                    $connSQL = connSQL::singleton();
-                                    $query = "Select periodo, id_periodo from periodos";
-                                    $periodos = $connSQL->consulta($query);
-                                    foreach ($periodos as $periodo) {
-                                        echo "<option data-idperiodo='" . $periodo[1] . "'>" . $periodo[0] . "</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </form>
-                    </div> 
-                    <div class="d-flex align-items-end ml-lg-3 ml-md-3 ml-sm-3 ml-0">
-                        <div class="form-group" id="conte-buscar-alumno" style="display: none;">
-                            <div class="input-group">
-                                <input type="text" name="search" id="search-input-alumno" class="form-control rounded-1 border-info" placeholder="Ingrese correo alumno" autocomplete="off" required>
-                                <div class="input-group-append">
-                                    <input type="button" name="search" value="Cancelar" class="btn btn-danger cancelar-search rounded-1">
+                <div class="row mt-2">
+                    <div class="col-12 d-flex flex-wrap">
+                        <div id="conte-periodo">
+                            <form action="" method="POST">
+                                <div class="form-group">
+                                    <label class="control-label" for="select"><h4>Periodo</h4></label>
+                                    <select class="form-control" id="selectPeriodo" name="periodo" Onchange="seleccionarPeriodo(this);">
+                                        <option>&nbsp;</option>
+                                        <?php
+                                        require_once 'conexion/conexionSQL.php';
+                                        $connSQL = connSQL::singleton();
+                                        $query = "Select periodo, id_periodo from periodos";
+                                        $periodos = $connSQL->consulta($query);
+                                        foreach ($periodos as $periodo) {
+                                            echo "<option data-idperiodo='" . $periodo[1] . "'>" . $periodo[0] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="list-group" id="show-list-alumnos" style="position: absolute; z-index: 999;">
-                                <!-- Aqui se mostraran los grupos que se vayan buscando -->
+                            </form>
+                        </div> 
+                        <div class="d-flex align-items-end ml-lg-3 ml-md-3 ml-sm-3 ml-0">
+                            <div class="form-group" id="conte-buscar-alumno" style="display: none;">
+                                <div class="input-group">
+                                    <input type="text" name="search" id="search-input-alumno" class="form-control rounded-1 border-info" placeholder="Ingrese correo alumno" autocomplete="off" required>
+                                    <div class="input-group-append">
+                                        <input type="button" name="search" value="Cancelar" class="btn btn-danger cancelar-search rounded-1">
+                                    </div>
+                                </div>
+                                <div class="list-group" id="show-list-alumnos" style="position: absolute; z-index: 999;">
+                                    <!-- Aqui se mostraran los grupos que se vayan buscando -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div style="display: none;" id="main-contenedor">
-                <div class="row">
-                    <div class="col">
-                        <h5 id="nombre-alumno" style="display: none;"></h5>
-                        <h5 id="info-periodo" style="display: none;"></h5>
+                <div style="display: none;" id="main-contenedor">
+                    <div class="row">
+                        <div class="col">
+                            <h5 id="nombre-alumno" style="display: none;"></h5>
+                            <h5 id="info-periodo" style="display: none;"></h5>
+                        </div>
                     </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <button align="center" type="button" class="btn btn-success btn-sm" onclick="agregarGrupoFAC14()">Agregar</button>
-                    </div>
-                    <div class="col-12 mt-3">
-                        <table id="tablaFAC14" class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Grupo</th>
-                                    <th class="text-center">Alumno</th>
-                                    <th class="text-center">Periodo</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <button align="center" type="button" class="btn btn-success btn-sm" onclick="agregarGrupoFAC14()">Agregar</button>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <table id="tablaFAC14" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Grupo</th>
+                                        <th class="text-center">Alumno</th>
+                                        <th class="text-center">Periodo</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-		</div>
+        <?php } ?>
 
         <div class="modal fade" tabindex="-1" role="dialog" id="modalGruposFAC14">
             <div class="modal-dialog" role="document">
@@ -234,7 +236,11 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                     url: 'conexion/consultasSQL.php',
                     method: 'post',
                     success: function(response) {
-                        $("#show-list-alumnos").html(JSON.parse(response).data);
+                        if(JSON.parse(response).success) {
+                            $("#show-list-alumnos").html(JSON.parse(response).data);
+                        } else {
+                            alertify.warning('<h3>' + JSON.parse(response).mensaje + '</h3>');
+                        }
                     }
                 });
             } else {

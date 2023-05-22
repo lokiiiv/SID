@@ -138,6 +138,8 @@ require_once("../../valida.php");
             // WOW animation initialize
             new WOW().init();
         });
+
+        
     </script>
 
     <script>
