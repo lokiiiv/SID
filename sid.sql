@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-03-2023 a las 17:53:16
+-- Tiempo de generación: 22-05-2023 a las 16:56:37
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -25,39 +25,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ceespecialidades`
+-- Estructura de tabla para la tabla `alumnos_fac14`
 --
 
-CREATE TABLE `ceespecialidades` (
-  `esp_ID` int(2) DEFAULT NULL,
-  `esp_Clave` int(2) DEFAULT NULL,
-  `esp_ClaveInterna` varchar(13) DEFAULT NULL,
-  `esp_NomCorto` varchar(15) DEFAULT NULL,
-  `esp_Nombre` varchar(38) DEFAULT NULL,
-  `iniciales` varchar(3) DEFAULT NULL,
-  `correo` varchar(100) NOT NULL,
-  `Ncord` varchar(70) NOT NULL,
+CREATE TABLE `alumnos_fac14` (
   `id` int(11) NOT NULL,
-  `Orden` int(2) NOT NULL,
-  `ConteoPeticiones` int(11) NOT NULL,
-  `Fecha_inscripcion` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `ceespecialidades`
---
-
-INSERT INTO `ceespecialidades` (`esp_ID`, `esp_Clave`, `esp_ClaveInterna`, `esp_NomCorto`, `esp_Nombre`, `iniciales`, `correo`, `Ncord`, `id`, `Orden`, `ConteoPeticiones`, `Fecha_inscripcion`) VALUES
-(2, 7, 'ISIC-2010-224', 'ING.EN SISTEMAS', 'INGENIERÍA EN SISTEMAS COMPUTACIONALES', 'ISC', 'division_sistemas@itesa.edu.mx', 'Ing. Román Ortega Hernández', 2, 1, 50, '14 de agosto de 2020'),
-(3, 11, 'IEME-2010-210', 'INGRÍA ELECTRO', 'INGENIERÍA ELECTROMECÁNICA', 'IE', 'division_electromecanica@itesa.edu.mx', 'Mtra. María Guadalupe Vera Correa', 3, 2, 25, '18 de agosto de 2020'),
-(4, 23, 'IIAL-2010-219', 'ING. IND. ALIM.', 'INGENIERÍA EN INDUSTRIAS ALIMENTARIAS', 'IIA', 'division_alimentarias@itesa.edu.mx', 'Mtra. Griselda Gutiérrez Fragoso', 4, 5, 9, '17 de agosto de 2020'),
-(5, 18, 'ICIV-2010-208', 'ING. CIVIL', 'INGENIERÍA CIVIL', 'IC', 'division_civil@itesa.edu.mx', 'Mtro. Eric Avendaño Vazquez', 5, 3, 19, '12 de agosto de 2020'),
-(6, 1, 'LADM-2010-234', 'LIC. ADMÓN.', 'LICENCIATURA EN ADMINISTRACIÓN', 'LA', 'division_administracion@itesa.edu.mx', 'Mtra. Jazmín Juárez González', 6, 6, 21, '13 de agosto de 2020'),
-(7, 35, 'IMCT-2010-229', 'I. MECATRÓNICA', 'INGENIERÍA MECATRÓNICA', 'IM', 'division_mecatronica@itesa.edu.mx', 'Mtra. María del Refugio Barrientos Ramírez', 7, 4, 17, '17 de agosto de 2020'),
-(8, 50, 'IGEM-2009-201', 'ING. GES. EMP.', 'INGENIERÍA EN GESTIÓN EMPRESARIAL', 'IGE', 'division_gempresarial@itesa.edu.mx', 'Mtra. Yessica García Hernández', 8, 7, 14, '13 de agosto de 2020'),
-(9, 5, 'ILOG-2009-202', 'ING. LOGÍSTICA', 'INGENIERÍA EN LOGÍSTICA', 'IL', 'division_logistica@itesa.edu.mx', 'Ing. Annel Guadalupe Castillo Castillo', 9, 8, 13, '12 de agosto de 2020'),
-(10, 51, 'ISAU-2010-202', 'ISAU', 'INGENIERÍA EN SISTEMAS AUTOMOTRICES', 'ISA', 'division_automotriz@itesa.edu.mx', 'Mtro. Oscar González Hernández', 10, 9, 24, '14 de agosto de 2020'),
-(12, 53, 'LTUR-2012-237', 'LIC. EN TURISMO', 'LICENCIATURA EN TURISMO', 'LTU', 'division_turismo@itesa.edu.mx', 'Mtra. Alma Moreno Latorre', 13, 10, 10, '18 de agosto de 2020');
+  `id_alumno` int(11) DEFAULT NULL,
+  `id_periodo` int(11) DEFAULT NULL,
+  `grupos_fac14` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -2219,7 +2195,7 @@ INSERT INTO `cereticula` (`ret_ID`, `ret_Clave`, `ret_ClaveInt`, `ret_NomCorto`,
 --
 
 CREATE TABLE `docentes` (
-  `cat_ID` int(4) NOT NULL,
+  `cat_ID` int(11) NOT NULL,
   `cat_Clave` int(30) DEFAULT NULL,
   `cat_ApePat` varchar(10) DEFAULT NULL,
   `cat_ApeMat` varchar(11) DEFAULT NULL,
@@ -2248,7 +2224,7 @@ INSERT INTO `docentes` (`cat_ID`, `cat_Clave`, `cat_ApePat`, `cat_ApeMat`, `cat_
 (37, 6373, 'CUELLAR', 'HERRERA', 'LIC. OMAR', 'ocuellar@itesa.edu.mx', ''),
 (42, 7457, 'BLANCAS', 'CORTES', 'ING.  LETICIA ILIANA', 'lblancas@itesa.edu.mx', ''),
 (43, 2232, 'HERNÁNDEZ', 'MENDOZA', 'ING. HECTOR', 'hhernandezm@itesa.edu.mx', '2232.png'),
-(49, 3657, 'NEGRETE', 'IBARRA', 'ING. JOSÉ MIGUEL', 'division_electromecanica@itesa.edu.mx', ''),
+(49, 3657, 'VERA', 'CORREA', 'MTRA. MARÍA GUADALUPE', 'division_electromecanica@itesa.edu.mx', ''),
 (55, 3843, 'RODRÍGUEZ', 'MADRID', 'ING. RICARDO RODRIGO', 'rrodriguez@itesa.edu.mx', ''),
 (57, 6252, 'CRUZ', 'GUERRERO', 'D. C. C. RENE', 'rcruz@itesa.edu.mx', ''),
 (58, 2484, 'MENDOZA', 'SALDIVAR', 'DRA. ISABEL', 'imendoza@itesa.edu.mx', ''),
@@ -2269,7 +2245,7 @@ INSERT INTO `docentes` (`cat_ID`, `cat_Clave`, `cat_ApePat`, `cat_ApeMat`, `cat_
 (96, 8433, 'ESCAMILLA', 'SILVA', 'ING. ALFONSO', 'aescamilla@itesa.edu.mx', ''),
 (97, 8685, 'DE LA ROSA', 'GUTIÉRREZ', 'M. EN I. M. CARLOS', 'cdelarosa@itesa.edu.mx', ''),
 (99, 6285, 'FLORES', 'MORENO', 'M.I.M. JULIAN', 'jflores@itesa.edu.mx', ''),
-(100, 7433, 'CHAVARRÍA', 'MOCTEZUMA', 'M. A. C. YAZMIN', 'division_alimentarias@itesa.edu.mx', ''),
+(100, 7433, 'GUTIÉRREZ', 'FRAGOSO', 'MTRA. GRISELDA', 'division_alimentarias@itesa.edu.mx', ''),
 (101, 8868, 'FUENTES', 'JIMÉNEZ', 'DRA. EN C.  LUCIA', 'lfuentes@itesa.edu.mx', ''),
 (104, 5252, 'ESPINO', 'GUEVARA', 'MTRA. PATRICIA GUADALUPE', 'pespino@itesa.edu.mx', ''),
 (105, 3844, 'MARTÍNEZ', 'GONZÁLEZ', 'M.T.I. ANTONIO', 'amartinez@itesa.edu.mx', ''),
@@ -2377,9 +2353,10 @@ INSERT INTO `docentes` (`cat_ID`, `cat_Clave`, `cat_ApePat`, `cat_ApeMat`, `cat_
 (909, 20, 'MORENO', 'YAÑEZ', 'CHRISTIAN ALEJANDRO', '17030695@itesa.edu.mx', ''),
 (910, 21, 'GARCIA', 'TAPIA', 'WENDY', '17030172@itesa.edu.mx', ''),
 (911, 22, 'Sánchez', 'González', 'Antonio de Jesús', 'ajsanchez@itesa.edu.mx', ''),
-(9999, 9999, 'ESPINOZA', 'AGUIRRE', 'ING. ALAN', '18030290@itesa.edu.mx', '1362067741_18030290@itesa.edu.mx.png'),
-(10014, 6879, 'Espinoza', 'Aguirre', 'Alan', 'programador_isc@itesa.edu.mx', '84486328_programador_isc@itesa.edu.mx.png'),
-(10015, 20034567, 'xd', 'xd', 'xd', '20034567@itesa.edu.mx', '');
+(9999, 9999, 'ESPINOZA', 'AGUIRRE', 'ING. ALAN', '18030290@itesa.edu.mx', '675556702_18030290@itesa.edu.mx.png'),
+(10014, 6879, 'Espinoza', 'Aguirre', 'Alan', 'programador_isc@itesa.edu.mx', '128007782_programador_isc@itesa.edu.mx.jpg'),
+(10015, 20034567, 'xd', 'xd', 'xd', '20034567@itesa.edu.mx', ''),
+(10017, 3570, 'JUAREZ', 'GONZÁLEZ', 'MTRA. JAZMÍN', 'division_administracion@itesa.edu.mx', '');
 
 -- --------------------------------------------------------
 
@@ -2424,13 +2401,23 @@ INSERT INTO `docente_rol` (`id`, `cat_ID`, `id_rol`) VALUES
 (70, 84, 3),
 (75, 10015, 4),
 (76, 10015, 11),
-(80, 10014, 1),
-(92, 10014, 20),
 (101, 73, 3),
-(103, 10014, 2),
-(104, 9999, 1),
-(106, 9999, 2),
-(107, 10014, 3);
+(108, 10014, 3),
+(109, 10017, 5),
+(111, 9999, 4),
+(112, 555, 11),
+(113, 905, 4),
+(114, 906, 4),
+(115, 907, 4),
+(116, 908, 4),
+(117, 909, 4),
+(118, 910, 4),
+(121, 10014, 1),
+(123, 10014, 2),
+(124, 10014, 5),
+(125, 10014, 4),
+(126, 13, 2),
+(127, 9999, 1);
 
 --
 -- Disparadores `docente_rol`
@@ -2537,9 +2524,9 @@ CREATE TABLE `gruposacademicos` (
 --
 
 INSERT INTO `gruposacademicos` (`id_grupoacademico`, `nombre`, `id_programaE`, `cat_ID`) VALUES
-(6, 'Programación', 10, 162),
+(6, 'Programación', 10, 73),
 (7, 'Ingeniería de software', 10, 73),
-(16, 'Arquitectura de computadoras', 10, 10014),
+(16, 'Arquitectura de computadoras', 10, 162),
 (17, 'Redes y telecomunicaciones', 10, 84),
 (18, 'Bases de datos', 10, 156),
 (19, 'Matematicas', NULL, 10014);
@@ -2612,23 +2599,43 @@ INSERT INTO `laboratorios` (`id_laboratorio`, `laboratorio`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `modulos`
+-- Estructura de tabla para la tabla `paginas`
 --
 
-CREATE TABLE `modulos` (
-  `id_modulo` int(11) NOT NULL,
-  `nombre_modulo` varchar(100) NOT NULL
+CREATE TABLE `paginas` (
+  `id_pagina` int(11) NOT NULL,
+  `parent_menu_id` int(11) DEFAULT NULL,
+  `titulo` varchar(50) NOT NULL,
+  `pagina` varchar(70) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `orden` int(11) DEFAULT NULL,
+  `icono` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `modulos`
+-- Volcado de datos para la tabla `paginas`
 --
 
-INSERT INTO `modulos` (`id_modulo`, `nombre_modulo`) VALUES
-(1, 'administrar_usuarios'),
-(2, 'administrar_roles'),
-(3, 'administrar_instrumentaciones'),
-(4, 'administrar_grupos_academicos');
+INSERT INTO `paginas` (`id_pagina`, `parent_menu_id`, `titulo`, `pagina`, `descripcion`, `orden`, `icono`) VALUES
+(5, 0, 'Inicio', 'sid/proyecto/theme/index.php', 'Página de inicio principal', 1, ''),
+(6, 0, 'Administracion', '', 'Administración de diversas funcionalidades del sitio.', 2, ''),
+(8, 0, 'Presidente de grupo académico', '', 'Secciones y funcionalidades para el presidente de grupo académico', 4, ''),
+(9, 0, 'Jefe de división', '', 'Secciones y funcionalidades para el jefe de división de los programas educativos.', 5, ''),
+(10, 0, 'Alumnos', '', 'Secciones y funcionalidades para los alumnos.', 6, ''),
+(11, 0, 'Cuenta', '', 'Informacióin de la cuenta del usuario registrado.', 7, ''),
+(12, 6, 'Leer/editar usuarios', 'sid/proyecto/theme/usuarios.php', 'Sección para administrar los usuarios registrados en el sistema.', NULL, ''),
+(13, 6, 'Leer/editar roles', 'sid/proyecto/theme/roles.php', 'Seccion para administrar los roles registrados en el sistema.', NULL, ''),
+(14, 6, 'Leer/editar grupos académicos', 'sid/proyecto/theme/grupos-academicos.php', 'Sección para administrar grupos académicos del ITESA', NULL, ''),
+(15, 6, 'Leer/editar programas educativos', '', 'Sección para administrar los programas educativos del ITESA.', NULL, ''),
+(16, 6, 'Permitir acceso a alumnos al FAC-14', 'sid/proyecto/theme/administracion-fac14.php', 'Administrar que alumnos tiene permiso de ver y firmar los seguimientos FAC-14.', NULL, ''),
+(18, 11, 'Información de cuenta', 'sid/proyecto/theme/cuenta.php', 'Información general de la cuenta', NULL, ''),
+(19, 11, 'Cerrar sesión', 'sid/proyecto/theme/destruyesesion.php', 'Cerrar la sesión del sistema.', NULL, ''),
+(21, 6, 'Leer/editar programas educativos', 'sid/proyecto/theme/programas-educativos.php', 'Sección para administrar programas educativos.', NULL, ''),
+(22, 0, 'Docentes', '', 'Página o menu padre para docentes.', 3, ''),
+(23, 22, 'Crear/consultar instrumentaciones', 'sid/proyecto/theme/indexi.php', 'Crear y consultar instrumentaciones', NULL, ''),
+(24, 8, 'Validar instrumentaciones', 'sid/proyecto/theme/presidente-grupo-academico.php', 'Sección para validar instrumentaciones', NULL, ''),
+(25, 9, 'Autorizar instrumentaciones', 'sid/proyecto/theme/jefe-de-division.php', 'Sección para autorizar o denegar instrumentaciones por parte del jefe de división', NULL, ''),
+(26, 10, 'Consultar instrumentaciones', 'sid/proyecto/theme/alumnos-general.php', 'Sección para consultar instrumentaciones por parte de los alumnos', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -2664,30 +2671,38 @@ CREATE TABLE `permisos` (
   `id_permiso` int(11) NOT NULL,
   `nombre_permiso` varchar(255) NOT NULL,
   `descripcion_permiso` varchar(200) NOT NULL,
-  `id_modulo` int(11) NOT NULL
+  `id_pagina` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `permisos`
 --
 
-INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `descripcion_permiso`, `id_modulo`) VALUES
-(1, 'agregar_usuarios', 'Agregar usuarios', 1),
-(2, 'eliminar_usuarios', 'Eliminar usuarios', 1),
-(3, 'actualizar_usuarios', 'Actualizar usuarios', 1),
-(4, 'consultar_usuarios', 'Consultar usuarios', 1),
-(5, 'agregar_roles', 'Agregar roles', 2),
-(6, 'eliminar_roles', 'Eliminar roles', 2),
-(7, 'actualizar_roles', 'Actualizar roles', 2),
-(8, 'consultar_roles', 'Consultar roles', 2),
-(9, 'consultar_instrumentaciones', 'Consultar instrumentaciones', 3),
-(10, 'actualizar_instrumentaciones', 'Actualizar instrumentaciones', 3),
-(11, 'eliminar_instrumentaciones', 'Eliminar instrumentaciones', 3),
-(12, 'agregar_instrumentaciones', 'Agregar instrumentaciones', 3),
-(13, 'agregar_grupo_academico', 'Agregar grupo académico', 4),
-(14, 'actualizar_grupo_academico', 'Actualizar grupo académico', 4),
-(15, 'eliminar_grupo_academico', 'Eliminar grupo académico', 4),
-(16, 'consultar_grupos_academico', 'Consultar grupos académicos', 4);
+INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `descripcion_permiso`, `id_pagina`) VALUES
+(1, 'agregar_usuarios', 'Agregar usuarios', 12),
+(2, 'eliminar_usuarios', 'Eliminar usuarios', 12),
+(3, 'actualizar_usuarios', 'Actualizar usuarios', 12),
+(4, 'consultar_usuarios', 'Consultar usuarios', 12),
+(5, 'agregar_roles', 'Agregar roles', 13),
+(6, 'eliminar_roles', 'Eliminar roles', 13),
+(7, 'actualizar_roles', 'Actualizar roles', 13),
+(8, 'consultar_roles', 'Consultar roles', 13),
+(9, 'agregar_grupo_academico', 'Agregar grupo académico', 14),
+(10, 'actualizar_grupo_academico', 'Actualizar grupo académico', 14),
+(11, 'eliminar_grupo_academico', 'Eliminar grupo académico', 14),
+(12, 'consultar_grupos_academico', 'Consultar grupos académicos', 14),
+(19, 'inicio', 'Inicio del sistema', 5),
+(21, 'agregar_programa_educativo', 'Agregar programa educativo', 21),
+(22, 'actualizar_programa_educativo', 'Actualizar programa educativo', 21),
+(23, 'eliminar_programa_educativo', 'Eliminar programa educativo', 21),
+(24, 'consultar_programa_educativo', 'Consultar programa educativo', 21),
+(25, 'acceso_alumnos_al_fac14', 'Permitir acceso a los alumnos al FAC-14', 16),
+(26, 'crear_instrumentaciones', 'Crear/consultar instrumentación (docente)', 23),
+(27, 'ver-informacion-cuenta', 'Ver información de cuenta', 18),
+(28, 'cerrar_sesion', 'Cerrar sesión', 19),
+(29, 'validar_instrumentaciones_presidente', 'Validar/Denegar instrumentaciones (presidente de grupo académico)', 24),
+(30, 'autorizar_instrumentaciones_jefe', 'Autorizar/Denegar instrumentaciones (Jefe de división)', 25),
+(31, 'consultar_instrumentacion_alumno', 'Consultar instrumentaciones (alumnos)', 26);
 
 -- --------------------------------------------------------
 
@@ -2699,30 +2714,32 @@ CREATE TABLE `programae` (
   `id_programaE` int(30) NOT NULL,
   `nombrePE` varchar(50) NOT NULL,
   `planEstudio` varchar(50) NOT NULL,
-  `letra` varchar(1) NOT NULL
+  `letra` varchar(1) NOT NULL,
+  `iniciales` varchar(50) NOT NULL,
+  `id_jefe_division` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `programae`
 --
 
-INSERT INTO `programae` (`id_programaE`, `nombrePE`, `planEstudio`, `letra`) VALUES
-(1, 'INGENIERÍA CIVIL', 'ICIV-2005-289', 'P'),
-(2, 'INGENIERÍA CIVIL', 'ICIV-2010-208', 'P'),
-(3, 'INGENIERÍA ELECTROMECÁNICA', 'IEME-2005-291', 'B'),
-(4, 'INGENIERÍA ELECTROMECÁNICA', 'IEME-2010-210', 'B'),
-(5, 'INGENIERÍA EN GESTIÓN EMPRESARIAL', 'IGEM-2009-201', 'G'),
-(6, 'INGENIERÍA EN INDUSTRIAS ALIMENTARIAS', 'IIAL-2005-285', 'R'),
-(7, 'INGENIERÍA EN INDUSTRIAS ALIMENTARIAS', 'IIAL-2010-219', 'R'),
-(9, 'INGENIERÍA EN SISTEMAS COMPUTACIONALES', 'ISIC-2004-296', 'F'),
-(10, 'INGENIERÍA EN SISTEMAS COMPUTACIONALES', 'ISIC-2010-224', 'F'),
-(11, 'INGENIERÍA MECATRÓNICA', 'IMCT-2005-284', 'H'),
-(12, 'INGENIERÍA MECATRÓNICA', 'IMCT-2010-229', 'H'),
-(13, 'INGENIERÍA EN LOGÍSTICA', 'ILOG-2009-202', 'O'),
-(14, 'LICENCIATURA EN ADMINISTRACIÓN', 'LADM-2010-234', 'I'),
-(16, 'LICENCIATURA EN ADMINISTRACIÓN', 'LADM-2004-300', 'I'),
-(17, 'INGENIERÍA EN SISTEMAS AUTOMOTRICES', 'ISAU-2013-240', 'U'),
-(18, 'LICENCIATURA EN TURISMO', '', 'J');
+INSERT INTO `programae` (`id_programaE`, `nombrePE`, `planEstudio`, `letra`, `iniciales`, `id_jefe_division`) VALUES
+(1, 'INGENIERÍA CIVIL', 'ICIV-2005-289', 'P', 'IC', 75),
+(2, 'INGENIERÍA CIVIL', 'ICIV-2010-208', 'P', 'IC', 75),
+(3, 'INGENIERÍA ELECTROMECÁNICA', 'IEME-2005-291', 'B', 'IE', 49),
+(4, 'INGENIERÍA ELECTROMECÁNICA', 'IEME-2010-210', 'B', 'IE', 49),
+(5, 'INGENIERÍA EN GESTIÓN EMPRESARIAL', 'IGEM-2009-201', 'G', 'IGE', NULL),
+(6, 'INGENIERÍA EN INDUSTRIAS ALIMENTARIAS', 'IIAL-2005-285', 'R', 'IIA', 100),
+(7, 'INGENIERÍA EN INDUSTRIAS ALIMENTARIAS', 'IIAL-2010-219', 'R', 'IIA', 100),
+(9, 'INGENIERÍA EN SISTEMAS COMPUTACIONALES', 'ISIC-2004-296', 'F', 'ISC', 10014),
+(10, 'INGENIERÍA EN SISTEMAS COMPUTACIONALES', 'ISIC-2010-224', 'F', 'ISC', 10014),
+(11, 'INGENIERÍA MECATRÓNICA', 'IMCT-2005-284', 'H', 'IM', NULL),
+(12, 'INGENIERÍA MECATRÓNICA', 'IMCT-2010-229', 'H', 'IM', NULL),
+(13, 'INGENIERÍA EN LOGÍSTICA', 'ILOG-2009-202', 'O', 'IL', NULL),
+(14, 'LICENCIATURA EN ADMINISTRACIÓN', 'LADM-2010-234', 'I', 'LA', NULL),
+(16, 'LICENCIATURA EN ADMINISTRACIÓN', 'LADM-2004-300', 'I', 'LA', NULL),
+(17, 'INGENIERÍA EN SISTEMAS AUTOMOTRICES', 'ISAU-2013-240', 'U', 'ISA', NULL),
+(18, 'LICENCIATURA EN TURISMO', 'LTUR-2012-237', 'J', 'LTU', NULL);
 
 -- --------------------------------------------------------
 
@@ -2771,8 +2788,7 @@ INSERT INTO `rol` (`id_rol`, `nombre_rol`, `descripcion_rol`) VALUES
 (3, 'presidente_de_grupo_academico', 'Presidente de grupo académico'),
 (4, 'alumno', 'Alumno'),
 (5, 'jefe_de_division', 'Jefe de división'),
-(11, 'jefe_de_grupo', 'Jefe de grupo'),
-(20, 'administrador', 'Administrador');
+(11, 'jefe_de_grupo', 'Jefe de grupo');
 
 -- --------------------------------------------------------
 
@@ -2791,53 +2807,64 @@ CREATE TABLE `rol_permisos` (
 --
 
 INSERT INTO `rol_permisos` (`id`, `id_rol`, `id_permiso`) VALUES
-(47, 4, 9),
-(48, 5, 9),
-(49, 11, 9),
-(53, 5, 4),
-(54, 20, 1),
-(56, 20, 3),
-(57, 20, 4),
-(58, 20, 5),
-(59, 20, 6),
-(60, 20, 7),
-(61, 20, 8),
-(62, 20, 2),
-(63, 3, 16),
-(98, 2, 9),
-(99, 2, 10),
-(100, 2, 11),
-(101, 2, 12),
-(102, 1, 13),
-(103, 1, 14),
-(104, 1, 15),
-(105, 1, 16),
-(124, 1, 1),
-(129, 20, 9),
-(130, 20, 10),
-(131, 20, 11),
-(132, 20, 12),
-(133, 20, 13),
-(134, 20, 14),
-(135, 20, 15),
-(136, 20, 16),
-(137, 1, 4),
-(148, 1, 2),
-(152, 1, 3),
-(154, 1, 8),
-(155, 1, 5),
-(157, 1, 6),
-(158, 1, 7);
+(172, 1, 8),
+(175, 1, 19),
+(183, 1, 21),
+(184, 1, 22),
+(185, 1, 23),
+(186, 1, 24),
+(192, 2, 27),
+(193, 3, 27),
+(194, 4, 27),
+(195, 5, 27),
+(196, 11, 27),
+(197, 1, 28),
+(198, 2, 28),
+(199, 3, 28),
+(200, 4, 28),
+(201, 5, 28),
+(202, 11, 28),
+(205, 4, 31),
+(206, 5, 30),
+(208, 1, 27),
+(210, 1, 4),
+(213, 2, 26),
+(215, 4, 19),
+(216, 2, 19),
+(217, 3, 19),
+(218, 5, 19),
+(219, 11, 19),
+(220, 3, 29),
+(224, 1, 25),
+(226, 1, 1),
+(227, 1, 2),
+(228, 1, 3),
+(230, 1, 7),
+(231, 1, 6),
+(232, 1, 5),
+(242, 1, 11),
+(243, 1, 10),
+(244, 1, 9),
+(245, 1, 12),
+(246, 2, 12),
+(247, 3, 12),
+(248, 5, 25),
+(249, 5, 12),
+(250, 5, 24),
+(251, 5, 4),
+(252, 11, 31);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `ceespecialidades`
+-- Indices de la tabla `alumnos_fac14`
 --
-ALTER TABLE `ceespecialidades`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `alumnos_fac14`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_alumno` (`id_alumno`),
+  ADD KEY `id_periodo` (`id_periodo`);
 
 --
 -- Indices de la tabla `cereticula`
@@ -2893,10 +2920,11 @@ ALTER TABLE `laboratorios`
   ADD PRIMARY KEY (`id_laboratorio`);
 
 --
--- Indices de la tabla `modulos`
+-- Indices de la tabla `paginas`
 --
-ALTER TABLE `modulos`
-  ADD PRIMARY KEY (`id_modulo`);
+ALTER TABLE `paginas`
+  ADD PRIMARY KEY (`id_pagina`),
+  ADD KEY `modulos_ibfk_1` (`parent_menu_id`);
 
 --
 -- Indices de la tabla `periodos`
@@ -2909,13 +2937,14 @@ ALTER TABLE `periodos`
 --
 ALTER TABLE `permisos`
   ADD PRIMARY KEY (`id_permiso`),
-  ADD KEY `permisos_ibfk_1` (`id_modulo`);
+  ADD KEY `permisos_ibfk_1` (`id_pagina`);
 
 --
 -- Indices de la tabla `programae`
 --
 ALTER TABLE `programae`
-  ADD PRIMARY KEY (`id_programaE`);
+  ADD PRIMARY KEY (`id_programaE`),
+  ADD KEY `id_jefe_division` (`id_jefe_division`);
 
 --
 -- Indices de la tabla `revisiones`
@@ -2942,10 +2971,10 @@ ALTER TABLE `rol_permisos`
 --
 
 --
--- AUTO_INCREMENT de la tabla `ceespecialidades`
+-- AUTO_INCREMENT de la tabla `alumnos_fac14`
 --
-ALTER TABLE `ceespecialidades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+ALTER TABLE `alumnos_fac14`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `cereticula`
@@ -2957,13 +2986,13 @@ ALTER TABLE `cereticula`
 -- AUTO_INCREMENT de la tabla `docentes`
 --
 ALTER TABLE `docentes`
-  MODIFY `cat_ID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10017;
+  MODIFY `cat_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10018;
 
 --
 -- AUTO_INCREMENT de la tabla `docente_rol`
 --
 ALTER TABLE `docente_rol`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT de la tabla `evidencias`
@@ -2996,10 +3025,10 @@ ALTER TABLE `laboratorios`
   MODIFY `id_laboratorio` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT de la tabla `modulos`
+-- AUTO_INCREMENT de la tabla `paginas`
 --
-ALTER TABLE `modulos`
-  MODIFY `id_modulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `paginas`
+  MODIFY `id_pagina` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `periodos`
@@ -3011,13 +3040,13 @@ ALTER TABLE `periodos`
 -- AUTO_INCREMENT de la tabla `permisos`
 --
 ALTER TABLE `permisos`
-  MODIFY `id_permiso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_permiso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `programae`
 --
 ALTER TABLE `programae`
-  MODIFY `id_programaE` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_programaE` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `revisiones`
@@ -3035,11 +3064,18 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `rol_permisos`
 --
 ALTER TABLE `rol_permisos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=253;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `alumnos_fac14`
+--
+ALTER TABLE `alumnos_fac14`
+  ADD CONSTRAINT `alumnos_fac14_ibfk_1` FOREIGN KEY (`id_alumno`) REFERENCES `docentes` (`cat_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `alumnos_fac14_ibfk_2` FOREIGN KEY (`id_periodo`) REFERENCES `periodos` (`id_periodo`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `cereticula`
@@ -3065,7 +3101,13 @@ ALTER TABLE `gruposacademicos`
 -- Filtros para la tabla `permisos`
 --
 ALTER TABLE `permisos`
-  ADD CONSTRAINT `permisos_ibfk_1` FOREIGN KEY (`id_modulo`) REFERENCES `modulos` (`id_modulo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `permisos_ibfk_1` FOREIGN KEY (`id_pagina`) REFERENCES `paginas` (`id_pagina`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `programae`
+--
+ALTER TABLE `programae`
+  ADD CONSTRAINT `programae_ibfk_1` FOREIGN KEY (`id_jefe_division`) REFERENCES `docentes` (`cat_ID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `rol_permisos`
