@@ -55,37 +55,39 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	?>
 
 	<div class="content">
-		<div class="container">
-			<div class="row mb-4 mt-4">
-				<div class="col-12">
-					<div class="row pb-3"> 
-						<div class="col d-flex justify-content-end">
-							<button type="button" class="btn btn-outline-danger btn-sm mr-2 btn-sm" id="cancelarCheck" style="display: none;"><i class="fa-solid fa-xmark pr-2"></i>Cancelar</button>
-							<div class="btn-group">
-								<button type="button" class="btn btn-outline-info dropdown-toggle btn-sm mr-2" id="accionesMulti" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
-									Seleccione acción
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item autorizar-instru-multi" href="#"><i class="fa-solid fa-circle-check pr-2"></i>Validar</a>
-									<!-- <a class="dropdown-item denegar-instru-multi" href="#"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</a> -->
-								</div>
-							</div>
-							<ul class="list-group" style="width:150px">
-								<li class="list-group-item">
-									<div class="form-check checkbox ml-2">
-  										<input class="form-check-input" type="checkbox" value="" id="checkAll">
-  										<label class="form-check-label" for="checkAll">Seleccionar todo</label>
+		<?php if($u->hasPrivilegio("validar_instrumentaciones_presidente")) { ?>
+			<div class="container">
+				<div class="row mb-4 mt-4">
+					<div class="col-12">
+						<div class="row pb-3"> 
+							<div class="col d-flex justify-content-end">
+								<button type="button" class="btn btn-outline-danger btn-sm mr-2 btn-sm" id="cancelarCheck" style="display: none;"><i class="fa-solid fa-xmark pr-2"></i>Cancelar</button>
+								<div class="btn-group">
+									<button type="button" class="btn btn-outline-info dropdown-toggle btn-sm mr-2" id="accionesMulti" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
+										Seleccione acción
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item autorizar-instru-multi" href="#"><i class="fa-solid fa-circle-check pr-2"></i>Validar</a>
+										<!-- <a class="dropdown-item denegar-instru-multi" href="#"><i class="fa-solid fa-circle-xmark pr-2"></i>Denegar</a> -->
 									</div>
-								</li>
-							</ul>
+								</div>
+								<ul class="list-group" style="width:150px">
+									<li class="list-group-item">
+										<div class="form-check checkbox ml-2">
+											<input class="form-check-input" type="checkbox" value="" id="checkAll">
+											<label class="form-check-label" for="checkAll">Seleccionar todo</label>
+										</div>
+									</li>
+								</ul>
+							</div>
 						</div>
-					</div>
-					<div class="row" id="contenedor">
-						
+						<div class="row" id="contenedor">
+							
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		<?php } ?>
 
 		<!-- Modal para mostrar la instrumentacion de cada tema seleccionado -->
 		<div class="modal fade" tabindex="-1" role="dialog" id="modal-instrumento">

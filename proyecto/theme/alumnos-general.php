@@ -55,52 +55,54 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	?>
 
 	<div class="content">
-		<div class="container">
-            <div class="row mt-3">
-                <div class="col-12 d-flex flex-wrap">
-                    <div id="conte-periodo">
-                        <form action="" method="POST">
-                            <div class="form-group">
-                                <label class="control-label" for="select"><h4>Periodo</h4></label>
-                                <select class="form-control" id="selectPeriodo" name="periodo" Onchange="seleccionarPeriodo(this.options[this.selectedIndex].innerHTML);">
-                                    <option>&nbsp;</option>
-                                    <?php
-                                    require_once 'conexion/conexionSQL.php';
-                                    $connSQL = connSQL::singleton();
-                                    $query = "Select periodo from periodos";
-                                    $periodos = $connSQL->consulta($query);
-                                    foreach ($periodos as $periodo) {
-                                        echo "<option>" . $periodo[0] . "</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </form>
-                    </div> 
-                    <div class="d-flex align-items-end ml-lg-3 ml-md-3 ml-sm-3 ml-0">
-                        <div class="form-group" id="conte-buscar-grupo" style="display: none;">
-                            <div class="input-group">
-                                <input type="text" name="search" id="search-input-grupo" class="form-control rounded-1 border-info" placeholder="Ingrese grupo" autocomplete="off" required onkeyup="this.value = this.value.toUpperCase();">
-                                <div class="input-group-append">
-                                    <input type="button" name="search" value="Cancelar" class="btn btn-danger cancelar-search rounded-1">
+        <?php if($u->hasPrivilegio("consultar_instrumentacion_alumno")) { ?>
+            <div class="container">
+                <div class="row mt-3">
+                    <div class="col-12 d-flex flex-wrap">
+                        <div id="conte-periodo">
+                            <form action="" method="POST">
+                                <div class="form-group">
+                                    <label class="control-label" for="select"><h4>Periodo</h4></label>
+                                    <select class="form-control" id="selectPeriodo" name="periodo" Onchange="seleccionarPeriodo(this.options[this.selectedIndex].innerHTML);">
+                                        <option>&nbsp;</option>
+                                        <?php
+                                        require_once 'conexion/conexionSQL.php';
+                                        $connSQL = connSQL::singleton();
+                                        $query = "Select periodo from periodos";
+                                        $periodos = $connSQL->consulta($query);
+                                        foreach ($periodos as $periodo) {
+                                            echo "<option>" . $periodo[0] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
-                            </div>
-                            
-                            <div class="list-group" id="show-list-grupos" style="position: absolute; z-index: 999;">
-                                <!-- Aqui se mostraran los grupos que se vayan buscando -->
+                            </form>
+                        </div> 
+                        <div class="d-flex align-items-end ml-lg-3 ml-md-3 ml-sm-3 ml-0">
+                            <div class="form-group" id="conte-buscar-grupo" style="display: none;">
+                                <div class="input-group">
+                                    <input type="text" name="search" id="search-input-grupo" class="form-control rounded-1 border-info" placeholder="Ingrese grupo" autocomplete="off" required onkeyup="this.value = this.value.toUpperCase();">
+                                    <div class="input-group-append">
+                                        <input type="button" name="search" value="Cancelar" class="btn btn-danger cancelar-search rounded-1">
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group" id="show-list-grupos" style="position: absolute; z-index: 999;">
+                                    <!-- Aqui se mostraran los grupos que se vayan buscando -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div id="contenedor-instru">
+                <div class="row">
+                    <div class="col">
+                        <div id="contenedor-instru">
 
+                        </div>
                     </div>
                 </div>
             </div>
-		</div>
+        <?php } ?>
 
         <!-- Modal para mostrar la instrumentacion de cada tema seleccionado -->
 		<div class="modal fade" tabindex="-1" role="dialog" id="modal-instrumento">

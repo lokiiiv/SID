@@ -1,7 +1,8 @@
 <?php
 require_once("../../valida.php");
 //require_once("../../valida2.php");
-
+require_once 'manejo-usuarios/UsuarioPrivilegiado.php';
+$u = UsuarioPrivilegiado::getByCorreo($_SESSION['correo']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -45,64 +46,64 @@ require_once("../../valida.php");
     ?>
 
     <div class="content">
-        <div class="container">
-            <div class="row" style="margin-top: 25px;">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-3" for="select">
-                            <h4>Periodo</h4>
-                        </label>
-                        <div class="col-md-5">
-                            <form action="" method="POST">
-                                <select class="form-control" id="selectPeriodo" name="periodo" Onchange="mostrarIns(this.options[this.selectedIndex].innerHTML);">
-                                    <option>&nbsp;</option>
-                                    <?php
-                                    require_once 'conexion/conexionSQL.php';
-                                    $connSQL = connSQL::singleton();
-                                    $query = "Select periodo from periodos";
-                                    $periodos = $connSQL->consulta($query);
+        <?php if($u->hasPrivilegio("crear_instrumentaciones")) { ?>
+            <div class="container">
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="select">
+                                <h4>Periodo</h4>
+                            </label>
+                            <div class="col-md-5">
+                                <form action="" method="POST">
+                                    <select class="form-control" id="selectPeriodo" name="periodo" Onchange="mostrarIns(this.options[this.selectedIndex].innerHTML);">
+                                        <option>&nbsp;</option>
+                                        <?php
+                                        require_once 'conexion/conexionSQL.php';
+                                        $connSQL = connSQL::singleton();
+                                        $query = "Select periodo from periodos";
+                                        $periodos = $connSQL->consulta($query);
 
-                                    foreach ($periodos as $periodo) {
-                                        echo "<option>" . $periodo[0] . "</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </form>
+                                        foreach ($periodos as $periodo) {
+                                            echo "<option>" . $periodo[0] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-left: 3px; margin-right: 3px; margin-top: 20px;" id="tabla">
-                <div class="col-md-12 mb-2">
-                    <button onclick="agregarInstrumentacion()" align="center" type="button" class="btn btn-success btn-sm">Agregar
-                    </button>
+                <div class="row" style="margin-left: 3px; margin-right: 3px; margin-top: 20px;" id="tabla">
+                    <div class="col-md-12 mb-2">
+                        <button onclick="agregarInstrumentacion()" align="center" type="button" class="btn btn-success btn-sm">Agregar
+                        </button>
+                    </div>
+                    <div class="col-md-12">
+                        <table id="tablaInstrumentaciones" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Grupo</th>
+                                    <th class="text-center">Materia</th>
+                                    <th class="text-center">Temas</th>
+                                    <th class="text-center">Administrar</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input readonly></td>
+                                    <td><input readonly></td>
+                                    <td><input readonly class='form-control text-center' max=8 min=1 type='number'></td>
+                                    <td><button class="btn btn-info btn-sm" style="margin-left:10px">Crear</button> </td>
+                                    <td><button type="button" class="btn btn-danger btn-sm" style="margin-left:10px">Eliminar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-md-12">
-                    <table id="tablaInstrumentaciones" class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Grupo</th>
-                                <th class="text-center">Materia</th>
-                                <th class="text-center">Temas</th>
-                                <th class="text-center">Administrar</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input readonly></td>
-                                <td><input readonly></td>
-                                <td><input readonly class='form-control text-center' max=8 min=1 type='number'></td>
-                                <td><button class="btn btn-info btn-sm" style="margin-left:10px">Crear</button> </td>
-                                <td><button type="button" class="btn btn-danger btn-sm" style="margin-left:10px">Eliminar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
             </div>
-
-        </div>
+        <?php } ?>
     </div>
 
     <br>
