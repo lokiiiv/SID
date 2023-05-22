@@ -2,6 +2,12 @@
 require_once("../../valida.php");
 
 //if(!isset($_GET["grupo"])) header("Location:indexi.php");
+require_once 'manejo-usuarios/UsuarioPrivilegiado.php';
+$u = UsuarioPrivilegiado::getByCorreo($_SESSION['correo']);
+//Si no tiene permiso de crear instrumentaciones, redireccionar al index
+if(!$u->hasPrivilegio("crear_instrumentaciones")) {
+  header("Location: index.php");
+}
 
 ?>
 <!DOCTYPE HTML>
