@@ -88,23 +88,3 @@
 
 
 ?>
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-<head>
-<script type="text/javascript">
-//window.onload = function(){alert("se cargo")}
-</script>
-</head>
-<body>
-<!--<form action="PDF.php" method="get">
-<input type="hidden" id="enviarGrupo" name="grupo" value="2F31"/>
-<input type="hidden" id="enviarPeriodo" name="periodo"/>
-<input type="hidden" id="enviarTema" name="tema"/>
- <p><input type="submit" placeholder="Generar PDF" name="Generar"/></p>
-</form>
--->
-</body>
-</html>

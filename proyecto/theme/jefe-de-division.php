@@ -176,6 +176,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 
 	<script src="js/wow.min.js"></script>
     <script src="js/sina-nav.js"></script>
+	<script src="js/html2pdf.bundle.min.js"></script>
 
     <!-- For All Plug-in Activation & Others -->
     <script type="text/javascript">
