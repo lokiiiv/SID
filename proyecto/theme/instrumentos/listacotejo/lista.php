@@ -728,15 +728,15 @@ $FechaRetroalimentacion = "2-04-2021";
 				}
 			}).
 			from(instrumentoElemento)
-				.save()
-				.then(function() {
-					$(elemento).html('<i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF');
-					$(elemento).prop("disabled", false);
-				})
-				.error(function() {
-					$(elemento).html('<i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF');
-					$(elemento).prop("disabled", false);
-				});
+			.save()
+			.then(function() {
+				$(elemento).html('<i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF');
+				$(elemento).prop("disabled", false);
+			})
+			.error(function() {
+				$(elemento).html('<i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF');
+				$(elemento).prop("disabled", false);
+			});
 		}
 	</script>
 </body>
