@@ -107,7 +107,7 @@
 	<div class="container-fluid" style="max-width: 1276px; min-width: 1000px" id="instru">
 		<div class="row" data-html2canvas-ignore="true">
 			<div class="col-12 d-flex justify-content-end">
-				<button type="button" class="btn btn-info" id="generarPDFInstrumento" onclick="descargarPDFInstrumento()"><i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF</button>
+				<button type="button" class="btn btn-info" onclick="descargarPDFInstrumento(this)"><i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF</button>
 			</div>
 		</div>
 		<div class="row" id="instrumento-imprimir">
@@ -857,12 +857,15 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		function descargarPDFInstrumento() {
+		function descargarPDFInstrumento(elemento) {
+			$(elemento).prop("disabled", true);
+			$(elemento).html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Descargando...');
+
 			//Generar el PDF con la vista de la instrumentacion, conforme a los datos ingresados
 			var nombrePDF = '<?php echo 'INSTRUMENTACIÓN_' . (isset($instrumentacion->Materia) ? $instrumentacion->Materia : '') . '_Tema-' . (isset($tema) ? $tema : '') . '_' . (isset($periodo) ? $periodo : '') . '_' . (isset($grupo1) && $grupo != "" ? $grupo1 . '_' : '') . (isset($grupo2) && $grupo2 != "" ? $grupo2 . '_' : '') . (isset($grupo3) && $grupo3 != "" ? $grupo3 . '_' : '') . (isset($grupo4) && $grupo4 != "" ? $grupo4 . '_' : '') . '_' . (isset($instrumentacion->ClaveAsignatura) ? $instrumentacion->ClaveAsignatura : ''); ?>' + '.pdf';
 			var $elemento = document.getElementById("contenedor-instrumento");
 			html2pdf().set({
-				margin: 1,
+				margin: [0, 0, 10, 0],
 				//margin: 0,
 				filename: nombrePDF,
 				image: {
@@ -882,7 +885,14 @@
 			})
 			.from($elemento)
 			.save()
-			.catch(err => console.log(err));
+			.then(function() {
+				$(elemento).html('<i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF');
+				$(elemento).prop("disabled", false);
+			})
+			.error(function(){
+				$(elemento).html('<i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF');
+				$(elemento).prop("disabled", false);
+			});
 		}
 	</script>
 </body>

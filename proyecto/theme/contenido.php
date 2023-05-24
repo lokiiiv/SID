@@ -3263,7 +3263,9 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
             </button>
           </div>
           <div class="modal-body">
-            <div id="instrumentos"></div>
+            <div id="contenedor-evidencia">
+              <div id="instrumentos"></div>
+            </div>
           </div>
           <div class="modal-footer">
             <button id="ginstind" type="button" class="btn btn-success editable">Guardar</button>
@@ -4196,7 +4198,7 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
         //alert(evidencia+instrumento+ComT+"- "+listapr.length);
       }
 
-      function descargaPDF() {
+      /* function descargaPDF() {
         //alert("ok");
         var $elemento = document.getElementById("imprimir");
         html2pdf().set({
@@ -4219,7 +4221,7 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
           })
           .from($elemento)
           .save()
-          .catch(err => console.log(err));
+          .catch(err => console.log(err)); */
         /*alert("ok");
 
         var pdf = new jsPDF('p', 'pt', 'letter');
@@ -4249,7 +4251,7 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
                 pdf.save('Prueba.pdf');
             }, margins
         );*/
-      }
+      /* } */
 
       function GuardainfoLista() {
         var materia = $("#campoMateria")[0].innerHTML;
