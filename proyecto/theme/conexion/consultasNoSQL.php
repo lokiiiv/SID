@@ -1177,7 +1177,9 @@ use Google\Service\ShoppingContent\Resource\Pos;
                                             '$map' => [
                                                 'input' => ['$objectToArray' => '$periodos_Inst.' . $periodo], 
                                                 'in' => [
-                                                    'k' => ['$substr' => ['$$this.k', 0, 3]], 
+                                                    'k' => [
+                                                        '$substr' => ['$$this.k', 0, 3]
+                                                    ], 
                                                     'v' => '$$this.v'
                                                 ]
                                             ]
@@ -1443,6 +1445,71 @@ use Google\Service\ShoppingContent\Resource\Pos;
 
                 $instrumentaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
                 echo json_encode(['success' => true, 'data' => $instrumentaciones]);
+            break;
+
+            case 'obtenerObservacionesPresidente':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['claveAsignatura'];
+
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'Materia' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
+                            'ClaveAsignatura' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.ClaveAsignatura', 
+                            'ObservacionesPresidente' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Validacion.Observaciones'
+                        ]
+                    ]
+                ];
+
+                $observaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                echo json_encode(['success' => true, 'data' => $observaciones]);
+            break;
+
+            case 'obtenerObservacionesJefeDivision':
+                $periodo = $_POST['periodo'];
+                $claveAsignatura = $_POST['claveAsignatura'];
+                $grupoinst = substr($_POST['grupo'], 0, 3);
+
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'Materia' => 
+                            '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Materia', 
+                            'ClaveAsignatura' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.ClaveAsignatura', 
+                            'ObservacionesJefeDivision' => [
+                                '$filter' => [
+                                    'input' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.TodasMaterias', 
+                                    'cond' => [
+                                        '$eq' => ['$$this.Clave', $grupoins]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$ObservacionesJefeDivision']
+                    ], 
+                    [
+                        '$project' => [
+                            'Materia' => 1, 
+                            'ClaveAsignatura' => 1, 
+                            'ObservacionesJefeDivision.Clave' => 1, 
+                            'ObservacionesJefeDivision.PE' => 1, 
+                            'ObservacionesJefeDivision.Validacion' => 1
+                        ]
+                    ]
+                ];
+
+                $observaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                echo json_encode(['success' => true, 'data' => $observaciones]);
             break;
         }
     }
