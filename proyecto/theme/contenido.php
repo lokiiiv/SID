@@ -3803,7 +3803,14 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
             CNCPTL: conceptual,
             CTTDNL: actitudinal
           }, function() {
-
+             //Aplicar css al modal cuando se muestre la vista de instrumento
+              $("#exampleModal .modal-dialog").css('position', 'relative');
+              $("#exampleModal .modal-dialog").css('overflow', 'auto');
+              $("#exampleModal .modal-dialog").css('display', 'table');
+              $("#exampleModal .modal-dialog").css('width', 'auto');
+              $("#exampleModal .modal-dialog").css('min-width', '300px');
+              $("#exampleModal .modal-content .modal-body").css('overflow-x', 'auto');
+              $("#exampleModal .modal-content .modal-body").css('max-width', '90vw');
           });
         }
       }
@@ -3912,7 +3919,6 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
         var CS = document.getElementById("campoSemestre").innerHTML;
         var CTema = document.getElementById("TituloTema").value;
 
-        console.log(general);
         //alert(CTema);
         $("#instrumentos").load("instrumentos/rubrica/rubrica.php", {
           CTema: CTema,
@@ -3940,7 +3946,14 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
           CTTDNL: actitudinal,
           general: general
         }, function() {
-
+           //Aplicar css al modal cuando se muestre la vista de instrumento
+            $("#exampleModal .modal-dialog").css('position', 'relative');
+            $("#exampleModal .modal-dialog").css('overflow', 'auto');
+            $("#exampleModal .modal-dialog").css('display', 'table');
+            $("#exampleModal .modal-dialog").css('width', 'auto');
+            $("#exampleModal .modal-dialog").css('min-width', '300px');
+            $("#exampleModal .modal-content .modal-body").css('overflow-x', 'auto');
+            $("#exampleModal .modal-content .modal-body").css('max-width', '90vw');
         });
       }
 
@@ -4197,6 +4210,13 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
         //alert(listapvf.length);
         //alert(evidencia+instrumento+ComT+"- "+listapr.length);
       }
+
+      $('#exampleModal').on('show.bs.modal', function() {
+			  $("#exampleModal .modal-body").css("padding-left",'0px').css("padding-right", '0px');
+      });
+      $('#exampleModal').on('hidden.bs.modal', function() {
+        $("#exampleModal .modal-body").removeAttr('style');
+      });
 
       /* function descargaPDF() {
         //alert("ok");

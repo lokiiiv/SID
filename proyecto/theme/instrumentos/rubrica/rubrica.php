@@ -317,7 +317,7 @@ $FechaRetroalimentacion = "";
 </head>
 
 <body>
-	<div class="container mt-3" id="imprimir" style="max-width: 1276px; min-width: 950px;">
+	<div class="container mt-3" id="imprimir" style="max-width: 1350px; min-width: 1350px;">
 		<div class="col-12 d-flex justify-content-end mb-2" data-html2canvas-ignore="true">
 			<div class="row">
 				<button type="button" class="btn btn-info" onclick="descargarPDFEvidencia(this)"><i class="fa-solid fa-file-pdf pr-2"></i>Descargar PDF</button>
@@ -805,7 +805,7 @@ $FechaRetroalimentacion = "";
 				jsPDF: {
 					unit: "mm",
 					format: "a3",
-					orientation: "portrait"
+					orientation: "landscape"
 				}
 			}).
 			from(instrumentoElemento)

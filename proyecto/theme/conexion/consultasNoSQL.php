@@ -1112,5 +1112,337 @@ use Google\Service\ShoppingContent\Resource\Pos;
                 }
                 echo json_encode(['success' => true, 'data' => $final_data]);
             break;
+
+            case 'historialValidacionesPresidente':
+                $periodo = $_POST['periodo'];
+                $idPresidente = $_POST['idPresidente'];
+
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'instrumentaciones' => [
+                                '$objectToArray' => '$periodos_Inst.' . $periodo
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$instrumentaciones']
+                    ], 
+                    [
+                        '$project' => [
+                            'instrumentaciones.k' => 1, 
+                            'instrumentaciones.v.Materia' => 1, 
+                            'instrumentaciones.v.totalTemas' => 1, 
+                            'instrumentaciones.v.ClaveAsignatura' => 1, 
+                            'instrumentaciones.v.TodasMaterias' => 1, 
+                            'instrumentaciones.v.SoloLectura' => 1, 
+                            'instrumentaciones.v.Validacion' => 1, 
+                            'instrumentaciones.v.Temas' => [
+                                '$map' => [
+                                    'input' => [
+                                        '$objectToArray' => '$instrumentaciones.v.Temas'
+                                    ],
+                                    'in' => [
+                                        'Tema' => '$$this.k',
+                                        'Matriz' => '$$this.v.MatrizEvaluacion'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        '$match' => [
+                            'instrumentaciones.v.Validacion.Estatus' => true,
+                            'instrumentaciones.v.Validacion.InfoPresidente.IdPresidente' => $idPresidente
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$instrumentaciones.v.TodasMaterias']
+                    ], 
+                    [
+                        '$lookup' => [
+                            'from' => 'docentes', 
+                            'let' => ['grupoinst' => '$instrumentaciones.v.TodasMaterias.Clave'], 
+                            'pipeline' => [
+                                [
+                                    '$project' => [
+                                        '_id' => 0, 
+                                        'nombre' => 1, 
+                                        'correo' => 1, 
+                                        'grupo' => [
+                                            '$map' => [
+                                                'input' => ['$objectToArray' => '$periodos_Inst.' . $periodo], 
+                                                'in' => [
+                                                    'k' => ['$substr' => ['$$this.k', 0, 3]], 
+                                                    'v' => '$$this.v'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$unwind' => ['path' => '$grupo']
+                                ], 
+                                [
+                                    '$match' => [
+                                        '$expr' => [
+                                            '$eq' => ['$grupo.k', '$$grupoinst']
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            'as' => 'instrumentaciones.v.TodasMaterias.Docentes'
+                        ]
+                    ], 
+                    [
+                        '$addFields' => [
+                            'instrumentaciones.v.TodasMaterias.Docentes' => [
+                                '$map' => [
+                                    'input' => '$instrumentaciones.v.TodasMaterias.Docentes', 
+                                    'in' => [
+                                        'correo' => '$$this.correo', 
+                                        'nombre' => '$$this.nombre', 
+                                        'grupo' => '$$this.grupo.v.Grupo'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$group' => [
+                            '_id' => '$instrumentaciones.k', 
+                            'docentes' => [
+                                '$push' => '$instrumentaciones.v.TodasMaterias'
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$lookup' => [
+                            'from' => 'instrumentaciones', 
+                            'let' => ['claveinst' => '$_id'], 
+                            'pipeline' => [
+                                [
+                                    '$project' => [
+                                        '_id' => 0, 
+                                        'instrumentaciones' => [
+                                            '$objectToArray' => '$periodos_Inst.' . $periodo
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$unwind' => ['path' => '$instrumentaciones']
+                                ], 
+                                [
+                                    '$project' => [
+                                        'instrumentaciones.k' => 1, 
+                                        'instrumentaciones.v.Materia' => 1, 
+                                        'instrumentaciones.v.totalTemas' => 1, 
+                                        'instrumentaciones.v.ClaveAsignatura' => 1, 
+                                        'instrumentaciones.v.TodasMaterias' => 1, 
+                                        'instrumentaciones.v.SoloLectura' => 1, 
+                                        'instrumentaciones.v.Validacion' => 1, 
+                                        'instrumentaciones.v.Temas' => [
+                                            '$map' => [
+                                                'input' => [
+                                                    '$objectToArray' => '$instrumentaciones.v.Temas'
+                                                ],
+                                                'in' => [
+                                                    'Tema' => '$$this.k',
+                                                    'Matriz' => '$$this.v.MatrizEvaluacion'
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                ],
+                                [
+                                    '$match' => [
+                                        'instrumentaciones.v.Validacion.Estatus' => true,
+                                        'instrumentaciones.v.Validacion.InfoPresidente.IdPresidente' => $idPresidente
+                                    ]
+                                ], 
+                                [
+                                    '$match' => [
+                                        '$expr' => [
+                                            '$eq' => ['$instrumentaciones.k', '$$claveinst']
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            'as' => 'instruDetalle'
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$instruDetalle']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 1, 
+                            'docentes' => 1, 
+                            'instruDetalle' => '$instruDetalle.instrumentaciones'
+                        ]
+                    ], 
+                    [
+                        '$addFields' => ['instruDetalle.v.TodasMaterias' => '$docentes']
+                    ], 
+                    [
+                        '$replaceRoot' => ['newRoot' => '$instruDetalle']
+                    ]
+                ];
+
+                $instrumentaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                echo json_encode(['success' => true, 'data' => $instrumentaciones]);
+            break;
+
+            case 'historialValidacionesJefeDivision':
+                $periodo = $_POST['periodo'];
+                $idJefeDivision = $_POST['idJefeDivision'];
+
+                $pipeline = [
+                    [
+                        '$match' => ['Instrumentos' => 'Carreras']
+                    ], 
+                    [
+                        '$project' => [
+                            '_id' => 0, 
+                            'instrumentaciones' => [
+                                '$objectToArray' => '$periodos_Inst.' . $periodo
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$instrumentaciones']
+                    ], 
+                    [
+                        '$project' => [
+                            'instrumentaciones.k' => 1, 
+                            'instrumentaciones.v.Materia' => 1, 
+                            'instrumentaciones.v.totalTemas' => 1, 
+                            'instrumentaciones.v.ClaveAsignatura' => 1, 
+                            'instrumentaciones.v.TodasMaterias' => [
+                                '$map' => [
+                                    'input' => '$instrumentaciones.v.TodasMaterias', 
+                                    'as' => 'materias', 
+                                    'in' => [
+                                        '$mergeObjects' => [
+                                            '$$materias', 
+                                            [
+                                                'LetraCarrera' => [
+                                                    '$substr' => ['$$materias.Clave', 1, 1]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ], 
+                            'instrumentaciones.v.SoloLectura' => 1, 
+                            'instrumentaciones.v.Validacion' => 1, 
+                            'instrumentaciones.v.Temas' => [
+                                '$map' => [
+                                    'input' => [
+                                        '$objectToArray' => '$instrumentaciones.v.Temas'
+                                    ], 
+                                    'in' => [
+                                        'Tema' => '$$this.k', 
+                                        'Matriz' => '$$this.v.MatrizEvaluacion'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$match' => [
+                            'instrumentaciones.v.TodasMaterias' => [
+                                '$elemMatch' => [
+                                    '$and' => [
+                                        [
+                                            'Validacion.Estatus' => true
+                                        ], 
+                                        [
+                                            'Validacion.InfoJefeDivision.IdJefeDivision' => $idJefeDivision
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$addFields' => [
+                            'instrumentaciones.v.TodasMaterias' => [
+                                '$filter' => [
+                                    'input' => '$instrumentaciones.v.TodasMaterias', 
+                                    'cond' => [
+                                        '$and' => [
+                                            [
+                                                '$eq' => ['$$this.Validacion.Estatus', true]
+                                            ], 
+                                            [
+                                                '$eq' => ['$$this.Validacion.InfoJefeDivision.IdJefeDivision', $idJefeDivision]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$unwind' => ['path' => '$instrumentaciones.v.TodasMaterias']
+                    ], 
+                    [
+                        '$lookup' => [
+                            'from' => 'docentes', 
+                            'let' => ['grupoinst' => '$instrumentaciones.v.TodasMaterias.Clave'], 
+                            'pipeline' => [
+                                [
+                                    '$project' => [
+                                        '_id' => 0, 
+                                        'nombre' => 1, 
+                                        'correo' => 1, 
+                                        'grupo' => [
+                                            '$map' => [
+                                                'input' => ['$objectToArray' => '$periodos_Inst.' . $periodo], 
+                                                'in' => [
+                                                    'k' => [
+                                                        '$substr' => ['$$this.k', 0, 3]
+                                                    ], 
+                                                    'v' => '$$this.v'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$unwind' => ['path' => '$grupo']
+                                ], 
+                                [
+                                    '$match' => [
+                                        '$expr' => [
+                                            '$eq' => ['$grupo.k', '$$grupoinst']
+                                        ]
+                                    ]
+                                ], 
+                                [
+                                    '$addFields' => ['grupo' => '$grupo.v.Grupo']
+                                ]
+                            ], 
+                            'as' => 'instrumentaciones.v.TodasMaterias.Grupos'
+                        ]
+                    ], 
+                    [
+                        '$match' => [
+                            'instrumentaciones.v.TodasMaterias.Grupos' => [
+                                '$exists' => true, 
+                                '$ne' => []
+                            ]
+                        ]
+                    ]
+                ];
+
+                $instrumentaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
+                echo json_encode(['success' => true, 'data' => $instrumentaciones]);
+            break;
         }
     }
