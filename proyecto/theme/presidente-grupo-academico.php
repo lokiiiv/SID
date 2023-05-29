@@ -55,9 +55,16 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	?>
 
 	<div class="content">
+		<div class="container">
+			<div class="row mt-2">
+				<div class="col-12 d-flex justify-content-end">
+					<a href="presidente-grupo-academico-historial.php" role="button" class="btn btn-info"><i class="fa-sharp fa-solid fa-clock-rotate-left pr-2"></i>Consultar historial</a>
+				</div>
+			</div>
+		</div>
 		<?php if($u->hasPrivilegio("validar_instrumentaciones_presidente")) { ?>
 			<div class="container">
-				<div class="row mb-4 mt-4">
+				<div class="row mb-4 mt-2">
 					<div class="col-12">
 						<div class="row pb-3"> 
 							<div class="col d-flex justify-content-end">
