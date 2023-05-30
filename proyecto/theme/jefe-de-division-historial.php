@@ -42,6 +42,48 @@
     <?php
     include("BarraMenu.php");
     ?>
+
+<div class="content">
+        <div class="container mb-4">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <h5>Historial de instrumentaciones autorizadas.</h5>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 d-flex flex-wrap">
+                    <div id="conte-periodo">
+                        <form action="" method="POST">
+                            <div class="form-group">
+                                <label class="control-label" for="select">
+                                    <h4>Periodo</h4>
+                                </label>
+                                <select class="form-control" id="selectPeriodo" name="periodo" Onchange="seleccionarPeriodo(this.options[this.selectedIndex].innerHTML);">
+                                    <option>&nbsp;</option>
+                                    <?php
+                                    require_once 'conexion/conexionSQL.php';
+                                    $connSQL = connSQL::singleton();
+                                    $query = "Select periodo from periodos";
+                                    $periodos = $connSQL->consulta($query);
+                                    foreach ($periodos as $periodo) {
+                                        echo "<option>" . $periodo[0] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="contenedor-instru-historial-jefedivision">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <?php
     require 'footer.php';
@@ -72,6 +114,90 @@
             // WOW animation initialize
             new WOW().init();
         });
+
+        function seleccionarPeriodo(periodo) {
+            if(periodo != "&nbsp;") {
+                $.ajax({
+                    data: {
+                        'accion': 'historialValidacionesJefeDivision',
+                        'periodo': periodo,
+                        'idJefeDivision': '<?php echo $_SESSION["idUsuario"]; ?>'
+                    },
+                    url: 'conexion/consultasNoSQL.php',
+                    method: 'post',
+                    success: function(response) {
+                        console.log(JSON.parse(response));
+                        var res = JSON.parse(response);
+                        if(res.success) {
+                            $("#contenedor-instru-historial-jefedivision").css("display", "block");
+                            mostrarInstrumentaciones(res.data);
+                        }
+                    }
+                });
+            } else {
+                $("#contenedor-instru-historial-jefedivision").css("display", "none");
+            }
+        }
+
+        function mostrarInstrumentaciones(instrumentaciones) {
+            var htmlListaContenido = '';
+            var hasInstru = instrumentaciones.length != 0 ? true : false;
+
+            if(hasInstru) {
+                instrumentaciones.forEach(inst => {
+					htmlListaContenido += 	'<div class="list-group-item list-group-item-action flex-column align-items-start item-instrumentacion">' + 
+												'<div class="row">' +
+													'<div class="col-lg-12 informacion">' + 
+														'<h5 class="nombre-asignatura">' + (inst.instrumentaciones.v.Materia != undefined ? inst.instrumentaciones.v.Materia : '') + '</h5>' + 
+														'<h6 class="clave-asignatura" data-clave="' + (inst.instrumentaciones.k != undefined ? inst.instrumentaciones.k : '') + '">Clave de asignatura: ' + (inst.instrumentaciones.k != undefined ? inst.instrumentaciones.k : '') + '</h6>' +
+														'<h6>Número de temas: ' + (inst.instrumentaciones.v.totalTemas != undefined ? inst.instrumentaciones.v.totalTemas : '') + '</h6>' +
+														'<h6 class="programa-educativo" data-clave="' + (inst.instrumentaciones.v.TodasMaterias.PE != undefined ? inst.instrumentaciones.v.TodasMaterias.PE : '') + '">Programa educativo: ' + (inst.instrumentaciones.v.TodasMaterias.PE != undefined ? inst.instrumentaciones.v.TodasMaterias.PE : '') + '</h6>' +
+														'<h6>Los siguientes grupos comparten la presente instrumentación.</h6>' +
+												        '<div class="row mb-2">';
+					inst.instrumentaciones.v.TodasMaterias.Grupos.forEach(grupo => {
+						htmlListaContenido += 			    '<div class="col-md-4 col-sm-6 col-12 mb-1">' +
+																'<h6 style="font-size: 13px;" class="nombre-programa-edu"><span class="badge badge-pill badge-info font-weight-normal" style="font-size: 14px;" data-semestre="' + (inst.instrumentaciones.v.TodasMaterias.Semestre != undefined ? inst.instrumentaciones.v.TodasMaterias.Semestre : '') + '" data-grupo="' + (grupo.grupo != undefined ? grupo.grupo : '') + '">' + (grupo.grupo != undefined ? grupo.grupo : '') + '</span></h6>' +	
+																'<h6 style="font-size: 12px;" class="nombre-docente" data-nombre-docente="' + (grupo.nombre != undefined ? grupo.nombre : '') + '" data-correo-docente="' + (grupo.correo != undefined ? grupo.correo : '') + '">Docente: ' + (grupo.nombre != undefined ? grupo.nombre : '') + '</h6>' +	
+															'</div>';	
+						});										
+						htmlListaContenido +=			'</div>' +
+														'<div class="row">' +
+															'<div class="col">';
+						if(inst.instrumentaciones.v.Temas != undefined && inst.instrumentaciones.v.Temas != null) {
+							inst.instrumentaciones.v.Temas.forEach(tema => {
+								htmlListaContenido += 			'<div class="btn-group m-1">' +
+																	'<button type="button" class="btn btn-info btn-sm abrirInstruTema" data-tema="' + tema.Tema + '">Tema ' + tema.Tema + '</button>' +
+																	'<button type="button" class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+																		'<span class="sr-only">Toggle Dropdown</span>' +
+																	'</button>';
+						if(tema.Matriz != undefined && tema.Matriz != null) {
+							htmlListaContenido +=				    '<div class="dropdown-menu">';
+							tema.Matriz.forEach(tem => {
+								htmlListaContenido +=				    '<a class="dropdown-item abrirEvidencia" href="#" data-evidencia="' + tem[12] + '">' + tem[0] + '</a>';
+							});
+						} else {
+							htmlListaContenido += 			        '<div class="dropdown-menu">' +
+																		'<a class="dropdown-item" href="#">¡No se generaron evidencias!</a>';
+						}
+						htmlListaContenido += 				    '</div>' + 
+															'</div>';
+						});
+					} else {
+						htmlListaContenido += '<h6>¡No se llenaron temas en la instrumentación!</h6>';
+					}										
+					htmlListaContenido +=					'</div>' +
+														'</div>' +
+													'</div>' +
+												'</div>' + 
+											'</div>';
+				});
+            } else {
+                htmlListaContenido += '<div class="list-group-item list-group-item-action flex-column align-items-start">' +
+											'<h5>No se encontraron instrumentaciones.</h5>' +
+										'</div>';
+            }
+            $("#contenedor-instru-historial-jefedivision").html(htmlListaContenido);
+        }
     </script>
 </body>
 </html>

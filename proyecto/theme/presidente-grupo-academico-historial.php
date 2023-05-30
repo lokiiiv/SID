@@ -177,7 +177,6 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                     url: 'conexion/consultasNoSQL.php',
                     method: 'post',
                     success: function(response) {
-                        console.log(JSON.parse(response));
                         var res = JSON.parse(response);
                         if(res.success) {
                             $("#contenedor-instru-historial-presidente").css("display", "block");
@@ -248,7 +247,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
                 });
             } else {
                 htmlListaContenido += '<div class="list-group-item list-group-item-action flex-column align-items-start">' +
-											'<h5>Aún se encontraron instrumentaciones.</h5>' +
+											'<h5>No se encontraron instrumentaciones.</h5>' +
 										'</div>';
             }
             $("#contenedor-instru-historial-presidente").html(htmlListaContenido);
