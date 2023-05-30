@@ -56,6 +56,13 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	?>
 
 	<div class="content">
+		<div class="container">
+			<div class="row mt-2">
+				<div class="col-12 d-flex justify-content-end">
+					<a href="jefe-de-division-historial.php" role="button" class="btn btn-info"><i class="fa-sharp fa-solid fa-clock-rotate-left pr-2"></i>Consultar historial</a>
+				</div>
+			</div>
+		</div>
 		<?php if($u->hasPrivilegio("autorizar_instrumentaciones_jefe")) { ?>
 			<div class="container">
 				<div class="row mt-4">
