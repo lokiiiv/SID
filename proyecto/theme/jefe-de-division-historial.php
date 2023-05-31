@@ -43,7 +43,7 @@
     include("BarraMenu.php");
     ?>
 
-<div class="content">
+    <div class="content">
         <div class="container mb-4">
             <div class="row mt-2">
                 <div class="col-12">
@@ -83,6 +83,46 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal para mostrar la instrumentacion de cada tema seleccionado -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-instrumento">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="contenedor-instrumento"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal para mostrar un instrumento de una de las 3 eveidencias de aprendizaje por tema -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-evidencia">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id="contenedor-evidencia"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
     
     <?php
@@ -198,6 +238,254 @@
             }
             $("#contenedor-instru-historial-jefedivision").html(htmlListaContenido);
         }
+
+        $(document).on('click', '.abrirInstruTema', function() {
+			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
+			var tema = $(this).attr('data-tema');
+			var grupoEjemplo = $(this).closest('.item-instrumentacion').find('span').first().attr('data-grupo');
+			var asignatura = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+			var nombreDocenteEjemplo = $(this).closest('.item-instrumentacion').find('.nombre-docente').first().attr('data-nombre-docente');
+			var correoDocenteEjemplo = $(this).closest('.item-instrumentacion').find('.nombre-docente').first().attr('data-correo-docente');
+            var periodo = $('#selectPeriodo').val();
+			
+			if(claveAsignatura != undefined && tema != undefined && grupoEjemplo != undefined && periodo != undefined && nombreDocenteEjemplo != undefined) {
+				$("#contenedor-instrumento").load("generarinstrumentacion.php?grupo=" + encodeURI(grupoEjemplo) + "&periodo=" + encodeURI(periodo) + "&tema=" + encodeURI(tema) + "&claveAsignatura=" + encodeURI(claveAsignatura) + "&docenteEjemplo=" + encodeURI(nombreDocenteEjemplo) + "&correoDocente=" + encodeURI(correoDocenteEjemplo), function(response) {
+					$("#modal-instrumento .modal-title").text("Instrumentación didáctica del Tema No. " + tema + " de la asignatura de " + asignatura + " (" + claveAsignatura + ").");
+					$("#modal-instrumento").modal('show');
+				});
+			}
+		});
+
+        $(document).on('click', '.abrirEvidencia', function(e) {
+			e.preventDefault();
+			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
+			var tema = $(this).closest('.btn-group').find('.abrirInstruTema').attr('data-tema');
+			var evidencia = $(this).attr('data-evidencia');
+            var periodo = $('#selectPeriodo').val();
+
+			var botonActual = $(this);
+
+			//Obtener la información para mostrar la vista de un instrumento de cierto tema
+			$.ajax({
+				url: "conexion/consultasNoSQL.php",
+				method: "post",
+				data: {
+					"accion": "mostrarVistaEvidenciaAprendizaje",
+					"periodo": periodo,
+					"claveAsignatura": claveAsignatura,
+					"tema": tema,
+					"evidencia": evidencia
+				},
+				success: function(response) {
+					var res = JSON.parse(response);
+					if(res.success) {
+						//Verificar si el docente agrego contenido a la evidencia de aprendizaje
+						var infoEvidencia = res.data[0];
+						if(infoEvidencia.ContenidoInstrumento == null || infoEvidencia.ContenidoInstrumento == undefined) {
+							alertify.warning('<h3>¡No se generó contenido para esta evidencia de aprendizaje!</h3>');
+						} else {
+							//Obtener que evidencia es (rubrica, lista de cotejo, cuestionario, guia de observacion)
+							var cual = infoEvidencia.DatosEvidencia[8];
+							var CS = botonActual.closest('.item-instrumentacion').find('.nombre-programa-edu span').first().attr('data-semestre');
+							var PE = botonActual.closest('.item-instrumentacion').find('.programa-educativo').attr('data-clave');
+							var evidencia = infoEvidencia.DatosEvidencia[0];
+							var instrumento = infoEvidencia.DatosEvidencia[8];
+							var por = infoEvidencia.DatosEvidencia[1];
+							var A = infoEvidencia.DatosEvidencia[2];
+							var B = infoEvidencia.DatosEvidencia[3];
+							var C = infoEvidencia.DatosEvidencia[4];
+							var D = infoEvidencia.DatosEvidencia[5];
+							var E = infoEvidencia.DatosEvidencia[6];
+							var F = infoEvidencia.DatosEvidencia[7];
+							var materia = infoEvidencia.Materia;
+							var grupo = botonActual.closest('.item-instrumentacion').find('.nombre-programa-edu span').first().attr('data-grupo');
+							var tem = botonActual.closest('.btn-group').find('.abrirInstruTema').attr('data-tema');
+							//var fa = infoEvidencia.ContenidoInstrumento[0];
+							//var te = infoEvidencia.ContenidoInstrumento[1];
+							var ComT = infoEvidencia.CompetenciaET;
+							var procedimental = infoEvidencia.DatosEvidencia[9] == "1" ? 'X' : '';
+							var conceptual = infoEvidencia.DatosEvidencia[10] == "1" ? 'X' : '';
+							var actitudinal = infoEvidencia.DatosEvidencia[11] == "1" ? 'X' : '';
+							var nomDocenteEjemplo =botonActual.closest('.item-instrumentacion').find('.nombre-docente').first().attr('data-nombre-docente');
+
+							if(cual == "Guía de observación") {
+								var general = infoEvidencia.ContenidoInstrumento;
+								$("#contenedor-evidencia").load("instrumentos/guiaobservacion/guia.php", {
+									CS: CS,
+									PE: PE,
+									evi: evidencia,
+									ins: instrumento,
+									num: cual,
+									per: periodo,
+									A: A,
+									B: B,
+									C: C,
+									D: D,
+									E: E,
+									F: F,
+									por: por,
+									mat: materia,
+									gru: grupo,
+									tem: tem,
+									fa: general[0],
+									te: general[1],
+									CoT: ComT,
+									PRCDMTL: procedimental,
+									CNCPTL: conceptual,
+									CTTDNL: actitudinal,
+									general: general,
+									nomDocenteEjemplo: nomDocenteEjemplo
+								}, function(){
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
+									$("#modal-evidencia").modal('show');
+								});
+							} else if (cual == "Lista de cotejo") {
+								var taa = infoEvidencia.ContenidoInstrumento[2];
+								var tma = infoEvidencia.ContenidoInstrumento[3];
+								var fa = infoEvidencia.ContenidoInstrumento[0];
+								var te = infoEvidencia.ContenidoInstrumento[1];
+								$("#contenedor-evidencia").load("instrumentos/listacotejo/lista.php", {
+									CS: CS,
+									PE: PE,
+									evi: evidencia,
+									ins: instrumento,
+									num: cual,
+									per: periodo,
+									A: A,
+									B: B,
+									C: C,
+									D: D,
+									E: E,
+									F: F,
+									por: por,
+									mat: materia,
+									gru: grupo,
+									tem: tem,
+									fa: fa,
+									te: te,
+									CoT: ComT,
+									taa: taa,
+									tma: tma,
+									PRCDMTL: procedimental,
+									CNCPTL: conceptual,
+									CTTDNL: actitudinal,
+									nomDocenteEjemplo: nomDocenteEjemplo
+								}, function() {
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
+									$("#modal-evidencia").modal('show');
+								});
+							} else if (cual == "Cuestionario") {
+								var fa = infoEvidencia.ContenidoInstrumento[0][0];
+								var te = infoEvidencia.ContenidoInstrumento[0][1];
+
+								//Aqui es necesario modificar el array que contiene las preguntas de relacionar, subrayar y verdadero o falso
+								//Esto con la finalidad de adaptar los datos tal como estan establecidos en instrumentos/cuestionario/cuestionario.php, para que se incluyan sin problema al cargar la vista de la instrumentacion
+								//Ya que al obtener la información tal como esta en Mongo no se podrá adaptar al cargar la vista, mostrando errores debido a que esta estructurado un poco diferente
+								var listapr = [];
+								infoEvidencia.ContenidoInstrumento[0][2].forEach(preguntaRela => {
+									listapr.push(preguntaRela[0]);
+									listapr.push(preguntaRela[1]);
+									listapr.push(preguntaRela[2]);
+									listapr.push(preguntaRela[3]);
+								});
+								var listasb2 = [];
+								infoEvidencia.ContenidoInstrumento[0][3].forEach(preguntaSubra => {
+									listasb2.push(preguntaSubra[0]);
+								});
+								var listapvf = [];
+								infoEvidencia.ContenidoInstrumento[0][4].forEach(preguntasFalsoVer => {
+									listapvf.push(preguntasFalsoVer[0]);
+									listapvf.push(preguntasFalsoVer[1]);
+									listapvf.push(preguntasFalsoVer[2]);
+									listapvf.push(preguntasFalsoVer[3]);
+								});
+								$("#contenedor-evidencia").load("instrumentos/cuestionario/cuestionario.php", {
+									CS: CS,
+									PE: PE,
+									evi: evidencia,
+									ins: instrumento,
+									num: cual,
+									per: periodo,
+									A: A,
+									B: B,
+									C: C,
+									D: D,
+									E: E,
+									F: F,
+									por: por,
+									mat: materia,
+									gru: grupo,
+									tem: tem,
+									fa: fa,
+									te: te,
+									CoT: ComT,
+									PRCDMTL: procedimental,
+									CNCPTL: conceptual,
+									CTTDNL: actitudinal,
+									listapr: listapr,
+									listasb2: listasb2,
+									listapvf: listapvf,
+									nomDocenteEjemplo: nomDocenteEjemplo
+								}, function() {
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
+									$("#modal-evidencia").modal('show');
+								});
+							} else if (cual = "Rúbrica") {
+								var fa = infoEvidencia.ContenidoInstrumento[0];
+								var te = infoEvidencia.ContenidoInstrumento[1];
+								var general = infoEvidencia.ContenidoInstrumento;
+								console.log(general);
+								var CTema = infoEvidencia.NombreTema;
+								$("#contenedor-evidencia").load("instrumentos/rubrica/rubrica.php", {
+									CTema: CTema,
+									CS: CS,
+									PE: PE,
+									evi: evidencia,
+									ins: instrumento,
+									num: cual,
+									per: periodo,
+									A: A,
+									B: B,
+									C: C,
+									D: D,
+									E: E,
+									F: F,
+									por: por,
+									mat: materia,
+									gru: grupo,
+									tem: tem,
+									fa: fa,
+									te: te,
+									CoT: ComT,
+									PRCDMTL: procedimental,
+									CNCPTL: conceptual,
+									CTTDNL: actitudinal,
+									general: general,
+									nomDocenteEjemplo: nomDocenteEjemplo
+								}, function() {
+									$("#modal-evidencia .modal-title").text(infoEvidencia.DatosEvidencia[0] + ' - ' + infoEvidencia.DatosEvidencia[8]);
+									$("#modal-evidencia").modal('show');
+								});
+							}
+						}
+					}
+				}
+			});
+		});
+
+        $('#modal-instrumento').on('show.bs.modal', function() {
+			$(".modal-body").css("padding",'0px');
+		});
+		$('#modal-instrumento').on('hidden.bs.modal', function() {
+			$(".modal-body").removeAttr('style');
+		});
+        $('#modal-evidencia').on('show.bs.modal', function() {
+			$(".modal-body").css("padding",'0px');
+		});
+		$('#modal-evidencia').on('hidden.bs.modal', function() {
+			$(".modal-body").removeAttr('style');
+		});
+
     </script>
 </body>
 </html>
