@@ -1432,6 +1432,8 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
                 echo json_encode(['success' => false, 'mensaje' => 'No estas autorizado (a) para administrar el acceso al FAC-14 a los alumnos.']);
             }
             break;
+        
+        
     }
         
 }

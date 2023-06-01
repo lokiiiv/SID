@@ -55,7 +55,8 @@ if (isset($token["error"]) != "invalid_grant") {
 			//Verificar que sea una matricula de 8 digitos
 			$regexMatricula = "/^[0-9]{8}$/";
 			if(preg_match($regexMatricula, $posibleMatricula)) {
-				echo '<p>Eres alumno.</p>';
+				//require_once './registroAlumno.php';
+				header("Location: registroAlumno.php?matricula=" . $posibleMatricula . '&correo=' . $gpUserData['email']);
 			} else {
 				//Si no coincide, son correos que no pertenecen a alumnos
 				header("Location: index.php?mensaje=2");
