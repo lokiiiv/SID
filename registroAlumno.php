@@ -35,7 +35,7 @@
             </div>
             <div class="row mt-3 mb-3">
                 <div class="col-12 d-flex justify-content-center">
-                    <form style="width: 50%;" id="form-registro-alumno">
+                    <form style="width: 400px" id="form-registro-alumno">
                         <div class="form-group">
                             <label for="matricula">Matrícula</label>
                             <input type="text" class="form-control" id="matricula" name="matricula" placeholder="Ingrese matricula" readonly value="<?php echo isset($_GET['matricula']) ? $_GET['matricula'] : '' ?>">
@@ -85,7 +85,6 @@
                     contentType: false,
                     type: 'POST',
                     success: function(response) {
-                        console.log(JSON.parse(response));
                         var res = JSON.parse(response);
                         if (res.success) {
                             alertify.alert("Aviso", res.mensaje, function() {
