@@ -45,7 +45,18 @@
 
     <div class="content">
         <div class="container mb-4">
-            <div class="row mt-2">
+			<div class="row mt-3">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+							<li class="breadcrumb-item"><a href="presidente-grupo-academico.php">Instrumentaciones para autorizar</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Historial de instrumentaciones autorizadas</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12">
                     <h5>Historial de instrumentaciones autorizadas.</h5>
                 </div>

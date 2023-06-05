@@ -47,7 +47,17 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 
 	<div class="content">
 		<div class="container">
-            <div class="row" style="margin-top: 25px;">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Leer/editar programas educativos</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
                 <h4 style="padding-left:15px;">Programas educativos registrados en el sistema</h4>
             </div>
 

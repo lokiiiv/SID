@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-05-2023 a las 16:56:37
+-- Tiempo de generación: 05-06-2023 a las 23:51:07
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -2343,20 +2343,16 @@ INSERT INTO `docentes` (`cat_ID`, `cat_Clave`, `cat_ApePat`, `cat_ApeMat`, `cat_
 (378, 3579, 'RAMIREZ', 'CISNEROS', 'NAOMI YAMILETH', 'nramirez@itesa.edu.mx', ''),
 (381, 3582, 'MUÑOZ', 'ISLAS', 'ALDO MANUEL', 'amunoz@itesa.edu.mx', ''),
 (382, 3584, 'PENDIENTE', '', 'L. T. PENDIENTE', '', ''),
-(555, 5555, 'ARRIAGA', 'HERNANDEZ', 'KENNY', '18030228@itesa.edu.mx', ''),
 (666, 6666, 'ARRIAGA', 'HERNANDEZ', 'KENNYPRUEBA', 'doritoken@gmail.com', ''),
 (714, 6666, 'ARRIAGA', 'HERNANDEZ', 'KENNYPRUEBA', 'doritoken@gmail.com', ''),
-(905, 16, 'BRIONES', 'MARTINEZ', 'BELEM', '17030341@itesa.edu.mx', ''),
-(906, 17, 'DOMINGUEZ', 'JUAREZ', 'BRENDA GUADALUPE', '17030502@itesa.edu.mx', ''),
-(907, 18, 'ORDOÑEZ', 'SANCHEZ', 'FERNANDO MARCOS', '17030383@itesa.edu.mx', ''),
-(908, 19, 'CARRASCO', 'GONZALEZ', 'ULISES', '17030825@itesa.edu.mx', ''),
-(909, 20, 'MORENO', 'YAÑEZ', 'CHRISTIAN ALEJANDRO', '17030695@itesa.edu.mx', ''),
-(910, 21, 'GARCIA', 'TAPIA', 'WENDY', '17030172@itesa.edu.mx', ''),
 (911, 22, 'Sánchez', 'González', 'Antonio de Jesús', 'ajsanchez@itesa.edu.mx', ''),
-(9999, 9999, 'ESPINOZA', 'AGUIRRE', 'ING. ALAN', '18030290@itesa.edu.mx', '675556702_18030290@itesa.edu.mx.png'),
-(10014, 6879, 'Espinoza', 'Aguirre', 'Alan', 'programador_isc@itesa.edu.mx', '128007782_programador_isc@itesa.edu.mx.jpg'),
+(10014, 6879, 'Espinoza', 'Aguirre', 'Ing. Alan', 'programador_isc@itesa.edu.mx', '128007782_programador_isc@itesa.edu.mx.jpg'),
 (10015, 20034567, 'xd', 'xd', 'xd', '20034567@itesa.edu.mx', ''),
-(10017, 3570, 'JUAREZ', 'GONZÁLEZ', 'MTRA. JAZMÍN', 'division_administracion@itesa.edu.mx', '');
+(10017, 3570, 'JUAREZ', 'GONZÁLEZ', 'MTRA. JAZMÍN', 'division_administracion@itesa.edu.mx', ''),
+(10032, NULL, NULL, NULL, NULL, NULL, ''),
+(10033, NULL, NULL, NULL, NULL, NULL, ''),
+(10034, NULL, NULL, NULL, NULL, NULL, ''),
+(10044, 18030290, 'Espinozq', 'Aguirre', 'Alan', '18030290@itesa.edu.mx', '');
 
 -- --------------------------------------------------------
 
@@ -2380,7 +2376,6 @@ INSERT INTO `docente_rol` (`id`, `cat_ID`, `id_rol`) VALUES
 (29, 80, 5),
 (30, 80, 2),
 (33, 57, 2),
-(34, 555, 4),
 (36, 156, 2),
 (39, 3, 2),
 (40, 4, 2),
@@ -2400,24 +2395,15 @@ INSERT INTO `docente_rol` (`id`, `cat_ID`, `id_rol`) VALUES
 (65, 57, 3),
 (70, 84, 3),
 (75, 10015, 4),
-(76, 10015, 11),
 (101, 73, 3),
-(108, 10014, 3),
 (109, 10017, 5),
-(111, 9999, 4),
-(112, 555, 11),
-(113, 905, 4),
-(114, 906, 4),
-(115, 907, 4),
-(116, 908, 4),
-(117, 909, 4),
-(118, 910, 4),
 (121, 10014, 1),
-(123, 10014, 2),
-(124, 10014, 5),
-(125, 10014, 4),
 (126, 13, 2),
-(127, 9999, 1);
+(129, 10014, 2),
+(130, 10014, 3),
+(132, 10014, 5),
+(133, 10014, 4),
+(160, 10044, 4);
 
 --
 -- Disparadores `docente_rol`
@@ -2618,7 +2604,7 @@ CREATE TABLE `paginas` (
 
 INSERT INTO `paginas` (`id_pagina`, `parent_menu_id`, `titulo`, `pagina`, `descripcion`, `orden`, `icono`) VALUES
 (5, 0, 'Inicio', 'sid/proyecto/theme/index.php', 'Página de inicio principal', 1, ''),
-(6, 0, 'Administracion', '', 'Administración de diversas funcionalidades del sitio.', 2, ''),
+(6, 0, 'Web Master', '', 'Administración de diversas funcionalidades del sitio.', 2, ''),
 (8, 0, 'Presidente de grupo académico', '', 'Secciones y funcionalidades para el presidente de grupo académico', 4, ''),
 (9, 0, 'Jefe de división', '', 'Secciones y funcionalidades para el jefe de división de los programas educativos.', 5, ''),
 (10, 0, 'Alumnos', '', 'Secciones y funcionalidades para los alumnos.', 6, ''),
@@ -2788,7 +2774,7 @@ INSERT INTO `rol` (`id_rol`, `nombre_rol`, `descripcion_rol`) VALUES
 (3, 'presidente_de_grupo_academico', 'Presidente de grupo académico'),
 (4, 'alumno', 'Alumno'),
 (5, 'jefe_de_division', 'Jefe de división'),
-(11, 'jefe_de_grupo', 'Jefe de grupo');
+(11, 'jefe_grupo', 'Jefe de grupo');
 
 -- --------------------------------------------------------
 
@@ -2809,50 +2795,43 @@ CREATE TABLE `rol_permisos` (
 INSERT INTO `rol_permisos` (`id`, `id_rol`, `id_permiso`) VALUES
 (172, 1, 8),
 (175, 1, 19),
-(183, 1, 21),
-(184, 1, 22),
-(185, 1, 23),
-(186, 1, 24),
 (192, 2, 27),
 (193, 3, 27),
 (194, 4, 27),
 (195, 5, 27),
-(196, 11, 27),
 (197, 1, 28),
 (198, 2, 28),
 (199, 3, 28),
 (200, 4, 28),
 (201, 5, 28),
-(202, 11, 28),
-(205, 4, 31),
-(206, 5, 30),
 (208, 1, 27),
 (210, 1, 4),
-(213, 2, 26),
 (215, 4, 19),
 (216, 2, 19),
 (217, 3, 19),
 (218, 5, 19),
-(219, 11, 19),
-(220, 3, 29),
-(224, 1, 25),
 (226, 1, 1),
 (227, 1, 2),
 (228, 1, 3),
 (230, 1, 7),
 (231, 1, 6),
 (232, 1, 5),
-(242, 1, 11),
-(243, 1, 10),
-(244, 1, 9),
-(245, 1, 12),
-(246, 2, 12),
-(247, 3, 12),
 (248, 5, 25),
-(249, 5, 12),
 (250, 5, 24),
 (251, 5, 4),
-(252, 11, 31);
+(255, 1, 9),
+(257, 1, 11),
+(258, 1, 12),
+(261, 1, 10),
+(272, 1, 25),
+(273, 1, 24),
+(278, 1, 22),
+(279, 1, 21),
+(281, 1, 23),
+(283, 3, 29),
+(286, 5, 30),
+(287, 4, 31),
+(288, 2, 26);
 
 --
 -- Índices para tablas volcadas
@@ -2974,7 +2953,7 @@ ALTER TABLE `rol_permisos`
 -- AUTO_INCREMENT de la tabla `alumnos_fac14`
 --
 ALTER TABLE `alumnos_fac14`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `cereticula`
@@ -2986,13 +2965,13 @@ ALTER TABLE `cereticula`
 -- AUTO_INCREMENT de la tabla `docentes`
 --
 ALTER TABLE `docentes`
-  MODIFY `cat_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10018;
+  MODIFY `cat_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10045;
 
 --
 -- AUTO_INCREMENT de la tabla `docente_rol`
 --
 ALTER TABLE `docente_rol`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT de la tabla `evidencias`
@@ -3046,7 +3025,7 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `programae`
 --
 ALTER TABLE `programae`
-  MODIFY `id_programaE` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_programaE` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `revisiones`
@@ -3058,13 +3037,13 @@ ALTER TABLE `revisiones`
 -- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `rol_permisos`
 --
 ALTER TABLE `rol_permisos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=253;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
 
 --
 -- Restricciones para tablas volcadas

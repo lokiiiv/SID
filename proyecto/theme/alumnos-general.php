@@ -57,7 +57,17 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<div class="content">
         <?php if($u->hasPrivilegio("consultar_instrumentacion_alumno")) { ?>
             <div class="container">
-                <div class="row mt-3">
+                <div class="row  mt-3">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Alumnos</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-12 d-flex flex-wrap">
                         <div id="conte-periodo">
                             <form action="" method="POST">

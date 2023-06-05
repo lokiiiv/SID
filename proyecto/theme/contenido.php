@@ -560,31 +560,50 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
 
   <div class="content">
     <div class="container" style="margin-top: 30px; margin-bottom:30px;">
-      <div class="row">
-
-        <form action="indexi.php">
-          <input type="submit" class="btn btn-success" value="Regresar" />
-        </form>
-
+    <div class="row">
+      <div class="col-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="indexi.php">Crear/consultar instrumentaciones</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Administrar instrumentación</li>
+          </ol>
+        </nav>
       </div>
-      <br>
+    </div>
+      <!-- <div class="row mb-2">
+        <div class="col-12">
+          <form action="indexi.php">
+            <input type="submit" class="btn btn-success" value="Regresar" />
+          </form>
+        </div>
+      </div> -->
       <div class="row">
-        <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+        <!-- <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
           <input name="archivo" type="file" id="aexex">
         </div>
         <div class="col-md-3 col-xs-3 col-sm-3 col-lg-3">
-          <input type="Button" id="cargainstrumentacionexcel" class="btn btn-warning" value="Cargar instrumentación desde Excel" />
+         
         </div>
         <div class="col-md-1 col-xs-1 col-sm-1 col-lg-1"></div>
         <div class="col-md-3 col-xs-3 col-sm-3 col-lg-3" id="msie">
           ...
+        </div> -->
+        <div class="col-12 d-flex flex-wrap align-items-center">
+          <input name="archivo" type="file" id="aexex" class="m-1">
+          <input type="Button" id="cargainstrumentacionexcel" class="btn btn-warning m-1" value="Cargar instrumentación desde Excel" />
         </div>
-
       </div>
-
-
-
-      <br>
+      <div class="row">
+        <div class="col-12">
+          <div id="msie"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <hr>
+        </div>
+      </div>
       <div class="row">
         <div class="col d-flex justify-content-end align-items-center">
           <button type="button" class="btn btn-success editable" id="enviarInstru"><i class="fa-solid fa-share-from-square pr-2"></i>Enviar instrumentación</button>

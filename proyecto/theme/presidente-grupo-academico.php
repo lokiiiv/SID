@@ -56,7 +56,17 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 
 	<div class="content">
 		<div class="container">
-			<div class="row mt-2">
+			<div class="row  mt-3">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Instrumentaciones a validar</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+			<div class="row">
 				<div class="col-12 d-flex justify-content-end">
 					<a href="presidente-grupo-academico-historial.php" role="button" class="btn btn-info"><i class="fa-sharp fa-solid fa-clock-rotate-left pr-2"></i>Consultar historial</a>
 				</div>

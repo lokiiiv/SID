@@ -48,7 +48,17 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 	<div class="content">
         <?php if($u->hasPrivilegio("acceso_alumnos_al_fac14")) { ?>
             <div class="container">
-                <div class="row mt-3">
+                <div class="row  mt-3">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Alumnos con acceso a FAC-14</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col">
                         <h6>En esta sección debe elegir el periodo y alumno al cual le puede asignar el grupo/grupos para permitir firmar los seguimientos FAC-14.</h6>
                     </div>

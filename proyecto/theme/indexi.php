@@ -48,7 +48,17 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION['correo']);
     <div class="content">
         <?php if($u->hasPrivilegio("crear_instrumentaciones")) { ?>
             <div class="container">
-                <div class="row" style="margin-top: 25px;">
+                <div class="row  mt-3">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Lista de instrumentaciones</li>
+                            </ol>
+                        </nav>
+                    </div>
+            </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label col-md-3" for="select">
