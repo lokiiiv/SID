@@ -1462,6 +1462,11 @@ use Google\Service\ShoppingContent\Resource\Pos;
                             'ClaveAsignatura' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.ClaveAsignatura', 
                             'ObservacionesPresidente' => '$periodos_Inst.' . $periodo . '.' . $claveAsignatura . '.Validacion.Observaciones'
                         ]
+                    ],
+                    [
+                        '$unwind' => [
+                            'path' => '$ObservacionesPresidente'
+                        ]
                     ]
                 ];
 

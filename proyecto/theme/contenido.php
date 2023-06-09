@@ -54,6 +54,12 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
 
   <link rel="stylesheet" href="css/animate.css">
   <link rel="stylesheet" href="css/sina-nav.min.css">
+  <link rel="stylesheet" href="css/notifications_style.css">
+
+  <!-- Estilos para dropdown de notificaciones -->
+  <style>
+
+  </style>
   
 
   <style>
@@ -607,6 +613,78 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
       <div class="row">
         <div class="col d-flex justify-content-end align-items-center">
           <button type="button" class="btn btn-success editable" id="enviarInstru"><i class="fa-solid fa-share-from-square pr-2"></i>Enviar instrumentación</button>
+          
+          <div class="dropdown custom-dropdown ml-3">
+            <a href="#" data-toggle="dropdown" class="dropdown-link" aria-haspopup="true" aria-expanded="false">
+              <i class="fa-solid fa-bell wrap-icon icon-notifications"></i>
+              <span class="number"></span>
+              
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <div class="title-wrap d-flex align-items-center">
+                <h3 class="title mb-0">Notificaciones</h3>
+                <a href="#" class="small ml-auto">Marcar todo como leído.</a>
+              </div>
+
+              <ul class="custom-notifications">
+                <li class="unread">
+                  <a href="#">
+                    <div class="text">
+                      <strong>Claudia Gideon</strong> marked the task done a day ago
+                    </div>
+                    <div class="content-notification">
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
+                    </div>
+                  </a>
+                </li>
+
+                <li class="unread">
+                  <a href="#">
+                    <div class="text">
+                      <strong>Alex Stafford</strong> marked the task done a day ago
+                    </div>
+                    <div class="content-notification">
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#">
+                    <div class="text">
+                      <strong>Devin Richards</strong> mentioned you in her comment on Invoices 2 days ago
+                    </div>
+                    <div class="content-notification">
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
+                    </div>
+                  </a>
+                </li>
+
+                <li class="">
+                  <a href="#">
+                    <div class="text">
+                      <strong>Alex Stafford</strong> marked the task done a day ago
+                    </div>
+                    <div class="content-notification">
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#">
+                    <div class="text">
+                      <strong>Devin Richards</strong> mentioned you in her comment on Invoices 2 days ago
+                    </div>
+                    <div class="content-notification">
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
