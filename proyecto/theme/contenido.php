@@ -3572,6 +3572,22 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
     </script>
 
     <script>
+      //Obtener observaciones de los jefes de division y presidente de grupo academico con respecto a la instrumentacion.
+      $.ajax({
+        data: {
+          'accion': 'obtenerObservacionesIntrumentacion',
+          'periodo': document.getElementById("campoPeriodo").innerHTML,
+          'claveAsignatura': '<?php echo $_GET['claveasignatura']; ?>',
+          'grupo': document.getElementById("campoGrupo").innerHTML
+        },
+        url: 'conexion/consultasNoSQL.php',
+        method: 'post',
+        success: function(response) {
+          console.log(JSON.parse(response));
+        }
+      });
+
+
       //Antes de generar la instrumentación, verificar si el usuario actual ya subio su firma correspondiente
       $("#formGenerarInstru").on("submit", function(e) {
         var formulario = $(this);

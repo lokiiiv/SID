@@ -1447,10 +1447,11 @@ use Google\Service\ShoppingContent\Resource\Pos;
                 echo json_encode(['success' => true, 'data' => $instrumentaciones]);
             break;
 
-            case 'obtenerObservacionesPresidente':
+            case 'obtenerObservacionesIntrumentacion':
                 $periodo = $_POST['periodo'];
                 $claveAsignatura = $_POST['claveAsignatura'];
-
+                $grupoins = substr($_POST['grupo'], 0, 3);
+                //Obtener observaciones de presidente de cierta instrumentacion 
                 $pipeline = [
                     [
                         '$match' => ['Instrumentos' => 'Carreras']
@@ -1467,18 +1468,35 @@ use Google\Service\ShoppingContent\Resource\Pos;
                         '$unwind' => [
                             'path' => '$ObservacionesPresidente'
                         ]
+                    ],
+                    [
+                        '$addFields' => [
+                            'ObservacionesPresidente.InfoMensaje.FechaHora' => [
+                                '$dateFromString' => [
+                                    'dateString' => '$ObservacionesPresidente.InfoMensaje.FechaHora'
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        '$sort' => [
+                            'ObservacionesPresidente.InfoMensaje.FechaHora' => -1
+                        ]
+                    ],
+                    [
+                        '$addFields' => [
+                            'ObservacionesPresidente.InfoMensaje.FechaHora' => [
+                                '$dateToString' => [
+                                    'date' => '$ObservacionesPresidente.InfoMensaje.FechaHora', 
+                                    'format' => '%Y-%m-%d %H-%M-%S'
+                                ]
+                            ]
+                        ]
                     ]
                 ];
+                $observacionesPresidente = $connNoSQL->agregacion("instrumentaciones", $pipeline);
 
-                $observaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
-                echo json_encode(['success' => true, 'data' => $observaciones]);
-            break;
-
-            case 'obtenerObservacionesJefeDivision':
-                $periodo = $_POST['periodo'];
-                $claveAsignatura = $_POST['claveAsignatura'];
-                $grupoinst = substr($_POST['grupo'], 0, 3);
-
+                //Obtener observaciones de jefe de division
                 $pipeline = [
                     [
                         '$match' => ['Instrumentos' => 'Carreras']
@@ -1508,13 +1526,42 @@ use Google\Service\ShoppingContent\Resource\Pos;
                             'ClaveAsignatura' => 1, 
                             'ObservacionesJefeDivision.Clave' => 1, 
                             'ObservacionesJefeDivision.PE' => 1, 
-                            'ObservacionesJefeDivision.Validacion' => 1
+                            'ObservacionesJefeDivision.Validacion.Observaciones' => 1
+                        ]
+                    ],
+                    [
+                        '$unwind' => [
+                            'path' => '$ObservacionesJefeDivision.Validacion.Observaciones'
+                        ]
+                    ],
+                    [
+                        '$addFields' => [
+                            'ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.FechaHora' => [
+                                '$dateFromString' => [
+                                    'dateString' => '$ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.FechaHora'
+                                ]
+                            ]
+                        ]
+                    ], 
+                    [
+                        '$sort' => [
+                            'ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.FechaHora' => -1
+                        ]
+                    ],
+                    [
+                        '$addFields' => [
+                            'ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.FechaHora' => [
+                                '$dateToString' => [
+                                    'date' => '$ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.FechaHora', 
+                                    'format' => '%Y-%m-%d %H-%M-%S'
+                                ]
+                            ]
                         ]
                     ]
                 ];
+                $observacionesJefeDivision = $connNoSQL->agregacion("instrumentaciones", $pipeline);
 
-                $observaciones = $connNoSQL->agregacion("instrumentaciones", $pipeline);
-                echo json_encode(['success' => true, 'data' => $observaciones]);
-            break;
+                echo json_encode(['success' => true, 'data' => ['Presidente' => $observacionesPresidente, 'JefeDivision' => $observacionesJefeDivision]]);
+                break;
         }
     }
