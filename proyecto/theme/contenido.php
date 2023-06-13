@@ -3338,6 +3338,26 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
 			</div>
 		</div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modal-observacion" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Observación</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <?php
     require 'footer.php';
     ?>
@@ -3587,6 +3607,9 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
 
       $(document).on('click', '.notificacion-item-content', function(e){
         e.preventDefault();
+        $('#modal-observacion').modal('show');
+        var mensaje = $(e.target).closest('.notificacion-item-content').find('.content-notification p').text();
+        $("#modal-observacion .modal-body").html('<h6>' + mensaje + '</h6>');
       });
 
       //Antes de generar la instrumentación, verificar si el usuario actual ya subio su firma correspondiente
