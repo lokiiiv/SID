@@ -617,71 +617,17 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
           <div class="dropdown custom-dropdown ml-3">
             <a href="#" data-toggle="dropdown" class="dropdown-link" aria-haspopup="true" aria-expanded="false">
               <i class="fa-solid fa-bell wrap-icon icon-notifications"></i>
-              <span class="number"></span>
+              
               
             </a>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
               <div class="title-wrap d-flex align-items-center">
                 <h3 class="title mb-0">Notificaciones</h3>
-                <a href="#" class="small ml-auto">Marcar todo como leído.</a>
+                
               </div>
 
               <ul class="custom-notifications">
-                <li class="unread">
-                  <a href="#">
-                    <div class="text">
-                      <strong>Claudia Gideon</strong> marked the task done a day ago
-                    </div>
-                    <div class="content-notification">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="unread">
-                  <a href="#">
-                    <div class="text">
-                      <strong>Alex Stafford</strong> marked the task done a day ago
-                    </div>
-                    <div class="content-notification">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
-                    </div>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#">
-                    <div class="text">
-                      <strong>Devin Richards</strong> mentioned you in her comment on Invoices 2 days ago
-                    </div>
-                    <div class="content-notification">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="">
-                  <a href="#">
-                    <div class="text">
-                      <strong>Alex Stafford</strong> marked the task done a day ago
-                    </div>
-                    <div class="content-notification">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
-                    </div>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#">
-                    <div class="text">
-                      <strong>Devin Richards</strong> mentioned you in her comment on Invoices 2 days ago
-                    </div>
-                    <div class="content-notification">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illum hic quae quos inventore delectus saepe beatae! Vel, magni dolor. Eum, optio cumque debitis tempora dignissimos iure voluptas non provident.</p>
-                    </div>
-                  </a>
-                </li>
               </ul>
             </div>
           </div>
@@ -3562,6 +3508,7 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
 
     <script src="js/wow.min.js"></script>
     <script src="js/sina-nav.js"></script>
+    <script src="js/moment-with.locales.js"></script>
 
     <!-- For All Plug-in Activation & Others -->
     <script type="text/javascript">
@@ -3583,10 +3530,64 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
         url: 'conexion/consultasNoSQL.php',
         method: 'post',
         success: function(response) {
-          console.log(JSON.parse(response));
+          var res = JSON.parse(response);
+          if(res.success) {
+            var observacionesPresidente = res.data.Presidente;
+            var observacionesJefe = res.data.JefeDivision;
+            //Llenar primero las observaciones del presidente de grupo academico
+            var htmlNotificaciones = '';
+            if(observacionesJefe.length == 0 && observacionesJefe == 0) {
+              $('.dropdown-link span.number').remove();
+              htmlNotificaciones += '<li>' +
+                                      '<a href="#" class="notificacion-item-content">' +
+                                        '<div class="content-notification">' +
+                                          '<p>Sin mensajes</p>' +
+                                        '</div>' +
+                                      '</a>' +
+                                    '</li>';
+            } else {
+              $('.dropdown-link').append('<span class="number"></span>');
+              observacionesPresidente.forEach(obser => {
+                var leido = obser.ObservacionesPresidente.InfoMensaje.Leido ? '' : 'unread';
+              
+                var fecha = moment(obser.ObservacionesPresidente.InfoMensaje.FechaHora, 'YYYY-MM-DD HH:mm:ss').locale('es-mx').format('MMMM Do YYYY, h:mm:ss a');
+                htmlNotificaciones += '<li class="' + leido + '">' +
+                                        '<a href="#" class="notificacion-item-content">' +
+                                          '<div class="text">' +
+                                            '<strong>' + obser.ObservacionesPresidente.NombrePresidente +'</strong> comentó lo siguiente. ' +
+                                            '<p>' + fecha + '</p>' +
+                                          '</div>' +
+                                          '<div class="content-notification">' +
+                                            '<p>' + obser.ObservacionesPresidente.InfoMensaje.Mensaje + '</p>' +
+                                          '</div>' +
+                                        '</a>' +
+                                      '</li>';
+              });
+              observacionesJefe.forEach(obser => {
+                var leido = obser.ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.Leido ? '' : 'unread';
+                var fecha = moment(obser.ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.FechaHora, 'YYYY-MM-DD HH:mm:ss').locale('es-mx').format('MMMM Do YYYY, h:mm:ss a');
+                htmlNotificaciones += '<li class="' + leido + '">' +
+                                        '<a href="#" class="notificacion-item-content">' +
+                                          '<div class="text">' +
+                                            '<strong>' + obser.ObservacionesJefeDivision.Validacion.Observaciones.NombreJefeDivision +'</strong> comentó lo siguiente. ' +
+                                            '<p>' + fecha + '</p>' +
+                                          '</div>' +
+                                          '<div class="content-notification">' +
+                                            '<p>' + obser.ObservacionesJefeDivision.Validacion.Observaciones.InfoMensaje.Mensaje + '</p>' +
+                                          '</div>' +
+                                        '</a>' +
+                                      '</li>';
+              });
+            }
+            
+            $(".custom-notifications").html(htmlNotificaciones);
+          }
         }
       });
 
+      $(document).on('click', '.notificacion-item-content', function(e){
+        e.preventDefault();
+      });
 
       //Antes de generar la instrumentación, verificar si el usuario actual ya subio su firma correspondiente
       $("#formGenerarInstru").on("submit", function(e) {
