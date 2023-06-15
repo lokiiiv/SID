@@ -61,38 +61,43 @@
                     <h5>Historial de instrumentaciones autorizadas.</h5>
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-12 d-flex flex-wrap">
-                    <div id="conte-periodo">
-                        <form action="" method="POST">
-                            <div class="form-group">
-                                <label class="control-label" for="select">
-                                    <h4>Periodo</h4>
-                                </label>
-                                <select class="form-control" id="selectPeriodo" name="periodo" Onchange="seleccionarPeriodo(this.options[this.selectedIndex].innerHTML);">
-                                    <option>&nbsp;</option>
-                                    <?php
-                                    require_once 'conexion/conexionSQL.php';
-                                    $connSQL = connSQL::singleton();
-                                    $query = "Select periodo from periodos";
-                                    $periodos = $connSQL->consulta($query);
-                                    foreach ($periodos as $periodo) {
-                                        echo "<option>" . $periodo[0] . "</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div id="contenedor-instru-historial-jefedivision">
 
-                    </div>
-                </div>
-            </div>
+			<?php if($u->hasPrivilegio("historial_instrumentaciones_autorizadas")) { ?>
+			<div>
+				<div class="row mt-3">
+					<div class="col-12 d-flex flex-wrap">
+						<div id="conte-periodo">
+							<form action="" method="POST">
+								<div class="form-group">
+									<label class="control-label" for="select">
+										<h4>Periodo</h4>
+									</label>
+									<select class="form-control" id="selectPeriodo" name="periodo" Onchange="seleccionarPeriodo(this.options[this.selectedIndex].innerHTML);">
+										<option>&nbsp;</option>
+										<?php
+										require_once 'conexion/conexionSQL.php';
+										$connSQL = connSQL::singleton();
+										$query = "Select periodo from periodos";
+										$periodos = $connSQL->consulta($query);
+										foreach ($periodos as $periodo) {
+											echo "<option>" . $periodo[0] . "</option>";
+										}
+										?>
+									</select>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<div id="contenedor-instru-historial-jefedivision">
+
+						</div>
+					</div>
+				</div>
+			</div>
+            <?php } ?>
         </div>
 
         <!-- Modal para mostrar la instrumentacion de cada tema seleccionado -->

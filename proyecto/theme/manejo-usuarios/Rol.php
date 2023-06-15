@@ -22,7 +22,7 @@ class Rol
         $sql = "SELECT p.*, pag.pagina
                 FROM rol_permisos as rp
                 JOIN permisos as p ON rp.id_permiso = p.id_permiso
-                JOIN paginas pag ON p.id_pagina = pag.id_pagina
+                LEFT JOIN paginas pag ON p.id_pagina = pag.id_pagina
                 WHERE rp.id_rol = :id_rol";
 
         $permisos = self::$connSQL->preparedQuery($sql, ['id_rol' => $rol_id]);

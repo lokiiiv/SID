@@ -614,7 +614,7 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
         <div class="col d-flex justify-content-end align-items-center">
           <button type="button" class="btn btn-success editable" id="enviarInstru"><i class="fa-solid fa-share-from-square pr-2"></i>Enviar instrumentación</button>
           
-          <div class="dropdown custom-dropdown ml-3">
+          <div class="dropdown custom-dropdown ml-3 pt-2">
             <a href="#" data-toggle="dropdown" class="dropdown-link" aria-haspopup="true" aria-expanded="false">
               <i class="fa-solid fa-bell wrap-icon icon-notifications"></i>
               
