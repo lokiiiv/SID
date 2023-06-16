@@ -21,8 +21,11 @@
 
 		// Redirect to homepage
 		$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		if($actual_link != "http://localhost/sid/" && $actual_link != "https://localhost/sid/" && $actual_link != "http://localhost/sid/index.php" && $actual_link != "https://localhost/sid/index.php") {
-			header("Location: http://localhost/sid/index.php");
+		$actual_link = strtok($actual_link, "?");
+		if($actual_link == "http://localhost/sid/" || $actual_link == "https://localhost/sid/" || $actual_link == "http://localhost/sid/index.php" || $actual_link == "https://localhost/sid/index.php") {
+			//header("Location: http://localhost/sid/index.php"); 
+		} else {
+			header("Location: http://localhost/sid/"); 
 		}
 		
 	} else {
