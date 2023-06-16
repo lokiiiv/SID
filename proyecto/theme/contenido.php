@@ -3553,7 +3553,7 @@ if(!$u->hasPrivilegio("crear_instrumentaciones")) {
             var observacionesJefe = res.data.JefeDivision;
             //Llenar primero las observaciones del presidente de grupo academico
             var htmlNotificaciones = '';
-            if(observacionesJefe.length == 0 && observacionesJefe == 0) {
+            if(observacionesPresidente.length == 0 && observacionesJefe.length == 0) {
               $('.dropdown-link span.number').remove();
               htmlNotificaciones += '<li>' +
                                       '<a href="#" class="notificacion-item-content">' +
