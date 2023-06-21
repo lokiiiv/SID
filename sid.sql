@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2023 a las 23:51:07
+-- Tiempo de generación: 15-06-2023 a las 22:18:16
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -2403,7 +2403,8 @@ INSERT INTO `docente_rol` (`id`, `cat_ID`, `id_rol`) VALUES
 (130, 10014, 3),
 (132, 10014, 5),
 (133, 10014, 4),
-(160, 10044, 4);
+(160, 10044, 4),
+(161, 10044, 2);
 
 --
 -- Disparadores `docente_rol`
@@ -2688,7 +2689,9 @@ INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `descripcion_permiso`, `
 (28, 'cerrar_sesion', 'Cerrar sesión', 19),
 (29, 'validar_instrumentaciones_presidente', 'Validar/Denegar instrumentaciones (presidente de grupo académico)', 24),
 (30, 'autorizar_instrumentaciones_jefe', 'Autorizar/Denegar instrumentaciones (Jefe de división)', 25),
-(31, 'consultar_instrumentacion_alumno', 'Consultar instrumentaciones (alumnos)', 26);
+(31, 'consultar_instrumentacion_alumno', 'Consultar instrumentaciones (alumnos)', 26),
+(34, 'historial_instrumentaciones_validadas', 'Historial de instrumentaciones validadas (presidente de grupo académico)', NULL),
+(35, 'historial_instrumentaciones_autorizadas', 'Historial de instrumentaciones autorizadas (jefe de división)', NULL);
 
 -- --------------------------------------------------------
 
@@ -2828,10 +2831,12 @@ INSERT INTO `rol_permisos` (`id`, `id_rol`, `id_permiso`) VALUES
 (278, 1, 22),
 (279, 1, 21),
 (281, 1, 23),
-(283, 3, 29),
 (286, 5, 30),
 (287, 4, 31),
-(288, 2, 26);
+(288, 2, 26),
+(300, 3, 34),
+(301, 3, 29),
+(302, 5, 35);
 
 --
 -- Índices para tablas volcadas
@@ -2971,7 +2976,7 @@ ALTER TABLE `docentes`
 -- AUTO_INCREMENT de la tabla `docente_rol`
 --
 ALTER TABLE `docente_rol`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT de la tabla `evidencias`
@@ -3019,7 +3024,7 @@ ALTER TABLE `periodos`
 -- AUTO_INCREMENT de la tabla `permisos`
 --
 ALTER TABLE `permisos`
-  MODIFY `id_permiso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_permiso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `programae`
@@ -3043,7 +3048,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `rol_permisos`
 --
 ALTER TABLE `rol_permisos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
 
 --
 -- Restricciones para tablas volcadas
