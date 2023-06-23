@@ -1433,7 +1433,48 @@ if (isset($_POST['accion'])  && !empty($_POST['accion'])) {
             }
             break;
         
-        
+        case 'obtenerReticula':
+
+            $sql = "SELECT * FROM cereticula";
+            $reticula = $connSQL->preparedQuery($sql);
+
+            $final_data = [];
+            foreach($reticula as $materia) {
+                $htmlEditar = '<a class="dropdown-item editar" href="" data-id="' . $materia['ret_ID'] . '"><i class="fa-solid fa-pen-to-square mr-2"></i>Editar</a>';
+                $htmlBorrar = '<a class="dropdown-item eliminar" href="" data-id"' . $materia['ret_ID'] . '"><i class="fa-solid fa-trash mr-2"></i>Eliminar</a>';
+                $htmlDefault = '';
+
+                $acciones = '<div class="row">' . 
+                                '<div class="btn-group" style="margin: 0 auto;">' .
+                                    '<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+                                        'Acciones' .
+                                    '</button>' .
+                                    '<div class="dropdown-menu">' . 
+                                        $htmlEditar .
+                                        $htmlBorrar . 
+                                        $htmlDefault .
+                                    '</div>' . 
+                                '</div>' . 
+                            '</div>';
+                $final_data[] = [
+                    'ret_ID' => $materia['ret_ID'],
+                    'ret_Clave' => $materia['ret_Clave'],
+                    'ret_ClaveInt' => $materia['ret_ClaveInt'],
+                    'ret_NomCorto' => $materia['ret_NomCorto'],
+                    'ret_NomCompleto' => $materia['ret_NomCompleto'],
+                    'ret_ClaveOficial' => $materia['ret_ClaveOficial'],
+                    'temas' => $materia['temas'] != null ? $materia['temas'] : 0,
+                    'ret_Creditos' => $materia['ret_Creditos'] != null ? $materia['ret_Creditos'] : 0,
+                    'moe_ID' => $materia['moe_ID'] != null ? $materia['moe_ID'] : 0,
+                    'dep_ID' => $materia['dep_ID'] != null ? $materia['dep_ID'] : 0,
+                    'pes_ID' => $materia['pes_ID'] != null ? $materia['pes_ID'] : 0,
+                    'acciones' => $acciones
+                ];
+
+                
+            }
+            echo json_encode($final_data, JSON_UNESCAPED_UNICODE);
+            break;
     }
         
 }
