@@ -80,8 +80,8 @@ use Google\Service\ShoppingContent\Resource\Pos;
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".CodigoDocumento"=>$codigodocumento]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Clausula"=>$clausula]);
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Creditos"=>$creditos]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".SoloLectura"=>false]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"],["periodos_Inst.".$periodo.".".$clave.".Validacion"=>["Estatus"=>false]]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras", "periodos_Inst.".$periodo.".".$clave.".SoloLectura" => ['$exists' => false]],["periodos_Inst.".$periodo.".".$clave.".SoloLectura"=>false]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras", "periodos_Inst.".$periodo.".".$clave.".Validacion.Estatus" => ['$exists' => false]],["periodos_Inst.".$periodo.".".$clave.".Validacion"=>["Estatus"=>false]]);
             break;
             case 'borrarInstrumentacion':
                 //$instrumentacion = $_POST['ins'];

@@ -131,10 +131,13 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
     </script>
 
     <script>
-        var tableUsuarios;
+        var tableReticula;
+        var validate;
         $(document).ready(function() {
 
-            tableUsuarios = $("#tablaReticula").DataTable({
+            var idReticula;
+
+            tableReticula = $("#tablaReticula").DataTable({
                 "autoWidth": true,
                 "order": [],
                 "responsive": true,
