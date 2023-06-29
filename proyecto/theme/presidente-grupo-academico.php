@@ -294,6 +294,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 								htmlListaContenenido += '<div class="list-group-item list-group-item-action flex-column align-items-start item-instrumentacion">' +
 															'<div class="row">' +
 																'<div class="col-lg-10 informacion">' +
+																	'<input type="hidden" class="grupo-academico" value="' + m.nombre +'">' +
 																	'<h5 class="nombre-asignatura">' + (inst.v.Materia != undefined ? inst.v.Materia : '') + '</h5>' +
 																	'<h6 class="clave-asignatura" data-clave="' + (inst.k != undefined ? inst.k: '') +'">Clave de asignatura: ' + (inst.k != undefined ? inst.k: '') +'</h6>' +
 																	'<h6>Número de temas: ' + (inst.v.totalTemas != undefined ? inst.v.totalTemas: '') + '</h6>' +
@@ -712,6 +713,7 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 		$(document).on('click', '.autorizar-instru', function(e) {
 			var claveAsignatura = $(this).closest('.item-instrumentacion').find('.clave-asignatura').attr('data-clave');
 			var materia = $(this).closest('.item-instrumentacion').find('.nombre-asignatura').text();
+			var grupoAcademico = $(this).closest('.item-instrumentacion').find('.grupo-academico').val();
 
 			//Verificar que el usuario tenga su firma
 			$.ajax({
@@ -734,7 +736,8 @@ $u = UsuarioPrivilegiado::getByCorreo($_SESSION["correo"]);
 									'clave-asignatura': claveAsignatura,
 									'idPresi': '<?php echo $_SESSION['idUsuario']; ?>',
 									'nombrePresi': '<?php echo $_SESSION['nombreCompleto']; ?>',
-									'correo': '<?php echo $_SESSION['correo']; ?>'
+									'correo': '<?php echo $_SESSION['correo']; ?>',
+									'grupoAcademico': grupoAcademico
 								},
 								url: "conexion/consultasNoSQL.php",
 								type: "post",

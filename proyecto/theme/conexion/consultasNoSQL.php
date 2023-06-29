@@ -734,10 +734,11 @@ use Google\Service\ShoppingContent\Resource\Pos;
                 $idPresidente = $_POST['idPresi'];
                 $nombrePresidente = $_POST['nombrePresi'];
                 $correoPresidente = $_POST['correo'];
+                $grupoAcademico = $_POST['grupoAcademico'];
                 
                 //Actualizar el valor de estatus validacion (Presidente) a true y poner los datos del presidente que valido la misma
                 $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.Estatus" => true]);
-                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.InfoPresidente" => ['IdPresidente' => $idPresidente, 'NombrePresidente' => $nombrePresidente, 'CorreoPresidente' => $correoPresidente]]);
+                $connNoSQL->modificar("instrumentaciones", ["Instrumentos"=>"Carreras"], ["periodos_Inst." . $periodo . "." . $claveAsignatura . ".Validacion.InfoPresidente" => ['IdPresidente' => $idPresidente, 'NombrePresidente' => $nombrePresidente, 'CorreoPresidente' => $correoPresidente, 'GrupoAcademico' => $grupoAcademico]]);
 
                 echo json_encode(['success' => true, 'mensaje' => 'Has validado la instrumentación, ahora puede ser vista por los respectivos jefes de división para su revisión y autorización.']);
             break;

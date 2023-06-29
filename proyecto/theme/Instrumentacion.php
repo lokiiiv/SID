@@ -827,6 +827,7 @@
 											<?php echo $imgFirma != '' ? '<img src="firmasimagenes/' . $imgFirma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Firma</i>'; ?>
 										</div>
 										<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo isset($instrumentacion->Validacion->InfoPresidente->NombrePresidente) ? $instrumentacion->Validacion->InfoPresidente->NombrePresidente : '<i>Nombre</i>'  ?></i></div>
+										<?php echo isset($instrumentacion->Validacion->InfoPresidente->GrupoAcademico) ? '<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none; text-align: center;"><i>Presidente de grupo académico de ' . $instrumentacion->Validacion->InfoPresidente->GrupoAcademico . '</i></div>' : '' ?> 
 									</div>
 									<div class="col-4">
 										<div class="row color p-1 d-flex justify-content-center align-items-center"><b>Autorizó</b></div>
@@ -844,6 +845,13 @@
 											<?php echo $imgFirma != '' ? '<img src="firmasimagenes/' . $imgFirma . '" alt="" class="img-fluid" style="height: 90px;">' : '<i>Firma</i>'; ?>
 										</div>
 										<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none;"><i><?php echo isset($instrumentacion->TodasMaterias->Validacion->InfoJefeDivision->NombreJefeDivision) ? $instrumentacion->TodasMaterias->Validacion->InfoJefeDivision->NombreJefeDivision : '<i>Nombre</i>' ?></i></div>
+										<?php 
+										if (isset($instrumentacion->TodasMaterias->Validacion->Estatus) && isset($instrumentacion->TodasMaterias->Validacion->InfoJefeDivision)) {
+											if ($instrumentacion->TodasMaterias->Validacion->Estatus) {
+												echo '<div class="row p-1 color-claro d-flex justify-content-center align-items-center" style="border: none; text-align: center;"><i>Jefe de división del PE de ' .  mb_convert_case($instrumentacion->TodasMaterias->PE, MB_CASE_TITLE, 'UTF-8') . '</i></div>';
+											}
+										}
+										?>
 									</div>
 								</div>
 							</div>
