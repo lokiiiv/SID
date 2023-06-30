@@ -3,8 +3,8 @@
  * Basic Site Settings and API Configuration
  */
 // Google API configuration
-define('GOOGLE_CLIENT_ID', '456223479022-u5q2mlet121g2rmvvmb3pf27pupgkd9s.apps.googleusercontent.com');
-define('GOOGLE_CLIENT_SECRET', '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');
+define('GOOGLE_CLIENT_ID', '267854973830-i0jgpl392364tgu17ebltdq3os64bn56.apps.googleusercontent.com');
+define('GOOGLE_CLIENT_SECRET', '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');
 //define('GOOGLE_REDIRECT_URL', 'http://sid.itesa.edu.mx/index.php');
 //define('GOOGLE_REDIRECT_URL', 'http://localhost/sid/v1.1/index.php');
 define('GOOGLE_REDIRECT_URL', 'http://localhost:80/sid/loginGoogle.php');
